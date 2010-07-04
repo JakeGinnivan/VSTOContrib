@@ -1,0 +1,742 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Office.Utility</name>
+    </assembly>
+    <members>
+        <member name="T:Office.Utility.AutoDispose`1">
+            <summary>
+            Generic wrapper class to make any class disposable
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Office.Utility.AutoDispose`1.#ctor(`0,System.Action{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.AutoDispose`1"/> class.
+            </summary>
+            <param name="resource">The resource.</param>
+            <param name="managedCleanupAction">The resource cleanup action.</param>
+        </member>
+        <member name="M:Office.Utility.AutoDispose`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Office.Utility.AutoDispose`1.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="P:Office.Utility.AutoDispose`1.Resource">
+            <summary>
+            Gets the resource.
+            </summary>
+            <value>The resource.</value>
+        </member>
+        <member name="F:Office.Utility.ControlCallbackLookup._controlCallbackLookup">
+            <summary>
+            Lookup: Control -> VSTO callback name -> Factory method name
+            </summary>
+        </member>
+        <member name="F:Office.Utility.ControlCallbackLookup._controlReverseCallbackLookup">
+            <summary>
+            Lookup: Control -> Factory method name -> VSTO callback name
+            </summary>
+        </member>
+        <member name="T:Office.Utility.ClickOnceUpdater">
+            <summary>
+            Generic clickonce deployment helper class.
+            </summary>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ClickOnceUpdater"/> class.
+            </summary>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ClickOnceUpdater"/> class.
+            </summary>
+            <param name="applicationName">Name of the application.</param>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.CheckForUpdateAsync(System.Action{Office.Utility.UpdateResult})">
+            <summary>
+            Checks for update asynchronously.
+            </summary>
+            <param name="complete">The completed callback.</param>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.UpdateApplication">
+            <summary>
+            Updates the ClickOnce application.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.UpdateApplication(System.Deployment.Application.ApplicationDeployment)">
+            <summary>
+            Updates the ClickOnce application.
+            </summary>
+            <param name="currentDeployment">The current deployment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.ClickOnceUpdater.UpdateCurrentDeployment(System.Deployment.Application.ApplicationDeployment,System.String@)">
+            <summary>
+            Updates the current deployment.
+            </summary>
+            <param name="deployment">The deployment.</param>
+            <param name="message">The message.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Office.Utility.EnumExtensions">
+            <summary>
+             Extension methods to extend enum functionality
+            </summary>
+        </member>
+        <member name="M:Office.Utility.EnumExtensions.GetEnumDescription(System.Enum)">
+            <summary>
+            Gets the enum description.
+            </summary>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.EnumExtensions.GetEnumName(System.Type,System.String)">
+            <summary>
+            Gets the name of the enum.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="description">The description.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.EnumExtensions.EnumFromDescription``1(System.String)">
+            <summary>
+             Gets a enum from the enum description
+            </summary>
+            <param name="description">Enum description</param>
+            <typeparam name="T">Enum type</typeparam>
+            <returns>The enum value</returns>
+            <exception cref="T:System.ArgumentException">Thrown if no matching enum exists</exception>
+        </member>
+        <member name="M:Office.Utility.EnumExtensions.TryGetEnumFromDescription``1(System.String,``0@)">
+            <summary>
+              Gets a enum from the enum description
+            </summary>
+            <param name="description">Enum description</param>
+            <param name="enumValue">Output value</param>
+            <typeparam name="T">Enum type</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.EnumExtensions.GetMethodName(System.Linq.Expressions.Expression{System.Action})">
+            <summary>
+             Gets the method name used in an expression. Provides strongly typed method name resolution.
+             ()=>MyMethod(null, null) - will return MyMethod.
+            </summary>
+            <param name="expression">The action calling the method</param>
+            <returns>The name of the called method</returns>
+        </member>
+        <member name="T:Office.Utility.Extensions.ComCleanupExtensions">
+            <summary>
+            Extension methods which help a deterministic cleanup model
+            </summary>
+        </member>
+        <member name="M:Office.Utility.Extensions.ComCleanupExtensions.ComLinq``1(System.Collections.IEnumerable)">
+            <summary>
+            Enables Linq on any COM collection. Releases each iterated item deterministically
+            as the collection is enumerated
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="comCollection">The COM collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.ComCleanupExtensions.ReleaseComObject``1(``0)">
+            <summary>
+            Releases the COM object.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="resource">The Com object to releases.</param>
+        </member>
+        <member name="M:Office.Utility.Extensions.ComCleanupExtensions.WithComCleanup``1(``0)">
+            <summary>
+            Wraps the Com resource in an IDisposable which releases 
+            the Com object when Dispose is called.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="resource">The Com object to wrap.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.ComCleanupExtensions.WithComCleanup``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Wraps the Com resource in an IDisposable which releases 
+            the Com object when Dispose is called.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source">The Com object to wrap.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Office.Utility.Extensions.CommonExtensions">
+            <summary>
+            Common extensions that are not Office specific, but are used by the library
+            </summary>
+        </member>
+        <member name="M:Office.Utility.Extensions.CommonExtensions.ToMessageStack(System.Exception)">
+            <summary>
+            Gets all messages (including inner exceptions) from the exception
+            </summary>
+            <param name="ex">The ex.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.CommonExtensions.ToFullStackTrace(System.Exception,System.Int32)">
+            <summary>
+            Gets the full stack trace, including inner exceptions up to a specified level
+            </summary>
+            <param name="ex">The ex.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.CommonExtensions.ToFullStackTrace(System.Exception)">
+            <summary>
+            Gets the full stack trace, including inner exceptions.
+            </summary>
+            <param name="ex">The ex.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.CommonExtensions.StartProcess(System.Diagnostics.ProcessStartInfo,System.Diagnostics.DataReceivedEventHandler)">
+            <summary>
+            Starts the process, and reads all output from the process
+            </summary>
+            <param name="processStartInfo">The process start info.</param>
+            <param name="outputDataRecieved">The output data recieved.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.Extensions.CommonExtensions.CallWithTimeout(System.Action,System.Int32)">
+            <summary>
+            Calls the action with a timeout.
+            </summary>
+            <param name="action">The action.</param>
+            <param name="timeoutMilliseconds">The timeout milliseconds.</param>
+            <exception cref="T:System.TimeoutException">If timeout occurs</exception>
+        </member>
+        <member name="T:Office.Utility.IRibbonFactory">
+            <summary>
+            Instance of a Ribbon Factory
+            </summary>
+        </member>
+        <member name="M:Office.Utility.IRibbonFactory.InitialiseFactory(System.Collections.Generic.IEnumerable{Office.Utility.IRibbonViewModel})">
+            <summary>
+            Initialises and builds up the ribbon factory
+            </summary>
+            <param name="ribbons">Ribbon view models to wire up</param>
+            <exception cref="T:Office.Utility.ViewNotFoundException">If the view cannot be located for a view model</exception>
+        </member>
+        <member name="T:Office.Utility.IRibbonViewModel">
+            <summary>
+            Ribbon ViewModel
+            </summary>
+        </member>
+        <member name="P:Office.Utility.IRibbonViewModel.Type">
+            <summary>
+            The type of Inspector or Explorer that the ribbon should be displayed for.
+            </summary>
+            <value>The ribbon type.</value>
+        </member>
+        <member name="P:Office.Utility.IRibbonViewModel.RibbonUi">
+            <summary>
+            The associated ribbon, you can invalidate controls getting them to refresh
+            their state through the IRibbonUI.
+            </summary>
+            <value>The ribbon UI.</value>
+        </member>
+        <member name="T:Office.Utility.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Deployment_CheckForUpdateFailed">
+             <summary>
+               Looks up a localized string similar to An error occured while checking for an update:
+            {0}.
+             </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Deployment_NotNetworkDeployed">
+            <summary>
+              Looks up a localized string similar to Application is not network deployed..
+            </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Deployment_NoUpdateAvailable">
+            <summary>
+              Looks up a localized string similar to No update available.
+            </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Deployment_Success">
+             <summary>
+               Looks up a localized string similar to {0} successfully upgraded to v{1}.
+            
+            Restart {0} for changes to take affect..
+             </summary>
+        </member>
+        <member name="P:Office.Utility.Properties.Resources.Deployment_UpdateFailed">
+             <summary>
+               Looks up a localized string similar to An error occured updating Application:
+            {0}.
+             </summary>
+        </member>
+        <member name="T:Office.Utility.RibbonFactory">
+            <summary>
+            Simplifies adding custom Ribbon's to Office. 
+            Allows the custom Ribbon xml to be wired up to IRibbonViewModel's
+            by convention. Simply name the Ribbon.xml the same as the ribbon view model class
+            in the same assembly
+            </summary>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.InitialiseFactory(System.Collections.Generic.IEnumerable{Office.Utility.IRibbonViewModel})">
+            <summary>
+            Initialises and builds up the ribbon factory
+            </summary>
+            <param name="ribbons">Ribbon view models to wire up</param>
+            <exception cref="T:Office.Utility.ViewNotFoundException">If the view cannot be located for a view model</exception>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.LocateView(System.Type)">
+            <summary>
+            Locates the view, default method is an xml resource with the same name and in the same namespace as the view.
+            for example:
+            MyAddin/Ribbons/ContactsRibbon.cs
+            will look for
+            MyAddin/Ribbons/ContactsRibbon.xml
+            </summary>
+            <param name="viewModelType">Type of the view model.</param>
+            <returns>Ribbon XML</returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.Ribbon_Load(Microsoft.Office.Core.IRibbonUI)">
+            <summary>
+            Ribbon_s the load.
+            </summary>
+            <param name="ribbonUi">The ribbon UI.</param>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetCustomUI(System.String)">
+            <summary>
+            Gets the custom UI.
+            </summary>
+            <param name="ribbonId">The ribbon id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.OnAction(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            button onAction callback
+            </summary>
+            <param name="control"></param>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.SelectionOnAction(Microsoft.Office.Core.IRibbonControl,System.String,System.Int32)">
+            <summary>
+            dropDown and gallery onAction callback
+            </summary>
+            <param name="control"></param>
+            <param name="selectedId"></param>
+            <param name="selectedIndex"></param>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.PressedOnAction(Microsoft.Office.Core.IRibbonControl,System.Boolean)">
+            <summary>
+            checkBox and togglebutton onAction callback
+            </summary>
+            <param name="control"></param>
+            <param name="pressed"></param>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetDescription(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetDescription callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetEnabled(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetEnabled callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetImageMso(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetImageMso callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetLabel(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetLabel callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetKeyTip(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetKeyTip callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetScreenTip(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetScreenTip
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetSuperTip(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetSuperTip
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetVisible(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetVisible callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetShowImage(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetShowImage callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetShowLabel(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetShowLabel
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemCount(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetItemCount callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemId(Microsoft.Office.Core.IRibbonControl,System.Int32)">
+            <summary>
+            GetItemId callback
+            </summary>
+            <param name="control">The control.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemLabel(Microsoft.Office.Core.IRibbonControl,System.Int32)">
+            <summary>
+            GetItemLabel callback
+            </summary>
+            <param name="control">The control.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemScreenTip(Microsoft.Office.Core.IRibbonControl,System.Int32)">
+            <summary>
+            GetItemScreenTip callback
+            </summary>
+            <param name="control">The control.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemSuperTip(Microsoft.Office.Core.IRibbonControl,System.Int32)">
+            <summary>
+            GetItemSuperTip callback
+            </summary>
+            <param name="control">The control.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetSelectedItemId(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetSelectedItemId callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetSelectedItemIndex(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetSelectedItemIndex callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetContent(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetContent callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetText(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetText callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetTitle(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetTitle callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetPressed(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetPressed callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetSize(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetSize callback
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemHeight(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetItemHeight
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetImage(Microsoft.Office.Core.IRibbonControl)">
+            <summary>
+            GetImage
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.GetItemImage(Microsoft.Office.Core.IRibbonControl,System.Int32)">
+            <summary>
+            GetItemImage
+            </summary>
+            <param name="control">The control.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.RibbonFactory.OnTextChanged(Microsoft.Office.Core.IRibbonControl,System.String)">
+            <summary>
+            OnTextChanged callback
+            </summary>
+            <param name="control">The control.</param>
+            <param name="text">The text.</param>
+        </member>
+        <member name="P:Office.Utility.RibbonFactory.Instance">
+            <summary>
+            Gets the instance of the ribbon factory.
+            </summary>
+            <value>The instance.</value>
+        </member>
+        <member name="T:Office.Utility.RibbonType">
+            <summary>
+             Enum representing the different Ribbon Types
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookAppointment">
+            <summary>
+             Appointment Item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookContact">
+            <summary>
+            Contact Item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookDistributionList">
+            <summary>
+            Distribution List Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookExplorer">
+            <summary>
+            Outlook Explorer (Main Outlook Window) Explorer
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookJournal">
+            <summary>
+            Journal Item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookMailCompose">
+            <summary>
+            Compose Mail Item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookMailRead">
+            <summary>
+            Read Mail Item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookMeetingRequestRead">
+            <summary>
+            Read Meeting Request Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookMeetingRequestSend">
+            <summary>
+            Send Meeting Request Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookPostCompose">
+            <summary>
+            Compose Post Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookPostRead">
+            <summary>
+            Read Post Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookRSS">
+            <summary>
+            Rss item Inspector
+            </summary>
+        </member>
+        <member name="F:Office.Utility.RibbonType.OutlookTask">
+            <summary>
+            Task Item Inspector
+            </summary>
+        </member>
+        <member name="T:Office.Utility.UpdateResult">
+            <summary>
+            Deployment update result
+            </summary>
+        </member>
+        <member name="P:Office.Utility.UpdateResult.Success">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Office.Utility.UpdateResult"/> is success.
+            </summary>
+            <value><c>true</c> if success; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Office.Utility.UpdateResult.Updated">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Office.Utility.UpdateResult"/> is updated.
+            </summary>
+            <value><c>true</c> if updated; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Office.Utility.UpdateResult.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>The message.</value>
+        </member>
+        <member name="T:Office.Utility.ViewNotFoundException">
+            <summary>
+            Thrown when a view cannot be found for a IViewModel
+            </summary>
+        </member>
+        <member name="M:Office.Utility.ViewNotFoundException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ViewNotFoundException"/> class.
+            </summary>
+        </member>
+        <member name="M:Office.Utility.ViewNotFoundException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ViewNotFoundException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Office.Utility.ViewNotFoundException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ViewNotFoundException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Office.Utility.ViewNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.ViewNotFoundException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">
+            The <paramref name="info"/> parameter is null.
+            </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+            </exception>
+        </member>
+        <member name="T:Office.Utility.VstoClickOnceUpdater">
+            <summary>
+            Helper class for updating a VSTO add-in on demand. 
+            Handles security issues. 
+            See http://blogs.msdn.com/krimakey/archive/2008/04/18/click-once-forced-updates-in-vsto-ii-a-fuller-solution.aspx
+            for more information on the issue this class solves
+            Supports VSTO v3 and v4
+            </summary>
+        </member>
+        <member name="M:Office.Utility.VstoClickOnceUpdater.UpdateApplication(System.Deployment.Application.ApplicationDeployment)">
+            <summary>
+            Updates the add-in.
+            </summary>
+            <param name="currentDeployment">The current application deployment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.VstoClickOnceUpdater.UpdateCurrentDeployment(System.Deployment.Application.ApplicationDeployment,System.String@)">
+            <summary>
+            Updates the current deployment.
+            </summary>
+            <param name="deployment">The deployment.</param>
+            <param name="message">The message.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Office.Utility.VstoClickOnceUpdater.GetInstallerPathFromRegistry(System.String@)">
+            <summary>
+            Gets the installer path from registry.
+            This is the preferred method for VSTO 4.0
+            </summary>
+            <param name="installerPath">The installer path.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Office.Utility.WpfPanelHost">
+            <summary>
+            Windows Forms user control that hosts a WPF user Control.
+            Includes fix for a redraw issue that is present in Office 2007
+            </summary>
+        </member>
+        <member name="M:Office.Utility.WpfPanelHost.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Office.Utility.WpfPanelHost"/> class.
+            </summary>
+        </member>
+        <member name="F:Office.Utility.WpfPanelHost.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Office.Utility.WpfPanelHost.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Office.Utility.WpfPanelHost.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Office.Utility.WpfPanelHost.Child">
+            <summary>
+            Gets or sets the child WPF user control.
+            </summary>
+            <value>The child.</value>
+        </member>
+    </members>
+</doc>

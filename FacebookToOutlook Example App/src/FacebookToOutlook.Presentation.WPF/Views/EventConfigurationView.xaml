@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="FacebookToOutlook.Presentation.Views.EventConfigurationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Converters="clr-namespace:FacebookToOutlook.Presentation.Converters"
+             xmlns:Core="clr-namespace:FacebookToOutlook.Core;assembly=FacebookToOutlook.Core">
+    <UserControl.Resources>
+        <Converters:FlagsEnumConverter x:Key="DownloadTypeConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Event Category:" ToolTip="All synchronised events will be assigned this Category" />
+
+        <ComboBox IsEditable="True" 
+                          Grid.Column="1" 
+                          Grid.Row="0" Margin="3"
+                          VerticalAlignment="Center"
+                          Text="{Binding Path=Category, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                          ItemsSource="{Binding OutlookCategories}"/>
+
+        <CheckBox Grid.Column="0" 
+                          Grid.Row="1" 
+                          Grid.ColumnSpan="2"
+                          Margin="3"
+                          IsChecked="{Binding Path=EventReminder}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Remind me " VerticalAlignment="Center" />
+                <TextBox Grid.Column="1" 
+                                 Grid.Row="2" 
+                                 MinWidth="50"
+                                 Margin="3"
+                                 Text="{Binding Path=RemindMinutesBefore, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+                <TextBlock Text="minutes before event" VerticalAlignment="Center" />
+            </StackPanel>
+        </CheckBox>
+
+        <CheckBox Grid.Column="0" 
+                          Grid.Row="3" 
+                          Grid.ColumnSpan="2"
+                          Margin="3"
+                          Content="Mark Event As Private"
+                          IsChecked="{Binding Path=MarkAsPrivate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+
+        <GroupBox Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Grid.Row="4"
+                          Header="Download events with RSVP status of:">
+            <StackPanel>
+                <CheckBox Content="Attending" 
+                                  Margin="3"
+                              IsChecked="{Binding DownloadTypes, Converter={StaticResource DownloadTypeConverter}, ConverterParameter={x:Static Core:RsvpStatus.Attending}}" />
+                <CheckBox Content="Maybe Attending" 
+                                  Margin="3"
+                              IsChecked="{Binding DownloadTypes, Converter={StaticResource DownloadTypeConverter}, ConverterParameter={x:Static Core:RsvpStatus.Unsure}}" />
+                <CheckBox Content="Not Attending" 
+                                  Margin="3"
+                              IsChecked="{Binding DownloadTypes, Converter={StaticResource DownloadTypeConverter}, ConverterParameter={x:Static Core:RsvpStatus.Declined}}" />
+                <CheckBox Content="Have Not Responded" 
+                                  Margin="3"
+                              IsChecked="{Binding DownloadTypes, Converter={StaticResource DownloadTypeConverter}, ConverterParameter={x:Static Core:RsvpStatus.NotReplied}}" />
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>

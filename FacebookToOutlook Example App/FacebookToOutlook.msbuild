@@ -1,0 +1,135 @@
+﻿<Project DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuildCommunityTasks\</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+  
+  <UsingTask
+    AssemblyFile="tools\xunit.net\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit"/>
+
+  <PropertyGroup>
+    <Major>1</Major>
+    <Minor>0</Minor>
+    <Build>0</Build>
+    <Revision>0</Revision>
+  </PropertyGroup>
+
+  <Target Name="Version">
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="src\FacebookToOutlook.Core\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlook.Core"
+      AssemblyDescription=""
+      AssemblyCompany="Jake Ginnivan"
+      AssemblyProduct="FacebookToOutlook"
+      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
+      ComVisible="false"
+      CLSCompliant="false"
+      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      Guid="e17a8734-ea67-4482-9249-1120a6cd36c7"
+      Condition="$(Revision) != '-1' "/>
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="src\FacebookToOutlook.Data\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlook.Data"
+      AssemblyDescription=""
+      AssemblyCompany="Jake Ginnivan"
+      AssemblyProduct="FacebookToOutlook"
+      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
+      ComVisible="false"
+      CLSCompliant="false"
+      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      Guid="29f518f8-146f-4c14-9c33-fde85c2ab40b"
+      Condition="$(Revision) != '-1' "/>
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="src\FacebookToOutlook.Services\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlook.Services"
+      AssemblyDescription="dd4c96fc-0b19-42bc-af4d-87aceccce9c1"
+      AssemblyCompany="Jake Ginnivan"
+      AssemblyProduct="FacebookToOutlook"
+      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
+      ComVisible="false"
+      CLSCompliant="false"
+      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      Guid="29f518f8-146f-4c14-9c33-fde85c2ab40b"
+      Condition="$(Revision) != '-1' "/>
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="src\FacebookToOutlook.Presentation.WPF\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlook.Presentation.WPF"
+      AssemblyDescription="dd4c96fc-0b19-42bc-af4d-87aceccce9c1"
+      AssemblyCompany="Jake Ginnivan"
+      AssemblyProduct="FacebookToOutlook"
+      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
+      ComVisible="false"
+      CLSCompliant="false"
+      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      Condition="$(Revision) != '-1' "/>
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="src\FacebookToOutlook2010Addin\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlook2010Addin"
+      AssemblyDescription=""
+      AssemblyCompany="Jake Ginnivan"
+      AssemblyProduct="FacebookToOutlook"
+      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
+      ComVisible="false"
+      CLSCompliant="false"
+      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
+      Guid="31eb431c-ca3d-4245-adfc-01f7b0e0f79d"
+      Condition="$(Revision) != '-1' "/>
+
+  </Target>
+  
+  <Target Name="Compile" DependsOnTargets="Version">
+    <MSBuild Projects="src\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook.Presentation.WPF\FacebookToOutlook.Presentation.WPF.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook2010Addin\FacebookToOutlook2010Addin.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook.Services.Tests\FacebookToOutlook.Services.Tests.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook.Presentation.WPF.Tests\FacebookToOutlook.Presentation.WPF.Tests.csproj" Properties="OutputPath=bin\Build" />
+  </Target>
+  
+  <Target Name="Test" DependsOnTargets="Compile">
+    <xunit Assembly="src\FacebookToOutlook.Services.Tests\bin\Build\FacebookToOutlook.Services.Tests.dll" />
+    <xunit Assembly="src\FacebookToOutlook.Presentation.WPF.Tests\bin\Build\FacebookToOutlook.Presentation.WPF.Tests.dll" />
+  </Target>
+
+  <Target Name="Publish" DependsOnTargets="Test">
+    <MSBuild Projects="src\FacebookToOutlook2010Addin\FacebookToOutlook2010Addin.csproj"
+             Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
+             Targets="Publish" />
+  </Target>
+
+  <Target Name="Package" DependsOnTargets="Publish">
+    <ItemGroup>
+      <ZipFiles Include="src\FacebookToOutlook2010Addin\bin\Build\*.*" Exclude="src\FacebookToOutlook2010Addin\bin\Build\*vshost*" />
+    </ItemGroup>
+    <ItemGroup>
+      <OldZipFiles Include="..\*.zip" />
+    </ItemGroup>
+    <Delete Files="@(OldZipFiles)" />
+
+    <ItemGroup>
+      <PublishZipFiles
+        Include="src\FacebookToOutlook2010Addin\bin\Publish\*.*;src\FacebookToOutlook2010Addin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
+        Exclude="src\FacebookToOutlook2010Addin\bin\Publish\*vshost*" />
+    </ItemGroup>
+    <Zip Files="@(PublishZipFiles)"
+         WorkingDirectory="src\FacebookToOutlook2010Addin\bin\Publish\"
+         ZipFileName="FacebookToOutlook for Office 2010.v$(Major).$(Minor).$(Build).$(Revision)_Install.zip" />
+  </Target>
+
+</Project>

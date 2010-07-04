@@ -1,0 +1,9 @@
+glob:Output/
+glob:src/Outlook.Utility.Tests/Outlook.Utility.Tests.csproj.user
+glob:obj/
+glob:bin
+glob:VSTO Contrib.5.1.ReSharper.user
+glob:*.zip
+glob:_ReSharper.*
+glob:VSTO Contrib.suo
+glob:msbuild.log
