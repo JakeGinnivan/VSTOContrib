@@ -24,6 +24,7 @@ namespace Office.Utility
         private readonly Dictionary<Type, string> _ribbonViews = new Dictionary<Type, string>();
         private readonly Dictionary<string, CallbackTarget> _ribbonCallbackTarget = new Dictionary<string, CallbackTarget>();
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
+        const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
         internal const string CommonCallbacks = "CommonCallbacks";
         private IRibbonViewModel _currentlyLoadingRibbon;
         private ControlCallbackLookup _controlCallbackLookup;
@@ -67,7 +68,9 @@ namespace Office.Utility
                 var ribbonDoc = XDocument.Parse(resourceText);
 
                 //We have to override the Ribbon_Load event to make sure we get the callback
-                var customUi = ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui)).Single();
+                var customUi = 
+                    ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui)).SingleOrDefault()
+                    ?? ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui4)).Single();
 
                 customUi.SetAttributeValue("onLoad", loadMethodName);
 
