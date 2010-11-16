@@ -23,7 +23,7 @@ namespace Outlook.Utility.Extensions
         public static T GetPropertyValue<T>(this _ContactItem contactItem, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                return GetPropertyValue(userProperties.Resource, name, type, create, converter, defaultValue);
+                return GetPropertyValue(userProperties, name, type, create, converter, defaultValue);
         }
 
         /// <summary>

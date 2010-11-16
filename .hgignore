@@ -7,3 +7,4 @@ glob:*.zip
 glob:_ReSharper.*
 glob:VSTO Contrib.suo
 glob:msbuild.log
+glob:FacebookToOutlook Example App/FacebookToOutlook.suo

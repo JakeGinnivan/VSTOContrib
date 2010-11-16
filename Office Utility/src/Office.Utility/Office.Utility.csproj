@@ -63,6 +63,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -81,17 +84,28 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoDispose.cs" />
     <Compile Include="CallbackTarget.cs" />
     <Compile Include="ComCleanupEnumerator.cs" />
     <Compile Include="ComCleanupWrapper.cs" />
+    <Compile Include="ComProxyGenerator.cs" />
     <Compile Include="ControlCallbackLookup.cs" />
     <Compile Include="ClickOnceUpdater.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Extensions\ComCleanupExtensions.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
+    <Compile Include="ComDisposeInterceptor.cs" />
+    <Compile Include="Extensions\OfficeCleanupExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OfficeCleanupExtensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="IRibbonFactory.cs" />
     <Compile Include="IRibbonViewModel.cs" />
+    <Compile Include="Interfaces\OfficeInterfaces.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OfficeInterfaces.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -121,6 +135,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Extensions\OfficeCleanupExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OfficeCleanupExtensions.cs</LastGenOutput>
+    </None>
+    <None Include="Interfaces\OfficeInterfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OfficeInterfaces.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
