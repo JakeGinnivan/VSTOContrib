@@ -92,8 +92,24 @@
      IDE.
   -->
   <ItemGroup>
+    <Compile Include="CallbackTarget.cs" />
     <Compile Include="CancelEventArgs.cs" />
     <Compile Include="ComComponentCategoriesManager.cs" />
+    <Compile Include="ControlCallbackLookup.cs" />
+    <Compile Include="Extensions\OutlookCleanupExtensions.cs">
+      <DependentUpon>OutlookCleanupExtensions.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RibbonFactory\InspectorToRibbonTypeConverter.cs" />
+    <Compile Include="Interfaces\OutlookInterfaces.cs">
+      <DependentUpon>OutlookInterfaces.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RibbonFactory\ExplorersCollectionEx.cs" />
+    <Compile Include="RibbonFactory\IRibbonFactory.cs" />
+    <Compile Include="RibbonFactory\IRibbonViewModel.cs" />
     <Compile Include="ItemAdapter.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\UserPropertyExtensions.cs" />
@@ -106,6 +122,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RibbonFactory\RibbonFactory.callbacks.cs" />
+    <Compile Include="RibbonFactory\RibbonFactory.cs" />
+    <Compile Include="RibbonFactory\RibbonType.cs" />
+    <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
+    <Compile Include="RibbonFactory\RibbonViewModelHelper.cs" />
+    <Compile Include="RibbonFactory\ViewModelResolver.cs" />
     <Compile Include="Services\Conficts\ConflictResolution.cs" />
     <Compile Include="Services\Conficts\IConflictResolver.cs" />
     <Compile Include="Services\Conficts\LocalWinsResolver.cs" />
@@ -118,6 +140,7 @@
     <Compile Include="Services\SyncDirection.cs" />
     <Compile Include="Services\SynchronisationCompleteEventArgs.cs" />
     <Compile Include="Services\SynchronisationResults.cs" />
+    <Compile Include="RibbonFactory\ViewNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -131,6 +154,19 @@
       <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
       <Name>Office.Utility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Extensions\OutlookCleanupExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OutlookCleanupExtensions.cs</LastGenOutput>
+    </None>
+    <None Include="Interfaces\OutlookInterfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OutlookInterfaces.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

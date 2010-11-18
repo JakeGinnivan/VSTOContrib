@@ -84,11 +84,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CallbackTarget.cs" />
     <Compile Include="ComCleanupEnumerator.cs" />
     <Compile Include="ComCleanupWrapper.cs" />
     <Compile Include="ComProxyGenerator.cs" />
-    <Compile Include="ControlCallbackLookup.cs" />
     <Compile Include="ClickOnceUpdater.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Extensions\ComCleanupExtensions.cs" />
@@ -99,8 +97,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OfficeCleanupExtensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="IRibbonFactory.cs" />
-    <Compile Include="IRibbonViewModel.cs" />
     <Compile Include="Interfaces\OfficeInterfaces.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,10 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RibbonFactory.cs" />
-    <Compile Include="RibbonType.cs" />
     <Compile Include="UpdateResult.cs" />
-    <Compile Include="ViewNotFoundException.cs" />
     <Compile Include="VstoClickOnceUpdater.cs" />
     <Compile Include="WpfPanelHost.cs">
       <SubType>UserControl</SubType>

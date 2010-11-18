@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
@@ -10,6 +11,18 @@ namespace Office.Utility.Extensions
     /// </summary>
     public static class CommonExtensions
     {
+        /// <summary>
+        /// Returns true if the list does not contain the specified value
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public static bool DoesNotContain<T>(this List<T> list, T item)
+        {
+            return !list.Contains(item);
+        }
+
         /// <summary>
         /// Gets all messages (including inner exceptions) from the exception
         /// </summary>

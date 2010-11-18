@@ -40,7 +40,7 @@ namespace Outlook.Utility.Extensions
         public static T GetPropertyValue<T>(this _AppointmentItem appointment, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
         {
             using (var userProperties = appointment.UserProperties.WithComCleanup())
-                return GetPropertyValue(userProperties.Resource, name, type, create, converter, defaultValue);
+                return GetPropertyValue(userProperties, name, type, create, converter, defaultValue);
         }
 
         /// <summary>
@@ -60,13 +60,13 @@ namespace Outlook.Utility.Extensions
             {
                 var format = type == OlUserPropertyType.olInteger ? OlFormatNumber.olFormatNumberAllDigits : Type.Missing;
 
-                if (property.Resource == null && create)
+                if (property == null && create)
                     userProperties.Add(name, type, false, format).ReleaseComObject();
 
-                if (property.Resource == null)
+                if (property == null)
                     return defaultValue;
 
-                var value = property.Resource.Value;
+                var value = property.Value;
                 return converter(value);
             }
         }
@@ -83,7 +83,7 @@ namespace Outlook.Utility.Extensions
         public static void SetPropertyValue<T>(this _ContactItem contactItem, string name, OlUserPropertyType type, T value, bool addToFolder)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                SetPropertyValue(userProperties.Resource, name, type, value, addToFolder);
+                SetPropertyValue(userProperties, name, type, value, addToFolder);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Outlook.Utility.Extensions
         public static void SetPropertyValue<T>(this _AppointmentItem contactItem, string name, OlUserPropertyType type, T value, bool addToFolder)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                SetPropertyValue(userProperties.Resource, name, type, value, addToFolder);
+                SetPropertyValue(userProperties, name, type, value, addToFolder);
         }
 
         /// <summary>
@@ -116,12 +116,12 @@ namespace Outlook.Utility.Extensions
             {
                 var format = type == OlUserPropertyType.olInteger ? OlFormatNumber.olFormatNumberAllDigits : Type.Missing;
 
-                if (property.Resource == null) using (var newProperty = userProperties.Add(name, type, addToFolder, format).WithComCleanup())
+                if (property == null) using (var newProperty = userProperties.Add(name, type, addToFolder, format).WithComCleanup())
                     {
-                        newProperty.Resource.Value = value;
+                        newProperty.Value = value;
                     }
                 else
-                    property.Resource.Value = value;
+                    property.Value = value;
             }
         }
     }

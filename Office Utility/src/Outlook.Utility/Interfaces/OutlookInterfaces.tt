@@ -1,0 +1,18 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.Office.Interop.Outlook" #>
+<#@ import namespace="Microsoft.Office.Interop.Outlook" #>
+<#@ import namespace="System.Linq" #>
+using Microsoft.Office.Interop.Outlook;
+
+namespace Outlook.Utility.Interfaces
+{
+	<# foreach (var outlookInterface in typeof(Microsoft.Office.Interop.Outlook.Application).Assembly.GetTypes().Where(t => t.IsInterface)) { #>
+/// <summary>
+	/// Wrapper interface for <#= outlookInterface.Name #> which adds IDispose to the interface
+	/// </summary>
+	public interface I<#= outlookInterface.Name #> : <#= outlookInterface.Name #>, System.IDisposable { }
+
+	<# } #>
+}

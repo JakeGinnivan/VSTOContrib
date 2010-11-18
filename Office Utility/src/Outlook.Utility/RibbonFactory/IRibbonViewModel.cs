@@ -1,6 +1,6 @@
 ﻿using Microsoft.Office.Core;
 
-namespace Office.Utility
+namespace Outlook.Utility.RibbonFactory
 {
     /// <summary>
     /// Ribbon ViewModel
@@ -8,16 +8,21 @@ namespace Office.Utility
     public interface IRibbonViewModel
     {
         /// <summary>
-        /// The type of Inspector or Explorer that the ribbon should be displayed for.
-        /// </summary>
-        /// <value>The ribbon type.</value>
-        RibbonType Type { get; }
-
-        /// <summary>
         /// The associated ribbon, you can invalidate controls getting them to refresh
         /// their state through the IRibbonUI.
         /// </summary>
         /// <value>The ribbon UI.</value>
         IRibbonUI RibbonUi { get; set; }
+
+        /// <summary>
+        /// Called when the window that the ribbon is shown in is opened
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void Displayed(object context);
+
+        /// <summary>
+        /// Cleanups this instance.
+        /// </summary>
+        void Cleanup();
     }
 }

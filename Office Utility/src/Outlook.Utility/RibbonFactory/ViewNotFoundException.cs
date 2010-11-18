@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Office.Utility
+namespace Outlook.Utility.RibbonFactory
 {
     /// <summary>
     /// Thrown when a view cannot be found for a IViewModel

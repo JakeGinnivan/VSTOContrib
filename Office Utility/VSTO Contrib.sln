@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Utility.Tests", "src\Office.Utility.Tests\Office.Utility.Tests.csproj", "{37AB1850-9367-4F91-A4C2-A379FD65B04C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonFactoryDemo", "RibbonFactoryDemo\RibbonFactoryDemo.csproj", "{93CCE40C-6A72-43AB-9352-877CF6C05170}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,12 @@ Global
 		{37AB1850-9367-4F91-A4C2-A379FD65B04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37AB1850-9367-4F91-A4C2-A379FD65B04C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37AB1850-9367-4F91-A4C2-A379FD65B04C}.Release|x86.ActiveCfg = Release|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93CCE40C-6A72-43AB-9352-877CF6C05170}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +64,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EF2FA399-7C3F-4C03-BA22-9A74B7BDBD67} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{37AB1850-9367-4F91-A4C2-A379FD65B04C} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
+		{93CCE40C-6A72-43AB-9352-877CF6C05170} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 	EndGlobalSection
 EndGlobal

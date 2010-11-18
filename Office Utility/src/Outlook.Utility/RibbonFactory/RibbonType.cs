@@ -1,111 +1,113 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
-namespace Office.Utility
+namespace Outlook.Utility.RibbonFactory
 {
     ///<summary>
     /// Enum representing the different Ribbon Types
     ///</summary>
+    [Flags]
     public enum RibbonType
     {
         ///<summary>
         /// Appointment Item Inspector
         ///</summary>
         [Description("Microsoft.Outlook.Appointment")]
-        OutlookAppointment,
+        OutlookAppointment = 1,
         /// <summary>
         /// Contact Item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Contact")]
-        OutlookContact,
+        OutlookContact = 1 << 1,
         /// <summary>
         /// Distribution List Inspector
         /// </summary>
         [Description("Microsoft.Outlook.DistributionList")]
-        OutlookDistributionList,
+        OutlookDistributionList = 1 << 2,
         /// <summary>
         /// Outlook Explorer (Main Outlook Window) Explorer
         /// </summary>
         [Description("Microsoft.Outlook.Explorer")]
-        OutlookExplorer,
+        OutlookExplorer = 1 << 3,
         /// <summary>
         /// Journal Item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Journal")]
-        OutlookJournal,
+        OutlookJournal = 1 << 4,
         /// <summary>
         /// Compose Mail Item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Mail.Compose")]
-        OutlookMailCompose,
+        OutlookMailCompose = 1 << 5,
         /// <summary>
         /// Read Mail Item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Mail.Read")]
-        OutlookMailRead,
+        OutlookMailRead = 1 << 6,
         /// <summary>
         /// Read Meeting Request Inspector
         /// </summary>
         [Description("Microsoft.Outlook.MeetingRequest.Read")]
-        OutlookMeetingRequestRead,
+        OutlookMeetingRequestRead = 1 << 7,
         /// <summary>
         /// Send Meeting Request Inspector
         /// </summary>
         [Description("Microsoft.Outlook.MeetingRequest.Send")]
-        OutlookMeetingRequestSend,
+        OutlookMeetingRequestSend = 1 << 8,
         /// <summary>
         /// Compose Post Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Post.Compose")]
-        OutlookPostCompose,
+        OutlookPostCompose = 1 << 9,
         /// <summary>
         /// Read Post Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Post.Read")]
-        OutlookPostRead,
+        OutlookPostRead = 1 << 10,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Report")]
-        OutlookReport,
+        OutlookReport = 1 << 11,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Resend")]
-        OutlookResend,
+        OutlookResend = 1 << 12,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Response.Compose")]
-        OutlookResponseCompose,
+        OutlookResponseCompose = 1 << 13,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Response.CounterPropose")]
-        OutlookResponseCounterPropose,
+        OutlookResponseCounterPropose = 1 << 14,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Response.Read")]
-        OutlookResponseRead,
+        OutlookResponseRead = 1 << 15,
         /// <summary>
         /// Rss item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.RSS")]
-        OutlookRSS,
+        OutlookRSS = 1 << 16,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Sharing.Compose")]
-        OutlookSharingCompose,
+        OutlookSharingCompose = 1 << 17,
         /// <summary>
         /// 
         /// </summary>
         [Description("Microsoft.Outlook.Sharing.Read")]
-        OutlookSharingRead,
+        OutlookSharingRead = 1 << 18,
         /// <summary>
         /// Task Item Inspector
         /// </summary>
         [Description("Microsoft.Outlook.Task")]
-        OutlookTask
+        OutlookTask = 1 << 19,
     }
 }
