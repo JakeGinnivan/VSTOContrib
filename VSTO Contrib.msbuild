@@ -112,25 +112,20 @@
     <MSBuild Projects="src\Office.Utility.Tests\Office.Utility.Tests.csproj" Properties="OutputPath=bin\Build" />
     <MSBuild Projects="src\Outlook.Utility\Outlook.Utility.csproj" Properties="OutputPath=bin\Build" />
 	<MSBuild Projects="src\Outlook.Utility.Tests\Outlook.Utility.Tests.csproj" Properties="OutputPath=bin\Build" />
-	<MSBuild Projects="src\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook.Presentation.WPF\FacebookToOutlook.Presentation.WPF.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook2010Addin\FacebookToOutlook2010Addin.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook.Services.Tests\FacebookToOutlook.Services.Tests.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook.Presentation.WPF.Tests\FacebookToOutlook.Presentation.WPF.Tests.csproj" Properties="OutputPath=bin\Build" />
+	<MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj" Properties="OutputPath=bin\Build" />
   </Target>  
   
   <Target Name="Test" DependsOnTargets="Compile">
     <xunit Assembly="src\Office.Utility.Tests\bin\Build\Office.Utility.Tests.dll" />
     <xunit Assembly="src\Outlook.Utility.Tests\bin\Build\Outlook.Utility.Tests.dll" />
-	<xunit Assembly="src\FacebookToOutlook.Services.Tests\bin\Build\FacebookToOutlook.Services.Tests.dll" />
-    <xunit Assembly="src\FacebookToOutlook.Presentation.WPF.Tests\bin\Build\FacebookToOutlook.Presentation.WPF.Tests.dll" />
   </Target>
   
   <Target Name="Publish" DependsOnTargets="Test">
-    <MSBuild Projects="src\FacebookToOutlook2010Addin\FacebookToOutlook2010Addin.csproj"
+    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
              Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
              Targets="Publish" />
   </Target>
@@ -140,8 +135,8 @@
     <ItemGroup>
       <OfficeZipFiles Include="src\Office.Utility\bin\Build\*.*" Exclude="src\Office.Utility\bin\Build\*vshost*" />
       <OutlookZipFiles Include="src\Outlook.Utility\bin\Build\*.*" Exclude="src\Outlook.Utility\bin\Build\*vshost*" />
-	  <FacebookDemoZipFiles Include="src\FacebookToOutlook2010Addin\bin\Build\*.*" 
-	                        Exclude="src\FacebookToOutlook2010Addin\bin\Build\*vshost*" />
+	  <FacebookDemoZipFiles Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*.*" 
+	                        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*vshost*" />
     </ItemGroup>
     <ItemGroup>
       <OldZipFiles Include="..\*.zip" />
@@ -150,8 +145,8 @@
 
 	<ItemGroup>
       <PublishZipFiles
-        Include="src\FacebookToOutlook2010Addin\bin\Publish\*.*;src\FacebookToOutlook2010Addin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
-        Exclude="src\FacebookToOutlook2010Addin\bin\Publish\*vshost*" />
+        Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*.*;src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
+        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*vshost*" />
     </ItemGroup>
 	
     <Zip Files="@(OfficeZipFiles)"
@@ -162,7 +157,7 @@
          ZipFileName="Outlook.Utility.v$(Major).$(Minor).$(Build).$(Revision).zip" />
 		 
     <Zip Files="@(PublishZipFiles)"
-         WorkingDirectory="src\FacebookToOutlook2010Addin\bin\Publish\"
+         WorkingDirectory="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\"
          ZipFileName="FacebookToOutlook for Office 2010.v$(Major).$(Minor).$(Build).$(Revision)_Install.zip" />
   </Target>
 

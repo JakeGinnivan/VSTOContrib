@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FacebookToOutlook.Core;
 using FacebookToOutlook.Services;
+using FacebookToOutlook.ViewModels;
 
 namespace FacebookToOutlook.Presentation.ViewModels
 {

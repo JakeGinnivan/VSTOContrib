@@ -88,9 +88,15 @@
     <Reference Include="AutofacContrib.CommonServiceLocator">
       <HintPath>..\..\..\lib\Autofac\AutofacContrib.CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=1.0.0.155, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL" />
-    <Reference Include="Bindable.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="GalaSoft.MvvmLight, Version=3.0.0.31869, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL" />
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Bindable.Linq">
+      <HintPath>..\..\..\lib\Bindable.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=3.0.0.31869, Culture=neutral, PublicKeyToken=3e875cdb3903c512, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\MvvmLight\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
       <HintPath>..\..\..\lib\MvvmLight\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
