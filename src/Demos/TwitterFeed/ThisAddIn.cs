@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Office.Core;
+using Office.Utility;
 using Outlook.Utility.RibbonFactory;
 using TwitterFeedCore;
 
@@ -10,10 +11,21 @@ namespace TwitterFeed
     {
         private AddinBootstrapper _core;
 
-        private void ThisAddInStartup(object sender, EventArgs e)
+        private static void ThisAddInStartup(object sender, EventArgs e)
         {
             if (System.Windows.Application.Current == null)
                 new Application {ShutdownMode = ShutdownMode.OnExplicitShutdown};
+
+            //Check for updates
+            new VstoClickOnceUpdater()
+                .CheckForUpdateAsync(
+                    r =>
+                        {
+                            if (r.Updated)
+                            {
+                                MessageBox.Show("Twitter feed add-in updated");
+                            }
+                        });
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()

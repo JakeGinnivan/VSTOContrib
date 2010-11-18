@@ -202,6 +202,10 @@
     <None Include="TwitterFeed_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Office.Utility\Office.Utility.csproj">
+      <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
+      <Name>Office.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Outlook.Utility\Outlook.Utility.csproj">
       <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
       <Name>Outlook.Utility</Name>

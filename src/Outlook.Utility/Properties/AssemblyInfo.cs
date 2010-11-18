@@ -21,8 +21,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Jake Ginnivan 2010")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: InternalsVisibleTo("Outlook.Utility.Tests")]
 [assembly: Guid("7a363628-fe8d-4a9d-8e6a-471eed29001f")]
 

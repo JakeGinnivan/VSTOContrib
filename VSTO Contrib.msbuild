@@ -51,7 +51,7 @@
       Condition="$(Revision) != '-1' "/>
 	  
 	  <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook.Core\Properties\AssemblyInfo.cs"
+      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Core\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Core"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
@@ -65,7 +65,7 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook.Data\Properties\AssemblyInfo.cs"
+      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Data\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Data"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
@@ -79,7 +79,7 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook.Services\Properties\AssemblyInfo.cs"
+      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Services\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Services"
       AssemblyDescription="dd4c96fc-0b19-42bc-af4d-87aceccce9c1"
       AssemblyCompany="Jake Ginnivan"
@@ -93,21 +93,8 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook.Presentation.WPF\Properties\AssemblyInfo.cs"
-      AssemblyTitle="FacebookToOutlook.Presentation.WPF"
-      AssemblyDescription="dd4c96fc-0b19-42bc-af4d-87aceccce9c1"
-      AssemblyCompany="Jake Ginnivan"
-      AssemblyProduct="FacebookToOutlook"
-      AssemblyCopyright="Copyright © Jake Ginnivan 2010"
-      ComVisible="false"
-      CLSCompliant="false"
-      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
-      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
-      Condition="$(Revision) != '-1' "/>
-
-    <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook2010Addin\Properties\AssemblyInfo.cs"
-      AssemblyTitle="FacebookToOutlook2010Addin"
+      OutputFile="src\FacebookToOutlook\FacebookToOutlookAddin\Properties\AssemblyInfo.cs"
+      AssemblyTitle="FacebookToOutlookAddin"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
       AssemblyProduct="FacebookToOutlook"
