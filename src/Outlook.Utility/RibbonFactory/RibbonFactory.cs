@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -34,12 +33,15 @@ namespace Outlook.Utility.RibbonFactory
         private RibbonType _currentlyLoadingRibbon;
         private ControlCallbackLookup _controlCallbackLookup;
         private static IRibbonFactory _instance;
+        private ViewLocationStrategyBase _viewLocationStrategy;
         
         private bool _initialsed;
         private ViewModelResolver _ribbonViewModelResolver;
 
         private RibbonFactory()
-        { }
+        {
+            _viewLocationStrategy = new DefaultViewLocationStrategy();
+        }
 
         /// <summary>
         /// Gets the instance of the ribbon factory.
@@ -81,7 +83,7 @@ namespace Outlook.Utility.RibbonFactory
                 LocateAndRegisterViewXml(viewModelType, loadMethodName);
             }
 
-            return null;
+            return _ribbonViewModelResolver;
         }
 
         private static IEnumerable<Type> GetRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)
@@ -96,7 +98,10 @@ namespace Outlook.Utility.RibbonFactory
 
         private void LocateAndRegisterViewXml(Type viewModelType, string loadMethodName)
         {
-            var resourceText = LocateView(viewModelType);
+            var resourceText = (string)_viewLocationStrategy.GetType()
+                    .GetMethod("LocateViewForViewModel")
+                    .MakeGenericMethod(viewModelType).
+                    Invoke(_viewLocationStrategy, new object[] { });
 
             var ribbonDoc = XDocument.Parse(resourceText);
 
@@ -115,27 +120,18 @@ namespace Outlook.Utility.RibbonFactory
         }
 
 
-        /// <summary>
-        /// Locates the view, default method is an xml resource with the same name and in the same namespace as the view.
-        /// for example:
-        /// MyAddin/Ribbons/ContactsRibbon.cs
-        /// will look for
-        /// MyAddin/Ribbons/ContactsRibbon.xml
-        /// </summary>
-        /// <param name="viewModelType">Type of the view model.</param>
-        /// <returns>Ribbon XML</returns>
-        protected virtual string LocateView(Type viewModelType)
+        ///<summary>
+        /// Gets or Sets the strategy that fetches the Ribbon XML for a given view
+        ///</summary>
+        public ViewLocationStrategyBase LocateViewStrategy
         {
-            var viewAssembly = viewModelType.Assembly;
+            get { return _viewLocationStrategy; }
+            set
+            {
+                if (value == null) return;
 
-            var resources = viewAssembly.GetManifestResourceNames();
-            var viewName = viewModelType.Name;
-            var viewResource =
-                resources.SingleOrDefault(r => r == viewModelType.Namespace + "." + viewName + ".xml");
-            if (viewResource == null)
-                throw new ViewNotFoundException("Cannot locate view for " + viewModelType.FullName + ". It should be an Embedded Resource");
-
-            return GetResourceText(viewResource, viewAssembly);
+                _viewLocationStrategy = value;
+            }
         }
 
         // ReSharper disable InconsistentNaming
@@ -276,18 +272,6 @@ namespace Outlook.Utility.RibbonFactory
                                            }
                                        .Concat(parameters)
                                        .ToArray());
-            }
-        }
-
-        private static string GetResourceText(string resourceName, Assembly viewAssembly)
-        {
-            using (var stream = viewAssembly.GetManifestResourceStream(resourceName))
-            {
-                if (stream == null) return null;
-                using (var resourceReader = new StreamReader(stream))
-                {
-                    return resourceReader.ReadToEnd();
-                }
             }
         }
     }

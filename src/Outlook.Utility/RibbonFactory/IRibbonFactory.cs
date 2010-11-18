@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
+using Office.Utility;
 
 namespace Outlook.Utility.RibbonFactory
 {
@@ -22,8 +23,16 @@ namespace Outlook.Utility.RibbonFactory
         /// Disposible object to call on outlook shutdown
         /// </returns>
         /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
-        IDisposable InitialiseFactory(Func<Type, IRibbonViewModel> ribbonFactory, Application outlookApplication,
+        IDisposable InitialiseFactory(
+            Func<Type, IRibbonViewModel> ribbonFactory, 
+            Application outlookApplication,
             CustomTaskPaneCollection customTaskPaneCollection, 
-                                      params Assembly[] assemblies);
+            params Assembly[] assemblies);
+
+        /// <summary>
+        /// Gets or sets the locate view strategy.
+        /// </summary>
+        /// <value>The locate view strategy.</value>
+        ViewLocationStrategyBase LocateViewStrategy { get; set; }
     }
 }
