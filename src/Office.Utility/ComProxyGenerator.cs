@@ -20,7 +20,6 @@ namespace Office.Utility
         /// <returns></returns>
         public T1 CreateComProxy<T, T1>(T comObject, params IInterceptor[] interceptors) where T1 : T, IDisposable
         {
-
             var options = ProxyGenerationOptions.Default;
             var type = CreateInterfaceProxyTypeWithTargetInterface(typeof(T), new[] { typeof(T1) }, options);
 
@@ -28,7 +27,7 @@ namespace Office.Utility
             return (T1)Activator.CreateInstance(type, ctorArgs.ToArray());
         }
 
-        private static IEnumerable<object> GetConstructorArguments(object target, IInterceptor[] interceptors,
+        private new static IEnumerable<object> GetConstructorArguments(object target, IInterceptor[] interceptors,
                                                         ProxyGenerationOptions options)
         {
             // create constructor arguments (initialized with mixin implementations, 

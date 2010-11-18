@@ -51,6 +51,7 @@ namespace Office.Utility.Extensions
         /// <returns></returns>
         public static T1 WithComCleanup<T, T1>(this T resource) where T1 : T, IDisposable where T : class
         {
+            if (resource == null) return (T1)(object)null;
             return ComProxyGenerator
                 .CreateComProxy<T, T1>(
                     resource,

@@ -47,7 +47,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetDescription(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetDescription(null));
+            return (string)InvokeGet(control, () => GetDescription(null));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public bool GetEnabled(IRibbonControl control)
         {
-            return (bool)Invoke(control, () => GetEnabled(null));
+            return (bool)InvokeGet(control, () => GetEnabled(null));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetImageMso(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetImageMso(null));
+            return (string)InvokeGet(control, () => GetImageMso(null));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetLabel(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetLabel(null));
+            return (string)InvokeGet(control, () => GetLabel(null));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetKeyTip(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetKeyTip(null));
+            return (string)InvokeGet(control, () => GetKeyTip(null));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetScreenTip(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetScreenTip(null));
+            return (string)InvokeGet(control, () => GetScreenTip(null));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetSuperTip(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetSuperTip(null));
+            return (string)InvokeGet(control, () => GetSuperTip(null));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public bool GetVisible(IRibbonControl control)
         {
-            return (bool)Invoke(control, () => GetVisible(null));
+            return (bool)InvokeGet(control, () => GetVisible(null));
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public bool GetShowImage(IRibbonControl control)
         {
-            return (bool)Invoke(control, () => GetShowImage(null));
+            return (bool)InvokeGet(control, () => GetShowImage(null));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public bool GetShowLabel(IRibbonControl control)
         {
-            return (bool)Invoke(control, () => GetShowLabel(null));
+            return (bool)InvokeGet(control, () => GetShowLabel(null));
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public int GetItemCount(IRibbonControl control)
         {
-            return (int)Invoke(control, () => GetItemCount(null));
+            return (int)InvokeGet(control, () => GetItemCount(null));
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetItemId(IRibbonControl control, int index)
         {
-            return (string)Invoke(control, () => GetItemId(null, 0));
+            return (string)InvokeGet(control, () => GetItemId(null, 0));
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetItemLabel(IRibbonControl control, int index)
         {
-            return (string)Invoke(control, () => GetItemLabel(null, 0));
+            return (string)InvokeGet(control, () => GetItemLabel(null, 0));
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetItemScreenTip(IRibbonControl control, int index)
         {
-            return (string)Invoke(control, () => GetItemScreenTip(null, 0));
+            return (string)InvokeGet(control, () => GetItemScreenTip(null, 0));
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetItemSuperTip(IRibbonControl control, int index)
         {
-            return (string)Invoke(control, () => GetItemSuperTip(null, 0));
+            return (string)InvokeGet(control, () => GetItemSuperTip(null, 0));
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemId(IRibbonControl control)
         {
-            return (int)Invoke(control, () => GetSelectedItemId(null));
+            return (int)InvokeGet(control, () => GetSelectedItemId(null));
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemIndex(IRibbonControl control)
         {
-            return (int)Invoke(control, () => GetSelectedItemIndex(null));
+            return (int)InvokeGet(control, () => GetSelectedItemIndex(null));
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetContent(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetContent(null));
+            return (string)InvokeGet(control, () => GetContent(null));
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetText(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetText(null));
+            return (string)InvokeGet(control, () => GetText(null));
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public string GetTitle(IRibbonControl control)
         {
-            return (string)Invoke(control, () => GetTitle(null));
+            return (string)InvokeGet(control, () => GetTitle(null));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public bool GetPressed(IRibbonControl control)
         {
-            return (bool)Invoke(control, () => GetPressed(null));
+            return (bool)InvokeGet(control, () => GetPressed(null));
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public RibbonControlSize GetSize(IRibbonControl control)
         {
-            return (RibbonControlSize)Invoke(control, () => GetSize(null));
+            return (RibbonControlSize)InvokeGet(control, () => GetSize(null));
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public int GetItemHeight(IRibbonControl control)
         {
-            return (int)Invoke(control, () => GetItemHeight(control));
+            return (int)InvokeGet(control, () => GetItemHeight(control));
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetImage(IRibbonControl control)
         {
-            return (IPictureDisp)Invoke(control, () => GetImage(null));
+            return (IPictureDisp)InvokeGet(control, () => GetImage(null));
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Outlook.Utility.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetItemImage(IRibbonControl control, int index)
         {
-            return (IPictureDisp)Invoke(control, () => GetItemImage(null, 0), index);
+            return (IPictureDisp)InvokeGet(control, () => GetItemImage(null, 0), index);
         }
 
         /// <summary>

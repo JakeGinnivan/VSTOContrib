@@ -26,24 +26,24 @@ namespace Outlook.Utility.RibbonFactory
                 BindingFlags.GetProperty,
                 null, item, null);
 
-            if (messageClass.StartsWith("IPM.Appointment."))
+            if (messageClass.StartsWith("IPM.Appointment"))
                 return RibbonType.OutlookAppointment;
-            if (messageClass.StartsWith("IPM.Contact."))
+            if (messageClass.StartsWith("IPM.Contact"))
                 return RibbonType.OutlookContact;
             if (messageClass.StartsWith("IPM.Activity"))
                 return RibbonType.OutlookJournal;
             if (messageClass.StartsWith("IPM.Note"))
                 return ConvertMail(item);
-            if (messageClass.StartsWith("IPM.Schedule.Meeting."))
+            if (messageClass.StartsWith("IPM.Schedule.Meeting"))
                 return ConvertMeeting(item);
-            if (messageClass.StartsWith("IPM.Post."))
+            if (messageClass.StartsWith("IPM.Post"))
                 return ConvertPost(item);
-            if (messageClass.StartsWith("IPM.Task."))
+            if (messageClass.StartsWith("IPM.Task"))
                 return RibbonType.OutlookTask;
 
             throw new ArgumentOutOfRangeException(string.Format("MessageClass {0} is unrecognised", messageClass));
         }
-        
+
         private static RibbonType ConvertPost(object item)
         {
             var post = (PostItem) item;

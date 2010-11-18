@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
@@ -27,9 +28,16 @@ namespace Outlook.Utility.RibbonFactory
         private readonly Dictionary<object, IRibbonViewModel> _viewModelInstances = new Dictionary<object, IRibbonViewModel>();
         private readonly Dictionary<object, Queue<CustomTaskPane>> _taskPanesToCleanup = new Dictionary<object, Queue<CustomTaskPane>>();
         private readonly Dictionary<RibbonType, IRibbonUI> _ribbonUiLookup = new Dictionary<RibbonType, IRibbonUI>();
+        /// <summary>
+        /// Looks up ViewModelType, callback method name, control id, controlId used to invalidate :)
+        /// </summary>
+        private readonly Dictionary<Type, List<KeyValuePair<string,string>>> _notifyChangeTargetLookup =
+            new Dictionary<Type, List<KeyValuePair<string, string>>>();
 
-        public ViewModelResolver(IEnumerable<Type> viewModelType, Func<Type, IRibbonViewModel> ribbonFactory, 
-            Application outlookApplication,
+        public ViewModelResolver(
+            IEnumerable<Type> viewModelType, 
+            Func<Type, IRibbonViewModel> ribbonFactory, 
+            _Application outlookApplication,
             CustomTaskPaneCollection customTaskPanes)
         {
             _ribbonFactory = ribbonFactory;
@@ -74,6 +82,42 @@ namespace Outlook.Utility.RibbonFactory
             var viewModelType = _ribbonTypeLookup[ribbonType];
             var ribbonViewModel = _ribbonFactory(viewModelType);
             ribbonViewModel.Displayed(context);
+            RegisterCustomTaskPanes(ribbonViewModel, context);
+            ListenForINotifyPropertyChanged(ribbonViewModel);
+
+            if (_ribbonUiLookup.ContainsKey(ribbonType))
+                ribbonViewModel.RibbonUi = _ribbonUiLookup[ribbonType];
+
+            return ribbonViewModel;
+        }
+
+        private void ListenForINotifyPropertyChanged(IRibbonViewModel ribbonViewModel)
+        {
+            var notifiesOfPropertyChanged = ribbonViewModel as INotifyPropertyChanged;
+            if (notifiesOfPropertyChanged != null)
+            {
+                notifiesOfPropertyChanged.PropertyChanged += NotifiesOfPropertyChangedPropertyChanged;                
+            }
+        }
+
+        void NotifiesOfPropertyChangedPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var viewModel = (IRibbonViewModel) sender;
+            var senderType = sender.GetType();
+
+            foreach (var invalidatedControl in
+                _notifyChangeTargetLookup[senderType]
+                    .Where(property => property.Key == e.PropertyName)
+                    .Select(pair => pair.Value)
+                    .Distinct()
+                    .Where(invalidatedControl => viewModel.RibbonUi != null))
+            {
+                viewModel.RibbonUi.InvalidateControl(invalidatedControl);
+            }
+        }
+
+        private void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object context)
+        {
             var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
             if (registersCustomTaskPanes!= null)
             {
@@ -88,11 +132,6 @@ namespace Outlook.Utility.RibbonFactory
                             return taskPane;
                         });
             }
-
-            if (_ribbonUiLookup.ContainsKey(ribbonType))
-                ribbonViewModel.RibbonUi = _ribbonUiLookup[ribbonType];
-
-            return ribbonViewModel;
         }
 
         private void RegisterExplorers()
@@ -179,6 +218,10 @@ namespace Outlook.Utility.RibbonFactory
                 }
             }
             var viewModelInstance = _viewModelInstances[context];
+            var notifyOfPropertyChanged = viewModelInstance as INotifyPropertyChanged;
+            if (notifyOfPropertyChanged != null)
+                notifyOfPropertyChanged.PropertyChanged -= NotifiesOfPropertyChangedPropertyChanged;
+
             var disposible = viewModelInstance as IDisposable;
             if (disposible != null) disposible.Dispose();
             viewModelInstance.Cleanup();
@@ -191,6 +234,15 @@ namespace Outlook.Utility.RibbonFactory
             _inspectors.NewInspector -= NewInspector;
             _explorers.ReleaseComObject();
             _inspectors.ReleaseComObject();
+        }
+
+        public void RegisterCallbackControl(RibbonType ribbonType, string controlCallback, string ribbonControl)
+        {
+            var type = _ribbonTypeLookup[ribbonType];
+            if (!_notifyChangeTargetLookup.ContainsKey(type))
+                _notifyChangeTargetLookup.Add(type, new List<KeyValuePair<string, string>>());
+
+            _notifyChangeTargetLookup[type].Add(new KeyValuePair<string, string>(controlCallback, ribbonControl));
         }
     }
 }

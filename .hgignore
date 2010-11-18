@@ -8,3 +8,4 @@ glob:_ReSharper.*
 glob:VSTO Contrib.suo
 glob:msbuild.log
 glob:FacebookToOutlook Example App/FacebookToOutlook.suo
+glob:src/Demos/TwitterFeedCore/TwitterFeedCore.csproj.user

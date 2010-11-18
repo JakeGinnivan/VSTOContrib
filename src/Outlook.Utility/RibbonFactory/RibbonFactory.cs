@@ -179,6 +179,7 @@ namespace Outlook.Utility.RibbonFactory
                         var callbackTag = BuildTag(ribbonType, elementId, factoryMethodName);
                         _ribbonCallbackTarget.Add(callbackTag, new CallbackTarget(ribbonType, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonType + elementId.Value));
+                        _ribbonViewModelResolver.RegisterCallbackControl(ribbonType, currentCallback, elementId.Value);
                     }
                 }
             }
@@ -213,15 +214,59 @@ namespace Outlook.Utility.RibbonFactory
             return _ribbonViews[enumFromDescription];
         }
 
-        
+        private object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
+        {
+            var callbackTarget = _ribbonCallbackTarget[control.Tag + caller.GetMethodName()];
 
-        private object Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
+            var viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+
+            Type type = viewModelInstance.GetType();
+            var property = type.GetProperty(callbackTarget.Method);
+
+            if (property != null)
+            {
+                return type.InvokeMember(callbackTarget.Method,
+                                         BindingFlags.GetProperty,
+                                         null,
+                                         viewModelInstance,
+                                         null);
+            }
+
+            return type.InvokeMember(callbackTarget.Method,
+                                     BindingFlags.InvokeMethod,
+                                     null,
+                                     viewModelInstance,
+                                     new[]
+                                         {
+                                             control
+                                         }
+                                         .Concat(parameters)
+                                         .ToArray());
+        }
+
+        private void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             var callbackTarget = _ribbonCallbackTarget[control.Tag+caller.GetMethodName()];
 
             var viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
-            return viewModelInstance.GetType().InvokeMember(callbackTarget.Method,
+            Type type = viewModelInstance.GetType();
+            var property = type.GetProperty(callbackTarget.Method);
+
+            if (property != null)
+            {
+                type.InvokeMember(callbackTarget.Method,
+                                       BindingFlags.SetProperty,
+                                       null,
+                                       viewModelInstance,
+                                       new[]
+                                           {
+                                               parameters.Single()
+                                           });
+            }
+            else
+            {
+                type.InvokeMember(callbackTarget.Method,
                                        BindingFlags.InvokeMethod,
                                        null,
                                        viewModelInstance,
@@ -231,6 +276,7 @@ namespace Outlook.Utility.RibbonFactory
                                            }
                                        .Concat(parameters)
                                        .ToArray());
+            }
         }
 
         private static string GetResourceText(string resourceName, Assembly viewAssembly)
