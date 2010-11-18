@@ -1,7 +1,8 @@
 ﻿<Window x:Class="FacebookToOutlook.Presentation.Views.MatchUnmatchedView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:Behaviours="clr-namespace:FacebookToOutlook.Presentation.Behaviours" xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4" Title="Match unmatched Contact"
+        xmlns:Behaviours="clr-namespace:FacebookToOutlook.Presentation.Behaviours"
+        xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras" Title="Match unmatched Contact"
         Behaviours:WindowSettings.Save="True"
         x:Name="_this">
     <Window.Resources>

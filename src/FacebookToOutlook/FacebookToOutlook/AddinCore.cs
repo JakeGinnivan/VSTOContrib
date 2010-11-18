@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using Autofac;
+using AutofacContrib.CommonServiceLocator;
 using FacebookToOutlook.Data;
 using FacebookToOutlook.Presentation;
 using FacebookToOutlook.Services;
@@ -12,6 +13,7 @@ using log4net.Config;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Practices.ServiceLocation;
 using Office.Utility;
+using Outlook.Utility.RibbonFactory;
 
 namespace FacebookToOutlook
 {
@@ -43,6 +45,11 @@ namespace FacebookToOutlook
             return _container.Resolve<T>();
         }
 
+        public object Resolve(Type arg)
+        {
+            return _container.Resolve(arg);
+        }
+
         public AutofacServiceLocator ServiceLocator { get; private set; }
 
         private void SetupIoC(NameSpace session, Assembly callingAssembly)
@@ -62,8 +69,10 @@ namespace FacebookToOutlook
             _builder.RegisterModule(new ServicesModule());
             _builder.RegisterModule(new PresentationModule());
 
-            _builder.RegisterAssemblyTypes(callingAssembly, Assembly.GetExecutingAssembly())
-                .AsImplementedInterfaces();
+            _builder.RegisterAssemblyTypes(typeof (AddinCore).Assembly)
+                .AssignableTo(typeof (IRibbonViewModel))
+                .AsSelf();
+
             _builder.RegisterType<RibbonFactory>()
                 .SingleInstance();
 

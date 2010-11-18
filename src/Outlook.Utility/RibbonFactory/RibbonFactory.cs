@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
+using Microsoft.Office.Tools;
 using Office.Utility;
 using Action = System.Action;
 
@@ -54,19 +55,21 @@ namespace Outlook.Utility.RibbonFactory
         /// </summary>
         /// <param name="ribbonFactory">The ribbon factory.</param>
         /// <param name="outlookApplication">The outlook application.</param>
+        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <param name="assemblies">The assemblies to scan for view models.</param>
         /// <returns>
         /// Disposible object to call on outlook shutdown
         /// </returns>
         /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
-        public IDisposable InitialiseFactory(Func<Type, IRibbonViewModel> ribbonFactory, Application outlookApplication, params Assembly[] assemblies)
+        public IDisposable InitialiseFactory(Func<Type, IRibbonViewModel> ribbonFactory, Application outlookApplication, 
+            CustomTaskPaneCollection customTaskPaneCollection, params Assembly[] assemblies)
         {
             if (_initialsed) throw new InvalidOperationException("Ribbon Factory already Initialised");
             _initialsed = true;
 
             var ribbonTypes = GetRibbonTypesInAssemblies(assemblies);
 
-            _ribbonViewModelResolver = new ViewModelResolver(ribbonTypes, ribbonFactory, outlookApplication);
+            _ribbonViewModelResolver = new ViewModelResolver(ribbonTypes, ribbonFactory, outlookApplication, customTaskPaneCollection);
             _controlCallbackLookup = new ControlCallbackLookup(GetRibbonElements());
 
             Expression<Action> loadMethod = () => Ribbon_Load(null);
@@ -106,9 +109,9 @@ namespace Outlook.Utility.RibbonFactory
 
             foreach (var value in RibbonViewModelHelper.GetRibbonTypesFor(viewModelType))
             {
+                WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
                 _ribbonViews.Add(value, ribbonDoc.ToString());
             }
-            WireUpEvents(viewModelType, ribbonDoc, customUi.GetDefaultNamespace());
         }
 
 
@@ -130,7 +133,7 @@ namespace Outlook.Utility.RibbonFactory
             var viewResource =
                 resources.SingleOrDefault(r => r == viewModelType.Namespace + "." + viewName + ".xml");
             if (viewResource == null)
-                throw new ViewNotFoundException("Cannot locate view for " + viewModelType.FullName);
+                throw new ViewNotFoundException("Cannot locate view for " + viewModelType.FullName + ". It should be an Embedded Resource");
 
             return GetResourceText(viewResource, viewAssembly);
         }
@@ -146,7 +149,7 @@ namespace Outlook.Utility.RibbonFactory
         }
         // ReSharper restore InconsistentNaming
 
-        private void WireUpEvents(Type viewModelType, XContainer ribbonDoc, XNamespace xNamespace)
+        private void WireUpEvents(RibbonType ribbonType, XContainer ribbonDoc, XNamespace xNamespace)
         {
             //Go through each type of Ribbon 
             foreach (var ribbonControl in _controlCallbackLookup.RibbonControls)
@@ -173,17 +176,17 @@ namespace Outlook.Utility.RibbonFactory
 
                         //Set the tag attribute of the element, this is needed to know where to 
                         // direct the callback
-                        var callbackTag = BuildTag(viewModelType, elementId, factoryMethodName);
-                        _ribbonCallbackTarget.Add(callbackTag, new CallbackTarget(viewModelType, currentCallback));
-                        xElement.SetAttributeValue(XName.Get("tag"), (viewModelType.FullName + elementId.Value));
+                        var callbackTag = BuildTag(ribbonType, elementId, factoryMethodName);
+                        _ribbonCallbackTarget.Add(callbackTag, new CallbackTarget(ribbonType, currentCallback));
+                        xElement.SetAttributeValue(XName.Get("tag"), (ribbonType + elementId.Value));
                     }
                 }
             }
         }
 
-        private static string BuildTag(Type viewModelType, XAttribute elementId, string factoryMethodName)
+        private static string BuildTag(RibbonType viewModelType, XAttribute elementId, string factoryMethodName)
         {
-            return viewModelType.FullName + elementId.Value + factoryMethodName;
+            return viewModelType + elementId.Value + factoryMethodName;
         }
 
         /// <summary>
@@ -215,11 +218,10 @@ namespace Outlook.Utility.RibbonFactory
         private object Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             var callbackTarget = _ribbonCallbackTarget[control.Tag+caller.GetMethodName()];
-            var viewModelType = callbackTarget.ViewModelType.GetType();
 
             var viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
-            return viewModelType.InvokeMember(callbackTarget.Method,
+            return viewModelInstance.GetType().InvokeMember(callbackTarget.Method,
                                        BindingFlags.InvokeMethod,
                                        null,
                                        viewModelInstance,

@@ -6,6 +6,7 @@ using FacebookToOutlook.Core;
 using FacebookToOutlook.Data.Adapters;
 using Microsoft.Office.Interop.Outlook;
 using Office.Utility.Extensions;
+using Outlook.Utility.Extensions;
 
 namespace FacebookToOutlook.Data
 {
@@ -20,11 +21,11 @@ namespace FacebookToOutlook.Data
             _settings = settings;
             //Verify user properties are set
             using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
-            using (var userProperties = calendar.Resource.UserDefinedProperties.WithComCleanup())
-            using (var facebookEventIdProperty = userProperties.Resource.Find(FacebookEventAdapter.FacebookeventidProperty).WithComCleanup())
+            using (var userProperties = calendar.UserDefinedProperties.WithComCleanup())
+            using (var facebookEventIdProperty = userProperties.Find(FacebookEventAdapter.FacebookeventidProperty).WithComCleanup())
             {
-                if (facebookEventIdProperty.Resource == null)
-                    userProperties.Resource.Add(FacebookEventAdapter.FacebookeventidProperty, OlUserPropertyType.olText).ReleaseComObject();
+                if (facebookEventIdProperty == null)
+                    userProperties.Add(FacebookEventAdapter.FacebookeventidProperty, OlUserPropertyType.olText).ReleaseComObject();
             }
         }
 
@@ -32,13 +33,14 @@ namespace FacebookToOutlook.Data
         {
             var events = new List<IOutlookFacebookUser>();
             using (var contacts = _session.GetDefaultFolder(OlDefaultFolders.olFolderContacts).WithComCleanup())
-            using (var items = contacts.Resource.Items.WithComCleanup())
+            using (var items = contacts.Items.WithComCleanup())
             {
                 events.AddRange(
-                    items.Resource
+                    items
                         .ComLinq<ContactItem>()
                         .Select(contact => new FacebookUserAdapter(contact))
-                        .Select(adapter => Mapper.Map(adapter, new OutlookFacebookUser(adapter.EntryId))));
+                        .Select(adapter => Mapper.Map(adapter, new OutlookFacebookUser(adapter.EntryId)))
+                        .Cast<IOutlookFacebookUser>());
             }
 
             return events;
@@ -48,14 +50,15 @@ namespace FacebookToOutlook.Data
         {
             var events = new List<IOutlookFacebookEvent>();
             using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
-            using (var items = calendar.Resource.Items.WithComCleanup())
+            using (var items = calendar.Items.WithComCleanup())
             {
                 events.AddRange(
-                    items.Resource
+                    items
                         .ComLinq<AppointmentItem>()
                         .Select(appointment => new FacebookEventAdapter(appointment))
                         .Select(adapter => Mapper.Map(adapter, new OutlookFacebookEvent(adapter.RsvpStatus, adapter.EntryId)))
-                        .Where(e => e.EventId != -1));
+                        .Where(e => e.EventId != -1)
+                        .Cast<IOutlookFacebookEvent>());
             }
 
             return events;
@@ -65,7 +68,7 @@ namespace FacebookToOutlook.Data
         {
             var events = new List<IOutlookFacebookEvent>();
             using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
-            using (var items = calendar.Resource.Items.WithComCleanup())
+            using (var items = calendar.Items.WithComCleanup())
             {
                 var lastModStr = modifiedAfter < DateTime.Now.AddMonths(-3)
                                         ?
@@ -73,16 +76,17 @@ namespace FacebookToOutlook.Data
                                         :
                                             modifiedAfter.ToString("d/MM/yyy h:mmtt");
 
-                var restrictedItems = items.Resource.Restrict("[LastModificationTime] > '" + lastModStr + "'");
+                var restrictedItems = items.Restrict("[LastModificationTime] > '" + lastModStr + "'");
 
                 using (var modifiedItems = restrictedItems.WithComCleanup())
                 {
                     events.AddRange(
-                        modifiedItems.Resource
+                        modifiedItems
                             .ComLinq<AppointmentItem>()
                             .Select(appointment => new FacebookEventAdapter(appointment))
                             .Select(adapter => Mapper.Map(adapter, new OutlookFacebookEvent(adapter.RsvpStatus, adapter.EntryId)))
-                            .Where(e => e.EventId != -1));
+                            .Where(e => e.EventId != -1)
+                            .Cast<IOutlookFacebookEvent>());
                 }
             }
 
@@ -97,14 +101,14 @@ namespace FacebookToOutlook.Data
         public bool SaveOutlookContacts(IEnumerable<IOutlookFacebookUser> outlookContacts)
         {
             using (var contacts = _session.GetDefaultFolder(OlDefaultFolders.olFolderContacts).WithComCleanup())
-            using (var items = contacts.Resource.Items.WithComCleanup())
+            using (var items = contacts.Items.WithComCleanup())
             {
                 foreach (var outlookContact in outlookContacts)
                 {
-                    var contactItem = _session.GetItemFromID(outlookContact.EntryId, contacts.Resource.StoreID) as _ContactItem;
+                    var contactItem = _session.GetItemFromID(outlookContact.EntryId, contacts.StoreID) as _ContactItem;
                     using (var outlookContactItem = contactItem.WithComCleanup())
                     {
-                        CreateOrUpdateContact(outlookContact, outlookContactItem.Resource, items.Resource);
+                        CreateOrUpdateContact(outlookContact, outlookContactItem, items);
                     }
                 }
             }
@@ -115,15 +119,15 @@ namespace FacebookToOutlook.Data
         public bool SaveContacts(IList<IFacebookUser> facebookUsers)
         {
             using (var contacts = _session.GetDefaultFolder(OlDefaultFolders.olFolderContacts).WithComCleanup())
-            using (var items = contacts.Resource.Items.WithComCleanup())
+            using (var items = contacts.Items.WithComCleanup())
             {
                 foreach (var facebookContact in facebookUsers)
                 {
                     var filter = string.Format("[{0}] = '{1}'", FacebookUserAdapter.FacebookUserIdProperty, facebookContact.UserId);
-                    var contactItem = items.Resource.Find(filter) as _ContactItem;
+                    var contactItem = items.Find(filter) as _ContactItem;
                     using (var outlookContact = contactItem.WithComCleanup())
                     {
-                        CreateOrUpdateContact(facebookContact, outlookContact.Resource, items.Resource);
+                        CreateOrUpdateContact(facebookContact, outlookContact, items);
                     }
                 }
             }
@@ -139,7 +143,7 @@ namespace FacebookToOutlook.Data
             }
             else using (var newItem = ((_ContactItem)items.Add(OlItemType.olContactItem)).WithComCleanup())
                 {
-                    UpdateAdapter(facebookContact, newItem.Resource);
+                    UpdateAdapter(facebookContact, newItem);
                 }
         }
 
@@ -155,11 +159,11 @@ namespace FacebookToOutlook.Data
         public bool SaveEvents(IEnumerable<IFacebookEvent> facebookEvents)
         {
             using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
-            using (var items = calendar.Resource.Items.WithComCleanup())
+            using (var items = calendar.Items.WithComCleanup())
             {
                 foreach (var facebookEvent in facebookEvents)
                 {
-                    SaveEvent(items.Resource, facebookEvent);
+                    SaveEvent(items, facebookEvent);
                 }
             }
 
@@ -171,13 +175,13 @@ namespace FacebookToOutlook.Data
             var filter = string.Format("[{0}] = '{1}'", FacebookEventAdapter.FacebookeventidProperty, facebookEvent.EventId);
             using (var outlookAppointment = (items.Find(filter) as _AppointmentItem).WithComCleanup())
             {
-                if (outlookAppointment.Resource != null)
+                if (outlookAppointment != null)
                 {
-                    UpdateAdapter(facebookEvent, outlookAppointment.Resource);
+                    UpdateAdapter(facebookEvent, outlookAppointment);
                 }
                 else using (var newItem = ((_AppointmentItem)items.Add(OlItemType.olAppointmentItem)).WithComCleanup())
                 {
-                    UpdateAdapter(facebookEvent, newItem.Resource);
+                    UpdateAdapter(facebookEvent, newItem);
                 }
             }
         }
@@ -224,11 +228,11 @@ namespace FacebookToOutlook.Data
         {
             var filter = string.Format("[{0}] = '{1}'", FacebookEventAdapter.FacebookeventidProperty, facebookEventId);
             using (var calendar = _session.GetDefaultFolder(OlDefaultFolders.olFolderCalendar).WithComCleanup())
-            using (var items = calendar.Resource.Items.WithComCleanup())
-            using (var outlookAppointment = (items.Resource.Find(filter) as _AppointmentItem).WithComCleanup())
+            using (var items = calendar.Items.WithComCleanup())
+            using (var outlookAppointment = (items.Find(filter) as _AppointmentItem).WithComCleanup())
             {
-                if (outlookAppointment.Resource != null)
-                    outlookAppointment.Resource.Delete();
+                if (outlookAppointment != null)
+                    outlookAppointment.Delete();
             }
 
             return true;
@@ -237,25 +241,25 @@ namespace FacebookToOutlook.Data
         public void AssociateFacebookUserWithContact(IOutlookFacebookUser outlookContact, IFacebookUser facebookUserToMatch)
         {
             using (var contacts = _session.GetDefaultFolder(OlDefaultFolders.olFolderContacts).WithComCleanup())
-            using (var contact = (_session.GetItemFromID(outlookContact.EntryId, contacts.Resource.StoreID) as _ContactItem).WithComCleanup())
+            using (var contact = (_session.GetItemFromID(outlookContact.EntryId, contacts.StoreID) as _ContactItem).WithComCleanup())
             {
-                new FacebookUserAdapter(contact.Resource) { UserId = facebookUserToMatch.UserId };
-                contact.Resource.Save();
+                new FacebookUserAdapter(contact) { UserId = facebookUserToMatch.UserId };
+                contact.Save();
             }
         }
 
         public IOutlookFacebookUser CreateContactFromFacebookUser(IFacebookUser facebookUser)
         {
             using (var contactFolder = _session.GetDefaultFolder(OlDefaultFolders.olFolderContacts).WithComCleanup())
-            using (var contactItems = contactFolder.Resource.Items.WithComCleanup())
-            using (var contact = (contactItems.Resource.Add(OlItemType.olContactItem) as ContactItem).WithComCleanup())
+            using (var contactItems = contactFolder.Items.WithComCleanup())
+            using (var contact = (contactItems.Add(OlItemType.olContactItem) as ContactItem).WithComCleanup())
             {
-                var userAdapter = new FacebookUserAdapter(contact.Resource);
+                var userAdapter = new FacebookUserAdapter(contact);
                 Mapper.Map(facebookUser, userAdapter);
 
-                contact.Resource.Display(true);
+                contact.Display(true);
 
-                return contact.Resource.Saved ? Mapper.Map(userAdapter, new OutlookFacebookUser(contact.Resource.EntryID)) : null;
+                return contact.Saved ? Mapper.Map(userAdapter, new OutlookFacebookUser(contact.EntryID)) : null;
             }
         }
     }

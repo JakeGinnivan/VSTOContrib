@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
+using Microsoft.Office.Tools;
 
 namespace Outlook.Utility.RibbonFactory
 {
@@ -15,12 +16,14 @@ namespace Outlook.Utility.RibbonFactory
         /// </summary>
         /// <param name="ribbonFactory">The ribbon factory.</param>
         /// <param name="outlookApplication">The outlook application.</param>
+        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <param name="assemblies">The assemblies to scan for view models.</param>
         /// <returns>
         /// Disposible object to call on outlook shutdown
         /// </returns>
         /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
         IDisposable InitialiseFactory(Func<Type, IRibbonViewModel> ribbonFactory, Application outlookApplication,
+            CustomTaskPaneCollection customTaskPaneCollection, 
                                       params Assembly[] assemblies);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using Bindable.Linq;
@@ -165,7 +166,7 @@ namespace FacebookToOutlook.Presentation.ViewModels.ContactSync
             if (CurrentUnmatchedList == CurrentList.FacebookUsers)
             {
                 matchUnmatchedViewModel = new MatchUnmatchedViewModel(
-                    _unmatchedOutlookContacts, userToMatch,
+                    _unmatchedOutlookContacts.Cast<IFacebookUser>(), userToMatch,
                     _dialogService,
                     //createNewUser Action:
                     u =>

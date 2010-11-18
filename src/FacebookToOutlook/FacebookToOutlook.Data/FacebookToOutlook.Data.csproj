@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacebookToOutlook.Data</RootNamespace>
     <AssemblyName>FacebookToOutlook.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,28 +33,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\lib\Autofac.dll</HintPath>
+      <HintPath>..\..\..\lib\Autofac\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\lib\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook">
-      <HintPath>..\..\lib\Facebook.dll</HintPath>
+    <Reference Include="Facebook, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Facebook\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Office.Utility">
-      <HintPath>..\..\lib\Office.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="Outlook.Utility">
-      <HintPath>..\..\lib\Outlook.Utility.dll</HintPath>
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -73,6 +71,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Office.Utility\Office.Utility.csproj">
+      <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
+      <Name>Office.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Outlook.Utility\Outlook.Utility.csproj">
+      <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
+      <Name>Outlook.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj">
       <Project>{8C36ED7F-622A-4C54-B70A-9B6260EF0E12}</Project>
       <Name>FacebookToOutlook.Core</Name>

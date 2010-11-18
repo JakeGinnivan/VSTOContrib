@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
+using Microsoft.Office.Tools;
 using Office.Utility.Extensions;
+using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace Outlook.Utility.RibbonFactory
 {
     internal class ViewModelResolver : IDisposable
     {
         private readonly Func<Type, IRibbonViewModel> _ribbonFactory;
+        private readonly CustomTaskPaneCollection _customTaskPanes;
         private readonly Explorers _explorers;
         private readonly Inspectors _inspectors;
 
@@ -22,19 +25,23 @@ namespace Outlook.Utility.RibbonFactory
         /// Internal lookup for Context instances to view model lookups
         /// </summary>
         private readonly Dictionary<object, IRibbonViewModel> _viewModelInstances = new Dictionary<object, IRibbonViewModel>();
+        private readonly Dictionary<object, Queue<CustomTaskPane>> _taskPanesToCleanup = new Dictionary<object, Queue<CustomTaskPane>>();
         private readonly Dictionary<RibbonType, IRibbonUI> _ribbonUiLookup = new Dictionary<RibbonType, IRibbonUI>();
 
-        public ViewModelResolver(IEnumerable<Type> viewModelType, Func<Type, IRibbonViewModel> ribbonFactory, Application outlookApplication)
+        public ViewModelResolver(IEnumerable<Type> viewModelType, Func<Type, IRibbonViewModel> ribbonFactory, 
+            Application outlookApplication,
+            CustomTaskPaneCollection customTaskPanes)
         {
             _ribbonFactory = ribbonFactory;
+            _customTaskPanes = customTaskPanes;
             _explorers = outlookApplication.Explorers;
             _inspectors = outlookApplication.Inspectors;
-            RegisterExplorers();
-            RegisterInspectors();
             foreach (var ribbonType in viewModelType)
             {
-                CreateRibbonTypeToViewModelTypeLookup(ribbonType);                
+                CreateRibbonTypeToViewModelTypeLookup(ribbonType);
             }
+            RegisterExplorers();
+            RegisterInspectors();
         }
 
         private void CreateRibbonTypeToViewModelTypeLookup(Type ribbonViewModel)
@@ -67,6 +74,21 @@ namespace Outlook.Utility.RibbonFactory
             var viewModelType = _ribbonTypeLookup[ribbonType];
             var ribbonViewModel = _ribbonFactory(viewModelType);
             ribbonViewModel.Displayed(context);
+            var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
+            if (registersCustomTaskPanes!= null)
+            {
+                registersCustomTaskPanes.RegisterTaskPanes(
+                    (control, title) =>
+                        {
+                            var taskPane = _customTaskPanes.Add(control, title, context);
+                            if (!_taskPanesToCleanup.ContainsKey(context))
+                                _taskPanesToCleanup.Add(context, new Queue<CustomTaskPane>());
+
+                            _taskPanesToCleanup[context].Enqueue(taskPane);
+                            return taskPane;
+                        });
+            }
+
             if (_ribbonUiLookup.ContainsKey(ribbonType))
                 ribbonViewModel.RibbonUi = _ribbonUiLookup[ribbonType];
 
@@ -149,6 +171,13 @@ namespace Outlook.Utility.RibbonFactory
 
         private void CleanupViewModel(object context)
         {
+            if (_taskPanesToCleanup.ContainsKey(context))
+            {
+                while (_taskPanesToCleanup[context].Count > 0)
+                {
+                    _taskPanesToCleanup[context].Dequeue().Dispose();
+                }
+            }
             var viewModelInstance = _viewModelInstances[context];
             var disposible = viewModelInstance as IDisposable;
             if (disposible != null) disposible.Dispose();

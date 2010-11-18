@@ -107,7 +107,7 @@ namespace FacebookToOutlook.Data.Adapters
 
                 using (var attachments = _contactItem.Attachments.WithComCleanup())
                 {
-                    foreach (var attachment in attachments.Resource.ComLinq<Attachment>()
+                    foreach (var attachment in attachments.ComLinq<Attachment>()
                         .Where(att => att.DisplayName == "ContactPicture.jpg"))
                     {
                         try

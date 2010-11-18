@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Office.Utility.Extensions;
+using Outlook.Utility.Extensions;
 
 namespace FacebookToOutlook.Services
 {
@@ -18,7 +19,7 @@ namespace FacebookToOutlook.Services
         {
             using (var categories = _session.Categories.WithComCleanup())
             {
-                return categories.Resource.ComLinq<Category>().Select(c=>c.Name).ToList();
+                return categories.ComLinq<Category>().Select(c=>c.Name).ToList();
             }
         }
     }

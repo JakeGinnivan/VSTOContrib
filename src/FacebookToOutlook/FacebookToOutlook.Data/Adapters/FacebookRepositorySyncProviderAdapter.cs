@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FacebookToOutlook.Core;
 using Outlook.Utility.Services;
 
@@ -17,11 +18,10 @@ namespace FacebookToOutlook.Data.Adapters
         public IEnumerable<IFacebookEvent> GetModifiedEntries(DateTime? lastSync)
         {
             return
-                lastSync == null
-                    ?
-                        _facebookRepository.GetEvents()
-                    :
-                        _facebookRepository.GetModifiedEvents(lastSync.Value);
+                (lastSync == null
+                    ? _facebookRepository.GetEvents()
+                    : _facebookRepository.GetModifiedEvents(lastSync.Value))
+                 .Cast<IFacebookEvent>();
         }
 
         public IEnumerable<long> GetDeletedEntries(DateTime? lastSync)

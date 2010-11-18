@@ -127,16 +127,16 @@ namespace FacebookToOutlook.Data.Adapters
         {
             var bodyBuilder = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(Tagline))
+            if (!string.IsNullOrEmpty(Tagline))
             {
                 bodyBuilder.AppendLine(Tagline);
                 bodyBuilder.AppendLine();
             }
-            if (!string.IsNullOrWhiteSpace(Host))
+            if (!string.IsNullOrEmpty(Host))
                 bodyBuilder.AppendLine(string.Format("Host: {0}", Host));
-            if (!string.IsNullOrWhiteSpace(EventType))
+            if (!string.IsNullOrEmpty(EventType))
                 bodyBuilder.AppendLine(string.Format("Event Type: {0}", EventType));
-            if (!string.IsNullOrWhiteSpace(EventSubType))
+            if (!string.IsNullOrEmpty(EventSubType))
                 bodyBuilder.AppendLine(string.Format("Event Sub Type: {0}", EventSubType));
 
             _appointmentItem.Body = bodyBuilder.ToString();

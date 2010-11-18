@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Outlook.Utility.RibbonFactory;
 
 namespace Outlook.Utility
 {
     internal class CallbackTarget 
     {
-        private readonly Type _viewModelType;
+        private readonly RibbonType _ribbonType;
         private readonly string _method;
 
-        public CallbackTarget(Type viewModelType, string method)
+        public CallbackTarget(RibbonType ribbonType, string method)
         {
-            _viewModelType = viewModelType;
+            _ribbonType = ribbonType;
             _method = method;
         }
 
@@ -18,9 +18,9 @@ namespace Outlook.Utility
             get { return _method; }
         }
 
-        public Type ViewModelType
+        public RibbonType RibbonType
         {
-            get { return _viewModelType; }
+            get { return _ribbonType; }
         }
     }
 }
