@@ -108,7 +108,6 @@ namespace Outlook.Utility.RibbonFactory
             {
                 _viewModelInstances.Add(explorer, BuildViewModel(RibbonType.OutlookExplorer, explorer));
                 ((ExplorerEvents_10_Event)explorer).Close += ExplorerClose;
-                _explorers.Add(explorer);
             }
             else
                 explorer.ReleaseComObject();

@@ -343,7 +343,7 @@
     </ProjectReference>
     <ProjectReference Include="..\FacebookToOutlook\FacebookToOutlook.csproj">
       <Project>{A2F08C4D-F14C-475D-A1CE-A57AFBC3119D}</Project>
-      <Name>FacebookToOutlook</Name>
+      <Name>FacebookToOutlook %28FacebookToOutlook\FacebookToOutlook%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
