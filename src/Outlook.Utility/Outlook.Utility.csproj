@@ -104,6 +104,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="RibbonFactory\DefaultViewLocationStrategy.cs" />
     <Compile Include="RibbonFactory\InspectorToRibbonTypeConverter.cs" />
     <Compile Include="Interfaces\OutlookInterfaces.cs">
       <DependentUpon>OutlookInterfaces.tt</DependentUpon>
@@ -131,6 +132,7 @@
     <Compile Include="RibbonFactory\RibbonType.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelHelper.cs" />
+    <Compile Include="RibbonFactory\ViewLocationStrategyBase.cs" />
     <Compile Include="RibbonFactory\ViewModelResolver.cs" />
     <Compile Include="Services\Conficts\ConflictResolution.cs" />
     <Compile Include="Services\Conficts\IConflictResolver.cs" />
