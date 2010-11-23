@@ -1,0 +1,1 @@
+Be careful with the COM Cleanup extensions, they use text templates and reflection on a particular version of the office DLL's. So you must use the version you generate against or newer otherwise there will be types missing from the office dll.
