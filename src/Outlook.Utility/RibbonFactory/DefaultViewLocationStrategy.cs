@@ -17,6 +17,11 @@ namespace Outlook.Utility.RibbonFactory
     /// <returns>Ribbon XML</returns>
     public class DefaultViewLocationStrategy : ViewLocationStrategyBase
     {
+        /// <summary>
+        /// Fetches the Ribbon XML for a given view
+        /// </summary>
+        /// <typeparam name="T">The View model to fetch the Ribbon XML for</typeparam>
+        /// <returns>Ribbon XML</returns>
         public override string LocateViewForViewModel<T>()
         {
             var viewModelType = typeof (T);

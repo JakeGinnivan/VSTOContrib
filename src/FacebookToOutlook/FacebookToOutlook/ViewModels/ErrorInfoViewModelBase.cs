@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 
-namespace FacebookToOutlook.Presentation.ViewModels
+namespace FacebookToOutlook.ViewModels
 {
     public class ErrorInfoViewModelBase : ViewModelBase, IDataErrorInfo
     {
