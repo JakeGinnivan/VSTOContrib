@@ -7,12 +7,12 @@
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   
   <UsingTask
-    AssemblyFile="tools\xunit.net\xunit.runner.msbuild.dll"
+    AssemblyFile="lib\xunit.net\xunit.runner.msbuild.dll"
     TaskName="Xunit.Runner.MSBuild.xunit"/>
 
   <PropertyGroup>
     <Major>1</Major>
-    <Minor>1</Minor>
+    <Minor>2</Minor>
     <Build>0</Build>
     <Revision>0</Revision>
   </PropertyGroup>
@@ -21,11 +21,11 @@
     <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\Office.Utility\Properties\AssemblyInfo.cs"
-      AssemblyTitle="Office.Utility"
-      AssemblyDescription="Office Managed Utility Classes"
+      OutputFile="src\Office.Contrib\Properties\AssemblyInfo.cs"
+      AssemblyTitle="Office.Contrib"
+      AssemblyDescription="Office Contrib"
       AssemblyCompany="Jake Ginnivan"
-      AssemblyProduct="Office.Utility"
+      AssemblyProduct="Office.Contrib"
       AssemblyCopyright="Copyright © Jake Ginnivan 2010"
       ComVisible="false"
       CLSCompliant="false"
@@ -36,11 +36,11 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\Outlook.Utility\Properties\AssemblyInfo.cs"
-      AssemblyTitle="Outlook.Utility"
-      AssemblyDescription="Outlook Managed Utility Classes"
+      OutputFile="src\Office.Outlook.Contrib\Properties\AssemblyInfo.cs"
+      AssemblyTitle="Office.Outlook.Contrib"
+      AssemblyDescription="Outlook Contrib"
       AssemblyCompany="Jake Ginnivan"
-      AssemblyProduct="Outlook.Utility"
+      AssemblyProduct="Office.Outlook.Contrib"
       AssemblyCopyright="Copyright © Jake Ginnivan 2010"
       ComVisible="false"
       CLSCompliant="false"
@@ -51,7 +51,7 @@
       Condition="$(Revision) != '-1' "/>
 	  
 	  <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Core\Properties\AssemblyInfo.cs"
+      OutputFile="src\Demos\FacebookToOutlook\FacebookToOutlook.Core\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Core"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
@@ -65,7 +65,7 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Data\Properties\AssemblyInfo.cs"
+      OutputFile="src\Demos\FacebookToOutlook\FacebookToOutlook.Data\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Data"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
@@ -79,7 +79,7 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook\FacebookToOutlook.Services\Properties\AssemblyInfo.cs"
+      OutputFile="src\Demos\FacebookToOutlook\FacebookToOutlook.Services\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlook.Services"
       AssemblyDescription="dd4c96fc-0b19-42bc-af4d-87aceccce9c1"
       AssemblyCompany="Jake Ginnivan"
@@ -93,7 +93,7 @@
       Condition="$(Revision) != '-1' "/>
 
     <AssemblyInfo CodeLanguage="CS"
-      OutputFile="src\FacebookToOutlook\FacebookToOutlookAddin\Properties\AssemblyInfo.cs"
+      OutputFile="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\Properties\AssemblyInfo.cs"
       AssemblyTitle="FacebookToOutlookAddin"
       AssemblyDescription=""
       AssemblyCompany="Jake Ginnivan"
@@ -108,24 +108,24 @@
   </Target>
   
   <Target Name="Compile" DependsOnTargets="Version">
-    <MSBuild Projects="src\Office.Utility\Office.Utility.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\Office.Utility.Tests\Office.Utility.Tests.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\Outlook.Utility\Outlook.Utility.csproj" Properties="OutputPath=bin\Build" />
-	<MSBuild Projects="src\Outlook.Utility.Tests\Outlook.Utility.Tests.csproj" Properties="OutputPath=bin\Build" />
-	<MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj" Properties="OutputPath=bin\Build" />
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Office.Contrib\Office.Contrib.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Tests\Office.Contrib.Tests\Office.Contrib.Tests.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Office.Outlook.Contrib\Office.Outlook.Contrib.csproj" Properties="OutputPath=bin\Build" />
+	<MSBuild Projects="src\Tests\Office.Outlook.Contrib.Tests\Office.Outlook.Contrib.Tests.csproj" Properties="OutputPath=bin\Build" />
+	<MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj" Properties="OutputPath=bin\Build" />
+    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj" Properties="OutputPath=bin\Build" />
   </Target>  
   
   <Target Name="Test" DependsOnTargets="Compile">
-    <xunit Assembly="src\Office.Utility.Tests\bin\Build\Office.Utility.Tests.dll" />
-    <xunit Assembly="src\Outlook.Utility.Tests\bin\Build\Outlook.Utility.Tests.dll" />
+    <xunit Assembly="src\Tests\Office.Contrib.Tests\bin\Build\Office.Contrib.Tests.dll" />
+    <xunit Assembly="src\Tests\Office.Outlook.Contrib.Tests\bin\Build\Office.Outlook.Contrib.Tests.dll" />
   </Target>
   
   <Target Name="Publish" DependsOnTargets="Test">
-    <MSBuild Projects="src\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
+    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
              Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
              Targets="Publish" />
   </Target>
@@ -133,10 +133,10 @@
   <Target Name="Package" DependsOnTargets="Publish">
     
     <ItemGroup>
-      <OfficeZipFiles Include="src\Office.Utility\bin\Build\*.*" Exclude="src\Office.Utility\bin\Build\*vshost*" />
-      <OutlookZipFiles Include="src\Outlook.Utility\bin\Build\*.*" Exclude="src\Outlook.Utility\bin\Build\*vshost*" />
-	  <FacebookDemoZipFiles Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*.*" 
-	                        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*vshost*" />
+      <OfficeZipFiles Include="src\Office.Contrib\bin\Build\*.*" Exclude="src\Office.Contrib\bin\Build\*vshost*" />
+      <OutlookZipFiles Include="src\Office.Outlook.Contrib\bin\Build\*.*" Exclude="src\Office.Outlook.Contrib\bin\Build\*vshost*" />
+	  <FacebookDemoZipFiles Include="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*.*" 
+	                        Exclude="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*vshost*" />
     </ItemGroup>
     <ItemGroup>
       <OldZipFiles Include="..\*.zip" />

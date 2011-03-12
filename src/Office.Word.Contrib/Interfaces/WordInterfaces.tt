@@ -1,0 +1,16 @@
+﻿<#@ template debug="true" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.Office.Interop.Word" #>
+<#@ import namespace="System.Linq" #>
+
+namespace Office.Word.Contrib.Interfaces
+{
+	<# foreach (var outlookInterface in typeof(Microsoft.Office.Interop.Word.Application).Assembly.GetTypes().Where(t => t.IsInterface)) { #>
+/// <summary>
+	/// Wrapper interface for <#= outlookInterface.Name #> which adds IDispose to the interface
+	/// </summary>
+	public interface I<#= outlookInterface.Name #> : <#= outlookInterface.FullName #>, System.IDisposable { }
+
+	<# } #>
+}

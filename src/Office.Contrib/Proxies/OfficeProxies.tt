@@ -1,0 +1,279 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Office" #>
+<#@ import namespace="Microsoft.Office.Core" #>
+<#@ import namespace="System.Linq" #>
+using System.Runtime.CompilerServices;
+using Office.Utility.Extensions;
+
+// ReSharper disable InconsistentNaming
+namespace Office.Utility.Proxies
+{
+<# 
+var officeInterfaces = typeof(Microsoft.Office.Core.COMAddIn).Assembly.GetTypes().Where(t => t.IsInterface);
+foreach (var officeInterface in officeInterfaces)
+{ 
+#>
+    /// <summary>
+    /// Wrapper interface for <#= officeInterface.Name #> which adds IDispose to the interface
+    /// </summary>
+    public class <#= officeInterface.Name #>Proxy : System.IDisposable
+    {
+        private readonly <#= officeInterface.FullName #> _proxyTarget; 
+
+        /// <summary>
+        /// Creates a new wrapper for <#= officeInterface.FullName #> which calls Marshal.ReleaseComObject when disposed
+        /// </summary>
+        /// <param name="proxyTarget">Instance to wrap</param>
+        public <#= officeInterface.Name #>Proxy(<#= officeInterface.FullName #> proxyTarget)
+        {
+            _proxyTarget = proxyTarget;
+        }
+
+<# 
+    var allMethods = officeInterface.GetMethods();
+	foreach (var method in allMethods.Where(m=>!m.Name.StartsWith("add_") && !m.Name.StartsWith("remove_") 
+		&& m.Name != "set_Item" && m.Name != "get__Default"))
+    { 
+#>
+		/// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+<#
+        if (method.Name == "get_Item" && NeedsProxy(method) && method.GetParameters().Length > 0)
+		{
+#>
+		public virtual <#=ReturnType(method) #> this[<#=GetMethodSignature(method)#>]
+		{
+			get { return new <#=ReturnType(method) #>(_proxyTarget[<#=method.GetParameters().First().Name#>]); }
+		}
+<#
+			continue;
+		}
+		if (method.Name == "get_Item" && !NeedsProxy(method) && method.GetParameters().Length > 0)
+		{
+#>
+		public virtual <#=ReturnType(method) #> this[<#=GetMethodSignature(method)#>]
+		{
+			get { return _proxyTarget[Index]; }
+<#
+			if (allMethods.Any(m=>m.Name == "set_Item"))
+			{
+#>
+			set { _proxyTarget[Index] = value; }
+<#
+			}
+#>
+		}
+<#
+			continue;
+		}
+		
+		var isPropertyMethod = method.Name.StartsWith("get_") || method.Name.StartsWith("set_");
+        if (isPropertyMethod) 
+        {
+#>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+<#
+        }
+#>
+        public virtual <#=ReturnType(method) #> <#=method.Name#>(<#=GetMethodSignature(method)#>)
+        {
+<#
+        if (method.ReturnType != typeof(void) && NeedsProxy(method))
+        { 
+#>
+            return new <#=ReturnType(method) #>(_proxyTarget<#= GetTargetName(method) #>);
+<#
+        }
+		else if (method.ReturnType != typeof(void))
+		{
+#>
+            return _proxyTarget<#= GetTargetName(method) #>;
+<#
+		}
+        else
+        {
+#>
+            _proxyTarget<#= GetTargetName(method) #>;
+<# 
+        }
+#>
+        }
+
+<# 
+    }
+	
+	var events = officeInterface.GetEvents();
+	
+	foreach (var interfaceEvent in events)
+	{
+#>
+		/// <summary>
+		/// 
+		/// </summary>
+		public event <#= interfaceEvent.EventHandlerType.FullName #> <#= interfaceEvent.Name #>
+        {
+            add { _proxyTarget.<#=interfaceEvent.Name#> += value; }
+            remove { _proxyTarget.<#=interfaceEvent.Name#> -= value; }
+        }
+
+<#
+	}
+#>
+        public void Dispose()
+        {
+            _proxyTarget.ReleaseComObject();
+        }
+    }
+<# 
+}
+#>
+}
+// ReSharper enable InconsistentNaming
+
+<#+
+    public string ReturnType(System.Reflection.MethodInfo method)
+    {
+        if (method.ReturnType == typeof(void))
+            return "void";
+        else if (NeedsProxy(method))
+            return method.ReturnType.Name + "Proxy";
+        else 
+            return method.ReturnType.FullName;
+    }
+	
+	public bool NeedsProxy(System.Reflection.MethodInfo method)
+	{
+		return method.ReturnType.FullName.StartsWith("Microsoft.Office.Core") && !method.ReturnType.IsEnum;
+	}
+
+    public string GetMethodSignature(System.Reflection.MethodInfo method)
+    {
+        var signature = new System.Text.StringBuilder();
+        var parameters = method.GetParameters();
+        for (int i = 0; i < parameters.Length; i++) 
+        { 
+            if (parameters[i].IsOut && 
+					(parameters[i].Attributes & System.Reflection.ParameterAttributes.In) 
+					!= System.Reflection.ParameterAttributes.In)
+			{
+				signature.Append("out ");
+			}
+            else if (parameters[i].ParameterType.IsByRef)
+                signature.Append("ref ");
+            
+            signature.Append(parameters[i].ParameterType.FullName.TrimEnd('&'));
+			signature.Append(" ");
+            signature.Append(
+				string.IsNullOrWhiteSpace(parameters[i].Name) 
+				? "arg" + i
+				:parameters[i].Name); 
+                
+            if (i+1 < parameters.Length) 
+                signature.Append(", ");
+        }
+
+        return signature.ToString();
+    }
+	
+	public string GetCallingParameters(System.Reflection.MethodInfo method)
+	{
+		var targetName = new System.Text.StringBuilder();
+        var parameters = method.GetParameters();
+		
+		if (parameters.Length > 0) 
+        {
+            for (int i = 0; i < parameters.Length; i++) 
+            { 
+                if (parameters[i].IsOut && 
+					(parameters[i].Attributes & System.Reflection.ParameterAttributes.In) 
+					!= System.Reflection.ParameterAttributes.In)
+				{
+					targetName.Append("out ");
+				}
+                else if (parameters[i].ParameterType.IsByRef)
+                    targetName.Append("ref ");
+                    
+                targetName.Append(parameters[i].Name);
+
+                if (i+1 < parameters.Length)
+                    targetName.Append(", ");
+            }
+        }
+		
+		return targetName.ToString();
+	}
+
+    public string GetTargetName(System.Reflection.MethodInfo method)
+    {
+        var targetName = new System.Text.StringBuilder();
+        var parameters = method.GetParameters();
+		
+		targetName.Append(".");
+        if (method.Name.StartsWith("get_"))
+        {
+            targetName.Append(method.Name.Substring(4));
+            if (parameters.Length > 0) 
+				targetName.Append("[");
+        }
+		else if (method.Name.StartsWith("set_") && parameters.Length == 1)
+		{
+			targetName.Append(method.Name.Substring(4));
+			targetName.Append(" = ");
+			targetName.Append(
+				string.IsNullOrWhiteSpace(parameters[0].Name) 
+				? "arg0"
+				:parameters[0].Name);
+			return targetName.ToString();
+		}
+		else if (method.Name.StartsWith("set_") && parameters.Length == 2)
+		{
+			targetName.Append(method.Name.Substring(4));
+			targetName.Append("[");
+			targetName.Append(parameters[0].Name);
+			targetName.Append("] = ");
+			targetName.Append(parameters[1].Name);
+			return targetName.ToString();
+		}
+        else
+        {
+            targetName.Append(method.Name);
+            targetName.Append("(");
+        }
+
+        if (parameters.Length > 0) 
+        {
+            for (int i = 0; i < parameters.Length; i++) 
+            { 
+                if (parameters[i].IsOut && 
+					(parameters[i].Attributes & System.Reflection.ParameterAttributes.In) 
+					!= System.Reflection.ParameterAttributes.In)
+				{
+					targetName.Append("out ");
+				}
+                else if (parameters[i].ParameterType.IsByRef)
+                    targetName.Append("ref ");
+                    
+                targetName.Append(parameters[i].Name);
+
+                if (i+1 < parameters.Length)
+                    targetName.Append(", ");
+            }
+        }
+
+        if (method.Name.StartsWith("get_"))
+        {
+            if (parameters.Length > 0) 
+				targetName.Append("]");
+		}
+        else
+        {
+            targetName.Append(")");
+        }
+
+        return targetName.ToString();
+    }
+#>
