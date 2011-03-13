@@ -14,6 +14,10 @@ namespace Office.Word.Contrib.RibbonFactory
         private Application _wordApplication;
         private Documents _documents;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WordViewProvider"/> class.
+        /// </summary>
+        /// <param name="wordApplication">The word application.</param>
         public WordViewProvider(Application wordApplication)
         {
             _wordApplication = wordApplication;
@@ -48,14 +52,27 @@ namespace Office.Word.Contrib.RibbonFactory
             handler(this, new ViewClosedEventArgs(_documents.Cast<object>()));
         }
 
+        /// <summary>
+        /// Occurs when [new view].
+        /// </summary>
         public event EventHandler<NewViewEventArgs<WordRibbonType>> NewView;
+        /// <summary>
+        /// Occurs when [view closed].
+        /// </summary>
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
+        /// <summary>
+        /// Cleanups the references to a view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void CleanupReferencesTo(object view)
         {
             ((DocumentEvents2_Event)view).Close -= WordViewProviderClose;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             _documents.ReleaseComObject();

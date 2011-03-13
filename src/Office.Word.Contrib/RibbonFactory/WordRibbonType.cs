@@ -7,7 +7,10 @@ namespace Office.Word.Contrib.RibbonFactory
     /// </summary>
     public enum WordRibbonType
     {
+        /// <summary>
+        /// Word Document Ribbon
+        /// </summary>
         [Description("Microsoft.Word.Document")]
-        WordDocument
+        WordDocument = 1
     }
 }

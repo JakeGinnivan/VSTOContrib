@@ -36,7 +36,7 @@ namespace Office.Contrib.Tests.RibbonFactory
         }
 
         [RibbonViewModel(TestRibbonTypes.RibbonType1)]
-        public class TestViewModel : IRibbonViewModel
+        public class TestViewModel 
         {
             public IRibbonUI RibbonUi { get; set; }
             public void Displayed(object context)
@@ -48,7 +48,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             }
         }
         [RibbonViewModel(TestRibbonTypes.RibbonType1)]
-        public class TestViewModel2 : IRibbonViewModel
+        public class TestViewModel2 
         {
             public IRibbonUI RibbonUi { get; set; }
             public void Displayed(object context)

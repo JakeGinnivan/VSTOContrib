@@ -35,8 +35,8 @@ namespace Office.Contrib.Tests.RibbonFactory
         {
             var results = _helperUnderTest.GetRibbonTypesFor<TestRibbonTypes>(typeof(TestRibbonViewModel2)).ToList();
 
-            Assert.Equal(TestRibbonTypes.RibbonType1, results[0]);
-            Assert.Equal(TestRibbonTypes.RibbonType2, results[1]);
+            Assert.Equal(TestRibbonTypes.RibbonType2, results[0]);
+            Assert.Equal(TestRibbonTypes.RibbonType3, results[1]);
         }
     }
 }

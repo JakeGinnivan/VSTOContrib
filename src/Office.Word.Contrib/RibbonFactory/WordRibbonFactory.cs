@@ -23,6 +23,13 @@ namespace Office.Word.Contrib.RibbonFactory
             
         }
 
+        /// <summary>
+        /// Initialises the ribbon factory.
+        /// </summary>
+        /// <param name="ribbonFactory">The ribbon factory.</param>
+        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns></returns>
         public override IDisposable InitialiseFactory(
             Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection,
@@ -34,6 +41,10 @@ namespace Office.Word.Contrib.RibbonFactory
             return base.InitialiseFactory(ribbonFactory, customTaskPaneCollection, assemblies);
         }
 
+        /// <summary>
+        /// Gets the Word View Provider for the ribbon factory.
+        /// </summary>
+        /// <returns></returns>
         protected override IViewProvider<WordRibbonType> ViewProvider()
         {
             return new WordViewProvider(_wordApplication);

@@ -7,6 +7,9 @@ namespace Office.Word.Contrib.RibbonFactory
     /// </summary>
     public class WordRibbonViewModelAttribute : RibbonViewModelAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WordRibbonViewModelAttribute"/> class.
+        /// </summary>
         public WordRibbonViewModelAttribute()
             : base(WordRibbonType.WordDocument)
         {
