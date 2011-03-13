@@ -168,7 +168,9 @@ namespace Office.Outlook.Contrib.Services
                 return results;
             }
 
-            results.NumberDeletedRemote = localDeleted.Count;
+            results.NumberDeletedLocal = localDeleted.Count;
+            results.NumberUpdatedLocal = saveLocal.Count;
+            results.NumberDeletedRemote = 0;
             results.NumberUpdatedRemote = saveRemote.Count;
 
             _settings.LastSync = DateTime.Now;
@@ -186,6 +188,7 @@ namespace Office.Outlook.Contrib.Services
             var results = new SynchronisationResults();
 
             saveLocal = new List<TType>();
+            saveRemote = new List<TType>();
             foreach (var remoteEntry in remoteModified)
             {
                 var entry = remoteEntry;
@@ -197,30 +200,35 @@ namespace Office.Outlook.Contrib.Services
                         saveLocal.Add(remoteEntry.Value);
                         break;
                     case 1:
-                        HandleConflict(localMatchingModifications[0], remoteEntry.Value);
+                        HandleConflict(results, localMatchingModifications[0], remoteEntry.Value,
+                            saveLocal, saveRemote);
                         break;
                 }
             }
 
-            saveRemote = localModified.Where(timeCardEntry => !remoteModified.Keys.Contains(timeCardEntry.Key)).Select(l => l.Value).ToList();
+            saveRemote.AddRange(localModified.Where(modifiedEntry => !remoteModified.Keys.Contains(modifiedEntry.Key)).Select(l => l.Value).ToList());
             return results;
         }
 
-        private void HandleConflict(TType localEntry, TType remoteEntry)
+        private void HandleConflict(SynchronisationResults results, 
+            TType localEntry, TType remoteEntry,
+            ICollection<TType> saveLocal, ICollection<TType> saveRemote)
         {
             var resolution = ConflcitResolver.Resolve(localEntry, remoteEntry);
             if (resolution.SaveLocal != null)
             {
                 if (_syncDirection == SyncDirection.Upload)
                     throw new InvalidOperationException("Sync direction is upload, but conflict resolved as saving locally.");
-                _localProvider.SaveEntries(new[] { resolution.SaveLocal });
+                saveLocal.Add(resolution.SaveLocal);
             }
             if (resolution.SaveRemote != null)
             {
                 if (_syncDirection == SyncDirection.Download)
                     throw new InvalidOperationException("Sync direction is download, but conflict resolved as saving remotely.");
-                _remoteProvider.SaveEntries(new[] {resolution.SaveRemote});
+                saveRemote.Add(resolution.SaveRemote);
             }
+
+            results.NumberConflicts++;
         }
     }
 }

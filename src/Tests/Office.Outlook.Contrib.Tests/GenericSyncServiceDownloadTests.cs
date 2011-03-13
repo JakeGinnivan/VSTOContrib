@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NSubstitute;
 using Office.Outlook.Contrib.Services;
 using Office.Outlook.Contrib.Services.Conficts;
@@ -30,10 +32,15 @@ namespace Office.Outlook.Contrib.Tests
             SetupProviders(null, new[] { syncClass }, null, null);
 
             //Act
-            _syncService.PerformSynchronisation();
+            var results = _syncService.PerformSynchronisation();
 
             //Assert
-            _localProvider.Received().SaveEntries(new[] { syncClass });
+            _localProvider.Received().SaveEntries(Arg.Is<List<SyncClass>>(l=>l.First() == syncClass));
+            Assert.Equal(0, results.NumberConflicts); //download doesn't track conflicts
+            Assert.Equal(0, results.NumberUpdatedRemote);
+            Assert.Equal(1, results.NumberUpdatedLocal);
+            Assert.Equal(0, results.NumberDeletedRemote);
+            Assert.Equal(0, results.NumberDeletedLocal);
         }
 
         [Fact]
@@ -44,10 +51,15 @@ namespace Office.Outlook.Contrib.Tests
             SetupProviders(new[] { syncClass }, null, null, null);
 
             //Act
-            _syncService.PerformSynchronisation();
+            var results = _syncService.PerformSynchronisation();
 
             //Assert
-            _remoteProvider.DidNotReceive().SaveEntries(new[] { syncClass });
+            _remoteProvider.DidNotReceive().SaveEntries(Arg.Is<List<SyncClass>>(l => l.First() == syncClass));
+            Assert.Equal(0, results.NumberConflicts); //download doesn't track conflicts
+            Assert.Equal(0, results.NumberUpdatedRemote);
+            Assert.Equal(0, results.NumberUpdatedLocal);
+            Assert.Equal(0, results.NumberDeletedRemote);
+            Assert.Equal(0, results.NumberDeletedLocal);
         }
 
         [Fact]
@@ -60,18 +72,23 @@ namespace Office.Outlook.Contrib.Tests
             _syncService.ConflcitResolver = new RemoteWinsResolver<SyncClass>();
 
             //Act
-            _syncService.PerformSynchronisation();
+            var results = _syncService.PerformSynchronisation();
 
             //Assert
-            _localProvider.Received().SaveEntries(new[] { syncClass });
+            _localProvider.Received().SaveEntries(Arg.Is<List<SyncClass>>(l => l.First() == syncClass));
+            Assert.Equal(0, results.NumberConflicts); //download doesn't track conflicts
+            Assert.Equal(0, results.NumberUpdatedRemote);
+            Assert.Equal(1, results.NumberUpdatedLocal);
+            Assert.Equal(0, results.NumberDeletedRemote);
+            Assert.Equal(0, results.NumberDeletedLocal);
         }
 
         private void SetupProviders(SyncClass[] localModified, SyncClass[] remoteModified, int[] localDeletedIds, int[] remoteDeletedIds)
         {
-            _remoteProvider.GetModifiedEntries(Arg.Any<DateTime>()).Returns(remoteModified ?? new SyncClass[0]);
-            _localProvider.GetModifiedEntries(Arg.Any<DateTime>()).Returns(localModified ?? new SyncClass[0]);
-            _remoteProvider.GetDeletedEntries(Arg.Any<DateTime>()).Returns(remoteDeletedIds ?? new int[0]);
-            _localProvider.GetDeletedEntries(Arg.Any<DateTime>()).Returns(localDeletedIds ?? new int[0]);
+            _remoteProvider.GetModifiedEntries(Arg.Any<DateTime?>()).Returns(remoteModified ?? new SyncClass[0]);
+            _localProvider.GetModifiedEntries(Arg.Any<DateTime?>()).Returns(localModified ?? new SyncClass[0]);
+            _remoteProvider.GetDeletedEntries(Arg.Any<DateTime?>()).Returns(remoteDeletedIds ?? new int[0]);
+            _localProvider.GetDeletedEntries(Arg.Any<DateTime?>()).Returns(localDeletedIds ?? new int[0]);
         }
     }
 }
