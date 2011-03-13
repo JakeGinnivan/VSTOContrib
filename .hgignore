@@ -11,3 +11,4 @@ glob:FacebookToOutlook Example App/FacebookToOutlook.suo
 glob:src/Demos/TwitterFeedCore/TwitterFeedCore.csproj.user
 glob:src/Outlook.Utility/Outlook.Utility.csproj.user
 glob:src/Demos/FacebookToOutlook/FacebookToOutlookAddin/FacebookToOutlookAddin.csproj.user
+glob:src/VSTOContrib.suo
