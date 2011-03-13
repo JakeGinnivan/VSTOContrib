@@ -16,6 +16,13 @@ namespace Office.Outlook.Contrib.RibbonFactory
     {
         private static _Application _outlookApplication;
 
+        /// <summary>
+        /// Initialises the factory.
+        /// </summary>
+        /// <param name="ribbonFactory">The ribbon factory.</param>
+        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns></returns>
         public override IDisposable InitialiseFactory(
             Func<Type, IRibbonViewModel> ribbonFactory, 
             CustomTaskPaneCollection customTaskPaneCollection, 
@@ -27,6 +34,10 @@ namespace Office.Outlook.Contrib.RibbonFactory
             return base.InitialiseFactory(ribbonFactory, customTaskPaneCollection, assemblies);
         }
 
+        /// <summary>
+        /// The Outlook View Provider, which knows about both Explorers and Inspectors
+        /// </summary>
+        /// <returns></returns>
         protected override IViewProvider<OutlookRibbonType> ViewProvider()
         {
             return new OutlookViewProvider(_outlookApplication);

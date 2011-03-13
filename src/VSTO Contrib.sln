@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23064D22-01CB-4090-ADFE-D0A1EDAF8567}"
+	ProjectSection(SolutionItems) = preProject
+		Information\SolutionInfo.cs = Information\SolutionInfo.cs
+		Information\VersionInfo.cs = Information\VersionInfo.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}"
 EndProject
@@ -13,45 +17,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FacebookToOutlook2", "Faceb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RazorDocs", "RazorDocs", "{936499CB-4DF2-4193-82D5-03CC2840ED58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs", "src\Demos\RazorDocs\RazorDocs\RazorDocs.csproj", "{7EA57F0C-057B-411B-BDC2-13FCE3345C12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs", "Demos\RazorDocs\RazorDocs\RazorDocs.csproj", "{7EA57F0C-057B-411B-BDC2-13FCE3345C12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs.Core.Tests", "src\Demos\RazorDocs\RazorDocs.Core.Tests\RazorDocs.Core.Tests.csproj", "{752D5916-921C-417E-98DE-A50943BD1DE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs.Core.Tests", "Demos\RazorDocs\RazorDocs.Core.Tests\RazorDocs.Core.Tests.csproj", "{752D5916-921C-417E-98DE-A50943BD1DE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs.Core", "src\Demos\RazorDocs\RazorDocs.Core\RazorDocs.Core.csproj", "{E6BC2680-A77D-4A54-9345-5E2B274D82EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorDocs.Core", "Demos\RazorDocs\RazorDocs.Core\RazorDocs.Core.csproj", "{E6BC2680-A77D-4A54-9345-5E2B274D82EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitterDemo", "TwitterDemo", "{EB717FA2-AF86-4C7F-85AD-ACBE43914954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterFeed", "src\Demos\TwitterDemo\TwitterFeed\TwitterFeed.csproj", "{989E321A-0BE8-4C31-829E-84533451D0B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterFeed", "Demos\TwitterDemo\TwitterFeed\TwitterFeed.csproj", "{989E321A-0BE8-4C31-829E-84533451D0B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterFeedCore", "src\Demos\TwitterDemo\TwitterFeedCore\TwitterFeedCore.csproj", "{B2F64018-D5F8-461B-B46C-087C224ADB19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterFeedCore", "Demos\TwitterDemo\TwitterFeedCore\TwitterFeedCore.csproj", "{B2F64018-D5F8-461B-B46C-087C224ADB19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib.Tests", "src\Tests\Office.Contrib.Tests\Office.Contrib.Tests.csproj", "{37AB1850-9367-4F91-A4C2-A379FD65B04C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib.Tests", "Tests\Office.Contrib.Tests\Office.Contrib.Tests.csproj", "{37AB1850-9367-4F91-A4C2-A379FD65B04C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Outlook.Contrib.Tests", "src\Tests\Office.Outlook.Contrib.Tests\Office.Outlook.Contrib.Tests.csproj", "{EF2FA399-7C3F-4C03-BA22-9A74B7BDBD67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Outlook.Contrib.Tests", "Tests\Office.Outlook.Contrib.Tests\Office.Outlook.Contrib.Tests.csproj", "{EF2FA399-7C3F-4C03-BA22-9A74B7BDBD67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib", "src\Office.Contrib\Office.Contrib.csproj", "{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib", "Office.Contrib\Office.Contrib.csproj", "{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Outlook.Contrib", "src\Office.Outlook.Contrib\Office.Outlook.Contrib.csproj", "{B251F001-1B3F-4CD6-8E4F-D1435A64867B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Outlook.Contrib", "Office.Outlook.Contrib\Office.Outlook.Contrib.csproj", "{B251F001-1B3F-4CD6-8E4F-D1435A64867B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Word.Contrib", "src\Office.Word.Contrib\Office.Word.Contrib.csproj", "{9D3119D9-B898-45E8-92AF-2566DA3F85FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Word.Contrib", "Office.Word.Contrib\Office.Word.Contrib.csproj", "{9D3119D9-B898-45E8-92AF-2566DA3F85FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlookAddin", "src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj", "{8B9ED325-8042-464B-AD02-CF0CFF90E9BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlookAddin", "Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj", "{8B9ED325-8042-464B-AD02-CF0CFF90E9BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook", "src\Demos\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj", "{A2F08C4D-F14C-475D-A1CE-A57AFBC3119D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook", "Demos\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj", "{A2F08C4D-F14C-475D-A1CE-A57AFBC3119D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Core", "src\Demos\FacebookToOutlook\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj", "{8C36ED7F-622A-4C54-B70A-9B6260EF0E12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Core", "Demos\FacebookToOutlook\FacebookToOutlook.Core\FacebookToOutlook.Core.csproj", "{8C36ED7F-622A-4C54-B70A-9B6260EF0E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Data", "src\Demos\FacebookToOutlook\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj", "{317130ED-B9BA-454E-B87A-C2E7A304AB87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Data", "Demos\FacebookToOutlook\FacebookToOutlook.Data\FacebookToOutlook.Data.csproj", "{317130ED-B9BA-454E-B87A-C2E7A304AB87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2BD799F4-59B2-4202-AD59-791EFF8A251E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Services", "src\Demos\FacebookToOutlook\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj", "{F77ECF81-2326-4F1F-A274-BFC21D1CD5D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Services", "Demos\FacebookToOutlook\FacebookToOutlook.Services\FacebookToOutlook.Services.csproj", "{F77ECF81-2326-4F1F-A274-BFC21D1CD5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Core.Tests", "src\Demos\FacebookToOutlook\FacebookToOutlook.Core.Tests\FacebookToOutlook.Core.Tests.csproj", "{157BB17D-960B-4C98-A0CA-250422D11256}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Core.Tests", "Demos\FacebookToOutlook\FacebookToOutlook.Core.Tests\FacebookToOutlook.Core.Tests.csproj", "{157BB17D-960B-4C98-A0CA-250422D11256}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Data.Tests", "src\Demos\FacebookToOutlook\FacebookToOutlook.Data.Tests\FacebookToOutlook.Data.Tests.csproj", "{7C30905E-BD5C-4173-985E-AB930FD6B3A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Data.Tests", "Demos\FacebookToOutlook\FacebookToOutlook.Data.Tests\FacebookToOutlook.Data.Tests.csproj", "{7C30905E-BD5C-4173-985E-AB930FD6B3A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Services.Tests", "src\Demos\FacebookToOutlook\FacebookToOutlook.Services.Tests\FacebookToOutlook.Services.Tests.csproj", "{9F031A0D-827B-4CC2-9627-1A0D2DA2D412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Services.Tests", "Demos\FacebookToOutlook\FacebookToOutlook.Services.Tests\FacebookToOutlook.Services.Tests.csproj", "{9F031A0D-827B-4CC2-9627-1A0D2DA2D412}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Word.Contrib.Tests", "Tests\Office.Word.Contrib.Tests\Office.Word.Contrib.Tests.csproj", "{AA2B915B-B6DA-428E-9E86-32D33AD255F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +137,10 @@ Global
 		{9F031A0D-827B-4CC2-9627-1A0D2DA2D412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F031A0D-827B-4CC2-9627-1A0D2DA2D412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F031A0D-827B-4CC2-9627-1A0D2DA2D412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +148,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{37AB1850-9367-4F91-A4C2-A379FD65B04C} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{EF2FA399-7C3F-4C03-BA22-9A74B7BDBD67} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
+		{AA2B915B-B6DA-428E-9E86-32D33AD255F3} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{68367040-7F75-4E7C-B44A-1E222D2C7789} = {A464DF71-7B32-4488-8103-BB37F5B6A925}
 		{DF5845B9-C7A3-4018-B597-183AA3E9E7F5} = {A464DF71-7B32-4488-8103-BB37F5B6A925}
 		{936499CB-4DF2-4193-82D5-03CC2840ED58} = {A464DF71-7B32-4488-8103-BB37F5B6A925}

@@ -39,6 +39,9 @@ namespace Office.Contrib.RibbonFactory
         private ViewModelResolver<TRibbonTypes> _ribbonViewModelResolver;
         private static readonly object InstanceLock = new object();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RibbonFactory&lt;TRibbonTypes&gt;"/> class.
+        /// </summary>
         protected RibbonFactory()
         {
             lock (InstanceLock)
@@ -89,6 +92,10 @@ namespace Office.Contrib.RibbonFactory
             return _ribbonViewModelResolver;
         }
 
+        /// <summary>
+        /// Provider which tells the ribbon factory when a new view is opened, and needs to be wired up
+        /// </summary>
+        /// <returns>An instance of the view provider</returns>
         protected abstract IViewProvider<TRibbonTypes> ViewProvider();
 
         private static IEnumerable<Type> GetTRibbonTypessInAssemblies(IEnumerable<Assembly> assemblies)
