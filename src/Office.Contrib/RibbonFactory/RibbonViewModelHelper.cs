@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Office.Contrib.RibbonFactory
 {
-    internal static class RibbonViewModelHelper
+    internal class RibbonViewModelHelper
     {
-        private static readonly Dictionary<Type, IEnumerable<object>> RibbonTypes
+        private readonly Dictionary<Type, IEnumerable<object>> _ribbonTypes
             = new Dictionary<Type, IEnumerable<object>>();
 
-        public static IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct 
+        public IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct 
         {
             var enumType = typeof(TRibbonTypes);
 
@@ -22,11 +22,12 @@ namespace Office.Contrib.RibbonFactory
 
             var viewModelMetaData = (RibbonViewModelAttribute)viewModelMetaAttributes[0];
 
-            if (!RibbonTypes.ContainsKey(enumType))
-                RibbonTypes.Add(enumType, Enum.GetValues(enumType).Cast<object>());
+            if (!_ribbonTypes.ContainsKey(enumType))
+                _ribbonTypes.Add(enumType, Enum.GetValues(enumType).Cast<object>());
 
-            return RibbonTypes.Cast<TRibbonTypes>().Where(value =>
-                    ((int)viewModelMetaData.Type & (int)(object)value) == (int)(object)value);
+            return _ribbonTypes[enumType]
+                .Where(value => ((int)viewModelMetaData.Type & (int)value) == (int)value)
+                .Cast<TRibbonTypes>();
         }
     }
 }

@@ -13,6 +13,16 @@ namespace Office.Word.Contrib.RibbonFactory
     {
         private static Application _wordApplication;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
+        /// </summary>
+        /// <param name="viewLocationStrategy">The view location strategy, use null for default.</param>
+        public WordRibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
+            : base(viewLocationStrategy)
+        {
+            
+        }
+
         public override IDisposable InitialiseFactory(
             Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection,

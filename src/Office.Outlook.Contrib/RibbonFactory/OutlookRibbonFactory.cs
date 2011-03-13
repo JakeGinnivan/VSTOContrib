@@ -17,6 +17,16 @@ namespace Office.Outlook.Contrib.RibbonFactory
         private static _Application _outlookApplication;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="OutlookRibbonFactory"/> class.
+        /// </summary>
+        /// <param name="viewLocationStrategy">The view location strategy, null for default.</param>
+        public OutlookRibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
+            : base(viewLocationStrategy)
+        {
+            
+        }
+
+        /// <summary>
         /// Initialises the factory.
         /// </summary>
         /// <param name="ribbonFactory">The ribbon factory.</param>

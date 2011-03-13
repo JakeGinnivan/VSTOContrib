@@ -32,13 +32,17 @@ namespace Office.Contrib.RibbonFactory
         private readonly Dictionary<Type, List<KeyValuePair<string,string>>> _notifyChangeTargetLookup =
             new Dictionary<Type, List<KeyValuePair<string, string>>>();
 
+        private readonly RibbonViewModelHelper _ribbonViewModelHelper;
+
         public ViewModelResolver(
             IEnumerable<Type> viewModelType, 
             Func<Type, IRibbonViewModel> ribbonFactory, 
+            RibbonViewModelHelper ribbonViewModelHelper,
             CustomTaskPaneCollection customTaskPanes,
             IViewProvider<TRibbonTypes> viewProvider)
         {
             _ribbonFactory = ribbonFactory;
+            _ribbonViewModelHelper = ribbonViewModelHelper;
             _customTaskPanes = customTaskPanes;
             _viewProvider = viewProvider;
 
@@ -73,8 +77,10 @@ namespace Office.Contrib.RibbonFactory
 
         private void CreateRibbonTypeToViewModelTypeLookup(Type ribbonViewModel)
         {
-            foreach (var value in RibbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(ribbonViewModel))
+            foreach (var value in _ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(ribbonViewModel))
             {
+                if (_ribbonTypeLookup.ContainsKey(value))
+                    throw new InvalidOperationException("You cannot have two view models which are registered for the same ribbon type");
                 _ribbonTypeLookup.Add(value, ribbonViewModel);
             }
         }

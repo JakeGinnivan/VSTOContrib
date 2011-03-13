@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{37AB1850-9367-4F91-A4C2-A379FD65B04C}</ProjectGuid>
+    <ProjectGuid>{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Office.Contrib.Tests</RootNamespace>
-    <AssemblyName>Office.Contrib.Tests</AssemblyName>
+    <RootNamespace>Office.Contrib.Testing</RootNamespace>
+    <AssemblyName>Office.Contrib.Testing</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,45 +32,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.Common.v9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\..\lib\NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="xunit">
-      <HintPath>..\..\..\lib\xUnit.net\xunit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComCleanupEnumeratorFixture.cs" />
+    <Compile Include="..\Information\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Information\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="OfficeObjectMother.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel.cs" />
-    <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel2.cs" />
-    <Compile Include="RibbonFactory\TestStubs\TestStruct.cs" />
-    <Compile Include="RibbonFactory\TestStubs\TestRibbonFactory.cs" />
-    <Compile Include="RibbonFactory\TestStubs\TestRibbonTypes.cs" />
-    <Compile Include="RibbonFactory\the_ribbon_factory.cs" />
-    <Compile Include="RibbonFactory\the_ribbon_viewmodel_helper.cs" />
-    <Compile Include="RibbonFactory\the_view_model_resolver.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Office.Contrib\Office.Contrib.csproj">
-      <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
-      <Name>Office.Contrib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RibbonFactory\TestStubs\TestRibbon.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RibbonFactory\TestStubs\TestRibbonViewModel2.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

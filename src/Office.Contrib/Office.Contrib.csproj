@@ -93,8 +93,10 @@
     <Compile Include="RibbonFactory\IRegisterCustomTaskPane.cs" />
     <Compile Include="RibbonFactory\IRibbonFactory.cs" />
     <Compile Include="RibbonFactory\IRibbonViewModel.cs" />
+    <Compile Include="RibbonFactory\IViewLocationStrategy.cs" />
     <Compile Include="RibbonFactory\IViewProvider.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
+    <Compile Include="RibbonFactory\OfficeViewModelBase.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.callbacks.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />

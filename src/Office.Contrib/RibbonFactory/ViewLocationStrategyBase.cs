@@ -6,7 +6,7 @@ namespace Office.Contrib.RibbonFactory
     ///<summary>
     /// The strategy to use to resolve the view
     ///</summary>
-    public abstract class ViewLocationStrategyBase
+    public abstract class ViewLocationStrategyBase : IViewLocationStrategy
     {
         ///<summary>
         /// Fetches the Ribbon XML for a given view

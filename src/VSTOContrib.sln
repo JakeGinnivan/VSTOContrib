@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook.Services.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Word.Contrib.Tests", "Tests\Office.Word.Contrib.Tests\Office.Word.Contrib.Tests.csproj", "{AA2B915B-B6DA-428E-9E86-32D33AD255F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib.Testing", "Office.Contrib.Testing\Office.Contrib.Testing.csproj", "{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA2B915B-B6DA-428E-9E86-32D33AD255F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

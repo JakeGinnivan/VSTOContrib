@@ -33,16 +33,18 @@ namespace Office.Contrib.RibbonFactory
         internal const string CommonCallbacks = "CommonCallbacks";
         private TRibbonTypes _currentlyLoadingRibbon;
         private ControlCallbackLookup<TRibbonTypes> _controlCallbackLookup;
-        private ViewLocationStrategyBase _viewLocationStrategy;
+        private IViewLocationStrategy _viewLocationStrategy;
         
         private bool _initialsed;
+        private readonly RibbonViewModelHelper _ribbonViewModelHelper = new RibbonViewModelHelper();
         private ViewModelResolver<TRibbonTypes> _ribbonViewModelResolver;
         private static readonly object InstanceLock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonFactory&lt;TRibbonTypes&gt;"/> class.
         /// </summary>
-        protected RibbonFactory()
+        /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
+        protected RibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
         {
             lock (InstanceLock)
             {
@@ -51,7 +53,7 @@ namespace Office.Contrib.RibbonFactory
                 Current = this;
             }
             
-            _viewLocationStrategy = new DefaultViewLocationStrategy();
+            _viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
         }
 
         /// <summary>
@@ -69,7 +71,11 @@ namespace Office.Contrib.RibbonFactory
             CustomTaskPaneCollection customTaskPaneCollection, 
             params Assembly[] assemblies)
         {
-            if (_initialsed) throw new InvalidOperationException("Ribbon Factory already Initialised");
+            if (assemblies.Length == 0) 
+                throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
+            if (_initialsed)
+                throw new InvalidOperationException("Ribbon Factory already Initialised");
+
             _initialsed = true;
 
             _viewProvider = ViewProvider();
@@ -77,7 +83,7 @@ namespace Office.Contrib.RibbonFactory
             var ribbonTypes = GetTRibbonTypessInAssemblies(assemblies).ToList();
 
             _ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, ribbonFactory, customTaskPaneCollection, _viewProvider);
+                ribbonTypes, ribbonFactory, _ribbonViewModelHelper, customTaskPaneCollection, _viewProvider);
             _controlCallbackLookup = new ControlCallbackLookup<TRibbonTypes>(GetRibbonElements());
 
             Expression<Action> loadMethod = () => Ribbon_Load(null);
@@ -104,7 +110,11 @@ namespace Office.Contrib.RibbonFactory
             return assemblies
                 .Select(
                     assembly =>
-                    assembly.GetTypes().Where(t => t.GetInterfaces().Any(ribbonViewModelType.IsAssignableFrom)))
+                        {
+                            var types = assembly.GetTypes();
+                            return types.Where(ribbonViewModelType.IsAssignableFrom);
+                        }
+                )
                 .Aggregate((t, t1) => t.Concat(t1));
         }
 
@@ -124,18 +134,17 @@ namespace Office.Contrib.RibbonFactory
 
             customUi.SetAttributeValue("onLoad", loadMethodName);
 
-            foreach (var value in RibbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
+            foreach (var value in _ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
             {
                 WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
                 _ribbonViews.Add(value, ribbonDoc.ToString());
             }
         }
 
-
         ///<summary>
         /// Gets or Sets the strategy that fetches the Ribbon XML for a given view
         ///</summary>
-        public ViewLocationStrategyBase LocateViewStrategy
+        public IViewLocationStrategy LocateViewStrategy
         {
             get { return _viewLocationStrategy; }
             set
@@ -149,7 +158,7 @@ namespace Office.Contrib.RibbonFactory
         /// <summary>
         /// Current instance of RibbonFactory
         /// </summary>
-        public static IRibbonFactory Current { get; private set; }
+        public static IRibbonFactory Current { get; protected set; }
 
         // ReSharper disable InconsistentNaming
         /// <summary>

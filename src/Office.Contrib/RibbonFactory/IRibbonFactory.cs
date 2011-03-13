@@ -29,6 +29,6 @@ namespace Office.Contrib.RibbonFactory
         /// Gets or sets the locate view strategy.
         /// </summary>
         /// <value>The locate view strategy.</value>
-        ViewLocationStrategyBase LocateViewStrategy { get; set; }
+        IViewLocationStrategy LocateViewStrategy { get; set; }
     }
 }
