@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Office.Contrib.RibbonFactory
 {
@@ -9,17 +8,18 @@ namespace Office.Contrib.RibbonFactory
     public class ViewClosedEventArgs : EventArgs
     {
         /// <summary>
-        /// All currently open views
+        /// Gets the view that was closed.
         /// </summary>
-        public IEnumerable<object> AllViews { get; set; }
+        /// <value>The view.</value>
+        public object View { get; private set; }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ViewClosedEventArgs"/> class.
         /// </summary>
-        /// <param name="allViews"></param>
-        public ViewClosedEventArgs(IEnumerable<object> allViews)
+        /// <param name="view">The view.</param>
+        public ViewClosedEventArgs(object view)
         {
-            AllViews = allViews;
+            View = view;
         }
     }
 }

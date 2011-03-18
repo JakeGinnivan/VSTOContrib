@@ -70,7 +70,9 @@
     <EmbeddedResource Include="RibbonFactory\TestStubs\TestRibbon.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="RibbonFactory\TestStubs\TestRibbonViewModel2.xml" />
+    <EmbeddedResource Include="RibbonFactory\TestStubs\TestRibbonViewModel2.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

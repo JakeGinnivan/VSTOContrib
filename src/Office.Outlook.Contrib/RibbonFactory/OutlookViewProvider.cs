@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
@@ -43,7 +41,8 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            ((InspectorEvents_10_Event)inspector).Close += ViewClose;
+            var wrapper = new InspectorWrapper(inspector);
+            wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
             var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, ribbonType);
@@ -58,7 +57,8 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            ((ExplorerEvents_10_Event)explorer).Close += ViewClose;
+            var wrapper = new ExplorerWrapper(explorer);
+            wrapper.Closed += ExplorerClosed;
 
             var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, OutlookRibbonType.OutlookExplorer);
             handler(this, newViewEventArgs);
@@ -67,13 +67,26 @@ namespace Office.Outlook.Contrib.RibbonFactory
                 explorer.ReleaseComObject();
         }
 
-        void ViewClose()
+        private void ExplorerClosed(object sender, ExplorerClosedEventArgs e)
         {
+            var wrapper = (ExplorerWrapper)sender;
+            wrapper.Closed -= ExplorerClosed;
 
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(_inspectors.Cast<object>()));
+                handler(this, new ViewClosedEventArgs(e.Explorer));
+        }
+
+        void InspectorClosed(object sender, InspectorClosedEventArgs e)
+        {
+            var wrapper = (InspectorWrapper) sender;
+            wrapper.Closed -= InspectorClosed;
+
+            var handler = ViewClosed;
+
+            if (handler != null)
+                handler(this, new ViewClosedEventArgs(e.Inspector));
         }
 
         public void Initialise()
@@ -87,13 +100,6 @@ namespace Office.Outlook.Contrib.RibbonFactory
 
         public void CleanupReferencesTo(object view)
         {
-            var inspectorEvent = view as InspectorEvents_10_Event;
-            if (inspectorEvent != null)
-                inspectorEvent.Close -= ViewClose;
-
-            var explorerEvent = view as ExplorerEvents_10_Event;
-            if (explorerEvent != null)
-                explorerEvent.Close -= ViewClose;
         }
 
         public void Dispose()

@@ -61,6 +61,8 @@
     </Compile>
     <Compile Include="CancelEventArgs.cs" />
     <Compile Include="ComComponentCategoriesManager.cs" />
+    <Compile Include="ExplorerClosedEventArgs.cs" />
+    <Compile Include="ExplorerWrapper.cs" />
     <Compile Include="Extensions\OutlookCleanupExtensions.cs">
       <DependentUpon>OutlookCleanupExtensions.tt</DependentUpon>
       <AutoGen>True</AutoGen>

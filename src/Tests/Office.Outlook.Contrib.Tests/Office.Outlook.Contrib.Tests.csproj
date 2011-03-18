@@ -65,6 +65,7 @@
     <Compile Include="GenericSyncServiceDownloadTests.cs" />
     <Compile Include="GenericSyncServiceTwoWayTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonFactory\OutlookViewProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Office.Outlook.Contrib\Office.Outlook.Contrib.csproj">

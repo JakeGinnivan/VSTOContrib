@@ -33,6 +33,7 @@ namespace Office.Contrib.RibbonFactory
             new Dictionary<Type, List<KeyValuePair<string, string>>>();
 
         private readonly RibbonViewModelHelper _ribbonViewModelHelper;
+        private TRibbonTypes _currentlyLoadingRibbon;
 
         public ViewModelResolver(
             IEnumerable<Type> viewModelType, 
@@ -57,14 +58,9 @@ namespace Office.Contrib.RibbonFactory
 
         void ViewProviderViewClosed(object sender, ViewClosedEventArgs e)
         {
-            var views = e.AllViews.ToList();
-            foreach (var view in _viewModelInstances.Keys.Where(views.DoesNotContain))
-            {
-                //Found the inspector that has closed, cleanup viewmodel
-                CleanupViewModel(view);
-                _viewProvider.CleanupReferencesTo(view);
-                view.ReleaseComObject();
-            }
+            CleanupViewModel(e.View);
+            _viewProvider.CleanupReferencesTo(e.View);
+            e.View.ReleaseComObject();
         }
 
         void  ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes>  e)
@@ -72,6 +68,7 @@ namespace Office.Contrib.RibbonFactory
             if (!_ribbonTypeLookup.ContainsKey(e.RibbonType)) return;
             if (_viewModelInstances.ContainsKey(e.ViewInstance)) return; //Don't need to create a view twice
 
+            _currentlyLoadingRibbon = e.RibbonType;
             _viewModelInstances.Add(e.ViewInstance, BuildViewModel(e.RibbonType, e.ViewInstance));
             e.Handled = true;
         }
@@ -91,11 +88,11 @@ namespace Office.Contrib.RibbonFactory
             return _viewModelInstances[context];
         }
 
-        public void RibbonLoaded(TRibbonTypes currentlyLoadingRibbon, IRibbonUI ribbonUi)
+        public void RibbonLoaded(IRibbonUI ribbonUi)
         {
-            _ribbonUiLookup.Add(currentlyLoadingRibbon, ribbonUi);
+            _ribbonUiLookup.Add(_currentlyLoadingRibbon, ribbonUi);
 
-            var viewModelType = _ribbonTypeLookup[currentlyLoadingRibbon];
+            var viewModelType = _ribbonTypeLookup[_currentlyLoadingRibbon];
             foreach (var viewModel in _viewModelInstances.Values
                 .Where(viewModel => viewModel.GetType() == viewModelType && viewModel.RibbonUi == null))
             {

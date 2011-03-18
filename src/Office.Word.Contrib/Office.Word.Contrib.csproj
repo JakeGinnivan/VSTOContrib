@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Office.Word.Contrib.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,6 +53,8 @@
     <Compile Include="..\Information\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="DocumentClosedEventArgs.cs" />
+    <Compile Include="DocumentWrapper.cs" />
     <Compile Include="Extensions\WordCleanupExtensions.cs">
       <DependentUpon>WordCleanupExtensions.tt</DependentUpon>
       <AutoGen>True</AutoGen>

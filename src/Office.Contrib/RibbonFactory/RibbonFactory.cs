@@ -31,7 +31,6 @@ namespace Office.Contrib.RibbonFactory
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
         internal const string CommonCallbacks = "CommonCallbacks";
-        private TRibbonTypes _currentlyLoadingRibbon;
         private ControlCallbackLookup<TRibbonTypes> _controlCallbackLookup;
         private IViewLocationStrategy _viewLocationStrategy;
         
@@ -161,16 +160,14 @@ namespace Office.Contrib.RibbonFactory
         /// </summary>
         public static IRibbonFactory Current { get; protected set; }
 
-        // ReSharper disable InconsistentNaming
         /// <summary>
         /// Ribbon_s the load.
         /// </summary>
         /// <param name="ribbonUi">The ribbon UI.</param>
         public void Ribbon_Load(IRibbonUI ribbonUi)
         {
-            _ribbonViewModelResolver.RibbonLoaded(_currentlyLoadingRibbon, ribbonUi);
+            _ribbonViewModelResolver.RibbonLoaded(ribbonUi);
         }
-        // ReSharper restore InconsistentNaming
 
         private void WireUpEvents(TRibbonTypes ribbonTypes, XContainer ribbonDoc, XNamespace xNamespace)
         {
@@ -231,10 +228,9 @@ namespace Office.Contrib.RibbonFactory
                 return null;
             }
 
-            if (!_ribbonViews.ContainsKey(enumFromDescription)) return null;
-
-            _currentlyLoadingRibbon = enumFromDescription;
-            return _ribbonViews[enumFromDescription];
+            return !_ribbonViews.ContainsKey(enumFromDescription) 
+                ? null 
+                : _ribbonViews[enumFromDescription];
         }
 
         private object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)

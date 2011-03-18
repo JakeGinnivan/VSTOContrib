@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Microsoft.Office.Interop.Word;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
@@ -29,7 +28,8 @@ namespace Office.Word.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            ((DocumentEvents2_Event)doc).Close += WordViewProviderClose;
+            var wrapper = new DocumentWrapper(doc);
+            wrapper.Closed += DocumentClosed;
 
             var newViewEventArgs = new NewViewEventArgs<WordRibbonType>(doc, WordRibbonType.WordDocument);
             handler(this, newViewEventArgs);
@@ -38,14 +38,19 @@ namespace Office.Word.Contrib.RibbonFactory
                 doc.ReleaseComObject();
         }
 
-        void WordViewProviderClose()
+        void DocumentClosed(object sender, DocumentClosedEventArgs e)
         {
+            ((DocumentWrapper)sender).Closed -= DocumentClosed;
+
             var handler = ViewClosed;
             if (handler == null) return;
 
-            handler(this, new ViewClosedEventArgs(_documents.Cast<object>()));
+            handler(this, new ViewClosedEventArgs(e.Document));
         }
 
+        /// <summary>
+        /// Initialises this instance.
+        /// </summary>
         public void Initialise()
         {
             _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
@@ -71,7 +76,6 @@ namespace Office.Word.Contrib.RibbonFactory
         /// <param name="view">The view.</param>
         public void CleanupReferencesTo(object view)
         {
-            ((DocumentEvents2_Event)view).Close -= WordViewProviderClose;
         }
 
         /// <summary>
