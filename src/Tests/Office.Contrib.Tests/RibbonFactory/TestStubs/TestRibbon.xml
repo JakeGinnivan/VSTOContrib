@@ -4,7 +4,8 @@
     <tabs>
       <tab idMso="TabHome">
         <group id="view1" label="RazorDocs">
-          <toggleButton id="showRazorDocsPaneButton" onAction="PanelShown" getPressed="PanelShown" label="Show Panel" showImage="false" />
+          <toggleButton id="testTogglePanelButton" onAction="PanelShown" getPressed="PanelShown" label="Show Panel" showImage="false" />
+          <button id="actionButton" onAction="MyAction" getEnabled="MyActionEnabled" />
         </group>
       </tab>
     </tabs>

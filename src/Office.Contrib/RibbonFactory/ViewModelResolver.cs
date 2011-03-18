@@ -70,6 +70,7 @@ namespace Office.Contrib.RibbonFactory
         void  ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes>  e)
         {
             if (!_ribbonTypeLookup.ContainsKey(e.RibbonType)) return;
+            if (_viewModelInstances.ContainsKey(e.ViewInstance)) return; //Don't need to create a view twice
 
             _viewModelInstances.Add(e.ViewInstance, BuildViewModel(e.RibbonType, e.ViewInstance));
             e.Handled = true;

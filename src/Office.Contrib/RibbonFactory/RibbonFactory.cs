@@ -89,11 +89,12 @@ namespace Office.Contrib.RibbonFactory
             Expression<Action> loadMethod = () => Ribbon_Load(null);
             var loadMethodName = loadMethod.GetMethodName();
 
-
             foreach (var viewModelType in ribbonTypes)
             {
                 LocateAndRegisterViewXml(viewModelType, loadMethodName);
             }
+
+            _viewProvider.Initialise();
 
             return _ribbonViewModelResolver;
         }
@@ -122,8 +123,8 @@ namespace Office.Contrib.RibbonFactory
         {
             var resourceText = (string)_viewLocationStrategy.GetType()
                     .GetMethod("LocateViewForViewModel")
-                    .MakeGenericMethod(viewModelType).
-                    Invoke(_viewLocationStrategy, new object[] { });
+                    .MakeGenericMethod(viewModelType)
+                    .Invoke(_viewLocationStrategy, new object[] { });
 
             var ribbonDoc = XDocument.Parse(resourceText);
 
@@ -254,7 +255,9 @@ namespace Office.Contrib.RibbonFactory
                                          null);
             }
 
-            return type.InvokeMember(callbackTarget.Method,
+            try
+            {
+                return type.InvokeMember(callbackTarget.Method,
                                      BindingFlags.InvokeMethod,
                                      null,
                                      viewModelInstance,
@@ -264,6 +267,15 @@ namespace Office.Contrib.RibbonFactory
                                          }
                                          .Concat(parameters)
                                          .ToArray());
+            }
+            catch (MissingMethodException)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Expecting method with signature: {0}.{1}(IRibbonControl control)",
+                    type.Name,
+                    callbackTarget.Method));
+            }
+            
         }
 
         private void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using NSubstitute;
 using Office.Contrib.RibbonFactory;
@@ -67,9 +71,190 @@ namespace Office.Contrib.Tests.RibbonFactory
             Assert.Contains("view2", customUI2);
         }
 
+        [Fact]
+        public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_toggle_button()
+        {
+            // arrange
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => (IRibbonViewModel) Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+
+            // act
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+
+            // assert
+            Assert.Contains("onAction=\"PressedOnAction\"", processedRibbon);
+            Assert.Contains("getPressed=\"GetPressed\"", processedRibbon);
+        }
+
+        [Fact]
+        public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_button()
+        {
+            // arrange
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => (IRibbonViewModel)Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+
+            // act
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+
+            // assert
+            Assert.Contains("onAction=\"OnAction\"", processedRibbon);
+            Assert.Contains("getEnabled=\"GetEnabled\"", processedRibbon);
+        }
+
+        [Fact]
+        public void toggle_button_is_bound_to_property_get()
+        {
+            // arrange
+            TestRibbonViewModel viewModel = null;
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestView();
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(viewInstance, TestRibbonTypes.RibbonType1));
+            viewModel.PanelShown = true;
+            var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
+
+            // act
+            var ribbonControl = GetRibbonControl("testTogglePanelButton", toggleButtonTag, viewInstance);
+            var isPressed = _ribbonFactoryUnderTest.GetPressed(ribbonControl);
+
+            // assert
+            Assert.True(isPressed);
+        }
+
+        [Fact]
+        public void toggle_button_is_bound_to_property_set()
+        {
+            // arrange
+            TestRibbonViewModel viewModel = null;
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestView();
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(viewInstance, TestRibbonTypes.RibbonType1));
+            viewModel.PanelShown = true;
+            var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
+
+            // act
+            var ribbonControl = GetRibbonControl("testTogglePanelButton", toggleButtonTag, viewInstance);
+            _ribbonFactoryUnderTest.PressedOnAction(ribbonControl, false);
+
+            // assert
+            Assert.False(viewModel.PanelShown);
+        }
+
+        [Fact]
+        public void toggle_button_is_bound_to_property_listens_to_property_changed_events()
+        {
+            // arrange
+            TestRibbonViewModel viewModel = null;
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestView();
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(viewInstance, TestRibbonTypes.RibbonType1));
+            var ribbon = Substitute.For<IRibbonUI>();
+            _ribbonFactoryUnderTest.Ribbon_Load(ribbon);
+
+            // act
+            viewModel.OnPropertyChanged(new PropertyChangedEventArgs("PanelShown"));
+
+            // assert
+            ribbon.Received().InvalidateControl("testTogglePanelButton");
+        }
+
+        [Fact]
+        public void ribbon_xml_getenabled_can_bind_to_method()
+        {
+            // arrange
+            TestRibbonViewModel viewModel = null;
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestView();
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(viewInstance, TestRibbonTypes.RibbonType1));
+            viewModel.PanelShown = true;
+            var buttonTag = GetTag(processedRibbon, "actionButton");
+
+            // act
+            var ribbonControl = GetRibbonControl("actionButton", buttonTag, viewInstance);
+            var isEnabled = _ribbonFactoryUnderTest.GetEnabled(ribbonControl);
+
+            // assert
+            Assert.True(isEnabled);
+        }
+
+        [Fact]
+        public void ribbon_factory_calls_back_to_correct_view_model()
+        {
+            // arrange
+            var viewModels = new List<TestRibbonViewModel>();
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t =>
+                    {
+                        var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
+                        viewModels.Add(testRibbon);
+                        return testRibbon;
+                    },
+                new CustomTaskPaneCollection(),
+                Assembly.GetExecutingAssembly());
+            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestView();
+            var view2Instance = new TestView();
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(viewInstance, TestRibbonTypes.RibbonType1));
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(view2Instance, TestRibbonTypes.RibbonType1));
+            var buttonTag = GetTag(processedRibbon, "testTogglePanelButton");
+
+            // act
+            viewModels[1].PanelShown = true;
+            var ribbonControl = GetRibbonControl("testTogglePanelButton", buttonTag, viewInstance);
+            var ribbon2Control = GetRibbonControl("testTogglePanelButton", buttonTag, view2Instance);
+            var isPressed = _ribbonFactoryUnderTest.GetPressed(ribbonControl);
+            var is2Pressed = _ribbonFactoryUnderTest.GetPressed(ribbon2Control);
+
+            // assert
+            Assert.False(isPressed);
+            Assert.True(is2Pressed);
+        }
+
+        private static string GetTag(string ribbonXml, string controlId)
+        {
+            var tagExpression = new Regex("\\<.*? id=\\\""+controlId+"\\\".*?tag=\\\"(.*?)\\\"");
+            return tagExpression.Match(ribbonXml).Groups[1].Value;
+        }
+
+        private static IRibbonControl GetRibbonControl(string id, string tag, object view)
+        {
+            var ribbonControl = Substitute.For<IRibbonControl>();
+            ribbonControl.Id.Returns(id);
+            ribbonControl.Tag.Returns(tag);
+            ribbonControl.Context.Returns(view);
+            return ribbonControl;
+        }
+
         public void Dispose()
         {
             _ribbonFactoryUnderTest.ClearCurrent();
         }
+    }
+
+    public class TestView
+    {
     }
 }

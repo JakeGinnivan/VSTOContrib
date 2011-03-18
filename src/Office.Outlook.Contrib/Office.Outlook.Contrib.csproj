@@ -66,6 +66,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="InspectorClosedEventArgs.cs" />
+    <Compile Include="InspectorWrapper.cs" />
     <Compile Include="RibbonFactory\InspectorToRibbonTypeConverter.cs" />
     <Compile Include="Interfaces\OutlookInterfaces.cs">
       <DependentUpon>OutlookInterfaces.tt</DependentUpon>

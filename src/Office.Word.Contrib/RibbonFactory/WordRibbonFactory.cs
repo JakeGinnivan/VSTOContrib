@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory;
@@ -9,6 +10,7 @@ namespace Office.Word.Contrib.RibbonFactory
     /// <summary>
     /// 
     /// </summary>
+    [ComVisible(true)]
     public class WordRibbonFactory : RibbonFactory<WordRibbonType>
     {
         private static Application _wordApplication;

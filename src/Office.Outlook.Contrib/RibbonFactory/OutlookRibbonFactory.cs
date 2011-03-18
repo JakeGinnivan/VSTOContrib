@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory;
@@ -12,6 +13,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
     /// by convention. Simply name the Ribbon.xml the same as the ribbon view model class
     /// in the same assembly
     /// </summary>
+    [ComVisible(true)]
     public class OutlookRibbonFactory : RibbonFactory<OutlookRibbonType>
     {
         private static _Application _outlookApplication;

@@ -9,6 +9,11 @@ namespace Office.Contrib.RibbonFactory
     public interface IViewProvider<TRibbonTypes> : IDisposable
     {
         /// <summary>
+        /// 
+        /// </summary>
+        void Initialise();
+
+        /// <summary>
         /// Raise when a new view is created
         /// </summary>
         event EventHandler<NewViewEventArgs<TRibbonTypes>> NewView;

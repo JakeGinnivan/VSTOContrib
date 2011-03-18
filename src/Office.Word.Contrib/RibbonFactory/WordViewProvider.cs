@@ -21,13 +21,7 @@ namespace Office.Word.Contrib.RibbonFactory
         public WordViewProvider(Application wordApplication)
         {
             _wordApplication = wordApplication;
-            wordApplication.DocumentOpen += WordApplicationDocumentOpen;
-
             _documents = _wordApplication.Documents;
-            foreach (Document document in _documents)
-            {
-                WordApplicationDocumentOpen(document);
-            }
         }
 
         void WordApplicationDocumentOpen(Document doc)
@@ -50,6 +44,16 @@ namespace Office.Word.Contrib.RibbonFactory
             if (handler == null) return;
 
             handler(this, new ViewClosedEventArgs(_documents.Cast<object>()));
+        }
+
+        public void Initialise()
+        {
+            _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
+
+            foreach (Document document in _documents)
+            {
+                WordApplicationDocumentOpen(document);
+            }
         }
 
         /// <summary>

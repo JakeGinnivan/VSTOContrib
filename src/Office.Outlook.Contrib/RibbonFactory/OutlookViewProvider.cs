@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Office.Contrib.Extensions;
@@ -19,8 +20,6 @@ namespace Office.Outlook.Contrib.RibbonFactory
         {
             _explorers = outlookApplication.Explorers;
             _inspectors = outlookApplication.Inspectors;
-            RegisterExplorers();
-            RegisterInspectors();
         }
 
         private void RegisterExplorers()
@@ -44,7 +43,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            ((InspectorEvents_10_Event)inspector).Close -= ViewClose;
+            ((InspectorEvents_10_Event)inspector).Close += ViewClose;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
             var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, ribbonType);
@@ -59,7 +58,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            ((ExplorerEvents_10_Event)explorer).Close -= ViewClose;
+            ((ExplorerEvents_10_Event)explorer).Close += ViewClose;
 
             var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, OutlookRibbonType.OutlookExplorer);
             handler(this, newViewEventArgs);
@@ -70,10 +69,17 @@ namespace Office.Outlook.Contrib.RibbonFactory
 
         void ViewClose()
         {
+
             var handler = ViewClosed;
 
             if (handler != null)
                 handler(this, new ViewClosedEventArgs(_inspectors.Cast<object>()));
+        }
+
+        public void Initialise()
+        {
+            RegisterExplorers();
+            RegisterInspectors();
         }
 
         public event EventHandler<NewViewEventArgs<OutlookRibbonType>> NewView;
