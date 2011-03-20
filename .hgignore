@@ -14,3 +14,4 @@ glob:src/Demos/FacebookToOutlook/FacebookToOutlookAddin/FacebookToOutlookAddin.c
 glob:src/VSTOContrib.suo
 glob:src/VSTOContrib.6.0.ReSharper.user
 glob:src/Add-inUninstaller/Add-inUninstaller.csproj.user
+glob:src/VSTOContrib.5.1.ReSharper.user

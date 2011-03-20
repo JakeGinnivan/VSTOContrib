@@ -28,7 +28,7 @@ namespace FacebookToOutlookAddin
         {
             _core = new AddinCore(Application.Session);
             OutlookRibbonFactory.SetApplication(Application);
-            OutlookRibbonFactory.Current.InitialiseFactory(
+            RibbonFactory.Current.InitialiseFactory(
                 t=>(IRibbonViewModel)_core.Resolve(t),
                 CustomTaskPanes,
                 typeof(AddinCore).Assembly);

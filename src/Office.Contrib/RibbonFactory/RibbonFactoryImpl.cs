@@ -14,10 +14,9 @@ namespace Office.Contrib.RibbonFactory
     /// Because you cannot make a generic type COM visible, moving all code that requires generics into this class
     /// </summary>
     /// <typeparam name="TRibbonTypes"></typeparam>
-    internal class RibbonFactoryImpl<TRibbonTypes> : IRibbonFactoryImpl where TRibbonTypes : struct
+    public class RibbonFactoryImpl<TRibbonTypes> : IRibbonFactoryImpl where TRibbonTypes : struct
     {
-        private readonly IViewProvider<TRibbonTypes> _viewProvider;
-        private readonly IViewLocationStrategy _viewLocationStrategy;
+        private IViewLocationStrategy _viewLocationStrategy;
 
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
@@ -31,22 +30,37 @@ namespace Office.Contrib.RibbonFactory
         private ViewModelResolver<TRibbonTypes> _ribbonViewModelResolver;
         private readonly RibbonViewModelHelper _ribbonViewModelHelper = new RibbonViewModelHelper();
         private ControlCallbackLookup _controlCallbackLookup;
+        private IViewProvider<TRibbonTypes> _viewProvider;
 
-        public RibbonFactoryImpl(
-            IViewProvider<TRibbonTypes> viewProvider,
-            IViewLocationStrategy viewLocationStrategy)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RibbonFactoryImpl&lt;TRibbonTypes&gt;"/> class.
+        /// </summary>
+        /// <param name="viewLocationStrategy">The view location strategy.</param>
+        public RibbonFactoryImpl(IViewLocationStrategy viewLocationStrategy = null)
         {
-            _viewProvider = viewProvider;
-            _viewLocationStrategy = viewLocationStrategy;
+            _viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
         }
 
-        public IDisposable Initialise(
+        /// <summary>
+        /// Initialises the specified view provider.
+        /// </summary>
+        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
+        /// <param name="viewProvider">The view provider.</param>
+        /// <param name="loadMethodName">Name of the load method.</param>
+        /// <param name="ribbonElements">The ribbon elements.</param>
+        /// <param name="ribbonFactory">The ribbon factory.</param>
+        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns></returns>
+        public IDisposable Initialise<TRibbonType>(
+            IViewProvider<TRibbonType> viewProvider,
             string loadMethodName,
             Dictionary<string, Dictionary<string, Expression<Action>>> ribbonElements,
             Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection,
             params Assembly[] assemblies)
         {
+            _viewProvider = (IViewProvider<TRibbonTypes>)viewProvider;
             var ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
             _ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
@@ -63,6 +77,11 @@ namespace Office.Contrib.RibbonFactory
             return _ribbonViewModelResolver;
         }
 
+        /// <summary>
+        /// Locates the and register view XML.
+        /// </summary>
+        /// <param name="viewModelType">Type of the view model.</param>
+        /// <param name="loadMethodName">Name of the load method.</param>
         public void LocateAndRegisterViewXml(Type viewModelType, string loadMethodName)
         {
             var resourceText = (string)_viewLocationStrategy.GetType()
@@ -141,6 +160,11 @@ namespace Office.Contrib.RibbonFactory
                 .Aggregate((t, t1) => t.Concat(t1));
         }
 
+        /// <summary>
+        /// Gets the custom UI.
+        /// </summary>
+        /// <param name="ribbonId">The ribbon id.</param>
+        /// <returns></returns>
         public string GetCustomUI(string ribbonId)
         {
             TRibbonTypes enumFromDescription;
@@ -159,6 +183,13 @@ namespace Office.Contrib.RibbonFactory
                 : _ribbonXmlFromTypeLookup[enumFromDescription];
         }
 
+        /// <summary>
+        /// Invokes the get.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="caller">The caller.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             var callbackTarget = _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
@@ -200,6 +231,12 @@ namespace Office.Contrib.RibbonFactory
 
         }
 
+        /// <summary>
+        /// Invokes the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="caller">The caller.</param>
+        /// <param name="parameters">The parameters.</param>
         public void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             var callbackTarget = _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
@@ -235,9 +272,27 @@ namespace Office.Contrib.RibbonFactory
             }
         }
 
+        /// <summary>
+        /// Ribbons the loaded.
+        /// </summary>
+        /// <param name="ribbonUi">The ribbon UI.</param>
         public void RibbonLoaded(IRibbonUI ribbonUi)
         {
             _ribbonViewModelResolver.RibbonLoaded(ribbonUi);
+        }
+
+        /// <summary>
+        /// Gets or sets the locate view strategy.
+        /// </summary>
+        /// <value>The locate view strategy.</value>
+        public IViewLocationStrategy LocateViewStrategy
+        {
+            get { return _viewLocationStrategy; }
+            set
+            {
+                if (value == null) return;
+                _viewLocationStrategy = value;
+            }
         }
     }
 }

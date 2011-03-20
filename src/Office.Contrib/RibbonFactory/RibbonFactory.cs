@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory.Interfaces;
@@ -22,17 +19,16 @@ namespace Office.Contrib.RibbonFactory
     {
         
         internal const string CommonCallbacks = "CommonCallbacks";
-        private IViewLocationStrategy _viewLocationStrategy;
         
         private bool _initialsed;
         private static readonly object InstanceLock = new object();
-        private IRibbonFactoryImpl _ribbonFactoryImpl;
+        private readonly IRibbonFactoryImpl _ribbonFactoryImpl;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonFactory"/> class.
         /// </summary>
-        /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
-        protected RibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
+        /// <param name="ribbonFactoryImpl"></param>
+        protected RibbonFactory(IRibbonFactoryImpl ribbonFactoryImpl)
         {
             lock (InstanceLock)
             {
@@ -40,8 +36,8 @@ namespace Office.Contrib.RibbonFactory
                     throw new InvalidOperationException("You can only create a single ribbon factory");
                 Current = this;
             }
-            
-            _viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
+
+            _ribbonFactoryImpl = ribbonFactoryImpl;
         }
 
         /// <summary>
@@ -81,14 +77,15 @@ namespace Office.Contrib.RibbonFactory
 
             _initialsed = true;
 
-            _ribbonFactoryImpl = new RibbonFactoryImpl<TRibbonTypes>(viewProvider, _viewLocationStrategy);
-
             Expression<Action> loadMethod = () => Ribbon_Load(null);
             var loadMethodName = loadMethod.GetMethodName();
 
             return _ribbonFactoryImpl.Initialise(
-                loadMethodName, GetRibbonElements(), 
-                ribbonFactory, customTaskPaneCollection,
+                viewProvider, 
+                loadMethodName, 
+                GetRibbonElements(), 
+                ribbonFactory, 
+                customTaskPaneCollection,
                 assemblies);
         }
 
@@ -97,12 +94,12 @@ namespace Office.Contrib.RibbonFactory
         ///</summary>
         public IViewLocationStrategy LocateViewStrategy
         {
-            get { return _viewLocationStrategy; }
+            get { return _ribbonFactoryImpl.LocateViewStrategy; }
             set
             {
                 if (value == null) return;
 
-                _viewLocationStrategy = value;
+                _ribbonFactoryImpl.LocateViewStrategy = value;
             }
         }
 
@@ -115,10 +112,12 @@ namespace Office.Contrib.RibbonFactory
         /// Ribbon_s the load.
         /// </summary>
         /// <param name="ribbonUi">The ribbon UI.</param>
+        // ReSharper disable InconsistentNaming
         public void Ribbon_Load(IRibbonUI ribbonUi)
         {
             _ribbonFactoryImpl.RibbonLoaded(ribbonUi);
         }
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets the custom UI.

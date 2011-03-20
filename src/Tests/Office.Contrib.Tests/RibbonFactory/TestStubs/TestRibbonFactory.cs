@@ -9,7 +9,8 @@ namespace Office.Contrib.Tests.RibbonFactory.TestStubs
     {
         private readonly IViewProvider<TestRibbonTypes> _viewProvider;
 
-        public TestRibbonFactory(IViewProvider<TestRibbonTypes> viewProvider)
+        public TestRibbonFactory(IViewProvider<TestRibbonTypes> viewProvider) 
+            : base(new RibbonFactoryImpl<TestRibbonTypes>(new DefaultViewLocationStrategy()))
         {
             _viewProvider = viewProvider;
         }

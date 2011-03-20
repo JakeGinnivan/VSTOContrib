@@ -148,20 +148,20 @@ namespace Office.Contrib.RibbonFactory
 
         private void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object context)
         {
-            var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
-            if (registersCustomTaskPanes!= null)
-            {
-                registersCustomTaskPanes.RegisterTaskPanes(
-                    (control, title) =>
-                        {
-                            var taskPane = _customTaskPanes.Add(control, title, context);
-                            if (!_taskPanesToCleanup.ContainsKey(context))
-                                _taskPanesToCleanup.Add(context, new Queue<CustomTaskPane>());
+            //var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
+            //if (registersCustomTaskPanes!= null)
+            //{
+            //    registersCustomTaskPanes.RegisterTaskPanes(
+            //        (control, title) =>
+            //            {
+            //                var taskPane = _customTaskPanes.Add(control, title, context);
+            //                if (!_taskPanesToCleanup.ContainsKey(context))
+            //                    _taskPanesToCleanup.Add(context, new Queue<CustomTaskPane>());
 
-                            _taskPanesToCleanup[context].Enqueue(taskPane);
-                            return taskPane;
-                        });
-            }
+            //                _taskPanesToCleanup[context].Enqueue(taskPane);
+            //                return taskPane;
+            //            });
+            //}
         }
 
         

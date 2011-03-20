@@ -10,7 +10,7 @@ namespace RazorDocs
 {
     public partial class ThisAddIn
     {
-        private RazorDocsAddin _core;
+        private AddinBootstrapper _core;
 
         private static void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -42,12 +42,12 @@ namespace RazorDocs
 
         private void InternalStartup()
         {
-            _core = new RazorDocsAddin();
+            _core = new AddinBootstrapper();
             WordRibbonFactory.SetApplication(Application);
-            WordRibbonFactory.Current.InitialiseFactory(
+            RibbonFactory.Current.InitialiseFactory(
                 t => (IRibbonViewModel)_core.Resolve(t),
                 CustomTaskPanes,
-                typeof(RazorDocsAddin).Assembly);
+                typeof(AddinBootstrapper).Assembly);
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;
         }

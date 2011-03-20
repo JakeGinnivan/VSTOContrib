@@ -4,13 +4,15 @@ using Autofac;
 namespace RazorDocs.Core
 {
     //Todo create a AutofacAddinBase
-    public class RazorDocsAddin : IDisposable
+    public class AddinBootstrapper : IDisposable
     {
         private readonly IContainer _container;
 
-        public RazorDocsAddin()
+        public AddinBootstrapper()
         {
             var containerBuilder = new ContainerBuilder();
+
+            containerBuilder.RegisterType<RazorDocs>();
 
             _container = containerBuilder.Build();
         }
