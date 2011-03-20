@@ -90,15 +90,17 @@
     <Compile Include="RibbonFactory\CallbackTarget.cs" />
     <Compile Include="RibbonFactory\ControlCallbackLookup.cs" />
     <Compile Include="RibbonFactory\DefaultViewLocationStrategy.cs" />
-    <Compile Include="RibbonFactory\IRegisterCustomTaskPane.cs" />
-    <Compile Include="RibbonFactory\IRibbonFactory.cs" />
-    <Compile Include="RibbonFactory\IRibbonViewModel.cs" />
-    <Compile Include="RibbonFactory\IViewLocationStrategy.cs" />
-    <Compile Include="RibbonFactory\IViewProvider.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IRegisterCustomTaskPane.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IRibbonFactory.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IRibbonFactoryImpl.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IRibbonViewModel.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IViewLocationStrategy.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
     <Compile Include="RibbonFactory\OfficeViewModelBase.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.callbacks.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
+    <Compile Include="RibbonFactory\RibbonFactoryImpl.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelHelper.cs" />
     <Compile Include="RibbonFactory\ViewClosedEventArgs.cs" />
@@ -138,6 +140,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

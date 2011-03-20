@@ -9,7 +9,14 @@ using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace Office.Contrib.RibbonFactory
 {
-    internal class ViewModelResolver<TRibbonTypes> : IDisposable where TRibbonTypes : struct 
+    internal interface IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct
+    {
+        IRibbonViewModel ResolveInstanceFor(object context);
+        void RibbonLoaded(IRibbonUI ribbonUi);
+        void RegisterCallbackControl(TRibbonTypes ribbonType, string controlCallback, string ribbonControl);
+    }
+
+    internal class ViewModelResolver<TRibbonTypes> : IDisposable, IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct 
     {
         private readonly Func<Type, IRibbonViewModel> _ribbonFactory;
         private readonly CustomTaskPaneCollection _customTaskPanes;

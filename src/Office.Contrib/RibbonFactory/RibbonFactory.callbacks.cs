@@ -8,7 +8,7 @@ namespace Office.Contrib.RibbonFactory
 {
     // I know partial classes are bad, but this contains all the callbacks. 
     // Moved into partial class to remove clutter from actual factory
-    partial class RibbonFactory<TRibbonTypes>
+    partial class RibbonFactory
     {
         /// <summary>
         /// button onAction callback
@@ -16,7 +16,7 @@ namespace Office.Contrib.RibbonFactory
         /// <param name="control"></param>
         public void OnAction(IRibbonControl control)
         {
-            Invoke(control, () => OnAction(null));
+            _ribbonFactoryImpl.Invoke(control, () => OnAction(null));
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Office.Contrib.RibbonFactory
         /// <param name="selectedIndex"></param>
         public void SelectionOnAction(IRibbonControl control, string selectedId, int selectedIndex)
         {
-            Invoke(control, () => SelectionOnAction(null, null, 0), selectedId, selectedIndex);
+            _ribbonFactoryImpl.Invoke(control, () => SelectionOnAction(null, null, 0), selectedId, selectedIndex);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Office.Contrib.RibbonFactory
         /// <param name="pressed"></param>
         public void PressedOnAction(IRibbonControl control, bool pressed)
         {
-            Invoke(control, () => PressedOnAction(null, true), pressed);
+            _ribbonFactoryImpl.Invoke(control, () => PressedOnAction(null, true), pressed);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetDescription(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetDescription(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetDescription(null));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public bool GetEnabled(IRibbonControl control)
         {
-            return (bool)InvokeGet(control, () => GetEnabled(null));
+            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetEnabled(null));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetImageMso(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetImageMso(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetImageMso(null));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetLabel(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetLabel(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetLabel(null));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetKeyTip(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetKeyTip(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetKeyTip(null));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetScreenTip(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetScreenTip(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetScreenTip(null));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetSuperTip(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetSuperTip(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetSuperTip(null));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public bool GetVisible(IRibbonControl control)
         {
-            return (bool)InvokeGet(control, () => GetVisible(null));
+            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetVisible(null));
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public bool GetShowImage(IRibbonControl control)
         {
-            return (bool)InvokeGet(control, () => GetShowImage(null));
+            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetShowImage(null));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public bool GetShowLabel(IRibbonControl control)
         {
-            return (bool)InvokeGet(control, () => GetShowLabel(null));
+            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetShowLabel(null));
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public int GetItemCount(IRibbonControl control)
         {
-            return (int)InvokeGet(control, () => GetItemCount(null));
+            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetItemCount(null));
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetItemId(IRibbonControl control, int index)
         {
-            return (string)InvokeGet(control, () => GetItemId(null, 0));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemId(null, 0));
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetItemLabel(IRibbonControl control, int index)
         {
-            return (string)InvokeGet(control, () => GetItemLabel(null, 0));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemLabel(null, 0));
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetItemScreenTip(IRibbonControl control, int index)
         {
-            return (string)InvokeGet(control, () => GetItemScreenTip(null, 0));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemScreenTip(null, 0));
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetItemSuperTip(IRibbonControl control, int index)
         {
-            return (string)InvokeGet(control, () => GetItemSuperTip(null, 0));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemSuperTip(null, 0));
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemId(IRibbonControl control)
         {
-            return (int)InvokeGet(control, () => GetSelectedItemId(null));
+            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetSelectedItemId(null));
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemIndex(IRibbonControl control)
         {
-            return (int)InvokeGet(control, () => GetSelectedItemIndex(null));
+            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetSelectedItemIndex(null));
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetContent(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetContent(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetContent(null));
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetText(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetText(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetText(null));
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public string GetTitle(IRibbonControl control)
         {
-            return (string)InvokeGet(control, () => GetTitle(null));
+            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetTitle(null));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public bool GetPressed(IRibbonControl control)
         {
-            return (bool)InvokeGet(control, () => GetPressed(null));
+            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetPressed(null));
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public RibbonControlSize GetSize(IRibbonControl control)
         {
-            return (RibbonControlSize)InvokeGet(control, () => GetSize(null));
+            return (RibbonControlSize)_ribbonFactoryImpl.InvokeGet(control, () => GetSize(null));
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public int GetItemHeight(IRibbonControl control)
         {
-            return (int)InvokeGet(control, () => GetItemHeight(control));
+            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetItemHeight(control));
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetImage(IRibbonControl control)
         {
-            return (IPictureDisp)InvokeGet(control, () => GetImage(null));
+            return (IPictureDisp)_ribbonFactoryImpl.InvokeGet(control, () => GetImage(null));
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace Office.Contrib.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetItemImage(IRibbonControl control, int index)
         {
-            return (IPictureDisp)InvokeGet(control, () => GetItemImage(null, 0), index);
+            return (IPictureDisp)_ribbonFactoryImpl.InvokeGet(control, () => GetItemImage(null, 0), index);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Office.Contrib.RibbonFactory
         /// <param name="text">The text.</param>
         public void OnTextChanged(IRibbonControl control, string text)
         {
-            Invoke(control, () => OnTextChanged(null, null), text);
+            _ribbonFactoryImpl.Invoke(control, () => OnTextChanged(null, null), text);
         }
 
         private Dictionary<string, Dictionary<string, Expression<Action>>> GetRibbonElements()

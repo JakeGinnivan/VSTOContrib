@@ -14,19 +14,9 @@ namespace Office.Outlook.Contrib.RibbonFactory
     /// in the same assembly
     /// </summary>
     [ComVisible(true)]
-    public class OutlookRibbonFactory : RibbonFactory<OutlookRibbonType>
+    public class OutlookRibbonFactory : Office.Contrib.RibbonFactory.RibbonFactory
     {
         private static _Application _outlookApplication;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutlookRibbonFactory"/> class.
-        /// </summary>
-        /// <param name="viewLocationStrategy">The view location strategy, null for default.</param>
-        public OutlookRibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
-            : base(viewLocationStrategy)
-        {
-            
-        }
 
         /// <summary>
         /// Initialises the factory.
@@ -43,16 +33,9 @@ namespace Office.Outlook.Contrib.RibbonFactory
             if (_outlookApplication == null)
                 throw new InvalidOperationException("Set Outlook application instance first trough SetApplication()");
 
-            return base.InitialiseFactory(ribbonFactory, customTaskPaneCollection, assemblies);
-        }
-
-        /// <summary>
-        /// The Outlook View Provider, which knows about both Explorers and Inspectors
-        /// </summary>
-        /// <returns></returns>
-        protected override IViewProvider<OutlookRibbonType> ViewProvider()
-        {
-            return new OutlookViewProvider(_outlookApplication);
+            return InitialiseFactoryInternal(
+                new OutlookViewProvider(_outlookApplication), ribbonFactory, 
+                customTaskPaneCollection, assemblies);
         }
 
         /// <summary>

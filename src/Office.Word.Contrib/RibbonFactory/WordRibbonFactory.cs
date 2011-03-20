@@ -11,19 +11,9 @@ namespace Office.Word.Contrib.RibbonFactory
     /// 
     /// </summary>
     [ComVisible(true)]
-    public class WordRibbonFactory : RibbonFactory<WordRibbonType>
+    public class WordRibbonFactory : Office.Contrib.RibbonFactory.RibbonFactory
     {
         private static Application _wordApplication;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
-        /// </summary>
-        /// <param name="viewLocationStrategy">The view location strategy, use null for default.</param>
-        public WordRibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
-            : base(viewLocationStrategy)
-        {
-            
-        }
 
         /// <summary>
         /// Initialises the ribbon factory.
@@ -40,16 +30,9 @@ namespace Office.Word.Contrib.RibbonFactory
             if (_wordApplication == null)
                 throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
 
-            return base.InitialiseFactory(ribbonFactory, customTaskPaneCollection, assemblies);
-        }
-
-        /// <summary>
-        /// Gets the Word View Provider for the ribbon factory.
-        /// </summary>
-        /// <returns></returns>
-        protected override IViewProvider<WordRibbonType> ViewProvider()
-        {
-            return new WordViewProvider(_wordApplication);
+            return InitialiseFactoryInternal(
+                new WordViewProvider(_wordApplication), ribbonFactory, 
+                customTaskPaneCollection, assemblies);
         }
 
         /// <summary>

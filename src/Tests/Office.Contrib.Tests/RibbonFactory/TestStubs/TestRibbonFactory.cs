@@ -1,8 +1,11 @@
+using System;
+using System.Reflection;
+using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory;
 
 namespace Office.Contrib.Tests.RibbonFactory.TestStubs
 {
-    public class TestRibbonFactory : RibbonFactory<TestRibbonTypes>
+    internal class TestRibbonFactory : Contrib.RibbonFactory.RibbonFactory
     {
         private readonly IViewProvider<TestRibbonTypes> _viewProvider;
 
@@ -11,9 +14,14 @@ namespace Office.Contrib.Tests.RibbonFactory.TestStubs
             _viewProvider = viewProvider;
         }
 
-        protected override IViewProvider<TestRibbonTypes> ViewProvider()
+        public override IDisposable InitialiseFactory(
+            Func<Type, IRibbonViewModel> ribbonFactory, 
+            CustomTaskPaneCollection customTaskPaneCollection,
+            params Assembly[] assemblies)
         {
-            return _viewProvider;
+            return InitialiseFactoryInternal(
+                _viewProvider, ribbonFactory, 
+                customTaskPaneCollection, assemblies);
         }
 
         public void ClearCurrent()
