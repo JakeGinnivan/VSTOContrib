@@ -76,6 +76,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OfficeCleanupExtensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\RegistryExtensions.cs" />
     <Compile Include="Interfaces\OfficeInterfaces.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

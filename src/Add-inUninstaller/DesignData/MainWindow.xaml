@@ -1,0 +1,9 @@
+﻿<Add_inUninstaller:MainWindowViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                       xmlns:Add_inUninstaller="clr-namespace:Add_inUninstaller">
+    <Add_inUninstaller:MainWindowViewModel.Addins>
+        <Add_inUninstaller:Addin AddinName="Addin1"
+                                 Description="SomeAddin"
+                                 Product="Outlook" />
+    </Add_inUninstaller:MainWindowViewModel.Addins>
+</Add_inUninstaller:MainWindowViewModel>

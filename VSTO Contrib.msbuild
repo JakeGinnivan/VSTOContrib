@@ -3,11 +3,11 @@
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\build\lib\</MSBuildCommunityTasksPath>
   </PropertyGroup>
-  
+
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Deployment.Tasks.Targets"/>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Mercurial.tasks"/>
-  
+
   <UsingTask
     AssemblyFile="lib\xunit.net\xunit.runner.msbuild.dll"
     TaskName="Xunit.Runner.MSBuild.xunit"/>
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <Target Name="Version">
-	<HgVersion LocalPath=".">
+    <HgVersion LocalPath=".">
       <Output TaskParameter="Revision" PropertyName="Revision" />
     </HgVersion>
     <!-- Diagnostics -->
@@ -35,9 +35,9 @@
 
     <!-- Clean up -->
     <ItemGroup>
-      <FilesToDelete Include="$(Root)\src\**\bin\**\*.*" />
-      <FilesToDelete Include="$(Root)\src\**\obj\**\*.*" />
-      <FilesToDelete Include="$(Root)\build\Artifacts\**\*.*" />
+      <FilesToDelete Include="$src\**\bin\**\*.*" />
+      <FilesToDelete Include="$src\**\obj\**\*.*" />
+      <FilesToDelete Include="$build\Artifacts\**\*.*" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
 
@@ -46,22 +46,21 @@
       AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
       AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
       Condition="$(Revision) != '-1' "/>
-
   </Target>
-  
+
   <Target Name="Compile" DependsOnTargets="Version">
-	<ItemGroup>
+    <ItemGroup>
       <ProjectToBuild Include="src\VSTOContrib.sln" />
     </ItemGroup>
-	<MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;" />
-  </Target>  
+    <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;" />
+  </Target>
 
   <Target Name="Test" DependsOnTargets="Compile">
     <xunit Assembly="src\Tests\Office.Contrib.Tests\bin\Build\Office.Contrib.Tests.dll" />
-    <xunit Assembly="src\Tests\Office.Outlook.Contrib.Tests\bin\Build\Office.Outlook.Contrib.Tests.dll" />	
+    <xunit Assembly="src\Tests\Office.Outlook.Contrib.Tests\bin\Build\Office.Outlook.Contrib.Tests.dll" />
     <xunit Assembly="src\Tests\Office.Word.Contrib.Tests\bin\Build\Office.Word.Contrib.Tests.dll" />
   </Target>
-  
+
   <Target Name="Publish" DependsOnTargets="Test">
     <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
              Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
@@ -69,27 +68,27 @@
   </Target>
 
   <Target Name="Package" DependsOnTargets="Publish">
-    
+
     <ItemGroup>
-      <OfficeZipFiles Include="src\Office.Contrib\bin\Build\*.*" Exclude="src\Office.Contrib\bin\Build\*vshost*" />
-      <OutlookZipFiles Include="src\Office.Outlook.Contrib\bin\Build\*.*" Exclude="src\Office.Outlook.Contrib\bin\Build\*vshost*" />
-      <WordZipFiles Include="src\Office.Word.Contrib\bin\Build\*.*" Exclude="src\Office.Word.Contrib\bin\Build\*vshost*" />
-	  <FacebookDemoZipFiles Include="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*.*" 
-	                        Exclude="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Build\*vshost*" />
+      <OfficeZipFiles Include="src\Office.Contrib\bin\Build\*.*"
+                      Exclude="src\Office.Contrib\bin\Build\*vshost*" />
+      <OutlookZipFiles Include="src\Office.Outlook.Contrib\bin\Build\*.*"
+                       Exclude="src\Office.Outlook.Contrib\bin\Build\*vshost*" />
+      <WordZipFiles Include="src\Office.Word.Contrib\bin\Build\*.*"
+                    Exclude="src\Office.Word.Contrib\bin\Build\*vshost*" />
+      <AddinUninstallerFiles Include="src\Add-inUninstaller\bin\Build\*.*"
+                             Exclude="src\Add-inUninstaller\bin\Build\*vshost*" />
+      <PublishZipFiles
+        Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*.*;src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
+        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*vshost*" />
     </ItemGroup>
     <ItemGroup>
       <OldZipFiles Include="..\*.zip" />
     </ItemGroup>
     <Delete Files="@(OldZipFiles)" />
 
-	<ItemGroup>
-      <PublishZipFiles
-        Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*.*;src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
-        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*vshost*" />
-    </ItemGroup>
-	
     <MakeDir Directories="build\Artifacts" Condition="!Exists('build\Artifacts')" />
-	
+
     <Zip Files="@(OfficeZipFiles)"
          WorkingDirectory="src\Office.Contrib\bin\Build\"
          ZipFileName="build\Artifacts\Office.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
@@ -100,8 +99,11 @@
          WorkingDirectory="src\Office.Word.Contrib\bin\Build\"
          ZipFileName="build\Artifacts\Office.Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PublishZipFiles)"
-         WorkingDirectory="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\"
+         WorkingDirectory="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\"
          ZipFileName="build\Artifacts\FacebookToOutlook for Office 2010.v$(Major).$(Minor).$(Build).$(Revision)_Install.zip" />
+    <Zip Files="@(AddinUninstallerFiles )"
+           WorkingDirectory="src\Add-inUninstaller\bin\Build\"
+           ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
   </Target>
 
 </Project>

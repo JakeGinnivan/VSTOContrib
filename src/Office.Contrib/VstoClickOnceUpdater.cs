@@ -51,13 +51,17 @@ namespace Office.Contrib
             var vstoInstallerOutput = new StringBuilder();
 
             var vstoStartInfo = new ProcessStartInfo(installerPath, installerArgs);
-            var returnCode = vstoStartInfo.StartProcess((sender, e) => vstoInstallerOutput.Append((string) e.Data));
+            var returnCode = vstoStartInfo.StartProcess((sender, e) => vstoInstallerOutput.Append(e.Data));
 
             message = vstoInstallerOutput.ToString();
             return returnCode == 0;
         }
 
-        private static string GetInstallerPath()
+        /// <summary>
+        /// Gets the VSTOInstaller path.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetInstallerPath()
         {
             var installerPath = string.Empty;
             //VSTO v4 (VS2010) now gives us a registry key, which is preferred.
@@ -95,18 +99,7 @@ namespace Office.Contrib
         /// <returns></returns>
         private static bool GetInstallerPathFromRegistry(ref string installerPath)
         {
-            var software = Registry.LocalMachine.OpenSubKey("SOFTWARE");
-            if (software == null)
-                return false;
-            var microsoftKey = software.OpenSubKey("Microsoft");
-            if (microsoftKey == null)
-                return false;
-            var vstoRuntimeSetupKey = microsoftKey.OpenSubKey("VSTO Runtime Setup");
-            if(vstoRuntimeSetupKey == null)
-                return false;
-            var vsto4Key = vstoRuntimeSetupKey.OpenSubKey("v4");
-            if (vsto4Key == null)
-                return false;
+            var vsto4Key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VSTO Runtime Setup\v4");
 
             var path = vsto4Key.GetValue("InstallerPath");
             if (path == null)

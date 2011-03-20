@@ -13,3 +13,4 @@ glob:src/Outlook.Utility/Outlook.Utility.csproj.user
 glob:src/Demos/FacebookToOutlook/FacebookToOutlookAddin/FacebookToOutlookAddin.csproj.user
 glob:src/VSTOContrib.suo
 glob:src/VSTOContrib.6.0.ReSharper.user
+glob:src/Add-inUninstaller/Add-inUninstaller.csproj.user
