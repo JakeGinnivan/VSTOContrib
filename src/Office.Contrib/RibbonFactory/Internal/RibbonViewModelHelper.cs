@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Internal
 {
     internal class RibbonViewModelHelper
     {

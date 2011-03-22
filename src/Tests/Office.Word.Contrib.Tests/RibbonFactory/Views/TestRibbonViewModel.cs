@@ -2,10 +2,11 @@ using System.ComponentModel;
 using Microsoft.Office.Core;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Word.Contrib.RibbonFactory;
 
-namespace Office.Contrib.Tests.RibbonFactory.TestStubs
+namespace Office.Word.Contrib.Tests.RibbonFactory.Views
 {
-    [RibbonViewModel(TestRibbonTypes.RibbonType1)]
+    [WordRibbonViewModel]
     public class TestRibbonViewModel : IRibbonViewModel, INotifyPropertyChanged
     {
         public IRibbonUI RibbonUi { get; set; }

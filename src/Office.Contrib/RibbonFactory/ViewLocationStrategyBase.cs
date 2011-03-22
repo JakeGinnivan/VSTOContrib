@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using Office.Contrib.RibbonFactory.Interfaces;
 
 namespace Office.Contrib.RibbonFactory
 {

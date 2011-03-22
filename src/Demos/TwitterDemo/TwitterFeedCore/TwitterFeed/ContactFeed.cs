@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.Outlook;
 using Office.Contrib;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Outlook.Contrib.RibbonFactory;
 using TwitterFeedCore.Services;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;

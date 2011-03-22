@@ -6,7 +6,7 @@ using FacebookToOutlook.ViewModels;
 using FacebookToOutlook.Views;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
-using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Outlook.Contrib.RibbonFactory;
 using Office.Outlook.Contrib.Services;
 

@@ -3,13 +3,14 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Office.Contrib;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Word.Contrib.RibbonFactory;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace RazorDocs.Core
 {
     [WordRibbonViewModel]
-    public class RazorDocs : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+    public class RazorDocs : OfficeViewModelBase, IRibbonViewModel//, IRegisterCustomTaskPane
     {
         private bool _panelShown;
         private Document _document;

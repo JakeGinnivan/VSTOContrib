@@ -1,6 +1,6 @@
 ﻿using Microsoft.Office.Core;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Interfaces
 {
     /// <summary>
     /// Ribbon ViewModel

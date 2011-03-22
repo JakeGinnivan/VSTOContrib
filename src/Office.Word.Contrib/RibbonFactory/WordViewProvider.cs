@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Office.Interop.Word;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Word.Contrib.Interfaces;
 
 namespace Office.Word.Contrib.RibbonFactory
 {
@@ -10,8 +13,9 @@ namespace Office.Word.Contrib.RibbonFactory
     /// </summary>
     public class WordViewProvider : IViewProvider<WordRibbonType>
     {
+        private readonly Dictionary<Document, List<Window>> _documents;
+        private readonly Dictionary<Document, DocumentWrapper> _documentWrappers;
         private Application _wordApplication;
-        private Documents _documents;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WordViewProvider"/> class.
@@ -19,33 +23,43 @@ namespace Office.Word.Contrib.RibbonFactory
         /// <param name="wordApplication">The word application.</param>
         public WordViewProvider(Application wordApplication)
         {
+            _documentWrappers = new Dictionary<Document, DocumentWrapper>();
+            _documents = new Dictionary<Document, List<Window>>();
             _wordApplication = wordApplication;
-            _documents = _wordApplication.Documents;
         }
 
-        void WordApplicationDocumentOpen(Document doc)
+        void WordApplicationWindowActivate(Document doc, Window wn)
         {
             var handler = NewView;
             if (handler == null) return;
+            if (_documents.ContainsKey(doc)) return;
 
-            var wrapper = new DocumentWrapper(doc);
-            wrapper.Closed += DocumentClosed;
+            _documents.Add(doc, new List<Window>());
+            var documentWrapper = new DocumentWrapper(doc);
+            documentWrapper.Closed += DocumentClosed;
+            _documentWrappers.Add(doc, documentWrapper);
 
-            var newViewEventArgs = new NewViewEventArgs<WordRibbonType>(doc, WordRibbonType.WordDocument);
-            handler(this, newViewEventArgs);
+            //Check if we have this window registered
+            if (_documents[doc].Contains(wn)) return;
 
-            if (!newViewEventArgs.Handled)
-                doc.ReleaseComObject();
+            _documents[doc].Add(wn);
+            handler(this, new NewViewEventArgs<WordRibbonType>(wn, doc, WordRibbonType.WordDocument));
         }
 
         void DocumentClosed(object sender, DocumentClosedEventArgs e)
         {
-            ((DocumentWrapper)sender).Closed -= DocumentClosed;
-
             var handler = ViewClosed;
             if (handler == null) return;
 
-            handler(this, new ViewClosedEventArgs(e.Document));
+            _documentWrappers.Remove(e.Document);
+            var windows = _documents[e.Document];
+
+            foreach (var window in windows)
+            {
+                handler(this, new ViewClosedEventArgs(window, e.Document));
+                window.ReleaseComObject();
+            }
+            _documents.Remove(e.Document);
         }
 
         /// <summary>
@@ -53,12 +67,8 @@ namespace Office.Word.Contrib.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
-
-            foreach (Document document in _documents)
-            {
-                WordApplicationDocumentOpen(document);
-            }
+            _wordApplication.WindowActivate += WordApplicationWindowActivate;
+            //TODO protected window activate
         }
 
         /// <summary>
@@ -74,8 +84,10 @@ namespace Office.Word.Contrib.RibbonFactory
         /// Cleanups the references to a view.
         /// </summary>
         /// <param name="view">The view.</param>
-        public void CleanupReferencesTo(object view)
+        /// <param name="context"></param>
+        public void CleanupReferencesTo(object view, object context)
         {
+            
         }
 
         /// <summary>
@@ -83,10 +95,28 @@ namespace Office.Word.Contrib.RibbonFactory
         /// </summary>
         public void Dispose()
         {
-            _documents.ReleaseComObject();
-            _documents = null;
-            _wordApplication.DocumentOpen -= WordApplicationDocumentOpen;
+            _wordApplication.WindowActivate -= WordApplicationWindowActivate;
             _wordApplication = null;
+        }
+
+        /// <summary>
+        /// Registers the open word documents.
+        /// </summary>
+        public void RegisterOpenDocuments()
+        {
+            using (var documents = _wordApplication.Documents.WithComCleanup<Documents, IDocuments>())
+            {
+                foreach (Document document in documents)
+                {
+                    using (var windows = document.Windows.WithComCleanup<Windows, IWindows>())
+                    {
+                        foreach (Window window in windows)
+                        {
+                            WordApplicationWindowActivate(document, window);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Internal
 {
     internal class CallbackTarget<TRibbonType> where TRibbonType : struct 
     {

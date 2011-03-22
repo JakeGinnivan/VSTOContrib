@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 
@@ -17,19 +15,15 @@ namespace Office.Contrib.RibbonFactory.Interfaces
         /// </summary>
         /// <typeparam name="TRibbonTypes">The type of the ribbon types.</typeparam>
         /// <param name="viewProvider">The view provider.</param>
-        /// <param name="loadMethodName">Name of the load method.</param>
-        /// <param name="ribbonElements">The ribbon elements.</param>
         /// <param name="ribbonFactory">The ribbon factory.</param>
+        /// <param name="viewContextProvider">The view context provider.</param>
         /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <param name="assemblies">The assemblies.</param>
         /// <returns></returns>
         IDisposable Initialise<TRibbonTypes>(
             IViewProvider<TRibbonTypes> viewProvider,
-            string loadMethodName,
-            Dictionary<string, Dictionary<string, Expression<Action>>> ribbonElements,
             Func<Type, IRibbonViewModel> ribbonFactory,
-            CustomTaskPaneCollection customTaskPaneCollection,
-            params Assembly[] assemblies);
+            IViewContextProvider viewContextProvider,
+            CustomTaskPaneCollection customTaskPaneCollection);
 
         /// <summary>
         /// Gets the custom UI.

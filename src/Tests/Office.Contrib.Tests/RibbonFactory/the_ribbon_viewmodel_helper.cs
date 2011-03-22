@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Internal;
 using Xunit;
 using Office.Contrib.Tests.RibbonFactory.TestStubs;
 

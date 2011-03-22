@@ -88,8 +88,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RibbonFactory\CallbackTarget.cs" />
-    <Compile Include="RibbonFactory\ControlCallbackLookup.cs" />
+    <Compile Include="RibbonFactory\Internal\CallbackTarget.cs" />
+    <Compile Include="RibbonFactory\Internal\ControlCallbackLookup.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IViewContextProvider.cs" />
+    <Compile Include="RibbonFactory\Internal\CustomTaskPaneRegister.cs" />
     <Compile Include="RibbonFactory\DefaultViewLocationStrategy.cs" />
     <Compile Include="RibbonFactory\Interfaces\IRegisterCustomTaskPane.cs" />
     <Compile Include="RibbonFactory\Interfaces\IRibbonFactory.cs" />
@@ -97,16 +99,17 @@
     <Compile Include="RibbonFactory\Interfaces\IRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewLocationStrategy.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
+    <Compile Include="RibbonFactory\Interfaces\Internal\ICustomTaskPaneRegister.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
     <Compile Include="RibbonFactory\OfficeViewModelBase.cs" />
-    <Compile Include="RibbonFactory\RibbonFactory.callbacks.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonFactoryImpl.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
-    <Compile Include="RibbonFactory\RibbonViewModelHelper.cs" />
+    <Compile Include="RibbonFactory\Internal\RibbonViewModelHelper.cs" />
     <Compile Include="RibbonFactory\ViewClosedEventArgs.cs" />
     <Compile Include="RibbonFactory\ViewLocationStrategyBase.cs" />
-    <Compile Include="RibbonFactory\ViewModelResolver.cs" />
+    <Compile Include="RibbonFactory\Internal\ViewModelResolver.cs" />
     <Compile Include="RibbonFactory\ViewNotFoundException.cs" />
     <Compile Include="UpdateResult.cs" />
     <Compile Include="VstoClickOnceUpdater.cs" />

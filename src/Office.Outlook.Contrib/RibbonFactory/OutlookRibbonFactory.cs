@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 
 namespace Office.Outlook.Contrib.RibbonFactory
 {
@@ -21,8 +22,19 @@ namespace Office.Outlook.Contrib.RibbonFactory
         /// <summary>
         /// Initializes a new instance of the <see cref="OutlookRibbonFactory"/> class.
         /// </summary>
-        public OutlookRibbonFactory(IViewLocationStrategy viewLocationStrategy = null)
-            : base(new RibbonFactoryImpl<OutlookRibbonType>(viewLocationStrategy))
+        public OutlookRibbonFactory(
+            params Assembly[] assemblies)
+            : base(new RibbonFactoryImpl<OutlookRibbonType>(assemblies))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OutlookRibbonFactory"/> class.
+        /// </summary>
+        public OutlookRibbonFactory(
+            IViewLocationStrategy viewLocationStrategy,
+            params Assembly[] assemblies)
+            : base(new RibbonFactoryImpl<OutlookRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 
@@ -31,19 +43,22 @@ namespace Office.Outlook.Contrib.RibbonFactory
         /// </summary>
         /// <param name="ribbonFactory">The ribbon factory.</param>
         /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Disposible object to call on outlook shutdown
+        /// </returns>
+        /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
         public override IDisposable InitialiseFactory(
-            Func<Type, IRibbonViewModel> ribbonFactory, 
-            CustomTaskPaneCollection customTaskPaneCollection, 
-            params Assembly[] assemblies)
+            Func<Type, IRibbonViewModel> ribbonFactory,
+            CustomTaskPaneCollection customTaskPaneCollection)
         {
             if (_outlookApplication == null)
                 throw new InvalidOperationException("Set Outlook application instance first trough SetApplication()");
 
             return InitialiseFactoryInternal(
-                new OutlookViewProvider(_outlookApplication), ribbonFactory, 
-                customTaskPaneCollection, assemblies);
+                new OutlookViewProvider(_outlookApplication), 
+                ribbonFactory,
+                new OutlookViewContextProvider(),
+                customTaskPaneCollection);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Interfaces
 {
     /// <summary>
     /// 
@@ -27,6 +27,7 @@ namespace Office.Contrib.RibbonFactory
         /// Unregister any event handlers, and release any references to a view instance
         /// </summary>
         /// <param name="view"></param>
-        void CleanupReferencesTo(object view);
+        /// <param name="context"></param>
+        void CleanupReferencesTo(object view, object context);
     }
 }

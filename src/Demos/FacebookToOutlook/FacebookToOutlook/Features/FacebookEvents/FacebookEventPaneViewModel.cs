@@ -10,6 +10,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using Office.Contrib;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Outlook.Contrib.RibbonFactory;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 

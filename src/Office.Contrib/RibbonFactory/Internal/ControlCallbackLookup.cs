@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Internal
 {
     internal class ControlCallbackLookup
     {
@@ -16,7 +16,7 @@ namespace Office.Contrib.RibbonFactory
         /// </summary>
         private readonly Dictionary<string, Dictionary<string, string>> _controlReverseCallbackLookup;
 
-        public ControlCallbackLookup(IDictionary<string, Dictionary<string, Expression<Action>>> controlCallbackLookup)
+        public ControlCallbackLookup(IDictionary<string, Dictionary<string, Expression<Action<RibbonFactory>>>> controlCallbackLookup)
         {
             _controlCallbackLookup = new Dictionary<string, Dictionary<string, string>>();
             _controlReverseCallbackLookup = new Dictionary<string, Dictionary<string, string>>();

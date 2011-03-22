@@ -99,7 +99,12 @@ namespace Office.Contrib
         /// <returns></returns>
         private static bool GetInstallerPathFromRegistry(ref string installerPath)
         {
-            var vsto4Key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VSTO Runtime Setup\v4");
+            var vsto4Key = 
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\VSTO Runtime Setup\v4") ??
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4");
+
+            if (vsto4Key == null)
+                return false;
 
             var path = vsto4Key.GetValue("InstallerPath");
             if (path == null)

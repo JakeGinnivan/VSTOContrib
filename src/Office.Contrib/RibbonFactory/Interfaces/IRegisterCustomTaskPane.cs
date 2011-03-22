@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Office.Tools;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Interfaces
 {
     /// <summary>
     /// 

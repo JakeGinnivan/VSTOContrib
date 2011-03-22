@@ -3,6 +3,7 @@ using System.Windows;
 using Microsoft.Office.Core;
 using Office.Contrib;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Outlook.Contrib.RibbonFactory;
 using TwitterFeedCore;
 
@@ -31,7 +32,7 @@ namespace TwitterFeed
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            return new OutlookRibbonFactory();
+            return new OutlookRibbonFactory(typeof(AddinBootstrapper).Assembly);
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -44,10 +45,9 @@ namespace TwitterFeed
         {
             _core = new AddinBootstrapper();
             OutlookRibbonFactory.SetApplication(Application);
-            OutlookRibbonFactory.Current.InitialiseFactory(
+            RibbonFactory.Current.InitialiseFactory(
                 t => (IRibbonViewModel)_core.Resolve(t),
-                CustomTaskPanes,
-                typeof(AddinBootstrapper).Assembly);
+                CustomTaskPanes);
 
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;

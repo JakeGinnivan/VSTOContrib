@@ -3,61 +3,60 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
-using Office.Contrib.Extensions;
-using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
+using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Contrib.RibbonFactory.Interfaces.Internal;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Internal
 {
-    internal interface IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct
-    {
-        IRibbonViewModel ResolveInstanceFor(object context);
-        void RibbonLoaded(IRibbonUI ribbonUi);
-        void RegisterCallbackControl(TRibbonTypes ribbonType, string controlCallback, string ribbonControl);
-    }
-
     internal class ViewModelResolver<TRibbonTypes> : IDisposable, IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct 
     {
-        private readonly Func<Type, IRibbonViewModel> _ribbonFactory;
-        private readonly CustomTaskPaneCollection _customTaskPanes;
-        private readonly IViewProvider<TRibbonTypes> _viewProvider;
-
         /// <summary>
         /// Used when a new explorer or inspector is created to lookup the appropriate viewmodel type
         /// </summary>
-        private readonly Dictionary<TRibbonTypes, Type> _ribbonTypeLookup =
-            new Dictionary<TRibbonTypes, Type>();
+        private readonly Dictionary<TRibbonTypes, Type> _ribbonTypeLookup;
         /// <summary>
         /// Internal lookup for Context instances to view model lookups
         /// </summary>
-        private readonly Dictionary<object, IRibbonViewModel> _viewModelInstances = new Dictionary<object, IRibbonViewModel>();
-        private readonly Dictionary<object, Queue<CustomTaskPane>> _taskPanesToCleanup = new Dictionary<object, Queue<CustomTaskPane>>();
-        private readonly Dictionary<TRibbonTypes, IRibbonUI> _ribbonUiLookup = new Dictionary<TRibbonTypes, IRibbonUI>();
+        private readonly Dictionary<object, IRibbonViewModel> _contextToViewModelLookup;
+        private readonly Dictionary<TRibbonTypes, IRibbonUI> _ribbonUiLookup;
         /// <summary>
         /// Looks up ViewModelType, callback method name, control id, controlId used to invalidate :)
         /// </summary>
-        private readonly Dictionary<Type, List<KeyValuePair<string,string>>> _notifyChangeTargetLookup =
-            new Dictionary<Type, List<KeyValuePair<string, string>>>();
+        private readonly Dictionary<Type, List<KeyValuePair<string,string>>> _notifyChangeTargetLookup;
 
         private readonly RibbonViewModelHelper _ribbonViewModelHelper;
+        private readonly ICustomTaskPaneRegister _customTaskPaneRegister;
+        private Func<Type, IRibbonViewModel> _ribbonFactory;
+        private IViewProvider<TRibbonTypes> _viewProvider;
         private TRibbonTypes _currentlyLoadingRibbon;
+        private IViewContextProvider _viewContextProvider;
 
         public ViewModelResolver(
             IEnumerable<Type> viewModelType, 
-            Func<Type, IRibbonViewModel> ribbonFactory, 
             RibbonViewModelHelper ribbonViewModelHelper,
-            CustomTaskPaneCollection customTaskPanes,
-            IViewProvider<TRibbonTypes> viewProvider)
+            ICustomTaskPaneRegister customTaskPaneRegister)
         {
-            _ribbonFactory = ribbonFactory;
+            _notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
+            _ribbonTypeLookup = new Dictionary<TRibbonTypes, Type>();
+            _contextToViewModelLookup = new Dictionary<object, IRibbonViewModel>();
+            _ribbonUiLookup = new Dictionary<TRibbonTypes, IRibbonUI>();
             _ribbonViewModelHelper = ribbonViewModelHelper;
-            _customTaskPanes = customTaskPanes;
-            _viewProvider = viewProvider;
+            _customTaskPaneRegister = customTaskPaneRegister;
 
             foreach (var ribbonType in viewModelType)
             {
                 CreateRibbonTypeToViewModelTypeLookup(ribbonType);
             }
+        }
+
+        public void Initialise(
+            Func<Type, IRibbonViewModel> ribbonFactory,
+            IViewProvider<TRibbonTypes> viewProvider,
+            IViewContextProvider viewContextProvider)
+        {
+            _viewContextProvider = viewContextProvider;
+            _ribbonFactory = ribbonFactory;
+            _viewProvider = viewProvider;
 
             _viewProvider.NewView += ViewProviderNewView;
             _viewProvider.ViewClosed += ViewProviderViewClosed;
@@ -65,18 +64,18 @@ namespace Office.Contrib.RibbonFactory
 
         void ViewProviderViewClosed(object sender, ViewClosedEventArgs e)
         {
-            CleanupViewModel(e.View);
-            _viewProvider.CleanupReferencesTo(e.View);
-            e.View.ReleaseComObject();
+            CleanupViewModel(e.Context);
+            _viewProvider.CleanupReferencesTo(e.View, e.Context);
         }
 
-        void  ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes>  e)
+        void ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes> e)
         {
             if (!_ribbonTypeLookup.ContainsKey(e.RibbonType)) return;
-            if (_viewModelInstances.ContainsKey(e.ViewInstance)) return; //Don't need to create a view twice
+            if (_contextToViewModelLookup.ContainsKey(e.ViewContext)) return; //Reuse viewmodels for each context
 
             _currentlyLoadingRibbon = e.RibbonType;
-            _viewModelInstances.Add(e.ViewInstance, BuildViewModel(e.RibbonType, e.ViewInstance));
+            _contextToViewModelLookup.Add(e.ViewContext, BuildViewModel(e.RibbonType, e.ViewInstance, e.ViewContext));
+
             e.Handled = true;
         }
 
@@ -90,9 +89,10 @@ namespace Office.Contrib.RibbonFactory
             }
         }
 
-        public IRibbonViewModel ResolveInstanceFor(object context)
+        public IRibbonViewModel ResolveInstanceFor(object view)
         {
-            return _viewModelInstances[context];
+            var context = _viewContextProvider.GetContextForView(view);
+            return _contextToViewModelLookup[context];
         }
 
         public void RibbonLoaded(IRibbonUI ribbonUi)
@@ -100,19 +100,19 @@ namespace Office.Contrib.RibbonFactory
             _ribbonUiLookup.Add(_currentlyLoadingRibbon, ribbonUi);
 
             var viewModelType = _ribbonTypeLookup[_currentlyLoadingRibbon];
-            foreach (var viewModel in _viewModelInstances.Values
+            foreach (var viewModelLookup in _contextToViewModelLookup.Values
                 .Where(viewModel => viewModel.GetType() == viewModelType && viewModel.RibbonUi == null))
             {
-                viewModel.RibbonUi = ribbonUi;
+                viewModelLookup.RibbonUi = ribbonUi;
             }
         }
 
-        private IRibbonViewModel BuildViewModel(TRibbonTypes ribbonType, object context)
+        private IRibbonViewModel BuildViewModel(TRibbonTypes ribbonType, object viewInstance, object viewContext)
         {
             var viewModelType = _ribbonTypeLookup[ribbonType];
             var ribbonViewModel = _ribbonFactory(viewModelType);
-            ribbonViewModel.Displayed(context);
-            RegisterCustomTaskPanes(ribbonViewModel, context);
+            ribbonViewModel.Displayed(viewContext);
+            _customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, viewInstance);
             ListenForINotifyPropertyChanged(ribbonViewModel);
 
             if (_ribbonUiLookup.ContainsKey(ribbonType))
@@ -146,36 +146,13 @@ namespace Office.Contrib.RibbonFactory
             }
         }
 
-        private void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object context)
-        {
-            //var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
-            //if (registersCustomTaskPanes!= null)
-            //{
-            //    registersCustomTaskPanes.RegisterTaskPanes(
-            //        (control, title) =>
-            //            {
-            //                var taskPane = _customTaskPanes.Add(control, title, context);
-            //                if (!_taskPanesToCleanup.ContainsKey(context))
-            //                    _taskPanesToCleanup.Add(context, new Queue<CustomTaskPane>());
-
-            //                _taskPanesToCleanup[context].Enqueue(taskPane);
-            //                return taskPane;
-            //            });
-            //}
-        }
-
-        
-
         private void CleanupViewModel(object context)
         {
-            if (_taskPanesToCleanup.ContainsKey(context))
-            {
-                while (_taskPanesToCleanup[context].Count > 0)
-                {
-                    _taskPanesToCleanup[context].Dequeue().Dispose();
-                }
-            }
-            var viewModelInstance = _viewModelInstances[context];
+            //TODO write test around context/view cleanup
+            _customTaskPaneRegister.Cleanup(context);
+            var viewModelInstance = _contextToViewModelLookup[context];
+
+
             var notifyOfPropertyChanged = viewModelInstance as INotifyPropertyChanged;
             if (notifyOfPropertyChanged != null)
                 notifyOfPropertyChanged.PropertyChanged -= NotifiesOfPropertyChangedPropertyChanged;
@@ -183,7 +160,8 @@ namespace Office.Contrib.RibbonFactory
             var disposible = viewModelInstance as IDisposable;
             if (disposible != null) disposible.Dispose();
             viewModelInstance.Cleanup();
-            _viewModelInstances.Remove(context);
+
+            _contextToViewModelLookup.Remove(context);
         }
 
         public void Dispose()
@@ -198,6 +176,18 @@ namespace Office.Contrib.RibbonFactory
                 _notifyChangeTargetLookup.Add(type, new List<KeyValuePair<string, string>>());
 
             _notifyChangeTargetLookup[type].Add(new KeyValuePair<string, string>(controlCallback, ribbonControl));
+        }
+    }
+
+    internal class ViewModelKey
+    {
+        public object View { get; private set; }
+        public object Context { get; private set; }
+
+        public ViewModelKey(object view, object context)
+        {
+            View = view;
+            Context = context;
         }
     }
 }

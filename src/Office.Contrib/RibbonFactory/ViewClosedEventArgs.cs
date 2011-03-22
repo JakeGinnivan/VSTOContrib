@@ -14,12 +14,20 @@ namespace Office.Contrib.RibbonFactory
         public object View { get; private set; }
 
         /// <summary>
+        /// Gets or sets the context.
+        /// </summary>
+        /// <value>The context.</value>
+        public object Context { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ViewClosedEventArgs"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
-        public ViewClosedEventArgs(object view)
+        /// <param name="context">The context.</param>
+        public ViewClosedEventArgs(object view, object context)
         {
             View = view;
+            Context = context;
         }
     }
 }

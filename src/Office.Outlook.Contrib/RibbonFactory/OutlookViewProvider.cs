@@ -2,6 +2,7 @@ using System;
 using Microsoft.Office.Interop.Outlook;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 
 namespace Office.Outlook.Contrib.RibbonFactory
 {
@@ -45,7 +46,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, ribbonType);
+            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, inspector.CurrentItem, ribbonType);
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -60,7 +61,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, OutlookRibbonType.OutlookExplorer);
+            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, explorer.CurrentFolder, OutlookRibbonType.OutlookExplorer);
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -75,7 +76,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Explorer));
+                handler(this, new ViewClosedEventArgs(e.Explorer, e.Explorer.CurrentFolder));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)
@@ -86,7 +87,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Inspector));
+                handler(this, new ViewClosedEventArgs(e.Inspector, e.Inspector.CurrentItem));
         }
 
         public void Initialise()
@@ -98,7 +99,7 @@ namespace Office.Outlook.Contrib.RibbonFactory
         public event EventHandler<NewViewEventArgs<OutlookRibbonType>> NewView;
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
-        public void CleanupReferencesTo(object view)
+        public void CleanupReferencesTo(object view, object context)
         {
         }
 

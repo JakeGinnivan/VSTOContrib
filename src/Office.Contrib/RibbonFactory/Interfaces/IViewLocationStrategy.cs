@@ -1,4 +1,4 @@
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.RibbonFactory.Interfaces
 {
     /// <summary>
     /// View Location Strategy

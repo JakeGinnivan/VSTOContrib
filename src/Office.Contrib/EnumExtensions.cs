@@ -90,5 +90,16 @@ namespace Office.Contrib
         {
             return ((MethodCallExpression)expression.Body).Method.Name;
         }
+
+        ///<summary>
+        /// Gets the method name used in an expression. Provides strongly typed method name resolution.
+        /// ()=>MyMethod(null, null) - will return MyMethod.
+        ///</summary>
+        ///<param name="expression">The action calling the method</param>
+        ///<returns>The name of the called method</returns>
+        public static string GetMethodName<T>(this Expression<Action<T>> expression)
+        {
+            return ((MethodCallExpression)expression.Body).Method.Name;
+        }
     }
 }

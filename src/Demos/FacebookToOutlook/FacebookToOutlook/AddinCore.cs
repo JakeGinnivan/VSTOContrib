@@ -12,7 +12,7 @@ using log4net.Config;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Practices.ServiceLocation;
 using Office.Contrib;
-using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Interfaces;
 
 namespace FacebookToOutlook
 {

@@ -106,7 +106,7 @@ namespace Add_inUninstaller
                     {
                         throw new InvalidOperationException("Cannot find VSTO Installer");
                     }
-                    var installerArgs = string.Format(" /U {0}", SelectedAddin.Manifest);
+                    var installerArgs = string.Format(" /U \"{0}\"", SelectedAddin.Manifest);
 
                     var vstoInstallerOutput = new StringBuilder();
 
@@ -117,6 +117,8 @@ namespace Add_inUninstaller
 
                     Debug.WriteLine("VSTO Installer Returned: {0}", returnCode);
                     Debug.Write(message);
+                    if (returnCode != 0)
+                        SelectedAddin.RegistryKey.DeleteKey();
                 }
                 else
                 {

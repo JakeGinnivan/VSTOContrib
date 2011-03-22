@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
-using NSubstitute;
 using Office.Contrib.RibbonFactory;
+using Office.Contrib.RibbonFactory.Internal;
 using Office.Contrib.Tests.RibbonFactory.TestStubs;
 using Xunit;
 
@@ -11,18 +10,14 @@ namespace Office.Contrib.Tests.RibbonFactory
 {
     public class the_view_model_resolver
     {
-        private readonly IViewProvider<TestRibbonTypes> _viewProvider;
         private readonly Func<IEnumerable<Type>, ViewModelResolver<TestRibbonTypes>> _resolverFactory;
 
         public the_view_model_resolver()
         {
-            _viewProvider = Substitute.For<IViewProvider<TestRibbonTypes>>();
             _resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
                 vms,
-                t=>(IRibbonViewModel)Activator.CreateInstance(t),
                 new RibbonViewModelHelper(),
-                new CustomTaskPaneCollection(),
-                _viewProvider);
+                new CustomTaskPaneRegister());
         }
 
         [Fact]

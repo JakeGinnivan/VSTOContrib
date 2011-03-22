@@ -9,16 +9,19 @@ namespace Office.Contrib.RibbonFactory
     public class NewViewEventArgs<TRibbonTypes> : EventArgs
     {
         private readonly object _viewInstance;
+        private readonly object _viewContext;
         private readonly TRibbonTypes _ribbonType;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="viewInstance"></param>
+        /// <param name="viewContext"></param>
         /// <param name="ribbonType"></param>
-        public NewViewEventArgs(object viewInstance, TRibbonTypes ribbonType)
+        public NewViewEventArgs(object viewInstance, object viewContext, TRibbonTypes ribbonType)
         {
             _viewInstance = viewInstance;
+            _viewContext = viewContext;
             _ribbonType = ribbonType;
         }
 
@@ -36,6 +39,13 @@ namespace Office.Contrib.RibbonFactory
         public object ViewInstance
         {
             get { return _viewInstance; }
+        }
+
+        ///<summary>
+        ///</summary>
+        public object ViewContext
+        {
+            get { return _viewContext; }
         }
 
         /// <summary>
