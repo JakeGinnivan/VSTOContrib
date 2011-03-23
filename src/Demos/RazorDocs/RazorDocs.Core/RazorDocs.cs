@@ -10,7 +10,7 @@ using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 namespace RazorDocs.Core
 {
     [WordRibbonViewModel]
-    public class RazorDocs : OfficeViewModelBase, IRibbonViewModel//, IRegisterCustomTaskPane
+    public class RazorDocs : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
         private bool _panelShown;
         private Document _document;
@@ -38,6 +38,7 @@ namespace RazorDocs.Core
 
         public void RegisterTaskPanes(Register register)
         {
+            //TODO Custom task panes should be 'attached' to new views, but only registered once
             _control = new WpfPanelHost
                            {
                                Child = new RazorDocsPanel

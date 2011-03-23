@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -253,37 +254,48 @@ namespace Office.Contrib.RibbonFactory
         /// <param name="parameters">The parameters.</param>
         public void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
-            var callbackTarget = _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
-
-            var viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
-
-            Type type = viewModelInstance.GetType();
-            var property = type.GetProperty(callbackTarget.Method);
-
-            if (property != null)
+            try
             {
-                type.InvokeMember(callbackTarget.Method,
-                                       BindingFlags.SetProperty,
-                                       null,
-                                       viewModelInstance,
-                                       new[]
+                var callbackTarget = _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+
+                var viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+
+                Type type = viewModelInstance.GetType();
+                var property = type.GetProperty(callbackTarget.Method);
+
+                if (property != null)
+                {
+                    type.InvokeMember(callbackTarget.Method,
+                                           BindingFlags.SetProperty,
+                                           null,
+                                           viewModelInstance,
+                                           new[]
                                            {
                                                parameters.Single()
                                            });
-            }
-            else
-            {
-                type.InvokeMember(callbackTarget.Method,
-                                       BindingFlags.InvokeMethod,
-                                       null,
-                                       viewModelInstance,
-                                       new[]
+                }
+                else
+                {
+                    type.InvokeMember(callbackTarget.Method,
+                                           BindingFlags.InvokeMethod,
+                                           null,
+                                           viewModelInstance,
+                                           new[]
                                            {
                                                control
                                            }
-                                       .Concat(parameters)
-                                       .ToArray());
+                                           .Concat(parameters)
+                                           .ToArray());
+                }
             }
+            catch (Exception ex)
+            {
+                //TODO Provider better error handling, handle TargetInvocationException,
+                // then surface inner exceptions message
+                Debug.WriteLine(ex);
+                throw;
+            }
+            
         }
 
         /// <summary>
