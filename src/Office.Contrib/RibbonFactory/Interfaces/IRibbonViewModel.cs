@@ -18,7 +18,13 @@ namespace Office.Contrib.RibbonFactory.Interfaces
         /// Called when the window that the ribbon is shown in is opened
         /// </summary>
         /// <param name="context">The context.</param>
-        void Displayed(object context);
+        void Initialised(object context);
+
+        /// <summary>
+        /// Called when the current view is changed.
+        /// </summary>
+        /// <param name="currentView">The current view.</param>
+        void CurrentViewChanged(object currentView);
 
         /// <summary>
         /// Cleanups this instance.

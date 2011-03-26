@@ -1,40 +1,40 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Word;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
 
-namespace Office.Word.Contrib.RibbonFactory
+namespace Office.PowerPoint.Contrib.RibbonFactory
 {
     /// <summary>
     /// 
     /// </summary>
     [ComVisible(true)]
-    public class WordRibbonFactory : Office.Contrib.RibbonFactory.RibbonFactory
+    public class PowerPointRibbonFactory : Office.Contrib.RibbonFactory.RibbonFactory
     {
         private static Application _wordApplication;
-        private WordViewProvider _wordViewProvider;
+        private PowerPointViewProvider _wordViewProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
+        /// Initializes a new instance of the <see cref="PowerPointRibbonFactory"/> class.
         /// </summary>
         /// <param name="assemblies">Assemblies to scan for view models</param>
-        public WordRibbonFactory(params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<WordRibbonType>(assemblies))
+        public PowerPointRibbonFactory(params Assembly[] assemblies)
+            : base(new RibbonFactoryImpl<PowerPointRibbonType>(assemblies))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
+        /// Initializes a new instance of the <see cref="PowerPointRibbonFactory"/> class.
         /// </summary>
         /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
-        public WordRibbonFactory(
+        public PowerPointRibbonFactory(
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<WordRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryImpl<PowerPointRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 
@@ -51,18 +51,14 @@ namespace Office.Word.Contrib.RibbonFactory
             if (_wordApplication == null)
                 throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
 
-            _wordViewProvider = new WordViewProvider(_wordApplication);
+            _wordViewProvider = new PowerPointViewProvider(_wordApplication);
             return InitialiseFactoryInternal(
                 _wordViewProvider,  
                 ribbonFactory,
-                new WordViewContextProvider(),
+                new PowerPointViewContextProvider(),
                 customTaskPaneCollection);
         }
 
-        /// <summary>
-        /// Ribbon_s the load.
-        /// </summary>
-        /// <param name="ribbonUi">The ribbon UI.</param>
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
         {
             //Word does not raise a new document event when we are starting up, and initialise is too soon

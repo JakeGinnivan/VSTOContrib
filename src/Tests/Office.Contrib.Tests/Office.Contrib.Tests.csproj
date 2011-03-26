@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ComCleanupEnumeratorFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonFactory\TestRibbonFactory.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel2.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestStruct.cs" />

@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.Contrib.Testing", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add-inUninstaller", "Add-inUninstaller\Add-inUninstaller.csproj", "{A3193129-090A-47F6-93A2-6AD81AEFFC3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.PowerPoint.Contrib", "Office.PowerPoint.Contrib\Office.PowerPoint.Contrib.csproj", "{B2E0CA45-DFA9-447B-B473-9A17756BF79A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,6 +158,10 @@ Global
 		{A3193129-090A-47F6-93A2-6AD81AEFFC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3193129-090A-47F6-93A2-6AD81AEFFC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3193129-090A-47F6-93A2-6AD81AEFFC3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

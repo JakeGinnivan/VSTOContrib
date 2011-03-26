@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Microsoft.Office.Core;
 using Office.Contrib.RibbonFactory;
@@ -10,8 +11,13 @@ namespace Office.Contrib.Tests.RibbonFactory.TestStubs
     {
         public IRibbonUI RibbonUi { get; set; }
 
-        public void Displayed(object context)
+        public void Initialised(object context)
         {
+        }
+
+        public void CurrentViewChanged(object currentView)
+        {
+            
         }
 
         public bool PanelShown { get; set; }

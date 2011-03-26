@@ -17,9 +17,14 @@ namespace RazorDocs.Core
         private WpfPanelHost _control;
         private CustomTaskPane _razorDocsTaskPane;
 
-        public void Displayed(object context)
+        public void Initialised(object context)
         {
             _document = (Document) context;
+        }
+
+        public void CurrentViewChanged(object currentView)
+        {
+            
         }
 
         public IRibbonUI RibbonUi { get; set; }

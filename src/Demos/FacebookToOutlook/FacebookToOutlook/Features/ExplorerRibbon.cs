@@ -33,7 +33,12 @@ namespace FacebookToOutlook.Features
         }
 
         public IRibbonUI RibbonUi{get;set;}
-        public void Displayed(object context)
+        public void Initialised(object context)
+        {
+            
+        }
+
+        public void CurrentViewChanged(object currentView)
         {
             
         }

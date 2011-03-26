@@ -111,7 +111,7 @@ namespace Office.Contrib.RibbonFactory.Internal
         {
             var viewModelType = _ribbonTypeLookup[ribbonType];
             var ribbonViewModel = _ribbonFactory(viewModelType);
-            ribbonViewModel.Displayed(viewContext);
+            ribbonViewModel.Initialised(viewContext);
             _customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, viewInstance);
             ListenForINotifyPropertyChanged(ribbonViewModel);
 

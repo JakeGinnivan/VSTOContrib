@@ -5,7 +5,7 @@ namespace Office.Contrib.RibbonFactory
     /// <summary>
     /// Meta data about the ribbon view model
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class RibbonViewModelAttribute : Attribute
     {
         /// <summary>

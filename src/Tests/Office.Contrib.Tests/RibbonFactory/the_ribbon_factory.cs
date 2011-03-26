@@ -231,6 +231,66 @@ namespace Office.Contrib.Tests.RibbonFactory
             Assert.True(is2Pressed);
         }
 
+        [Fact]
+        public void new_window_with_same_context_does_not_create_new_viewmodel()
+        {
+            // arrange
+            var viewModels = new List<TestRibbonViewModel>();
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t =>
+                    {
+                        var testRibbon = (TestRibbonViewModel) Activator.CreateInstance(t);
+                        viewModels.Add(testRibbon);
+                        return testRibbon;
+                    },
+                new CustomTaskPaneCollection());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestWindow {Context = new TestWindowContext()};
+            var view2Instance = new TestWindow {Context = new TestWindowContext()};
+
+            // act
+
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+                                                                        viewInstance, viewInstance.Context,
+                                                                        TestRibbonTypes.RibbonType1));
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+                                                                        view2Instance, viewInstance.Context,
+                                                                        TestRibbonTypes.RibbonType1));
+
+            // assert
+            Assert.Equal(1, viewModels.Count);
+        }
+
+        [Fact]
+        public void new_window_with_different_context_does_not_create_new_viewmodel()
+        {
+            // arrange
+            var viewModels = new List<TestRibbonViewModel>();
+            _ribbonFactoryUnderTest.InitialiseFactory(
+                t =>
+                {
+                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
+                    viewModels.Add(testRibbon);
+                    return testRibbon;
+                },
+                new CustomTaskPaneCollection());
+            //Open new view to create a viewmodel for view
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
+            var view2Instance = new TestWindow { Context = new TestWindowContext() };
+
+            // act
+
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+                                                                        viewInstance, viewInstance.Context,
+                                                                        TestRibbonTypes.RibbonType1));
+            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+                                                                        view2Instance, view2Instance.Context,
+                                                                        TestRibbonTypes.RibbonType1));
+
+            // assert
+            Assert.Equal(2, viewModels.Count);
+        }
+
         private static string GetTag(string ribbonXml, string controlId)
         {
             var tagExpression = new Regex("\\<.*? id=\\\""+controlId+"\\\".*?tag=\\\"(.*?)\\\"");

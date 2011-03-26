@@ -70,13 +70,18 @@ namespace TwitterFeedCore.TwitterFeed
             return !string.IsNullOrEmpty(TwitterUsername);
         }
 
-        public void Displayed(object context)
+        public void Initialised(object context)
         {
             _inspector = (Inspector) context;
             _contactAdapter = new ContactAdapter((ContactItem) _inspector.CurrentItem);
             TwitterUsername = _contactAdapter.TwitterUsername;
             if (!string.IsNullOrEmpty(TwitterUsername))
                 RefreshCommand.Execute(null);
+        }
+
+        public void CurrentViewChanged(object currentView)
+        {
+            
         }
 
         public string TwitterUsername

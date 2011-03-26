@@ -32,12 +32,17 @@ namespace FacebookToOutlook.Features.FacebookEvents
             _applicationSettings = applicationSettings;
         }
 
-        public void Displayed(object context)
+        public void Initialised(object context)
         {
             var inspector = ((Inspector) context);
             _eventAdapter = new FacebookEventAdapter((_AppointmentItem) inspector.CurrentItem);
             if (!_eventAdapter.IsFacebookEvent)
                 SetIsRibbonVisible(false);
+        }
+
+        public void CurrentViewChanged(object currentView)
+        {
+            
         }
 
         public void RegisterTaskPanes(Register register)

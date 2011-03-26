@@ -8,6 +8,11 @@ namespace Office.Word.Contrib.RibbonFactory
     /// </summary>
     public class WordViewContextProvider : IViewContextProvider
     {
+        /// <summary>
+        /// Gets the context for view.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
         public object GetContextForView(object view)
         {
             var window = view as Window;
