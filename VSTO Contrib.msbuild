@@ -37,7 +37,7 @@
     <ItemGroup>
       <FilesToDelete Include="$src\**\bin\**\*.*" />
       <FilesToDelete Include="$src\**\obj\**\*.*" />
-      <FilesToDelete Include="$build\Artifacts\**\*.*" />
+      <FilesToDelete Include="build\Artifacts\**\*.*" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
 
@@ -76,6 +76,8 @@
                        Exclude="src\Office.Outlook.Contrib\bin\Build\*vshost*" />
       <WordZipFiles Include="src\Office.Word.Contrib\bin\Build\*.*"
                     Exclude="src\Office.Word.Contrib\bin\Build\*vshost*" />
+      <PowerPointZipFiles Include="src\Office.PowerPoint.Contrib\bin\Build\*.*"
+                    Exclude="src\Office.PowerPoint.Contrib\bin\Build\*vshost*" />
       <AddinUninstallerFiles Include="src\Add-inUninstaller\bin\Build\*.*"
                              Exclude="src\Add-inUninstaller\bin\Build\*vshost*" />
       <PublishZipFiles
@@ -98,6 +100,9 @@
     <Zip Files="@(WordZipFiles)"
          WorkingDirectory="src\Office.Word.Contrib\bin\Build\"
          ZipFileName="build\Artifacts\Office.Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+	<Zip Files="@(PowerPointZipFiles)"
+         WorkingDirectory="src\Office.PowerPoint.Contrib\bin\Build\"
+         ZipFileName="build\Artifacts\Office.PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PublishZipFiles)"
          WorkingDirectory="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\"
          ZipFileName="build\Artifacts\FacebookToOutlook for Office 2010.v$(Major).$(Minor).$(Build).$(Revision)_Install.zip" />

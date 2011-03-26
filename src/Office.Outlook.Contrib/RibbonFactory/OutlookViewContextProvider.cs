@@ -8,6 +8,11 @@ namespace Office.Outlook.Contrib.RibbonFactory
     /// </summary>
     public class OutlookViewContextProvider : IViewContextProvider
     {
+        /// <summary>
+        /// Gets the context for view.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
         public object GetContextForView(object view)
         {
             var inspector = view as Inspector;
