@@ -36,6 +36,7 @@ namespace Office.Contrib.RibbonFactory.Internal
             RibbonViewModelHelper ribbonViewModelHelper,
             ICustomTaskPaneRegister customTaskPaneRegister)
         {
+            _currentlyLoadingRibbon = (TRibbonTypes)(object)1;
             _notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
             _ribbonTypeLookup = new Dictionary<TRibbonTypes, Type>();
             _contextToViewModelLookup = new Dictionary<object, IRibbonViewModel>();
@@ -71,7 +72,12 @@ namespace Office.Contrib.RibbonFactory.Internal
         void ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes> e)
         {
             if (!_ribbonTypeLookup.ContainsKey(e.RibbonType)) return;
-            if (_contextToViewModelLookup.ContainsKey(e.ViewContext)) return; //Reuse viewmodels for each context
+            if (_contextToViewModelLookup.ContainsKey(e.ViewContext))
+            {
+                //Tell viewmodel there is a new view active
+                _contextToViewModelLookup[e.ViewContext].CurrentViewChanged(e.ViewInstance);
+                return; 
+            }
 
             _currentlyLoadingRibbon = e.RibbonType;
             _contextToViewModelLookup.Add(e.ViewContext, BuildViewModel(e.RibbonType, e.ViewInstance, e.ViewContext));
@@ -112,6 +118,7 @@ namespace Office.Contrib.RibbonFactory.Internal
             var viewModelType = _ribbonTypeLookup[ribbonType];
             var ribbonViewModel = _ribbonFactory(viewModelType);
             ribbonViewModel.Initialised(viewContext);
+            ribbonViewModel.CurrentViewChanged(viewInstance);
             _customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, viewInstance);
             ListenForINotifyPropertyChanged(ribbonViewModel);
 
