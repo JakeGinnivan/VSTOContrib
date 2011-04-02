@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Office.Interop.PowerPoint;
-using Office.PowerPoint.Contrib.Extensions;
+using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
 
@@ -34,8 +34,8 @@ namespace Office.PowerPoint.Contrib.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            using(var withComCleanup = pres.Windows.WithComCleanup())
-            foreach (var documentWindow in withComCleanup)
+            using(var documentWindows = pres.Windows.WithComCleanup())
+            foreach (var documentWindow in documentWindows.Resource)
             {
                 handler(this, new NewViewEventArgs<PowerPointRibbonType>(
                     documentWindow, pres,
@@ -84,11 +84,11 @@ namespace Office.PowerPoint.Contrib.RibbonFactory
         {
             using (var presentations = _powerPointApplication.Presentations.WithComCleanup())
             {
-                foreach (Presentation presentation in presentations)
+                foreach (Presentation presentation in presentations.Resource)
                 {
                     using (var windows = presentation.Windows.WithComCleanup())
                     {
-                        foreach (DocumentWindow window in windows)
+                        foreach (DocumentWindow window in windows.Resource)
                         {
                             PowerPointApplicationWindowActivate(presentation, window);
                         }

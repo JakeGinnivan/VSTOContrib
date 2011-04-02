@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
 using NSubstitute;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Contrib.Testing;
 using Office.Contrib.Tests.RibbonFactory.TestStubs;
 using Xunit;
 
@@ -35,11 +35,11 @@ namespace Office.Contrib.Tests.RibbonFactory
         {
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => (IRibbonViewModel) Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             Assert.Throws<InvalidOperationException>(() => _ribbonFactoryUnderTest.InitialiseFactory(
                 t=>(IRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection()));            
+                OfficeObjectMother.CreateCustomTaskPaneCollection()));            
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Office.Contrib.Tests.RibbonFactory
         {
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => (IRibbonViewModel) Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             var customUI1 = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             var customUI2 = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType2.GetEnumDescription());
@@ -73,7 +73,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             // arrange
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => (IRibbonViewModel) Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             // act
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
@@ -89,7 +89,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             // arrange
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => (IRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             // act
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
@@ -106,7 +106,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             TestRibbonViewModel viewModel = null;
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow{Context = new TestWindowContext()};
@@ -130,7 +130,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             TestRibbonViewModel viewModel = null;
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow{ Context = new TestWindowContext()};
@@ -154,7 +154,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             TestRibbonViewModel viewModel = null;
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow{Context = new TestWindowContext()};
             _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
@@ -176,7 +176,7 @@ namespace Office.Contrib.Tests.RibbonFactory
             TestRibbonViewModel viewModel = null;
             _ribbonFactoryUnderTest.InitialiseFactory(
                 t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow
@@ -208,7 +208,7 @@ namespace Office.Contrib.Tests.RibbonFactory
                         viewModels.Add(testRibbon);
                         return testRibbon;
                     },
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow{Context = new TestWindowContext()};
@@ -243,7 +243,7 @@ namespace Office.Contrib.Tests.RibbonFactory
                         viewModels.Add(testRibbon);
                         return testRibbon;
                     },
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow {Context = new TestWindowContext()};
             var view2Instance = new TestWindow {Context = new TestWindowContext()};
@@ -273,7 +273,7 @@ namespace Office.Contrib.Tests.RibbonFactory
                     viewModels.Add(testRibbon);
                     return testRibbon;
                 },
-                new CustomTaskPaneCollection());
+                OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             var view2Instance = new TestWindow { Context = new TestWindowContext() };

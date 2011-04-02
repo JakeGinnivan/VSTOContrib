@@ -13,7 +13,14 @@ foreach (var outlookInterface in typeof(Microsoft.Office.Interop.Outlook.Applica
 	/// <summary>
 	/// Wrapper interface for <#= outlookInterface.Name #> which adds IDispose to the interface
 	/// </summary>
-	public interface I<#= outlookInterface.Name #> : <#= outlookInterface.FullName #>, System.IDisposable { }
+	public interface I<#= outlookInterface.Name #> : <#= outlookInterface.FullName #>, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		<#= outlookInterface.FullName #> Resource { get; }
+	}
 
 <#
 }

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Castle.DynamicProxy;
 
-namespace Office.Contrib
+namespace Office.Contrib.Extensions
 {
     /// <summary>
     /// Dynamic Proxy interceptor which handles the Dispose method, and cleans up wrapped COM Object

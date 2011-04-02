@@ -4,7 +4,6 @@ using Microsoft.Office.Interop.Word;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
-using Office.Word.Contrib.Interfaces;
 
 namespace Office.Word.Contrib.RibbonFactory
 {
@@ -104,13 +103,13 @@ namespace Office.Word.Contrib.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
-            using (var documents = _wordApplication.Documents.WithComCleanup<Documents, IDocuments>())
+            using (var documents = _wordApplication.Documents.WithComCleanup())
             {
-                foreach (Document document in documents)
+                foreach (Document document in documents.Resource)
                 {
-                    using (var windows = document.Windows.WithComCleanup<Windows, IWindows>())
+                    using (var windows = document.Windows.WithComCleanup())
                     {
-                        foreach (Window window in windows)
+                        foreach (Window window in windows.Resource)
                         {
                             WordApplicationWindowActivate(document, window);
                         }

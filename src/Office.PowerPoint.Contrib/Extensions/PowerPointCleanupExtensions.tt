@@ -5,7 +5,7 @@
 <#@ import namespace="System.Linq" #>
 using Office.Contrib.Extensions;
 
-namespace Office.PowerPoint.Contrib.Extensions
+namespace Office.Contrib.Extensions
 {
 	/// <summary>
 	/// Provides cleanup extension methods for interfaces exposed by Office.dll
@@ -19,9 +19,9 @@ namespace Office.PowerPoint.Contrib.Extensions
 		/// <summary>
 		/// Wrapper interface for <#= officeInterface.Name #> which adds IDispose to the interface
 		/// </summary>
-		public static Interfaces.I<#= officeInterface.Name #> WithComCleanup(this <#= officeInterface.FullName #> resource)
+		public static PowerPoint.Contrib.Interfaces.I<#= officeInterface.Name #> WithComCleanup(this <#= officeInterface.FullName #> resource)
 		{
-			return resource.WithComCleanup<<#= officeInterface.FullName #>, Interfaces.I<#= officeInterface.Name #>>();
+			return resource.WithComCleanup<<#= officeInterface.FullName #>, PowerPoint.Contrib.Interfaces.I<#= officeInterface.Name #>>();
 		}
 
 <#

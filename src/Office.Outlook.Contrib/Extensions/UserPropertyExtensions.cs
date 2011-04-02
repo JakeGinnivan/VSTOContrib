@@ -23,7 +23,7 @@ namespace Office.Outlook.Contrib.Extensions
         public static T GetPropertyValue<T>(this _ContactItem contactItem, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                return GetPropertyValue(userProperties, name, type, create, converter, defaultValue);
+                return GetPropertyValue(userProperties.Resource, name, type, create, converter, defaultValue);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Office.Outlook.Contrib.Extensions
         public static T GetPropertyValue<T>(this _AppointmentItem appointment, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
         {
             using (var userProperties = appointment.UserProperties.WithComCleanup())
-                return GetPropertyValue(userProperties, name, type, create, converter, defaultValue);
+                return GetPropertyValue(userProperties.Resource, name, type, create, converter, defaultValue);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Office.Outlook.Contrib.Extensions
                 if (property == null)
                     return defaultValue;
 
-                var value = property.Value;
+                var value = property.Resource.Value;
                 return converter(value);
             }
         }
@@ -83,7 +83,7 @@ namespace Office.Outlook.Contrib.Extensions
         public static void SetPropertyValue<T>(this _ContactItem contactItem, string name, OlUserPropertyType type, T value, bool addToFolder)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                SetPropertyValue(userProperties, name, type, value, addToFolder);
+                SetPropertyValue(userProperties.Resource, name, type, value, addToFolder);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Office.Outlook.Contrib.Extensions
         public static void SetPropertyValue<T>(this _AppointmentItem contactItem, string name, OlUserPropertyType type, T value, bool addToFolder)
         {
             using (var userProperties = contactItem.UserProperties.WithComCleanup())
-                SetPropertyValue(userProperties, name, type, value, addToFolder);
+                SetPropertyValue(userProperties.Resource, name, type, value, addToFolder);
         }
 
         /// <summary>
@@ -118,10 +118,10 @@ namespace Office.Outlook.Contrib.Extensions
 
                 if (property == null) using (var newProperty = userProperties.Add(name, type, addToFolder, format).WithComCleanup())
                     {
-                        newProperty.Value = value;
+                        newProperty.Resource.Value = value;
                     }
                 else
-                    property.Value = value;
+                    property.Resource.Value = value;
             }
         }
     }

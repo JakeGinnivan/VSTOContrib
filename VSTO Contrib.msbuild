@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\build\lib\</MSBuildCommunityTasksPath>
+    <TargetFrameworkVersion Condition="$(TargetFrameworkVersion)==''">v4.0</TargetFrameworkVersion>
+    <FrameworkString Condition="$(TargetFrameworkVersion)=='v3.5'">NET35</FrameworkString>
+    <FrameworkString Condition="$(TargetFrameworkVersion)=='v4.0'">NET40</FrameworkString>
+    <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2010</TargetOfficeVersion>
+    <IncludeCastle Condition="$(IncludeCastle)==''">True</IncludeCastle>
+    <CastleString Condition="$(IncludeCastle)=='True'">WithCastleProxies</CastleString>
+    <CastleString Condition="$(IncludeCastle)!='True'">WithoutCastleProxies</CastleString>
+    <Root>$(MSBuildProjectDirectory)\src\</Root>
   </PropertyGroup>
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
@@ -28,16 +36,14 @@
     <Message Text="Build Number:    $(Major).$(Minor).$(Build).$(Revision)" />
     <Message Text="Build dir:       $(MSBuildProjectDirectory)" />
     <Message Text="Project root:    $(Root)" />
-    <Message Text="NUnit Console:   $(nunitconsoleexe)" />
     <Message Text="Publish path:    $(publish_path)" />
-    <Message Text="Integ. tests:    $(enable_integration)" />
-    <Message Text="Drop path:       $(drop_path)" />
+    <Message Text="Drop path:       build\Artifacts" />
 
     <!-- Clean up -->
     <ItemGroup>
-      <FilesToDelete Include="$src\**\bin\**\*.*" />
-      <FilesToDelete Include="$src\**\obj\**\*.*" />
-      <FilesToDelete Include="build\Artifacts\**\*.*" />
+      <FilesToDelete Include="$(MSBuildProjectDirectory)\**\bin\**\*.*" />
+      <FilesToDelete Include="$(MSBuildProjectDirectory)\**\obj\**\*.*" />
+      <FilesToDelete Include="build\Artifacts\$(FrameworkString)_$(CastleString)\**\*.*" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
 
@@ -62,9 +68,9 @@
   </Target>
 
   <Target Name="Publish" DependsOnTargets="Test">
-    <MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
+    <!--<MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
              Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
-             Targets="Publish" />
+             Targets="Publish" />-->
   </Target>
 
   <Target Name="Package" DependsOnTargets="Publish">
@@ -80,33 +86,27 @@
                     Exclude="src\Office.PowerPoint.Contrib\bin\Build\*vshost*" />
       <AddinUninstallerFiles Include="src\Add-inUninstaller\bin\Build\*.*"
                              Exclude="src\Add-inUninstaller\bin\Build\*vshost*" />
-      <PublishZipFiles
-        Include="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*.*;src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\Application Files\FacebookToOutlookAddin_$(Major)_$(Minor)_$(Build)_$(Revision)\*.*"
-        Exclude="src\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\*vshost*" />
     </ItemGroup>
     <ItemGroup>
       <OldZipFiles Include="..\*.zip" />
     </ItemGroup>
     <Delete Files="@(OldZipFiles)" />
 
-    <MakeDir Directories="build\Artifacts" Condition="!Exists('build\Artifacts')" />
-
+    <MakeDir Directories="build\Artifacts\$(FrameworkString)_$(CastleString)" Condition="!Exists('build\Artifacts\$(FrameworkString)_$(CastleString)')" />
+    
     <Zip Files="@(OfficeZipFiles)"
          WorkingDirectory="src\Office.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\Office.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(OutlookZipFiles)"
          WorkingDirectory="src\Office.Outlook.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\Office.Outlook.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Outlook.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(WordZipFiles)"
          WorkingDirectory="src\Office.Word.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\Office.Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
 	<Zip Files="@(PowerPointZipFiles)"
          WorkingDirectory="src\Office.PowerPoint.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\Office.PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PublishZipFiles)"
-         WorkingDirectory="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\bin\Publish\"
-         ZipFileName="build\Artifacts\FacebookToOutlook for Office 2010.v$(Major).$(Minor).$(Build).$(Revision)_Install.zip" />
-    <Zip Files="@(AddinUninstallerFiles )"
            WorkingDirectory="src\Add-inUninstaller\bin\Build\"
            ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
   </Target>

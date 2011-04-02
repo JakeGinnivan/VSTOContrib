@@ -12,7 +12,14 @@ namespace Office.Contrib.Interfaces
 /// <summary>
 	/// Wrapper interface for <#= officeInterface.Name #> which adds IDispose to the interface
 	/// </summary>
-	public interface I<#= officeInterface.Name #> : <#= officeInterface.FullName #>, IDisposable { }
+	public interface I<#= officeInterface.Name #> : <#= officeInterface.FullName #>, IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		<#= officeInterface.FullName #> Resource { get; }
+	}
 
 	<# } #>
 }
