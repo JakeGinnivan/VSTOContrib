@@ -15,8 +15,8 @@ namespace RazorDocs
 
         private static void ThisAddInStartup(object sender, EventArgs e)
         {
-            //if (System.Windows.Application.Current == null)
-            //    new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+            if (System.Windows.Application.Current == null)
+                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
             //Check for updates
             new VstoClickOnceUpdater()

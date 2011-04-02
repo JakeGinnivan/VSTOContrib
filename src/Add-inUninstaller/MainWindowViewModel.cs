@@ -40,6 +40,11 @@ namespace Add_inUninstaller
             AddAddinsForPath("Excel", Registry.CurrentUser, @"Software\Wow6432Node\Microsoft\Office\Excel\Addins");
             AddAddinsForPath("Excel", Registry.LocalMachine, @"SOFTWARE\Microsoft\Office\Excel\Addins");
             AddAddinsForPath("Excel", Registry.LocalMachine, @"SOFTWARE\Wow6432Node\Microsoft\Office\Excel\Addins");
+            //PowerPoint
+            AddAddinsForPath("PowerPoint", Registry.CurrentUser, @"Software\Microsoft\Office\PowerPoint\Addins");
+            AddAddinsForPath("PowerPoint", Registry.CurrentUser, @"Software\Wow6432Node\Microsoft\Office\PowerPoint\Addins");
+            AddAddinsForPath("PowerPoint", Registry.LocalMachine, @"SOFTWARE\Microsoft\Office\PowerPoint\Addins");
+            AddAddinsForPath("PowerPoint", Registry.LocalMachine, @"SOFTWARE\Wow6432Node\Microsoft\Office\PowerPoint\Addins");
         }
 
         private void AddAddinsForPath(string product, RegistryKey startignKey, string path)

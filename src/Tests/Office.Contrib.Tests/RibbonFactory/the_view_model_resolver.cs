@@ -21,7 +21,7 @@ namespace Office.Contrib.Tests.RibbonFactory
         }
 
         [Fact]
-        public void cannot_have_two_view_models_for_same_ribbon()
+        public void cannot_have_two_view_models_for_same_ribbon_type()
         {
             // arrange
             var viewModels = new [] {typeof(TestViewModel), typeof(TestViewModel2)};

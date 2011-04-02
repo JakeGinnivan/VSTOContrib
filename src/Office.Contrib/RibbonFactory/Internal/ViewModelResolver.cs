@@ -75,7 +75,9 @@ namespace Office.Contrib.RibbonFactory.Internal
             if (_contextToViewModelLookup.ContainsKey(e.ViewContext))
             {
                 //Tell viewmodel there is a new view active
-                _contextToViewModelLookup[e.ViewContext].CurrentViewChanged(e.ViewInstance);
+                var ribbonViewModel = _contextToViewModelLookup[e.ViewContext];
+                ribbonViewModel.CurrentViewChanged(e.ViewInstance);
+                _customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, e.ViewInstance);
                 return; 
             }
 
