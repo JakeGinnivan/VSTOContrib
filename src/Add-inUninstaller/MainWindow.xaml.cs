@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Add_inUninstaller
+﻿namespace Add_inUninstaller
 {
     public partial class MainWindow
     {

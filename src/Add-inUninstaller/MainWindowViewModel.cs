@@ -123,12 +123,22 @@ namespace Add_inUninstaller
                     Debug.WriteLine("VSTO Installer Returned: {0}", returnCode);
                     Debug.Write(message);
                     if (returnCode != 0)
+                    {
                         SelectedAddin.RegistryKey.DeleteKey();
+                        MessageBox.Show(string.Format(
+                            "Add-in was not installed through VSTOInstaller (probably visual studio instead), {0} was manually removed", 
+                            SelectedAddin.AddinName), "Success");
+                    }
+                    else
+                    {
+                        MessageBox.Show(string.Format("{0} uninstalled", SelectedAddin.AddinName), "Success");                        
+                    }
                 }
                 else
                 {
                     //Manifest doesn't exist, delete registry keys manually
                     SelectedAddin.RegistryKey.DeleteKey();
+                    MessageBox.Show(string.Format("{0} uninstalled", SelectedAddin.AddinName), "Success");
                 }
             }
             catch (Exception ex)
@@ -137,7 +147,6 @@ namespace Add_inUninstaller
                 return;
             }
 
-            MessageBox.Show(string.Format("{0} uninstalled", SelectedAddin.AddinName), "Success");
             _addins.Remove(SelectedAddin);
             SelectedAddin = null;
         }
