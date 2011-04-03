@@ -14,8 +14,6 @@
     <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2010</TargetOfficeVersion>
     <IncludeCastle Condition="$(IncludeCastle)==''">True</IncludeCastle>
     <FileAlignment>512</FileAlignment>
-    <TransformOnBuild>true</TransformOnBuild>
-    <TransformOutOfDateOnly>false</TransformOutOfDateOnly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,25 +82,17 @@
     </Compile>
     <Compile Include="ComCleanupEnumerator.cs" />
     <Compile Include="ComCleanupWrapper.cs" />
-    <Compile Include="Extensions\ComProxyGenerator.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="ClickOnceUpdater.cs" />
     <Compile Include="EnumExtensions.cs" />
-    <Compile Include="Extensions\CastleComCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="Extensions\ComCleanupExtensions.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
+    <Compile Include="Extensions\RegistryExtensions.cs" />
+    <Compile Include="Extensions\ComProxyGenerator.cs" Condition="$(IncludeCastle)=='True'" />
+    <Compile Include="Extensions\CastleComCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="Extensions\ComDisposeInterceptor.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="Extensions\SimpleComCleanupExtensions.cs" Condition="$(IncludeCastle)!='True'" />
-    <Compile Include="Extensions\OfficeCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeCleanupExtensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Extensions\RegistryExtensions.cs" />
-    <Compile Include="Interfaces\OfficeInterfaces.cs" Condition="$(IncludeCastle)=='True'">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeInterfaces.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Extensions\OfficeCleanupExtensions.cs" />
+    <Compile Include="Interfaces\OfficeInterfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -152,14 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Extensions\OfficeCleanupExtensions.tt" Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OfficeCleanupExtensions.cs</LastGenOutput>
-    </None>
-    <None Include="Interfaces\OfficeInterfaces.tt" Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OfficeInterfaces.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

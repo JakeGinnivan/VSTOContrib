@@ -10,6 +10,8 @@
     <CastleString Condition="$(IncludeCastle)=='True'">WithCastleProxies</CastleString>
     <CastleString Condition="$(IncludeCastle)!='True'">WithoutCastleProxies</CastleString>
     <Root>$(MSBuildProjectDirectory)\src\</Root>
+    <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
+    <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
   </PropertyGroup>
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
@@ -53,8 +55,23 @@
       AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
       Condition="$(Revision) != '-1' "/>
   </Target>
+  <PropertyGroup>
+    <OfficeAssembly Condition="$(TargetOfficeVersion)=='2007'">Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</OfficeAssembly>
+    <OfficeReferencePath Condition="$(TargetOfficeVersion)=='2007'">$(ProgramFiles32)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12</OfficeReferencePath>
+    <OfficeAssembly Condition="$(TargetOfficeVersion)=='2010'">Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</OfficeAssembly>
+    <OfficeReferencePath Condition="$(TargetOfficeVersion)=='2010'">$(ProgramFiles32)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14</OfficeReferencePath>
+    <ExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions.tt</ExtensionsFile>
+    <InterfacesFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces.tt</InterfacesFile>
+  </PropertyGroup>
 
   <Target Name="Compile" DependsOnTargets="Version">
+    <!--Regenerate TextTemplates-->
+    <Message Text='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(ExtensionsFile)"' />
+    <Message Text='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(InterfacesFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(ExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(InterfacesFile)"' />
+
+    <!--Compile-->
     <ItemGroup>
       <ProjectToBuild Include="src\VSTOContrib.sln" />
     </ItemGroup>
@@ -93,7 +110,7 @@
     <Delete Files="@(OldZipFiles)" />
 
     <MakeDir Directories="build\Artifacts\$(FrameworkString)_$(CastleString)" Condition="!Exists('build\Artifacts\$(FrameworkString)_$(CastleString)')" />
-    
+
     <Zip Files="@(OfficeZipFiles)"
          WorkingDirectory="src\Office.Contrib\bin\Build\"
          ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
@@ -103,12 +120,13 @@
     <Zip Files="@(WordZipFiles)"
          WorkingDirectory="src\Office.Word.Contrib\bin\Build\"
          ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
-	<Zip Files="@(PowerPointZipFiles)"
-         WorkingDirectory="src\Office.PowerPoint.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+    <Zip Files="@(PowerPointZipFiles)"
+           WorkingDirectory="src\Office.PowerPoint.Contrib\bin\Build\"
+           ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PublishZipFiles)"
            WorkingDirectory="src\Add-inUninstaller\bin\Build\"
            ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
   </Target>
+
 
 </Project>

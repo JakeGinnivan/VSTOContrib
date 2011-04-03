@@ -120,8 +120,6 @@ namespace Add_inUninstaller
 
                     var message = vstoInstallerOutput.ToString();
 
-                    Debug.WriteLine("VSTO Installer Returned: {0}", returnCode);
-                    Debug.Write(message);
                     if (returnCode != 0)
                     {
                         SelectedAddin.RegistryKey.DeleteKey();

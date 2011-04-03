@@ -1,7 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
-<#@ assembly name="System.Core" #>
 <#@ assembly name="Office" #>
+<#@ assembly name="System.Core" #>
 <#@ import namespace="Microsoft.Office.Core" #>
 <#@ import namespace="System.Linq" #>
 

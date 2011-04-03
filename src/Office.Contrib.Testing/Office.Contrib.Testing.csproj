@@ -13,8 +13,6 @@
     <TargetFrameworkVersion Condition="$(TargetFrameworkVersion)==''">v4.0</TargetFrameworkVersion>
     <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2010</TargetOfficeVersion>
     <IncludeCastle Condition="$(IncludeCastle)==''">True</IncludeCastle>
-    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.0'">NET40</DefineConstants>
-    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v3.5'">NET35</DefineConstants>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -76,7 +74,8 @@
     <Compile Include="..\Information\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="OfficeObjectMother.cs" />
+    <Compile Include="OfficeObjectMotherNET35.cs" Condition="$(TargetFrameworkVersion)=='v3.5'" />
+    <Compile Include="OfficeObjectMotherNET40.cs" Condition="$(TargetFrameworkVersion)=='v4.0'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
