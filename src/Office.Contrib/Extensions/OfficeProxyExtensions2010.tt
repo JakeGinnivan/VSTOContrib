@@ -1,7 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
-<#@ assembly name="Office" #>
+<#@ assembly name="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" #>
 <#@ import namespace="Microsoft.Office.Core" #>
 <#@ import namespace="System.Linq" #>
 using Office.Utility.Proxies;

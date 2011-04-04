@@ -29,7 +29,7 @@
     <Revision>0</Revision>
   </PropertyGroup>
 
-  <Target Name="Version">
+  <Target Name="GetVersion">
     <HgVersion LocalPath=".">
       <Output TaskParameter="Revision" PropertyName="Revision" />
     </HgVersion>
@@ -40,14 +40,20 @@
     <Message Text="Project root:    $(Root)" />
     <Message Text="Publish path:    $(publish_path)" />
     <Message Text="Drop path:       build\Artifacts" />
+    <Message Text=".NET Version:    $(FrameworkString)" />
+    <Message Text="Office Version:  $(TargetOfficeVersion)" />
+    <Message Text="Castle Proxies:  $(CastleString)" />
 
     <!-- Clean up -->
     <ItemGroup>
       <FilesToDelete Include="$(MSBuildProjectDirectory)\**\bin\**\*.*" />
       <FilesToDelete Include="$(MSBuildProjectDirectory)\**\obj\**\*.*" />
-      <FilesToDelete Include="build\Artifacts\$(FrameworkString)_$(CastleString)\**\*.*" />
+      <FilesToDelete Include="build\Artifacts\" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
+  </Target>
+  
+  <Target Name="Version" DependsOnTargets="GetVersion">   
 
     <AssemblyInfo CodeLanguage="CS"
       OutputFile="src\Information\VersionInfo.cs"
@@ -56,20 +62,45 @@
       Condition="$(Revision) != '-1' "/>
   </Target>
   <PropertyGroup>
-    <OfficeAssembly Condition="$(TargetOfficeVersion)=='2007'">Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</OfficeAssembly>
-    <OfficeReferencePath Condition="$(TargetOfficeVersion)=='2007'">$(ProgramFiles32)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12</OfficeReferencePath>
-    <OfficeAssembly Condition="$(TargetOfficeVersion)=='2010'">Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</OfficeAssembly>
-    <OfficeReferencePath Condition="$(TargetOfficeVersion)=='2010'">$(ProgramFiles32)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14</OfficeReferencePath>
-    <ExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions.tt</ExtensionsFile>
-    <InterfacesFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces.tt</InterfacesFile>
+    <ExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions$(TargetOfficeVersion).tt</ExtensionsFile>
+    <InterfacesFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces$(TargetOfficeVersion).tt</InterfacesFile>
+    <ExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions.cs</ExtensionsOutput>
+    <InterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces.cs</InterfacesOutput>
+    <OutlookExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Extensions\OutlookCleanupExtensions$(TargetOfficeVersion).tt</OutlookExtensionsFile>
+    <OutlookInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Interfaces\OutlookInterfaces$(TargetOfficeVersion).tt</OutlookInterfacesFile>
+    <OutlookExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Extensions\OutlookCleanupExtensions.cs</OutlookExtensionsOutput>
+    <OutlookInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Interfaces\OutlookInterfaces.cs</OutlookInterfacesOutput>
+    <WordExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Extensions\WordCleanupExtensions$(TargetOfficeVersion).tt</WordExtensionsFile>
+    <WordInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Interfaces\WordInterfaces$(TargetOfficeVersion).tt</WordInterfacesFile>
+    <WordExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Extensions\WordCleanupExtensions.cs</WordExtensionsOutput>
+    <WordInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Interfaces\WordInterfaces.cs</WordInterfacesOutput>
+    <PowerPointExtensionsFile>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Extensions\PowerPointCleanupExtensions$(TargetOfficeVersion).tt</PowerPointExtensionsFile>
+    <PowerPointInterfacesFile>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces$(TargetOfficeVersion).tt</PowerPointInterfacesFile>
+    <PowerPointExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Extensions\PowerPointCleanupExtensions.cs</PowerPointExtensionsOutput>
+    <PowerPointInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces.cs</PowerPointInterfacesOutput>
   </PropertyGroup>
 
-  <Target Name="Compile" DependsOnTargets="Version">
+  <Target Name="Compile" DependsOnTargets="GetVersion">
     <!--Regenerate TextTemplates-->
-    <Message Text='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(ExtensionsFile)"' />
-    <Message Text='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(InterfacesFile)"' />
-    <Exec Command='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(ExtensionsFile)"' />
-    <Exec Command='build\lib\TextTransform.exe -p "$(OfficeReferencePath)" "$(InterfacesFile)"' />
+    <Message Text='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
+    <Message Text='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
+
+    <Message Text='build\lib\TextTransform.exe -out "$(OutlookExtensionsOutput)" "$(OutlookExtensionsFile)"' />
+    <Message Text='build\lib\TextTransform.exe -out "$(OutlookInterfacesOutput)" "$(OutlookInterfacesFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(OutlookExtensionsOutput)" "$(OutlookExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(OutlookInterfacesOutput)" "$(OutlookInterfacesFile)"' />
+
+    <Message Text='build\lib\TextTransform.exe -out "$(WordExtensionsOutput)" "$(WordExtensionsFile)"' />
+    <Message Text='build\lib\TextTransform.exe -out "$(WordInterfacesOutput)" "$(WordInterfacesFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(WordExtensionsOutput)" "$(WordExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(WordInterfacesOutput)" "$(WordInterfacesFile)"' />
+
+    <Message Text='build\lib\TextTransform.exe -out "$(PowerPointExtensionsOutput)" "$(PowerPointExtensionsFile)"' />
+    <Message Text='build\lib\TextTransform.exe -out "$(PowerPointInterfacesOutput)" "$(PowerPointInterfacesFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(PowerPointExtensionsOutput)" "$(PowerPointExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(PowerPointInterfacesOutput)" "$(PowerPointInterfacesFile)"' />
 
     <!--Compile-->
     <ItemGroup>
@@ -127,6 +158,4 @@
            WorkingDirectory="src\Add-inUninstaller\bin\Build\"
            ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
   </Target>
-
-
 </Project>

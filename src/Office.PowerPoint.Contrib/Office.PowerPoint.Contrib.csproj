@@ -71,18 +71,8 @@
                Condition="$(TargetFrameworkVersion)=='v4.0'"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\PowerPointCleanupExtensions.cs"
-             Condition="$(IncludeCastle)=='True'">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PowerPointCleanupExtensions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\PowerPointInterfaces.cs"
-             Condition="$(IncludeCastle)=='True'">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PowerPointInterfaces.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Extensions\PowerPointCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'" />
+    <Compile Include="Interfaces\PowerPointInterfaces.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonFactory\PowerPointRibbonFactory.cs" />
     <Compile Include="RibbonFactory\PowerPointRibbonType.cs" />
@@ -98,16 +88,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Extensions\PowerPointCleanupExtensions.tt"
-             Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PowerPointCleanupExtensions.cs</LastGenOutput>
-    </None>
-    <None Include="Interfaces\PowerPointInterfaces.tt"
-             Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PowerPointInterfaces.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

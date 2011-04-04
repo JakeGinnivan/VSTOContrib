@@ -1,5 +1,5 @@
-﻿//Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c
-namespace Office.Outlook.Contrib.Interfaces
+﻿//Microsoft.Office.Interop.Outlook, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c
+namespace Office.Contrib.Interfaces
 {
 	/// <summary>
 	/// Wrapper interface for _IRecipientControl which adds IDispose to the interface
@@ -1082,30 +1082,6 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
-	/// Wrapper interface for _AttachmentSelection which adds IDispose to the interface
-	/// </summary>
-	public interface I_AttachmentSelection : Microsoft.Office.Interop.Outlook._AttachmentSelection, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._AttachmentSelection Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for Selection which adds IDispose to the interface
-	/// </summary>
-	public interface ISelection : Microsoft.Office.Interop.Outlook.Selection, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.Selection Resource { get; }
-	}
-
-	/// <summary>
 	/// Wrapper interface for UserProperties which adds IDispose to the interface
 	/// </summary>
 	public interface IUserProperties : Microsoft.Office.Interop.Outlook.UserProperties, System.IDisposable 
@@ -1190,6 +1166,18 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
+	/// Wrapper interface for Selection which adds IDispose to the interface
+	/// </summary>
+	public interface ISelection : Microsoft.Office.Interop.Outlook.Selection, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook.Selection Resource { get; }
+	}
+
+	/// <summary>
 	/// Wrapper interface for _NavigationPane which adds IDispose to the interface
 	/// </summary>
 	public interface I_NavigationPane : Microsoft.Office.Interop.Outlook._NavigationPane, System.IDisposable 
@@ -1250,27 +1238,27 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
-	/// Wrapper interface for _AccountSelector which adds IDispose to the interface
+	/// Wrapper interface for View which adds IDispose to the interface
 	/// </summary>
-	public interface I_AccountSelector : Microsoft.Office.Interop.Outlook._AccountSelector, System.IDisposable 
+	public interface IView : Microsoft.Office.Interop.Outlook.View, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
         /// </summary>
         /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._AccountSelector Resource { get; }
+		Microsoft.Office.Interop.Outlook.View Resource { get; }
 	}
 
 	/// <summary>
-	/// Wrapper interface for _Account which adds IDispose to the interface
+	/// Wrapper interface for _Views which adds IDispose to the interface
 	/// </summary>
-	public interface I_Account : Microsoft.Office.Interop.Outlook._Account, System.IDisposable 
+	public interface I_Views : Microsoft.Office.Interop.Outlook._Views, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
         /// </summary>
         /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._Account Resource { get; }
+		Microsoft.Office.Interop.Outlook._Views Resource { get; }
 	}
 
 	/// <summary>
@@ -1646,6 +1634,18 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
+	/// Wrapper interface for _Account which adds IDispose to the interface
+	/// </summary>
+	public interface I_Account : Microsoft.Office.Interop.Outlook._Account, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._Account Resource { get; }
+	}
+
+	/// <summary>
 	/// Wrapper interface for TextRuleCondition which adds IDispose to the interface
 	/// </summary>
 	public interface ITextRuleCondition : Microsoft.Office.Interop.Outlook.TextRuleCondition, System.IDisposable 
@@ -1835,78 +1835,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.Rule Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for Categories which adds IDispose to the interface
-	/// </summary>
-	public interface ICategories : Microsoft.Office.Interop.Outlook.Categories, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.Categories Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _Categories which adds IDispose to the interface
-	/// </summary>
-	public interface I_Categories : Microsoft.Office.Interop.Outlook._Categories, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._Categories Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _Category which adds IDispose to the interface
-	/// </summary>
-	public interface I_Category : Microsoft.Office.Interop.Outlook._Category, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._Category Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for Category which adds IDispose to the interface
-	/// </summary>
-	public interface ICategory : Microsoft.Office.Interop.Outlook.Category, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.Category Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for View which adds IDispose to the interface
-	/// </summary>
-	public interface IView : Microsoft.Office.Interop.Outlook.View, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.View Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _Views which adds IDispose to the interface
-	/// </summary>
-	public interface I_Views : Microsoft.Office.Interop.Outlook._Views, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._Views Resource { get; }
 	}
 
 	/// <summary>
@@ -2198,42 +2126,6 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
-	/// Wrapper interface for _Conversation which adds IDispose to the interface
-	/// </summary>
-	public interface I_Conversation : Microsoft.Office.Interop.Outlook._Conversation, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._Conversation Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for SimpleItems which adds IDispose to the interface
-	/// </summary>
-	public interface ISimpleItems : Microsoft.Office.Interop.Outlook.SimpleItems, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.SimpleItems Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _SimpleItems which adds IDispose to the interface
-	/// </summary>
-	public interface I_SimpleItems : Microsoft.Office.Interop.Outlook._SimpleItems, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._SimpleItems Resource { get; }
-	}
-
-	/// <summary>
 	/// Wrapper interface for UserDefinedProperties which adds IDispose to the interface
 	/// </summary>
 	public interface IUserDefinedProperties : Microsoft.Office.Interop.Outlook.UserDefinedProperties, System.IDisposable 
@@ -2402,18 +2294,6 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
-	/// Wrapper interface for AccountsEvents_Event which adds IDispose to the interface
-	/// </summary>
-	public interface IAccountsEvents_Event : Microsoft.Office.Interop.Outlook.AccountsEvents_Event, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.AccountsEvents_Event Resource { get; }
-	}
-
-	/// <summary>
 	/// Wrapper interface for Accounts which adds IDispose to the interface
 	/// </summary>
 	public interface IAccounts : Microsoft.Office.Interop.Outlook.Accounts, System.IDisposable 
@@ -2435,18 +2315,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook._Accounts Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for AccountsEvents which adds IDispose to the interface
-	/// </summary>
-	public interface IAccountsEvents : Microsoft.Office.Interop.Outlook.AccountsEvents, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.AccountsEvents Resource { get; }
 	}
 
 	/// <summary>
@@ -2519,6 +2387,54 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook._SelectNamesDialog Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for Categories which adds IDispose to the interface
+	/// </summary>
+	public interface ICategories : Microsoft.Office.Interop.Outlook.Categories, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook.Categories Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _Categories which adds IDispose to the interface
+	/// </summary>
+	public interface I_Categories : Microsoft.Office.Interop.Outlook._Categories, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._Categories Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _Category which adds IDispose to the interface
+	/// </summary>
+	public interface I_Category : Microsoft.Office.Interop.Outlook._Category, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._Category Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for Category which adds IDispose to the interface
+	/// </summary>
+	public interface ICategory : Microsoft.Office.Interop.Outlook.Category, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook.Category Resource { get; }
 	}
 
 	/// <summary>
@@ -3158,6 +3074,18 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
+	/// Wrapper interface for _AttachmentSelection which adds IDispose to the interface
+	/// </summary>
+	public interface I_AttachmentSelection : Microsoft.Office.Interop.Outlook._AttachmentSelection, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._AttachmentSelection Resource { get; }
+	}
+
+	/// <summary>
 	/// Wrapper interface for MAPIFolderEvents_12_Event which adds IDispose to the interface
 	/// </summary>
 	public interface IMAPIFolderEvents_12_Event : Microsoft.Office.Interop.Outlook.MAPIFolderEvents_12_Event, System.IDisposable 
@@ -3230,6 +3158,18 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
+	/// Wrapper interface for _DistListItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_DistListItem : Microsoft.Office.Interop.Outlook._DistListItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._DistListItem Resource { get; }
+	}
+
+	/// <summary>
 	/// Wrapper interface for _DocumentItem which adds IDispose to the interface
 	/// </summary>
 	public interface I_DocumentItem : Microsoft.Office.Interop.Outlook._DocumentItem, System.IDisposable 
@@ -3239,6 +3179,18 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook._DocumentItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _JournalItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_JournalItem : Microsoft.Office.Interop.Outlook._JournalItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._JournalItem Resource { get; }
 	}
 
 	/// <summary>
@@ -3254,6 +3206,126 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
+	/// Wrapper interface for _PostItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_PostItem : Microsoft.Office.Interop.Outlook._PostItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._PostItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _RemoteItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_RemoteItem : Microsoft.Office.Interop.Outlook._RemoteItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._RemoteItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _ReportItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_ReportItem : Microsoft.Office.Interop.Outlook._ReportItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._ReportItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TaskItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_TaskItem : Microsoft.Office.Interop.Outlook._TaskItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TaskItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for TaskItem which adds IDispose to the interface
+	/// </summary>
+	public interface ITaskItem : Microsoft.Office.Interop.Outlook.TaskItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook.TaskItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TaskRequestAcceptItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_TaskRequestAcceptItem : Microsoft.Office.Interop.Outlook._TaskRequestAcceptItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TaskRequestAcceptItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TaskRequestDeclineItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_TaskRequestDeclineItem : Microsoft.Office.Interop.Outlook._TaskRequestDeclineItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TaskRequestDeclineItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TaskRequestItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_TaskRequestItem : Microsoft.Office.Interop.Outlook._TaskRequestItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TaskRequestItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TaskRequestUpdateItem which adds IDispose to the interface
+	/// </summary>
+	public interface I_TaskRequestUpdateItem : Microsoft.Office.Interop.Outlook._TaskRequestUpdateItem, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TaskRequestUpdateItem Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _FormRegion which adds IDispose to the interface
+	/// </summary>
+	public interface I_FormRegion : Microsoft.Office.Interop.Outlook._FormRegion, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._FormRegion Resource { get; }
+	}
+
+	/// <summary>
 	/// Wrapper interface for FormRegionEvents which adds IDispose to the interface
 	/// </summary>
 	public interface IFormRegionEvents : Microsoft.Office.Interop.Outlook.FormRegionEvents, System.IDisposable 
@@ -3263,6 +3335,42 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.FormRegionEvents Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _TableView which adds IDispose to the interface
+	/// </summary>
+	public interface I_TableView : Microsoft.Office.Interop.Outlook._TableView, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._TableView Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for ViewFields which adds IDispose to the interface
+	/// </summary>
+	public interface IViewFields : Microsoft.Office.Interop.Outlook.ViewFields, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook.ViewFields Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _ViewFields which adds IDispose to the interface
+	/// </summary>
+	public interface I_ViewFields : Microsoft.Office.Interop.Outlook._ViewFields, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._ViewFields Resource { get; }
 	}
 
 	/// <summary>
@@ -3302,18 +3410,6 @@ namespace Office.Outlook.Contrib.Interfaces
 	}
 
 	/// <summary>
-	/// Wrapper interface for _ViewFields which adds IDispose to the interface
-	/// </summary>
-	public interface I_ViewFields : Microsoft.Office.Interop.Outlook._ViewFields, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._ViewFields Resource { get; }
-	}
-
-	/// <summary>
 	/// Wrapper interface for ViewField which adds IDispose to the interface
 	/// </summary>
 	public interface IViewField : Microsoft.Office.Interop.Outlook.ViewField, System.IDisposable 
@@ -3323,18 +3419,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.ViewField Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _IconView which adds IDispose to the interface
-	/// </summary>
-	public interface I_IconView : Microsoft.Office.Interop.Outlook._IconView, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._IconView Resource { get; }
 	}
 
 	/// <summary>
@@ -3383,30 +3467,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.OrderField Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _CardView which adds IDispose to the interface
-	/// </summary>
-	public interface I_CardView : Microsoft.Office.Interop.Outlook._CardView, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._CardView Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for ViewFields which adds IDispose to the interface
-	/// </summary>
-	public interface IViewFields : Microsoft.Office.Interop.Outlook.ViewFields, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.ViewFields Resource { get; }
 	}
 
 	/// <summary>
@@ -3479,6 +3539,42 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook._AutoFormatRule Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _IconView which adds IDispose to the interface
+	/// </summary>
+	public interface I_IconView : Microsoft.Office.Interop.Outlook._IconView, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._IconView Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _CardView which adds IDispose to the interface
+	/// </summary>
+	public interface I_CardView : Microsoft.Office.Interop.Outlook._CardView, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._CardView Resource { get; }
+	}
+
+	/// <summary>
+	/// Wrapper interface for _CalendarView which adds IDispose to the interface
+	/// </summary>
+	public interface I_CalendarView : Microsoft.Office.Interop.Outlook._CalendarView, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		Microsoft.Office.Interop.Outlook._CalendarView Resource { get; }
 	}
 
 	/// <summary>
@@ -3719,234 +3815,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.FormRegion Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _FormRegion which adds IDispose to the interface
-	/// </summary>
-	public interface I_FormRegion : Microsoft.Office.Interop.Outlook._FormRegion, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._FormRegion Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _SolutionsModule which adds IDispose to the interface
-	/// </summary>
-	public interface I_SolutionsModule : Microsoft.Office.Interop.Outlook._SolutionsModule, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._SolutionsModule Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _CalendarView which adds IDispose to the interface
-	/// </summary>
-	public interface I_CalendarView : Microsoft.Office.Interop.Outlook._CalendarView, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._CalendarView Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TableView which adds IDispose to the interface
-	/// </summary>
-	public interface I_TableView : Microsoft.Office.Interop.Outlook._TableView, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TableView Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _MobileItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_MobileItem : Microsoft.Office.Interop.Outlook._MobileItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._MobileItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for MobileItem which adds IDispose to the interface
-	/// </summary>
-	public interface IMobileItem : Microsoft.Office.Interop.Outlook.MobileItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.MobileItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _JournalItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_JournalItem : Microsoft.Office.Interop.Outlook._JournalItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._JournalItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _PostItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_PostItem : Microsoft.Office.Interop.Outlook._PostItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._PostItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TaskItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_TaskItem : Microsoft.Office.Interop.Outlook._TaskItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TaskItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for TaskItem which adds IDispose to the interface
-	/// </summary>
-	public interface ITaskItem : Microsoft.Office.Interop.Outlook.TaskItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.TaskItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for AccountSelectorEvents which adds IDispose to the interface
-	/// </summary>
-	public interface IAccountSelectorEvents : Microsoft.Office.Interop.Outlook.AccountSelectorEvents, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.AccountSelectorEvents Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _DistListItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_DistListItem : Microsoft.Office.Interop.Outlook._DistListItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._DistListItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _ReportItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_ReportItem : Microsoft.Office.Interop.Outlook._ReportItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._ReportItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _RemoteItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_RemoteItem : Microsoft.Office.Interop.Outlook._RemoteItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._RemoteItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TaskRequestItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_TaskRequestItem : Microsoft.Office.Interop.Outlook._TaskRequestItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TaskRequestItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TaskRequestAcceptItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_TaskRequestAcceptItem : Microsoft.Office.Interop.Outlook._TaskRequestAcceptItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TaskRequestAcceptItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TaskRequestDeclineItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_TaskRequestDeclineItem : Microsoft.Office.Interop.Outlook._TaskRequestDeclineItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TaskRequestDeclineItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _TaskRequestUpdateItem which adds IDispose to the interface
-	/// </summary>
-	public interface I_TaskRequestUpdateItem : Microsoft.Office.Interop.Outlook._TaskRequestUpdateItem, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._TaskRequestUpdateItem Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for _ConversationHeader which adds IDispose to the interface
-	/// </summary>
-	public interface I_ConversationHeader : Microsoft.Office.Interop.Outlook._ConversationHeader, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook._ConversationHeader Resource { get; }
 	}
 
 	/// <summary>
@@ -4643,66 +4511,6 @@ namespace Office.Outlook.Contrib.Interfaces
         /// </summary>
         /// <value>The resource.</value>
 		Microsoft.Office.Interop.Outlook.TimeZone Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for SolutionsModule which adds IDispose to the interface
-	/// </summary>
-	public interface ISolutionsModule : Microsoft.Office.Interop.Outlook.SolutionsModule, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.SolutionsModule Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for Conversation which adds IDispose to the interface
-	/// </summary>
-	public interface IConversation : Microsoft.Office.Interop.Outlook.Conversation, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.Conversation Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for AccountSelectorEvents_Event which adds IDispose to the interface
-	/// </summary>
-	public interface IAccountSelectorEvents_Event : Microsoft.Office.Interop.Outlook.AccountSelectorEvents_Event, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.AccountSelectorEvents_Event Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for AccountSelector which adds IDispose to the interface
-	/// </summary>
-	public interface IAccountSelector : Microsoft.Office.Interop.Outlook.AccountSelector, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.AccountSelector Resource { get; }
-	}
-
-	/// <summary>
-	/// Wrapper interface for ConversationHeader which adds IDispose to the interface
-	/// </summary>
-	public interface IConversationHeader : Microsoft.Office.Interop.Outlook.ConversationHeader, System.IDisposable 
-	{ 
-		/// <summary>
-        /// Gets the proxied resource.
-        /// </summary>
-        /// <value>The resource.</value>
-		Microsoft.Office.Interop.Outlook.ConversationHeader Resource { get; }
 	}
 
 }

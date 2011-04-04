@@ -1,0 +1,27 @@
+﻿<#@ template debug="true" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#
+var programFiles = Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+Assembly officeAssembly = Assembly.ReflectionOnlyLoadFrom (programFiles + @"\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12\Office.dll");
+Assembly powerPointAssembly = Assembly.ReflectionOnlyLoadFrom(programFiles + @"\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12\Microsoft.Office.Interop.PowerPoint.dll");
+#>
+//<#=powerPointAssembly.FullName#>
+namespace Office.PowerPoint.Contrib.Interfaces
+{
+	<# foreach (var powerPointInterface in powerPointAssembly.GetTypes().Where(t => t.IsInterface)) { #>
+/// <summary>
+	/// Wrapper interface for <#= powerPointInterface.Name #> which adds IDispose to the interface
+	/// </summary>
+	public interface I<#= powerPointInterface.Name #> : <#= powerPointInterface.FullName #>, System.IDisposable  
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		<#= powerPointInterface.FullName #> Resource { get; }
+	}
+
+	<# } #>
+}

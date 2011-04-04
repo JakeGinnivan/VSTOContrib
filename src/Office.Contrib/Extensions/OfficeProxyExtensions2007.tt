@@ -1,0 +1,32 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" #>
+<#@ import namespace="Microsoft.Office.Core" #>
+<#@ import namespace="System.Linq" #>
+using Office.Utility.Proxies;
+
+namespace Office.Utility.Extensions
+{
+	/// <summary>
+	/// Provides cleanup extension methods for interfaces exposed by Office.dll
+	/// </summary>
+	public static class OfficeProxyExtensions
+	{
+<# 
+	foreach (var officeInterface in typeof(Microsoft.Office.Core.COMAddIn).Assembly.GetTypes().Where(t => t.IsInterface)) 
+	{
+#>
+		/// <summary>
+		/// Wrapper Proxy for <#= officeInterface.Name #> COM interface which is disposible
+		/// </summary>
+		public static <#= officeInterface.Name #>Proxy ToProxy(this <#= officeInterface.FullName #> resource)
+		{
+			return new <#= officeInterface.Name #>Proxy(resource);
+		}
+
+<# 
+	}
+#>
+	}
+}

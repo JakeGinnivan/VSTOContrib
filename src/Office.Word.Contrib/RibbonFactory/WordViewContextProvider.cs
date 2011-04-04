@@ -19,9 +19,9 @@ namespace Office.Word.Contrib.RibbonFactory
             if (window != null)
                 return window.Document;
 
-            var protectedWindow = view as ProtectedViewWindow;
-            if (protectedWindow != null)
-                return protectedWindow.Document;
+            //var protectedWindow = view as ProtectedViewWindow;
+            //if (protectedWindow != null)
+            //    return protectedWindow.Document;
 
             return null;
         }

@@ -36,9 +36,10 @@ namespace Office.Word.Contrib.RibbonFactory
             if (window != null)
                 CurrentViewChanged(window);
 
-            var protectedWindow = currentView as ProtectedViewWindow;
-            if (protectedWindow != null)
-                CurrentViewChanged(protectedWindow);
+            //Commented due to 2007 not supporting protected view window, will reintroduce later
+            //var protectedWindow = currentView as ProtectedViewWindow;
+            //if (protectedWindow != null)
+            //    CurrentViewChanged(protectedWindow);
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace Office.Word.Contrib.RibbonFactory
         /// Called when the current view is  changed.
         /// </summary>
         /// <param name="window">The window.</param>
-        public abstract void CurrentViewChanged(ProtectedViewWindow window);
+        //public abstract void CurrentViewChanged(ProtectedViewWindow window);
 
         /// <summary>
         /// Cleanups this instance.

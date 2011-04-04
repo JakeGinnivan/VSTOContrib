@@ -1,11 +1,11 @@
-﻿using System;
-
+﻿
+//office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c
 namespace Office.Contrib.Interfaces
 {
 	/// <summary>
 	/// Wrapper interface for IAccessible which adds IDispose to the interface
 	/// </summary>
-	public interface IIAccessible : Microsoft.Office.Core.IAccessible, IDisposable 
+	public interface IIAccessible : Microsoft.Office.Core.IAccessible, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -17,7 +17,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _IMsoDispObj which adds IDispose to the interface
 	/// </summary>
-	public interface I_IMsoDispObj : Microsoft.Office.Core._IMsoDispObj, IDisposable 
+	public interface I_IMsoDispObj : Microsoft.Office.Core._IMsoDispObj, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -29,7 +29,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _IMsoOleAccDispObj which adds IDispose to the interface
 	/// </summary>
-	public interface I_IMsoOleAccDispObj : Microsoft.Office.Core._IMsoOleAccDispObj, IDisposable 
+	public interface I_IMsoOleAccDispObj : Microsoft.Office.Core._IMsoOleAccDispObj, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -41,7 +41,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBars which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBars : Microsoft.Office.Core._CommandBars, IDisposable 
+	public interface I_CommandBars : Microsoft.Office.Core._CommandBars, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -53,7 +53,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBar which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBar : Microsoft.Office.Core.CommandBar, IDisposable 
+	public interface ICommandBar : Microsoft.Office.Core.CommandBar, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -65,7 +65,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBarControls which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBarControls : Microsoft.Office.Core.CommandBarControls, IDisposable 
+	public interface ICommandBarControls : Microsoft.Office.Core.CommandBarControls, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -77,7 +77,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBarControl which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBarControl : Microsoft.Office.Core.CommandBarControl, IDisposable 
+	public interface ICommandBarControl : Microsoft.Office.Core.CommandBarControl, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -89,7 +89,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarButton which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarButton : Microsoft.Office.Core._CommandBarButton, IDisposable 
+	public interface I_CommandBarButton : Microsoft.Office.Core._CommandBarButton, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -101,7 +101,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBarPopup which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBarPopup : Microsoft.Office.Core.CommandBarPopup, IDisposable 
+	public interface ICommandBarPopup : Microsoft.Office.Core.CommandBarPopup, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -113,7 +113,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarComboBox which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarComboBox : Microsoft.Office.Core._CommandBarComboBox, IDisposable 
+	public interface I_CommandBarComboBox : Microsoft.Office.Core._CommandBarComboBox, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -125,7 +125,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarActiveX which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarActiveX : Microsoft.Office.Core._CommandBarActiveX, IDisposable 
+	public interface I_CommandBarActiveX : Microsoft.Office.Core._CommandBarActiveX, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -137,7 +137,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Adjustments which adds IDispose to the interface
 	/// </summary>
-	public interface IAdjustments : Microsoft.Office.Core.Adjustments, IDisposable 
+	public interface IAdjustments : Microsoft.Office.Core.Adjustments, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -149,7 +149,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CalloutFormat which adds IDispose to the interface
 	/// </summary>
-	public interface ICalloutFormat : Microsoft.Office.Core.CalloutFormat, IDisposable 
+	public interface ICalloutFormat : Microsoft.Office.Core.CalloutFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -161,7 +161,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ColorFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IColorFormat : Microsoft.Office.Core.ColorFormat, IDisposable 
+	public interface IColorFormat : Microsoft.Office.Core.ColorFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -173,7 +173,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ConnectorFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IConnectorFormat : Microsoft.Office.Core.ConnectorFormat, IDisposable 
+	public interface IConnectorFormat : Microsoft.Office.Core.ConnectorFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -185,7 +185,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FillFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IFillFormat : Microsoft.Office.Core.FillFormat, IDisposable 
+	public interface IFillFormat : Microsoft.Office.Core.FillFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -197,7 +197,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FreeformBuilder which adds IDispose to the interface
 	/// </summary>
-	public interface IFreeformBuilder : Microsoft.Office.Core.FreeformBuilder, IDisposable 
+	public interface IFreeformBuilder : Microsoft.Office.Core.FreeformBuilder, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -209,7 +209,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for GroupShapes which adds IDispose to the interface
 	/// </summary>
-	public interface IGroupShapes : Microsoft.Office.Core.GroupShapes, IDisposable 
+	public interface IGroupShapes : Microsoft.Office.Core.GroupShapes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -221,7 +221,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for LineFormat which adds IDispose to the interface
 	/// </summary>
-	public interface ILineFormat : Microsoft.Office.Core.LineFormat, IDisposable 
+	public interface ILineFormat : Microsoft.Office.Core.LineFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -233,7 +233,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ShapeNode which adds IDispose to the interface
 	/// </summary>
-	public interface IShapeNode : Microsoft.Office.Core.ShapeNode, IDisposable 
+	public interface IShapeNode : Microsoft.Office.Core.ShapeNode, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -245,7 +245,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ShapeNodes which adds IDispose to the interface
 	/// </summary>
-	public interface IShapeNodes : Microsoft.Office.Core.ShapeNodes, IDisposable 
+	public interface IShapeNodes : Microsoft.Office.Core.ShapeNodes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -257,7 +257,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PictureFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IPictureFormat : Microsoft.Office.Core.PictureFormat, IDisposable 
+	public interface IPictureFormat : Microsoft.Office.Core.PictureFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -269,7 +269,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ShadowFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IShadowFormat : Microsoft.Office.Core.ShadowFormat, IDisposable 
+	public interface IShadowFormat : Microsoft.Office.Core.ShadowFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -281,7 +281,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Script which adds IDispose to the interface
 	/// </summary>
-	public interface IScript : Microsoft.Office.Core.Script, IDisposable 
+	public interface IScript : Microsoft.Office.Core.Script, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -293,7 +293,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Scripts which adds IDispose to the interface
 	/// </summary>
-	public interface IScripts : Microsoft.Office.Core.Scripts, IDisposable 
+	public interface IScripts : Microsoft.Office.Core.Scripts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -305,7 +305,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Shape which adds IDispose to the interface
 	/// </summary>
-	public interface IShape : Microsoft.Office.Core.Shape, IDisposable 
+	public interface IShape : Microsoft.Office.Core.Shape, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -317,7 +317,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ShapeRange which adds IDispose to the interface
 	/// </summary>
-	public interface IShapeRange : Microsoft.Office.Core.ShapeRange, IDisposable 
+	public interface IShapeRange : Microsoft.Office.Core.ShapeRange, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -329,7 +329,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Shapes which adds IDispose to the interface
 	/// </summary>
-	public interface IShapes : Microsoft.Office.Core.Shapes, IDisposable 
+	public interface IShapes : Microsoft.Office.Core.Shapes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -341,7 +341,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TextEffectFormat which adds IDispose to the interface
 	/// </summary>
-	public interface ITextEffectFormat : Microsoft.Office.Core.TextEffectFormat, IDisposable 
+	public interface ITextEffectFormat : Microsoft.Office.Core.TextEffectFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -353,7 +353,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TextFrame which adds IDispose to the interface
 	/// </summary>
-	public interface ITextFrame : Microsoft.Office.Core.TextFrame, IDisposable 
+	public interface ITextFrame : Microsoft.Office.Core.TextFrame, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -365,7 +365,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThreeDFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IThreeDFormat : Microsoft.Office.Core.ThreeDFormat, IDisposable 
+	public interface IThreeDFormat : Microsoft.Office.Core.ThreeDFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -377,7 +377,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDispCagNotifySink which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDispCagNotifySink : Microsoft.Office.Core.IMsoDispCagNotifySink, IDisposable 
+	public interface IIMsoDispCagNotifySink : Microsoft.Office.Core.IMsoDispCagNotifySink, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -389,7 +389,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Balloon which adds IDispose to the interface
 	/// </summary>
-	public interface IBalloon : Microsoft.Office.Core.Balloon, IDisposable 
+	public interface IBalloon : Microsoft.Office.Core.Balloon, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -401,7 +401,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for BalloonCheckboxes which adds IDispose to the interface
 	/// </summary>
-	public interface IBalloonCheckboxes : Microsoft.Office.Core.BalloonCheckboxes, IDisposable 
+	public interface IBalloonCheckboxes : Microsoft.Office.Core.BalloonCheckboxes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -413,7 +413,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for BalloonCheckbox which adds IDispose to the interface
 	/// </summary>
-	public interface IBalloonCheckbox : Microsoft.Office.Core.BalloonCheckbox, IDisposable 
+	public interface IBalloonCheckbox : Microsoft.Office.Core.BalloonCheckbox, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -425,7 +425,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for BalloonLabels which adds IDispose to the interface
 	/// </summary>
-	public interface IBalloonLabels : Microsoft.Office.Core.BalloonLabels, IDisposable 
+	public interface IBalloonLabels : Microsoft.Office.Core.BalloonLabels, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -437,7 +437,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for BalloonLabel which adds IDispose to the interface
 	/// </summary>
-	public interface IBalloonLabel : Microsoft.Office.Core.BalloonLabel, IDisposable 
+	public interface IBalloonLabel : Microsoft.Office.Core.BalloonLabel, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -449,7 +449,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for AnswerWizardFiles which adds IDispose to the interface
 	/// </summary>
-	public interface IAnswerWizardFiles : Microsoft.Office.Core.AnswerWizardFiles, IDisposable 
+	public interface IAnswerWizardFiles : Microsoft.Office.Core.AnswerWizardFiles, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -461,7 +461,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for AnswerWizard which adds IDispose to the interface
 	/// </summary>
-	public interface IAnswerWizard : Microsoft.Office.Core.AnswerWizard, IDisposable 
+	public interface IAnswerWizard : Microsoft.Office.Core.AnswerWizard, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -473,7 +473,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Assistant which adds IDispose to the interface
 	/// </summary>
-	public interface IAssistant : Microsoft.Office.Core.Assistant, IDisposable 
+	public interface IAssistant : Microsoft.Office.Core.Assistant, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -485,7 +485,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentProperty which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentProperty : Microsoft.Office.Core.DocumentProperty, IDisposable 
+	public interface IDocumentProperty : Microsoft.Office.Core.DocumentProperty, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -497,7 +497,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentProperties which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentProperties : Microsoft.Office.Core.DocumentProperties, IDisposable 
+	public interface IDocumentProperties : Microsoft.Office.Core.DocumentProperties, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -509,7 +509,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IFoundFiles which adds IDispose to the interface
 	/// </summary>
-	public interface IIFoundFiles : Microsoft.Office.Core.IFoundFiles, IDisposable 
+	public interface IIFoundFiles : Microsoft.Office.Core.IFoundFiles, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -521,7 +521,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IFind which adds IDispose to the interface
 	/// </summary>
-	public interface IIFind : Microsoft.Office.Core.IFind, IDisposable 
+	public interface IIFind : Microsoft.Office.Core.IFind, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -533,7 +533,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FoundFiles which adds IDispose to the interface
 	/// </summary>
-	public interface IFoundFiles : Microsoft.Office.Core.FoundFiles, IDisposable 
+	public interface IFoundFiles : Microsoft.Office.Core.FoundFiles, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -545,7 +545,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PropertyTest which adds IDispose to the interface
 	/// </summary>
-	public interface IPropertyTest : Microsoft.Office.Core.PropertyTest, IDisposable 
+	public interface IPropertyTest : Microsoft.Office.Core.PropertyTest, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -557,7 +557,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PropertyTests which adds IDispose to the interface
 	/// </summary>
-	public interface IPropertyTests : Microsoft.Office.Core.PropertyTests, IDisposable 
+	public interface IPropertyTests : Microsoft.Office.Core.PropertyTests, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -569,7 +569,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileSearch which adds IDispose to the interface
 	/// </summary>
-	public interface IFileSearch : Microsoft.Office.Core.FileSearch, IDisposable 
+	public interface IFileSearch : Microsoft.Office.Core.FileSearch, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -581,7 +581,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for COMAddIn which adds IDispose to the interface
 	/// </summary>
-	public interface ICOMAddIn : Microsoft.Office.Core.COMAddIn, IDisposable 
+	public interface ICOMAddIn : Microsoft.Office.Core.COMAddIn, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -593,7 +593,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for COMAddIns which adds IDispose to the interface
 	/// </summary>
-	public interface ICOMAddIns : Microsoft.Office.Core.COMAddIns, IDisposable 
+	public interface ICOMAddIns : Microsoft.Office.Core.COMAddIns, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -605,7 +605,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for LanguageSettings which adds IDispose to the interface
 	/// </summary>
-	public interface ILanguageSettings : Microsoft.Office.Core.LanguageSettings, IDisposable 
+	public interface ILanguageSettings : Microsoft.Office.Core.LanguageSettings, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -617,7 +617,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICommandBarsEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IICommandBarsEvents : Microsoft.Office.Core.ICommandBarsEvents, IDisposable 
+	public interface IICommandBarsEvents : Microsoft.Office.Core.ICommandBarsEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -629,7 +629,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarsEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarsEvents : Microsoft.Office.Core._CommandBarsEvents, IDisposable 
+	public interface I_CommandBarsEvents : Microsoft.Office.Core._CommandBarsEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -641,7 +641,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarsEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarsEvents_Event : Microsoft.Office.Core._CommandBarsEvents_Event, IDisposable 
+	public interface I_CommandBarsEvents_Event : Microsoft.Office.Core._CommandBarsEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -653,7 +653,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBars which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBars : Microsoft.Office.Core.CommandBars, IDisposable 
+	public interface ICommandBars : Microsoft.Office.Core.CommandBars, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -665,7 +665,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICommandBarComboBoxEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IICommandBarComboBoxEvents : Microsoft.Office.Core.ICommandBarComboBoxEvents, IDisposable 
+	public interface IICommandBarComboBoxEvents : Microsoft.Office.Core.ICommandBarComboBoxEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -677,7 +677,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarComboBoxEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarComboBoxEvents : Microsoft.Office.Core._CommandBarComboBoxEvents, IDisposable 
+	public interface I_CommandBarComboBoxEvents : Microsoft.Office.Core._CommandBarComboBoxEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -689,7 +689,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarComboBoxEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarComboBoxEvents_Event : Microsoft.Office.Core._CommandBarComboBoxEvents_Event, IDisposable 
+	public interface I_CommandBarComboBoxEvents_Event : Microsoft.Office.Core._CommandBarComboBoxEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -701,7 +701,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBarComboBox which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBarComboBox : Microsoft.Office.Core.CommandBarComboBox, IDisposable 
+	public interface ICommandBarComboBox : Microsoft.Office.Core.CommandBarComboBox, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -713,7 +713,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICommandBarButtonEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IICommandBarButtonEvents : Microsoft.Office.Core.ICommandBarButtonEvents, IDisposable 
+	public interface IICommandBarButtonEvents : Microsoft.Office.Core.ICommandBarButtonEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -725,7 +725,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarButtonEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarButtonEvents : Microsoft.Office.Core._CommandBarButtonEvents, IDisposable 
+	public interface I_CommandBarButtonEvents : Microsoft.Office.Core._CommandBarButtonEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -737,7 +737,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CommandBarButtonEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CommandBarButtonEvents_Event : Microsoft.Office.Core._CommandBarButtonEvents_Event, IDisposable 
+	public interface I_CommandBarButtonEvents_Event : Microsoft.Office.Core._CommandBarButtonEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -749,7 +749,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CommandBarButton which adds IDispose to the interface
 	/// </summary>
-	public interface ICommandBarButton : Microsoft.Office.Core.CommandBarButton, IDisposable 
+	public interface ICommandBarButton : Microsoft.Office.Core.CommandBarButton, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -761,7 +761,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebPageFont which adds IDispose to the interface
 	/// </summary>
-	public interface IWebPageFont : Microsoft.Office.Core.WebPageFont, IDisposable 
+	public interface IWebPageFont : Microsoft.Office.Core.WebPageFont, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -773,7 +773,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebPageFonts which adds IDispose to the interface
 	/// </summary>
-	public interface IWebPageFonts : Microsoft.Office.Core.WebPageFonts, IDisposable 
+	public interface IWebPageFonts : Microsoft.Office.Core.WebPageFonts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -785,7 +785,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for HTMLProjectItem which adds IDispose to the interface
 	/// </summary>
-	public interface IHTMLProjectItem : Microsoft.Office.Core.HTMLProjectItem, IDisposable 
+	public interface IHTMLProjectItem : Microsoft.Office.Core.HTMLProjectItem, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -797,7 +797,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for HTMLProjectItems which adds IDispose to the interface
 	/// </summary>
-	public interface IHTMLProjectItems : Microsoft.Office.Core.HTMLProjectItems, IDisposable 
+	public interface IHTMLProjectItems : Microsoft.Office.Core.HTMLProjectItems, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -809,7 +809,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for HTMLProject which adds IDispose to the interface
 	/// </summary>
-	public interface IHTMLProject : Microsoft.Office.Core.HTMLProject, IDisposable 
+	public interface IHTMLProject : Microsoft.Office.Core.HTMLProject, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -821,7 +821,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoDebugOptions which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoDebugOptions : Microsoft.Office.Core.MsoDebugOptions, IDisposable 
+	public interface IMsoDebugOptions : Microsoft.Office.Core.MsoDebugOptions, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -833,7 +833,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileDialogSelectedItems which adds IDispose to the interface
 	/// </summary>
-	public interface IFileDialogSelectedItems : Microsoft.Office.Core.FileDialogSelectedItems, IDisposable 
+	public interface IFileDialogSelectedItems : Microsoft.Office.Core.FileDialogSelectedItems, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -845,7 +845,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileDialogFilter which adds IDispose to the interface
 	/// </summary>
-	public interface IFileDialogFilter : Microsoft.Office.Core.FileDialogFilter, IDisposable 
+	public interface IFileDialogFilter : Microsoft.Office.Core.FileDialogFilter, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -857,7 +857,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileDialogFilters which adds IDispose to the interface
 	/// </summary>
-	public interface IFileDialogFilters : Microsoft.Office.Core.FileDialogFilters, IDisposable 
+	public interface IFileDialogFilters : Microsoft.Office.Core.FileDialogFilters, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -869,7 +869,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileDialog which adds IDispose to the interface
 	/// </summary>
-	public interface IFileDialog : Microsoft.Office.Core.FileDialog, IDisposable 
+	public interface IFileDialog : Microsoft.Office.Core.FileDialog, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -881,7 +881,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SignatureSet which adds IDispose to the interface
 	/// </summary>
-	public interface ISignatureSet : Microsoft.Office.Core.SignatureSet, IDisposable 
+	public interface ISignatureSet : Microsoft.Office.Core.SignatureSet, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -893,7 +893,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Signature which adds IDispose to the interface
 	/// </summary>
-	public interface ISignature : Microsoft.Office.Core.Signature, IDisposable 
+	public interface ISignature : Microsoft.Office.Core.Signature, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -905,7 +905,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoEnvelopeVB which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoEnvelopeVB : Microsoft.Office.Core.IMsoEnvelopeVB, IDisposable 
+	public interface IIMsoEnvelopeVB : Microsoft.Office.Core.IMsoEnvelopeVB, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -917,7 +917,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoEnvelopeVBEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoEnvelopeVBEvents : Microsoft.Office.Core.IMsoEnvelopeVBEvents, IDisposable 
+	public interface IIMsoEnvelopeVBEvents : Microsoft.Office.Core.IMsoEnvelopeVBEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -929,7 +929,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoEnvelopeVBEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoEnvelopeVBEvents_Event : Microsoft.Office.Core.IMsoEnvelopeVBEvents_Event, IDisposable 
+	public interface IIMsoEnvelopeVBEvents_Event : Microsoft.Office.Core.IMsoEnvelopeVBEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -941,7 +941,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoEnvelope which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoEnvelope : Microsoft.Office.Core.MsoEnvelope, IDisposable 
+	public interface IMsoEnvelope : Microsoft.Office.Core.MsoEnvelope, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -953,7 +953,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for FileTypes which adds IDispose to the interface
 	/// </summary>
-	public interface IFileTypes : Microsoft.Office.Core.FileTypes, IDisposable 
+	public interface IFileTypes : Microsoft.Office.Core.FileTypes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -965,7 +965,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SearchFolders which adds IDispose to the interface
 	/// </summary>
-	public interface ISearchFolders : Microsoft.Office.Core.SearchFolders, IDisposable 
+	public interface ISearchFolders : Microsoft.Office.Core.SearchFolders, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -977,7 +977,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ScopeFolders which adds IDispose to the interface
 	/// </summary>
-	public interface IScopeFolders : Microsoft.Office.Core.ScopeFolders, IDisposable 
+	public interface IScopeFolders : Microsoft.Office.Core.ScopeFolders, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -989,7 +989,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ScopeFolder which adds IDispose to the interface
 	/// </summary>
-	public interface IScopeFolder : Microsoft.Office.Core.ScopeFolder, IDisposable 
+	public interface IScopeFolder : Microsoft.Office.Core.ScopeFolder, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1001,7 +1001,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SearchScope which adds IDispose to the interface
 	/// </summary>
-	public interface ISearchScope : Microsoft.Office.Core.SearchScope, IDisposable 
+	public interface ISearchScope : Microsoft.Office.Core.SearchScope, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1013,7 +1013,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SearchScopes which adds IDispose to the interface
 	/// </summary>
-	public interface ISearchScopes : Microsoft.Office.Core.SearchScopes, IDisposable 
+	public interface ISearchScopes : Microsoft.Office.Core.SearchScopes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1025,7 +1025,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDiagram which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDiagram : Microsoft.Office.Core.IMsoDiagram, IDisposable 
+	public interface IIMsoDiagram : Microsoft.Office.Core.IMsoDiagram, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1037,7 +1037,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DiagramNodes which adds IDispose to the interface
 	/// </summary>
-	public interface IDiagramNodes : Microsoft.Office.Core.DiagramNodes, IDisposable 
+	public interface IDiagramNodes : Microsoft.Office.Core.DiagramNodes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1049,7 +1049,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DiagramNodeChildren which adds IDispose to the interface
 	/// </summary>
-	public interface IDiagramNodeChildren : Microsoft.Office.Core.DiagramNodeChildren, IDisposable 
+	public interface IDiagramNodeChildren : Microsoft.Office.Core.DiagramNodeChildren, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1061,7 +1061,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DiagramNode which adds IDispose to the interface
 	/// </summary>
-	public interface IDiagramNode : Microsoft.Office.Core.DiagramNode, IDisposable 
+	public interface IDiagramNode : Microsoft.Office.Core.DiagramNode, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1073,7 +1073,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CanvasShapes which adds IDispose to the interface
 	/// </summary>
-	public interface ICanvasShapes : Microsoft.Office.Core.CanvasShapes, IDisposable 
+	public interface ICanvasShapes : Microsoft.Office.Core.CanvasShapes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1085,7 +1085,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for OfficeDataSourceObject which adds IDispose to the interface
 	/// </summary>
-	public interface IOfficeDataSourceObject : Microsoft.Office.Core.OfficeDataSourceObject, IDisposable 
+	public interface IOfficeDataSourceObject : Microsoft.Office.Core.OfficeDataSourceObject, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1097,7 +1097,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ODSOColumn which adds IDispose to the interface
 	/// </summary>
-	public interface IODSOColumn : Microsoft.Office.Core.ODSOColumn, IDisposable 
+	public interface IODSOColumn : Microsoft.Office.Core.ODSOColumn, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1109,7 +1109,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ODSOColumns which adds IDispose to the interface
 	/// </summary>
-	public interface IODSOColumns : Microsoft.Office.Core.ODSOColumns, IDisposable 
+	public interface IODSOColumns : Microsoft.Office.Core.ODSOColumns, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1121,7 +1121,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ODSOFilter which adds IDispose to the interface
 	/// </summary>
-	public interface IODSOFilter : Microsoft.Office.Core.ODSOFilter, IDisposable 
+	public interface IODSOFilter : Microsoft.Office.Core.ODSOFilter, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1133,7 +1133,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ODSOFilters which adds IDispose to the interface
 	/// </summary>
-	public interface IODSOFilters : Microsoft.Office.Core.ODSOFilters, IDisposable 
+	public interface IODSOFilters : Microsoft.Office.Core.ODSOFilters, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1145,7 +1145,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for NewFile which adds IDispose to the interface
 	/// </summary>
-	public interface INewFile : Microsoft.Office.Core.NewFile, IDisposable 
+	public interface INewFile : Microsoft.Office.Core.NewFile, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1157,7 +1157,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebComponent which adds IDispose to the interface
 	/// </summary>
-	public interface IWebComponent : Microsoft.Office.Core.WebComponent, IDisposable 
+	public interface IWebComponent : Microsoft.Office.Core.WebComponent, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1169,7 +1169,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebComponentWindowExternal which adds IDispose to the interface
 	/// </summary>
-	public interface IWebComponentWindowExternal : Microsoft.Office.Core.WebComponentWindowExternal, IDisposable 
+	public interface IWebComponentWindowExternal : Microsoft.Office.Core.WebComponentWindowExternal, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1181,7 +1181,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebComponentFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IWebComponentFormat : Microsoft.Office.Core.WebComponentFormat, IDisposable 
+	public interface IWebComponentFormat : Microsoft.Office.Core.WebComponentFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1193,7 +1193,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ILicWizExternal which adds IDispose to the interface
 	/// </summary>
-	public interface IILicWizExternal : Microsoft.Office.Core.ILicWizExternal, IDisposable 
+	public interface IILicWizExternal : Microsoft.Office.Core.ILicWizExternal, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1205,7 +1205,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ILicValidator which adds IDispose to the interface
 	/// </summary>
-	public interface IILicValidator : Microsoft.Office.Core.ILicValidator, IDisposable 
+	public interface IILicValidator : Microsoft.Office.Core.ILicValidator, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1217,7 +1217,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ILicAgent which adds IDispose to the interface
 	/// </summary>
-	public interface IILicAgent : Microsoft.Office.Core.ILicAgent, IDisposable 
+	public interface IILicAgent : Microsoft.Office.Core.ILicAgent, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1229,7 +1229,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoEServicesDialog which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoEServicesDialog : Microsoft.Office.Core.IMsoEServicesDialog, IDisposable 
+	public interface IIMsoEServicesDialog : Microsoft.Office.Core.IMsoEServicesDialog, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1241,7 +1241,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WebComponentProperties which adds IDispose to the interface
 	/// </summary>
-	public interface IWebComponentProperties : Microsoft.Office.Core.WebComponentProperties, IDisposable 
+	public interface IWebComponentProperties : Microsoft.Office.Core.WebComponentProperties, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1253,7 +1253,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartDocument which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartDocument : Microsoft.Office.Core.SmartDocument, IDisposable 
+	public interface ISmartDocument : Microsoft.Office.Core.SmartDocument, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1265,7 +1265,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceMember which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceMember : Microsoft.Office.Core.SharedWorkspaceMember, IDisposable 
+	public interface ISharedWorkspaceMember : Microsoft.Office.Core.SharedWorkspaceMember, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1277,7 +1277,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceMembers which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceMembers : Microsoft.Office.Core.SharedWorkspaceMembers, IDisposable 
+	public interface ISharedWorkspaceMembers : Microsoft.Office.Core.SharedWorkspaceMembers, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1289,7 +1289,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceTask which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceTask : Microsoft.Office.Core.SharedWorkspaceTask, IDisposable 
+	public interface ISharedWorkspaceTask : Microsoft.Office.Core.SharedWorkspaceTask, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1301,7 +1301,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceTasks which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceTasks : Microsoft.Office.Core.SharedWorkspaceTasks, IDisposable 
+	public interface ISharedWorkspaceTasks : Microsoft.Office.Core.SharedWorkspaceTasks, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1313,7 +1313,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceFile which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceFile : Microsoft.Office.Core.SharedWorkspaceFile, IDisposable 
+	public interface ISharedWorkspaceFile : Microsoft.Office.Core.SharedWorkspaceFile, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1325,7 +1325,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceFiles which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceFiles : Microsoft.Office.Core.SharedWorkspaceFiles, IDisposable 
+	public interface ISharedWorkspaceFiles : Microsoft.Office.Core.SharedWorkspaceFiles, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1337,7 +1337,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceFolder which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceFolder : Microsoft.Office.Core.SharedWorkspaceFolder, IDisposable 
+	public interface ISharedWorkspaceFolder : Microsoft.Office.Core.SharedWorkspaceFolder, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1349,7 +1349,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceFolders which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceFolders : Microsoft.Office.Core.SharedWorkspaceFolders, IDisposable 
+	public interface ISharedWorkspaceFolders : Microsoft.Office.Core.SharedWorkspaceFolders, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1361,7 +1361,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceLink which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceLink : Microsoft.Office.Core.SharedWorkspaceLink, IDisposable 
+	public interface ISharedWorkspaceLink : Microsoft.Office.Core.SharedWorkspaceLink, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1373,7 +1373,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspaceLinks which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspaceLinks : Microsoft.Office.Core.SharedWorkspaceLinks, IDisposable 
+	public interface ISharedWorkspaceLinks : Microsoft.Office.Core.SharedWorkspaceLinks, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1385,7 +1385,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SharedWorkspace which adds IDispose to the interface
 	/// </summary>
-	public interface ISharedWorkspace : Microsoft.Office.Core.SharedWorkspace, IDisposable 
+	public interface ISharedWorkspace : Microsoft.Office.Core.SharedWorkspace, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1397,7 +1397,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Sync which adds IDispose to the interface
 	/// </summary>
-	public interface ISync : Microsoft.Office.Core.Sync, IDisposable 
+	public interface ISync : Microsoft.Office.Core.Sync, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1409,7 +1409,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentLibraryVersion which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentLibraryVersion : Microsoft.Office.Core.DocumentLibraryVersion, IDisposable 
+	public interface IDocumentLibraryVersion : Microsoft.Office.Core.DocumentLibraryVersion, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1421,7 +1421,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentLibraryVersions which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentLibraryVersions : Microsoft.Office.Core.DocumentLibraryVersions, IDisposable 
+	public interface IDocumentLibraryVersions : Microsoft.Office.Core.DocumentLibraryVersions, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1433,7 +1433,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for UserPermission which adds IDispose to the interface
 	/// </summary>
-	public interface IUserPermission : Microsoft.Office.Core.UserPermission, IDisposable 
+	public interface IUserPermission : Microsoft.Office.Core.UserPermission, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1445,7 +1445,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Permission which adds IDispose to the interface
 	/// </summary>
-	public interface IPermission : Microsoft.Office.Core.Permission, IDisposable 
+	public interface IPermission : Microsoft.Office.Core.Permission, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1457,7 +1457,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoDebugOptions_UTRunResult which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoDebugOptions_UTRunResult : Microsoft.Office.Core.MsoDebugOptions_UTRunResult, IDisposable 
+	public interface IMsoDebugOptions_UTRunResult : Microsoft.Office.Core.MsoDebugOptions_UTRunResult, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1469,7 +1469,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoDebugOptions_UT which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoDebugOptions_UT : Microsoft.Office.Core.MsoDebugOptions_UT, IDisposable 
+	public interface IMsoDebugOptions_UT : Microsoft.Office.Core.MsoDebugOptions_UT, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1481,7 +1481,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoDebugOptions_UTs which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoDebugOptions_UTs : Microsoft.Office.Core.MsoDebugOptions_UTs, IDisposable 
+	public interface IMsoDebugOptions_UTs : Microsoft.Office.Core.MsoDebugOptions_UTs, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1493,7 +1493,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MsoDebugOptions_UTManager which adds IDispose to the interface
 	/// </summary>
-	public interface IMsoDebugOptions_UTManager : Microsoft.Office.Core.MsoDebugOptions_UTManager, IDisposable 
+	public interface IMsoDebugOptions_UTManager : Microsoft.Office.Core.MsoDebugOptions_UTManager, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1505,7 +1505,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MetaProperty which adds IDispose to the interface
 	/// </summary>
-	public interface IMetaProperty : Microsoft.Office.Core.MetaProperty, IDisposable 
+	public interface IMetaProperty : Microsoft.Office.Core.MetaProperty, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1517,7 +1517,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for MetaProperties which adds IDispose to the interface
 	/// </summary>
-	public interface IMetaProperties : Microsoft.Office.Core.MetaProperties, IDisposable 
+	public interface IMetaProperties : Microsoft.Office.Core.MetaProperties, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1529,7 +1529,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PolicyItem which adds IDispose to the interface
 	/// </summary>
-	public interface IPolicyItem : Microsoft.Office.Core.PolicyItem, IDisposable 
+	public interface IPolicyItem : Microsoft.Office.Core.PolicyItem, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1541,7 +1541,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ServerPolicy which adds IDispose to the interface
 	/// </summary>
-	public interface IServerPolicy : Microsoft.Office.Core.ServerPolicy, IDisposable 
+	public interface IServerPolicy : Microsoft.Office.Core.ServerPolicy, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1553,7 +1553,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentInspector which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentInspector : Microsoft.Office.Core.DocumentInspector, IDisposable 
+	public interface IDocumentInspector : Microsoft.Office.Core.DocumentInspector, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1565,7 +1565,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for DocumentInspectors which adds IDispose to the interface
 	/// </summary>
-	public interface IDocumentInspectors : Microsoft.Office.Core.DocumentInspectors, IDisposable 
+	public interface IDocumentInspectors : Microsoft.Office.Core.DocumentInspectors, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1577,7 +1577,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WorkflowTask which adds IDispose to the interface
 	/// </summary>
-	public interface IWorkflowTask : Microsoft.Office.Core.WorkflowTask, IDisposable 
+	public interface IWorkflowTask : Microsoft.Office.Core.WorkflowTask, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1589,7 +1589,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WorkflowTasks which adds IDispose to the interface
 	/// </summary>
-	public interface IWorkflowTasks : Microsoft.Office.Core.WorkflowTasks, IDisposable 
+	public interface IWorkflowTasks : Microsoft.Office.Core.WorkflowTasks, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1601,7 +1601,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WorkflowTemplate which adds IDispose to the interface
 	/// </summary>
-	public interface IWorkflowTemplate : Microsoft.Office.Core.WorkflowTemplate, IDisposable 
+	public interface IWorkflowTemplate : Microsoft.Office.Core.WorkflowTemplate, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1613,7 +1613,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for WorkflowTemplates which adds IDispose to the interface
 	/// </summary>
-	public interface IWorkflowTemplates : Microsoft.Office.Core.WorkflowTemplates, IDisposable 
+	public interface IWorkflowTemplates : Microsoft.Office.Core.WorkflowTemplates, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1625,7 +1625,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IDocumentInspector which adds IDispose to the interface
 	/// </summary>
-	public interface IIDocumentInspector : Microsoft.Office.Core.IDocumentInspector, IDisposable 
+	public interface IIDocumentInspector : Microsoft.Office.Core.IDocumentInspector, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1637,7 +1637,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SignatureSetup which adds IDispose to the interface
 	/// </summary>
-	public interface ISignatureSetup : Microsoft.Office.Core.SignatureSetup, IDisposable 
+	public interface ISignatureSetup : Microsoft.Office.Core.SignatureSetup, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1649,7 +1649,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SignatureInfo which adds IDispose to the interface
 	/// </summary>
-	public interface ISignatureInfo : Microsoft.Office.Core.SignatureInfo, IDisposable 
+	public interface ISignatureInfo : Microsoft.Office.Core.SignatureInfo, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1661,7 +1661,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SignatureProvider which adds IDispose to the interface
 	/// </summary>
-	public interface ISignatureProvider : Microsoft.Office.Core.SignatureProvider, IDisposable 
+	public interface ISignatureProvider : Microsoft.Office.Core.SignatureProvider, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1673,7 +1673,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLPrefixMapping which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLPrefixMapping : Microsoft.Office.Core.CustomXMLPrefixMapping, IDisposable 
+	public interface ICustomXMLPrefixMapping : Microsoft.Office.Core.CustomXMLPrefixMapping, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1685,7 +1685,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLPrefixMappings which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLPrefixMappings : Microsoft.Office.Core.CustomXMLPrefixMappings, IDisposable 
+	public interface ICustomXMLPrefixMappings : Microsoft.Office.Core.CustomXMLPrefixMappings, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1697,7 +1697,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLSchema which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLSchema : Microsoft.Office.Core.CustomXMLSchema, IDisposable 
+	public interface ICustomXMLSchema : Microsoft.Office.Core.CustomXMLSchema, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1709,7 +1709,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLSchemaCollection which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLSchemaCollection : Microsoft.Office.Core._CustomXMLSchemaCollection, IDisposable 
+	public interface I_CustomXMLSchemaCollection : Microsoft.Office.Core._CustomXMLSchemaCollection, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1721,7 +1721,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLSchemaCollection which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLSchemaCollection : Microsoft.Office.Core.CustomXMLSchemaCollection, IDisposable 
+	public interface ICustomXMLSchemaCollection : Microsoft.Office.Core.CustomXMLSchemaCollection, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1733,7 +1733,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLNodes which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLNodes : Microsoft.Office.Core.CustomXMLNodes, IDisposable 
+	public interface ICustomXMLNodes : Microsoft.Office.Core.CustomXMLNodes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1745,7 +1745,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLNode which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLNode : Microsoft.Office.Core.CustomXMLNode, IDisposable 
+	public interface ICustomXMLNode : Microsoft.Office.Core.CustomXMLNode, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1757,7 +1757,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLValidationError which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLValidationError : Microsoft.Office.Core.CustomXMLValidationError, IDisposable 
+	public interface ICustomXMLValidationError : Microsoft.Office.Core.CustomXMLValidationError, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1769,7 +1769,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLValidationErrors which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLValidationErrors : Microsoft.Office.Core.CustomXMLValidationErrors, IDisposable 
+	public interface ICustomXMLValidationErrors : Microsoft.Office.Core.CustomXMLValidationErrors, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1781,7 +1781,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLPart which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLPart : Microsoft.Office.Core._CustomXMLPart, IDisposable 
+	public interface I_CustomXMLPart : Microsoft.Office.Core._CustomXMLPart, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1793,7 +1793,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICustomXMLPartEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IICustomXMLPartEvents : Microsoft.Office.Core.ICustomXMLPartEvents, IDisposable 
+	public interface IICustomXMLPartEvents : Microsoft.Office.Core.ICustomXMLPartEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1805,7 +1805,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLPartEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLPartEvents : Microsoft.Office.Core._CustomXMLPartEvents, IDisposable 
+	public interface I_CustomXMLPartEvents : Microsoft.Office.Core._CustomXMLPartEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1817,7 +1817,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLPartEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLPartEvents_Event : Microsoft.Office.Core._CustomXMLPartEvents_Event, IDisposable 
+	public interface I_CustomXMLPartEvents_Event : Microsoft.Office.Core._CustomXMLPartEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1829,7 +1829,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLPart which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLPart : Microsoft.Office.Core.CustomXMLPart, IDisposable 
+	public interface ICustomXMLPart : Microsoft.Office.Core.CustomXMLPart, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1841,7 +1841,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLParts which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLParts : Microsoft.Office.Core._CustomXMLParts, IDisposable 
+	public interface I_CustomXMLParts : Microsoft.Office.Core._CustomXMLParts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1853,7 +1853,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICustomXMLPartsEvents which adds IDispose to the interface
 	/// </summary>
-	public interface IICustomXMLPartsEvents : Microsoft.Office.Core.ICustomXMLPartsEvents, IDisposable 
+	public interface IICustomXMLPartsEvents : Microsoft.Office.Core.ICustomXMLPartsEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1865,7 +1865,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLPartsEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLPartsEvents : Microsoft.Office.Core._CustomXMLPartsEvents, IDisposable 
+	public interface I_CustomXMLPartsEvents : Microsoft.Office.Core._CustomXMLPartsEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1877,7 +1877,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomXMLPartsEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomXMLPartsEvents_Event : Microsoft.Office.Core._CustomXMLPartsEvents_Event, IDisposable 
+	public interface I_CustomXMLPartsEvents_Event : Microsoft.Office.Core._CustomXMLPartsEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1889,7 +1889,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomXMLParts which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomXMLParts : Microsoft.Office.Core.CustomXMLParts, IDisposable 
+	public interface ICustomXMLParts : Microsoft.Office.Core.CustomXMLParts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1901,7 +1901,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for GradientStop which adds IDispose to the interface
 	/// </summary>
-	public interface IGradientStop : Microsoft.Office.Core.GradientStop, IDisposable 
+	public interface IGradientStop : Microsoft.Office.Core.GradientStop, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1913,7 +1913,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for GradientStops which adds IDispose to the interface
 	/// </summary>
-	public interface IGradientStops : Microsoft.Office.Core.GradientStops, IDisposable 
+	public interface IGradientStops : Microsoft.Office.Core.GradientStops, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1925,7 +1925,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SoftEdgeFormat which adds IDispose to the interface
 	/// </summary>
-	public interface ISoftEdgeFormat : Microsoft.Office.Core.SoftEdgeFormat, IDisposable 
+	public interface ISoftEdgeFormat : Microsoft.Office.Core.SoftEdgeFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1937,7 +1937,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for GlowFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IGlowFormat : Microsoft.Office.Core.GlowFormat, IDisposable 
+	public interface IGlowFormat : Microsoft.Office.Core.GlowFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1949,7 +1949,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ReflectionFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IReflectionFormat : Microsoft.Office.Core.ReflectionFormat, IDisposable 
+	public interface IReflectionFormat : Microsoft.Office.Core.ReflectionFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1961,7 +1961,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ParagraphFormat2 which adds IDispose to the interface
 	/// </summary>
-	public interface IParagraphFormat2 : Microsoft.Office.Core.ParagraphFormat2, IDisposable 
+	public interface IParagraphFormat2 : Microsoft.Office.Core.ParagraphFormat2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1973,7 +1973,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Font2 which adds IDispose to the interface
 	/// </summary>
-	public interface IFont2 : Microsoft.Office.Core.Font2, IDisposable 
+	public interface IFont2 : Microsoft.Office.Core.Font2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1985,7 +1985,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TextColumn2 which adds IDispose to the interface
 	/// </summary>
-	public interface ITextColumn2 : Microsoft.Office.Core.TextColumn2, IDisposable 
+	public interface ITextColumn2 : Microsoft.Office.Core.TextColumn2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -1997,7 +1997,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TextRange2 which adds IDispose to the interface
 	/// </summary>
-	public interface ITextRange2 : Microsoft.Office.Core.TextRange2, IDisposable 
+	public interface ITextRange2 : Microsoft.Office.Core.TextRange2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2009,7 +2009,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TextFrame2 which adds IDispose to the interface
 	/// </summary>
-	public interface ITextFrame2 : Microsoft.Office.Core.TextFrame2, IDisposable 
+	public interface ITextFrame2 : Microsoft.Office.Core.TextFrame2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2021,7 +2021,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeColor which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeColor : Microsoft.Office.Core.ThemeColor, IDisposable 
+	public interface IThemeColor : Microsoft.Office.Core.ThemeColor, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2033,7 +2033,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeColorScheme which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeColorScheme : Microsoft.Office.Core.ThemeColorScheme, IDisposable 
+	public interface IThemeColorScheme : Microsoft.Office.Core.ThemeColorScheme, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2045,7 +2045,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeFont which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeFont : Microsoft.Office.Core.ThemeFont, IDisposable 
+	public interface IThemeFont : Microsoft.Office.Core.ThemeFont, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2057,7 +2057,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeFonts which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeFonts : Microsoft.Office.Core.ThemeFonts, IDisposable 
+	public interface IThemeFonts : Microsoft.Office.Core.ThemeFonts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2069,7 +2069,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeFontScheme which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeFontScheme : Microsoft.Office.Core.ThemeFontScheme, IDisposable 
+	public interface IThemeFontScheme : Microsoft.Office.Core.ThemeFontScheme, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2081,7 +2081,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ThemeEffectScheme which adds IDispose to the interface
 	/// </summary>
-	public interface IThemeEffectScheme : Microsoft.Office.Core.ThemeEffectScheme, IDisposable 
+	public interface IThemeEffectScheme : Microsoft.Office.Core.ThemeEffectScheme, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2093,7 +2093,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for OfficeTheme which adds IDispose to the interface
 	/// </summary>
-	public interface IOfficeTheme : Microsoft.Office.Core.OfficeTheme, IDisposable 
+	public interface IOfficeTheme : Microsoft.Office.Core.OfficeTheme, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2105,7 +2105,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomTaskPane which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomTaskPane : Microsoft.Office.Core._CustomTaskPane, IDisposable 
+	public interface I_CustomTaskPane : Microsoft.Office.Core._CustomTaskPane, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2117,7 +2117,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomTaskPaneEvents which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomTaskPaneEvents : Microsoft.Office.Core.CustomTaskPaneEvents, IDisposable 
+	public interface ICustomTaskPaneEvents : Microsoft.Office.Core.CustomTaskPaneEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2129,7 +2129,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomTaskPaneEvents which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomTaskPaneEvents : Microsoft.Office.Core._CustomTaskPaneEvents, IDisposable 
+	public interface I_CustomTaskPaneEvents : Microsoft.Office.Core._CustomTaskPaneEvents, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2141,7 +2141,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for _CustomTaskPaneEvents_Event which adds IDispose to the interface
 	/// </summary>
-	public interface I_CustomTaskPaneEvents_Event : Microsoft.Office.Core._CustomTaskPaneEvents_Event, IDisposable 
+	public interface I_CustomTaskPaneEvents_Event : Microsoft.Office.Core._CustomTaskPaneEvents_Event, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2153,7 +2153,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for CustomTaskPane which adds IDispose to the interface
 	/// </summary>
-	public interface ICustomTaskPane : Microsoft.Office.Core.CustomTaskPane, IDisposable 
+	public interface ICustomTaskPane : Microsoft.Office.Core.CustomTaskPane, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2165,7 +2165,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICTPFactory which adds IDispose to the interface
 	/// </summary>
-	public interface IICTPFactory : Microsoft.Office.Core.ICTPFactory, IDisposable 
+	public interface IICTPFactory : Microsoft.Office.Core.ICTPFactory, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2177,7 +2177,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ICustomTaskPaneConsumer which adds IDispose to the interface
 	/// </summary>
-	public interface IICustomTaskPaneConsumer : Microsoft.Office.Core.ICustomTaskPaneConsumer, IDisposable 
+	public interface IICustomTaskPaneConsumer : Microsoft.Office.Core.ICustomTaskPaneConsumer, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2189,7 +2189,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IRibbonUI which adds IDispose to the interface
 	/// </summary>
-	public interface IIRibbonUI : Microsoft.Office.Core.IRibbonUI, IDisposable 
+	public interface IIRibbonUI : Microsoft.Office.Core.IRibbonUI, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2201,7 +2201,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IRibbonControl which adds IDispose to the interface
 	/// </summary>
-	public interface IIRibbonControl : Microsoft.Office.Core.IRibbonControl, IDisposable 
+	public interface IIRibbonControl : Microsoft.Office.Core.IRibbonControl, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2213,7 +2213,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IRibbonExtensibility which adds IDispose to the interface
 	/// </summary>
-	public interface IIRibbonExtensibility : Microsoft.Office.Core.IRibbonExtensibility, IDisposable 
+	public interface IIRibbonExtensibility : Microsoft.Office.Core.IRibbonExtensibility, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2225,7 +2225,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IAssistance which adds IDispose to the interface
 	/// </summary>
-	public interface IIAssistance : Microsoft.Office.Core.IAssistance, IDisposable 
+	public interface IIAssistance : Microsoft.Office.Core.IAssistance, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2237,7 +2237,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChartData which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChartData : Microsoft.Office.Core.IMsoChartData, IDisposable 
+	public interface IIMsoChartData : Microsoft.Office.Core.IMsoChartData, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2249,7 +2249,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChart which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChart : Microsoft.Office.Core.IMsoChart, IDisposable 
+	public interface IIMsoChart : Microsoft.Office.Core.IMsoChart, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2261,7 +2261,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoCorners which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoCorners : Microsoft.Office.Core.IMsoCorners, IDisposable 
+	public interface IIMsoCorners : Microsoft.Office.Core.IMsoCorners, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2273,7 +2273,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoLegend which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoLegend : Microsoft.Office.Core.IMsoLegend, IDisposable 
+	public interface IIMsoLegend : Microsoft.Office.Core.IMsoLegend, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2285,7 +2285,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoBorder which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoBorder : Microsoft.Office.Core.IMsoBorder, IDisposable 
+	public interface IIMsoBorder : Microsoft.Office.Core.IMsoBorder, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2297,7 +2297,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoWalls which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoWalls : Microsoft.Office.Core.IMsoWalls, IDisposable 
+	public interface IIMsoWalls : Microsoft.Office.Core.IMsoWalls, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2309,7 +2309,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoFloor which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoFloor : Microsoft.Office.Core.IMsoFloor, IDisposable 
+	public interface IIMsoFloor : Microsoft.Office.Core.IMsoFloor, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2321,7 +2321,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoPlotArea which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoPlotArea : Microsoft.Office.Core.IMsoPlotArea, IDisposable 
+	public interface IIMsoPlotArea : Microsoft.Office.Core.IMsoPlotArea, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2333,7 +2333,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChartArea which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChartArea : Microsoft.Office.Core.IMsoChartArea, IDisposable 
+	public interface IIMsoChartArea : Microsoft.Office.Core.IMsoChartArea, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2345,7 +2345,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoSeriesLines which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoSeriesLines : Microsoft.Office.Core.IMsoSeriesLines, IDisposable 
+	public interface IIMsoSeriesLines : Microsoft.Office.Core.IMsoSeriesLines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2357,7 +2357,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoLeaderLines which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoLeaderLines : Microsoft.Office.Core.IMsoLeaderLines, IDisposable 
+	public interface IIMsoLeaderLines : Microsoft.Office.Core.IMsoLeaderLines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2369,7 +2369,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for GridLines which adds IDispose to the interface
 	/// </summary>
-	public interface IGridLines : Microsoft.Office.Core.GridLines, IDisposable 
+	public interface IGridLines : Microsoft.Office.Core.GridLines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2381,7 +2381,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoUpBars which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoUpBars : Microsoft.Office.Core.IMsoUpBars, IDisposable 
+	public interface IIMsoUpBars : Microsoft.Office.Core.IMsoUpBars, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2393,7 +2393,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDownBars which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDownBars : Microsoft.Office.Core.IMsoDownBars, IDisposable 
+	public interface IIMsoDownBars : Microsoft.Office.Core.IMsoDownBars, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2405,7 +2405,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoInterior which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoInterior : Microsoft.Office.Core.IMsoInterior, IDisposable 
+	public interface IIMsoInterior : Microsoft.Office.Core.IMsoInterior, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2417,7 +2417,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ChartFillFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IChartFillFormat : Microsoft.Office.Core.ChartFillFormat, IDisposable 
+	public interface IChartFillFormat : Microsoft.Office.Core.ChartFillFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2429,7 +2429,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for LegendEntries which adds IDispose to the interface
 	/// </summary>
-	public interface ILegendEntries : Microsoft.Office.Core.LegendEntries, IDisposable 
+	public interface ILegendEntries : Microsoft.Office.Core.LegendEntries, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2441,7 +2441,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ChartFont which adds IDispose to the interface
 	/// </summary>
-	public interface IChartFont : Microsoft.Office.Core.ChartFont, IDisposable 
+	public interface IChartFont : Microsoft.Office.Core.ChartFont, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2453,7 +2453,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ChartColorFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IChartColorFormat : Microsoft.Office.Core.ChartColorFormat, IDisposable 
+	public interface IChartColorFormat : Microsoft.Office.Core.ChartColorFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2465,7 +2465,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for LegendEntry which adds IDispose to the interface
 	/// </summary>
-	public interface ILegendEntry : Microsoft.Office.Core.LegendEntry, IDisposable 
+	public interface ILegendEntry : Microsoft.Office.Core.LegendEntry, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2477,7 +2477,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoLegendKey which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoLegendKey : Microsoft.Office.Core.IMsoLegendKey, IDisposable 
+	public interface IIMsoLegendKey : Microsoft.Office.Core.IMsoLegendKey, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2489,7 +2489,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SeriesCollection which adds IDispose to the interface
 	/// </summary>
-	public interface ISeriesCollection : Microsoft.Office.Core.SeriesCollection, IDisposable 
+	public interface ISeriesCollection : Microsoft.Office.Core.SeriesCollection, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2501,7 +2501,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoSeries which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoSeries : Microsoft.Office.Core.IMsoSeries, IDisposable 
+	public interface IIMsoSeries : Microsoft.Office.Core.IMsoSeries, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2513,7 +2513,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoErrorBars which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoErrorBars : Microsoft.Office.Core.IMsoErrorBars, IDisposable 
+	public interface IIMsoErrorBars : Microsoft.Office.Core.IMsoErrorBars, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2525,7 +2525,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoTrendline which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoTrendline : Microsoft.Office.Core.IMsoTrendline, IDisposable 
+	public interface IIMsoTrendline : Microsoft.Office.Core.IMsoTrendline, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2537,7 +2537,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Trendlines which adds IDispose to the interface
 	/// </summary>
-	public interface ITrendlines : Microsoft.Office.Core.Trendlines, IDisposable 
+	public interface ITrendlines : Microsoft.Office.Core.Trendlines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2549,7 +2549,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDataLabels which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDataLabels : Microsoft.Office.Core.IMsoDataLabels, IDisposable 
+	public interface IIMsoDataLabels : Microsoft.Office.Core.IMsoDataLabels, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2561,7 +2561,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDataLabel which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDataLabel : Microsoft.Office.Core.IMsoDataLabel, IDisposable 
+	public interface IIMsoDataLabel : Microsoft.Office.Core.IMsoDataLabel, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2573,7 +2573,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Points which adds IDispose to the interface
 	/// </summary>
-	public interface IPoints : Microsoft.Office.Core.Points, IDisposable 
+	public interface IPoints : Microsoft.Office.Core.Points, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2585,7 +2585,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ChartPoint which adds IDispose to the interface
 	/// </summary>
-	public interface IChartPoint : Microsoft.Office.Core.ChartPoint, IDisposable 
+	public interface IChartPoint : Microsoft.Office.Core.ChartPoint, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2597,7 +2597,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Axes which adds IDispose to the interface
 	/// </summary>
-	public interface IAxes : Microsoft.Office.Core.Axes, IDisposable 
+	public interface IAxes : Microsoft.Office.Core.Axes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2609,7 +2609,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoAxis which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoAxis : Microsoft.Office.Core.IMsoAxis, IDisposable 
+	public interface IIMsoAxis : Microsoft.Office.Core.IMsoAxis, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2621,7 +2621,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDataTable which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDataTable : Microsoft.Office.Core.IMsoDataTable, IDisposable 
+	public interface IIMsoDataTable : Microsoft.Office.Core.IMsoDataTable, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2633,7 +2633,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChartTitle which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChartTitle : Microsoft.Office.Core.IMsoChartTitle, IDisposable 
+	public interface IIMsoChartTitle : Microsoft.Office.Core.IMsoChartTitle, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2645,7 +2645,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoAxisTitle which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoAxisTitle : Microsoft.Office.Core.IMsoAxisTitle, IDisposable 
+	public interface IIMsoAxisTitle : Microsoft.Office.Core.IMsoAxisTitle, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2657,7 +2657,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDisplayUnitLabel which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDisplayUnitLabel : Microsoft.Office.Core.IMsoDisplayUnitLabel, IDisposable 
+	public interface IIMsoDisplayUnitLabel : Microsoft.Office.Core.IMsoDisplayUnitLabel, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2669,7 +2669,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoTickLabels which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoTickLabels : Microsoft.Office.Core.IMsoTickLabels, IDisposable 
+	public interface IIMsoTickLabels : Microsoft.Office.Core.IMsoTickLabels, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2681,7 +2681,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoHyperlinks which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoHyperlinks : Microsoft.Office.Core.IMsoHyperlinks, IDisposable 
+	public interface IIMsoHyperlinks : Microsoft.Office.Core.IMsoHyperlinks, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2693,7 +2693,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoDropLines which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoDropLines : Microsoft.Office.Core.IMsoDropLines, IDisposable 
+	public interface IIMsoDropLines : Microsoft.Office.Core.IMsoDropLines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2705,7 +2705,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoHiLoLines which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoHiLoLines : Microsoft.Office.Core.IMsoHiLoLines, IDisposable 
+	public interface IIMsoHiLoLines : Microsoft.Office.Core.IMsoHiLoLines, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2717,7 +2717,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChartGroup which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChartGroup : Microsoft.Office.Core.IMsoChartGroup, IDisposable 
+	public interface IIMsoChartGroup : Microsoft.Office.Core.IMsoChartGroup, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2729,7 +2729,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ChartGroups which adds IDispose to the interface
 	/// </summary>
-	public interface IChartGroups : Microsoft.Office.Core.ChartGroups, IDisposable 
+	public interface IChartGroups : Microsoft.Office.Core.ChartGroups, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2741,7 +2741,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoCharacters which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoCharacters : Microsoft.Office.Core.IMsoCharacters, IDisposable 
+	public interface IIMsoCharacters : Microsoft.Office.Core.IMsoCharacters, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2753,7 +2753,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoChartFormat which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoChartFormat : Microsoft.Office.Core.IMsoChartFormat, IDisposable 
+	public interface IIMsoChartFormat : Microsoft.Office.Core.IMsoChartFormat, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2765,7 +2765,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for BulletFormat2 which adds IDispose to the interface
 	/// </summary>
-	public interface IBulletFormat2 : Microsoft.Office.Core.BulletFormat2, IDisposable 
+	public interface IBulletFormat2 : Microsoft.Office.Core.BulletFormat2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2777,7 +2777,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TabStops2 which adds IDispose to the interface
 	/// </summary>
-	public interface ITabStops2 : Microsoft.Office.Core.TabStops2, IDisposable 
+	public interface ITabStops2 : Microsoft.Office.Core.TabStops2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2789,7 +2789,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for TabStop2 which adds IDispose to the interface
 	/// </summary>
-	public interface ITabStop2 : Microsoft.Office.Core.TabStop2, IDisposable 
+	public interface ITabStop2 : Microsoft.Office.Core.TabStop2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2801,7 +2801,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Ruler2 which adds IDispose to the interface
 	/// </summary>
-	public interface IRuler2 : Microsoft.Office.Core.Ruler2, IDisposable 
+	public interface IRuler2 : Microsoft.Office.Core.Ruler2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2813,7 +2813,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for RulerLevels2 which adds IDispose to the interface
 	/// </summary>
-	public interface IRulerLevels2 : Microsoft.Office.Core.RulerLevels2, IDisposable 
+	public interface IRulerLevels2 : Microsoft.Office.Core.RulerLevels2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2825,7 +2825,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for RulerLevel2 which adds IDispose to the interface
 	/// </summary>
-	public interface IRulerLevel2 : Microsoft.Office.Core.RulerLevel2, IDisposable 
+	public interface IRulerLevel2 : Microsoft.Office.Core.RulerLevel2, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2837,7 +2837,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for EncryptionProvider which adds IDispose to the interface
 	/// </summary>
-	public interface IEncryptionProvider : Microsoft.Office.Core.EncryptionProvider, IDisposable 
+	public interface IEncryptionProvider : Microsoft.Office.Core.EncryptionProvider, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2849,7 +2849,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IBlogExtensibility which adds IDispose to the interface
 	/// </summary>
-	public interface IIBlogExtensibility : Microsoft.Office.Core.IBlogExtensibility, IDisposable 
+	public interface IIBlogExtensibility : Microsoft.Office.Core.IBlogExtensibility, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2861,7 +2861,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IBlogPictureExtensibility which adds IDispose to the interface
 	/// </summary>
-	public interface IIBlogPictureExtensibility : Microsoft.Office.Core.IBlogPictureExtensibility, IDisposable 
+	public interface IIBlogPictureExtensibility : Microsoft.Office.Core.IBlogPictureExtensibility, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2873,7 +2873,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IConverterPreferences which adds IDispose to the interface
 	/// </summary>
-	public interface IIConverterPreferences : Microsoft.Office.Core.IConverterPreferences, IDisposable 
+	public interface IIConverterPreferences : Microsoft.Office.Core.IConverterPreferences, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2885,7 +2885,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IConverterApplicationPreferences which adds IDispose to the interface
 	/// </summary>
-	public interface IIConverterApplicationPreferences : Microsoft.Office.Core.IConverterApplicationPreferences, IDisposable 
+	public interface IIConverterApplicationPreferences : Microsoft.Office.Core.IConverterApplicationPreferences, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2897,7 +2897,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IConverterUICallback which adds IDispose to the interface
 	/// </summary>
-	public interface IIConverterUICallback : Microsoft.Office.Core.IConverterUICallback, IDisposable 
+	public interface IIConverterUICallback : Microsoft.Office.Core.IConverterUICallback, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2909,7 +2909,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IConverter which adds IDispose to the interface
 	/// </summary>
-	public interface IIConverter : Microsoft.Office.Core.IConverter, IDisposable 
+	public interface IIConverter : Microsoft.Office.Core.IConverter, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2921,7 +2921,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArt which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArt : Microsoft.Office.Core.SmartArt, IDisposable 
+	public interface ISmartArt : Microsoft.Office.Core.SmartArt, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2933,7 +2933,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtNodes which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtNodes : Microsoft.Office.Core.SmartArtNodes, IDisposable 
+	public interface ISmartArtNodes : Microsoft.Office.Core.SmartArtNodes, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2945,7 +2945,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtNode which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtNode : Microsoft.Office.Core.SmartArtNode, IDisposable 
+	public interface ISmartArtNode : Microsoft.Office.Core.SmartArtNode, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2957,7 +2957,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtLayouts which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtLayouts : Microsoft.Office.Core.SmartArtLayouts, IDisposable 
+	public interface ISmartArtLayouts : Microsoft.Office.Core.SmartArtLayouts, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2969,7 +2969,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtLayout which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtLayout : Microsoft.Office.Core.SmartArtLayout, IDisposable 
+	public interface ISmartArtLayout : Microsoft.Office.Core.SmartArtLayout, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2981,7 +2981,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtQuickStyles which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtQuickStyles : Microsoft.Office.Core.SmartArtQuickStyles, IDisposable 
+	public interface ISmartArtQuickStyles : Microsoft.Office.Core.SmartArtQuickStyles, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -2993,7 +2993,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtQuickStyle which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtQuickStyle : Microsoft.Office.Core.SmartArtQuickStyle, IDisposable 
+	public interface ISmartArtQuickStyle : Microsoft.Office.Core.SmartArtQuickStyle, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3005,7 +3005,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtColors which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtColors : Microsoft.Office.Core.SmartArtColors, IDisposable 
+	public interface ISmartArtColors : Microsoft.Office.Core.SmartArtColors, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3017,7 +3017,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for SmartArtColor which adds IDispose to the interface
 	/// </summary>
-	public interface ISmartArtColor : Microsoft.Office.Core.SmartArtColor, IDisposable 
+	public interface ISmartArtColor : Microsoft.Office.Core.SmartArtColor, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3029,7 +3029,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerField which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerField : Microsoft.Office.Core.PickerField, IDisposable 
+	public interface IPickerField : Microsoft.Office.Core.PickerField, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3041,7 +3041,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerFields which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerFields : Microsoft.Office.Core.PickerFields, IDisposable 
+	public interface IPickerFields : Microsoft.Office.Core.PickerFields, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3053,7 +3053,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerProperty which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerProperty : Microsoft.Office.Core.PickerProperty, IDisposable 
+	public interface IPickerProperty : Microsoft.Office.Core.PickerProperty, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3065,7 +3065,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerProperties which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerProperties : Microsoft.Office.Core.PickerProperties, IDisposable 
+	public interface IPickerProperties : Microsoft.Office.Core.PickerProperties, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3077,7 +3077,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerResult which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerResult : Microsoft.Office.Core.PickerResult, IDisposable 
+	public interface IPickerResult : Microsoft.Office.Core.PickerResult, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3089,7 +3089,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerResults which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerResults : Microsoft.Office.Core.PickerResults, IDisposable 
+	public interface IPickerResults : Microsoft.Office.Core.PickerResults, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3101,7 +3101,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PickerDialog which adds IDispose to the interface
 	/// </summary>
-	public interface IPickerDialog : Microsoft.Office.Core.PickerDialog, IDisposable 
+	public interface IPickerDialog : Microsoft.Office.Core.PickerDialog, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3113,7 +3113,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for IMsoContactCard which adds IDispose to the interface
 	/// </summary>
-	public interface IIMsoContactCard : Microsoft.Office.Core.IMsoContactCard, IDisposable 
+	public interface IIMsoContactCard : Microsoft.Office.Core.IMsoContactCard, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3125,7 +3125,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for EffectParameter which adds IDispose to the interface
 	/// </summary>
-	public interface IEffectParameter : Microsoft.Office.Core.EffectParameter, IDisposable 
+	public interface IEffectParameter : Microsoft.Office.Core.EffectParameter, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3137,7 +3137,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for EffectParameters which adds IDispose to the interface
 	/// </summary>
-	public interface IEffectParameters : Microsoft.Office.Core.EffectParameters, IDisposable 
+	public interface IEffectParameters : Microsoft.Office.Core.EffectParameters, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3149,7 +3149,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PictureEffect which adds IDispose to the interface
 	/// </summary>
-	public interface IPictureEffect : Microsoft.Office.Core.PictureEffect, IDisposable 
+	public interface IPictureEffect : Microsoft.Office.Core.PictureEffect, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3161,7 +3161,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for PictureEffects which adds IDispose to the interface
 	/// </summary>
-	public interface IPictureEffects : Microsoft.Office.Core.PictureEffects, IDisposable 
+	public interface IPictureEffects : Microsoft.Office.Core.PictureEffects, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3173,7 +3173,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for Crop which adds IDispose to the interface
 	/// </summary>
-	public interface ICrop : Microsoft.Office.Core.Crop, IDisposable 
+	public interface ICrop : Microsoft.Office.Core.Crop, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3185,7 +3185,7 @@ namespace Office.Contrib.Interfaces
 	/// <summary>
 	/// Wrapper interface for ContactCard which adds IDispose to the interface
 	/// </summary>
-	public interface IContactCard : Microsoft.Office.Core.ContactCard, IDisposable 
+	public interface IContactCard : Microsoft.Office.Core.ContactCard, System.IDisposable 
 	{ 
 		/// <summary>
         /// Gets the proxied resource.
@@ -3194,4 +3194,4 @@ namespace Office.Contrib.Interfaces
 		Microsoft.Office.Core.ContactCard Resource { get; }
 	}
 
-	}
+}

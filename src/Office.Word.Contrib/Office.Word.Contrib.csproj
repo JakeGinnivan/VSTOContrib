@@ -66,16 +66,8 @@
     </Compile>
     <Compile Include="DocumentClosedEventArgs.cs" />
     <Compile Include="DocumentWrapper.cs" />
-    <Compile Include="Extensions\WordCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'">
-      <DependentUpon>WordCleanupExtensions.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Interfaces\WordInterfaces.cs" Condition="$(IncludeCastle)=='True'">
-      <DependentUpon>WordInterfaces.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Extensions\WordCleanupExtensions.cs" Condition="$(IncludeCastle)=='True'" />
+    <Compile Include="Interfaces\WordInterfaces.cs" Condition="$(IncludeCastle)=='True'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonFactory\WordRibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\WordRibbonFactory.cs" />
@@ -91,14 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Extensions\WordCleanupExtensions.tt" Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WordCleanupExtensions.cs</LastGenOutput>
-    </None>
-    <None Include="Interfaces\WordInterfaces.tt" Condition="$(IncludeCastle)=='True'">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WordInterfaces.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
