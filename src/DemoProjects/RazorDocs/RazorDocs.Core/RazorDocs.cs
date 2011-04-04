@@ -42,14 +42,16 @@ namespace RazorDocs.Core
 
         public void RegisterTaskPanes(Register register)
         {
-            //TODO Custom task panes should be 'attached' to new views, but only registered once
-            _control = new WpfPanelHost
-                           {
-                               Child = new RazorDocsPanel
-                                           {
-                                               DataContext = new RazorDocsPanelViewModel(this)
-                                           }
-                           };
+            if (_control == null)
+            {
+                _control = new WpfPanelHost
+                {
+                    Child = new RazorDocsPanel
+                    {
+                        DataContext = new RazorDocsPanelViewModel(this)
+                    }
+                };
+            }
 
             _razorDocsTaskPane = register(_control, "RazorDocs");
             _razorDocsTaskPane.Visible = true;

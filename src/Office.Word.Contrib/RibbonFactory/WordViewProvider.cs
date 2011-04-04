@@ -31,12 +31,13 @@ namespace Office.Word.Contrib.RibbonFactory
         {
             var handler = NewView;
             if (handler == null) return;
-            if (_documents.ContainsKey(doc)) return;
-
-            _documents.Add(doc, new List<Window>());
-            var documentWrapper = new DocumentWrapper(doc);
-            documentWrapper.Closed += DocumentClosed;
-            _documentWrappers.Add(doc, documentWrapper);
+            if (!_documents.ContainsKey(doc))
+            {
+                _documents.Add(doc, new List<Window>());
+                var documentWrapper = new DocumentWrapper(doc);
+                documentWrapper.Closed += DocumentClosed;
+                _documentWrappers.Add(doc, documentWrapper);
+            }
 
             //Check if we have this window registered
             if (_documents[doc].Contains(wn)) return;

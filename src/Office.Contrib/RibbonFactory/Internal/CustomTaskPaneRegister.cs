@@ -8,11 +8,13 @@ namespace Office.Contrib.RibbonFactory.Internal
     internal class CustomTaskPaneRegister : ICustomTaskPaneRegister
     {
         private CustomTaskPaneCollection _customTaskPaneCollection;
-        private readonly Dictionary<object, Queue<CustomTaskPane>> _taskPanesToCleanup;
+        private readonly Dictionary<IRibbonViewModel, TaskPaneRegistrationInfo> _registrationInfo;
+        private readonly Dictionary<IRibbonViewModel, OneToManyCustomTaskPaneAdapter> _ribbonTaskPanes;
 
         public CustomTaskPaneRegister()
         {
-            _taskPanesToCleanup = new Dictionary<object, Queue<CustomTaskPane>>();
+            _registrationInfo = new Dictionary<IRibbonViewModel, TaskPaneRegistrationInfo>();
+            _ribbonTaskPanes = new Dictionary<IRibbonViewModel, OneToManyCustomTaskPaneAdapter>();
         }
 
         public void Initialise(CustomTaskPaneCollection customTaskPaneCollection)
@@ -20,31 +22,46 @@ namespace Office.Contrib.RibbonFactory.Internal
             _customTaskPaneCollection = customTaskPaneCollection;
         }
 
-        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object context)
+        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view)
         {
             var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
-            if (registersCustomTaskPanes != null)
+            if (registersCustomTaskPanes == null) return;
+
+            if (!_registrationInfo.ContainsKey(ribbonViewModel))
             {
                 registersCustomTaskPanes.RegisterTaskPanes(
                     (control, title) =>
-                    {
-                        var taskPane = _customTaskPaneCollection.Add(control, title, context);
-                        if (!_taskPanesToCleanup.ContainsKey(context))
-                            _taskPanesToCleanup.Add(context, new Queue<CustomTaskPane>());
-
-                        _taskPanesToCleanup[context].Enqueue(taskPane);
-                        return taskPane;
-                    });
+                        {
+                            var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(control, title);
+                            _registrationInfo.Add(ribbonViewModel, taskPaneRegistrationInfo);
+                            var taskPane = Register(view, taskPaneRegistrationInfo);
+                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane);
+                            _ribbonTaskPanes.Add(ribbonViewModel, taskPaneAdapter);
+                            return taskPaneAdapter;
+                        });
+            }
+            else
+            {
+                var adapter = _ribbonTaskPanes[ribbonViewModel];
+                if (!adapter.ViewRegistered(view))
+                {
+                    adapter.Add(Register(view, _registrationInfo[ribbonViewModel]));
+                }
             }
         }
 
-        public void Cleanup(object context)
+        private CustomTaskPane Register(object view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
         {
-            if (!_taskPanesToCleanup.ContainsKey(context)) return;
+            var taskPane = _customTaskPaneCollection.Add(taskPaneRegistrationInfo.Control, taskPaneRegistrationInfo.Title, view);
 
-            while (_taskPanesToCleanup[context].Count > 0)
+            return taskPane;
+        }
+
+        public void Cleanup(object view)
+        {
+            foreach (var adapter in _ribbonTaskPanes)
             {
-                _taskPanesToCleanup[context].Dequeue().Dispose();
+                adapter.Value.CleanupView(view);
             }
         }
     }
