@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.Word;
 using Office.Contrib;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Contrib.RibbonFactory.Internal;
 using Office.Word.Contrib.RibbonFactory;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
@@ -14,7 +15,7 @@ namespace RazorDocs.Core
     {
         private bool _panelShown;
         private Document _document;
-        private CustomTaskPane _razorDocsTaskPane;
+        private ICustomTaskPaneWrapper _razorDocsTaskPane;
 
         public void Initialised(object context)
         {

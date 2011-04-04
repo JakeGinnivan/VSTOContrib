@@ -48,13 +48,13 @@
     <ItemGroup>
       <FilesToDelete Include="$(MSBuildProjectDirectory)\**\bin\**\*.*" />
       <FilesToDelete Include="$(MSBuildProjectDirectory)\**\obj\**\*.*" />
-      <FilesToDelete Include="build\Artifacts\" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
   </Target>
-  
-  <Target Name="Version" DependsOnTargets="GetVersion">   
 
+  <Target Name="Version" DependsOnTargets="GetVersion">
+    <RemoveDir Directories="build\Artifacts\" />
+    
     <AssemblyInfo CodeLanguage="CS"
       OutputFile="src\Information\VersionInfo.cs"
       AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
