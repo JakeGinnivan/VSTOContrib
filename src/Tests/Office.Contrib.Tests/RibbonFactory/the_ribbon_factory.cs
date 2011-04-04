@@ -318,6 +318,11 @@ namespace Office.Contrib.Tests.RibbonFactory
         {
             return ((TestWindow) view).Context;
         }
+
+        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        {
+            return (TRibbonType)(object)TestRibbonTypes.RibbonType1;
+        }
     }
 
     public class TestWindowContext

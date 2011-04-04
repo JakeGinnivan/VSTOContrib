@@ -68,7 +68,13 @@ namespace Office.Word.Contrib.RibbonFactory
         public void Initialise()
         {
             _wordApplication.WindowActivate += WordApplicationWindowActivate;
-            //TODO protected window activate
+            _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
+            //TODO protected window activate    
+        }
+
+        static void WordApplicationDocumentOpen(Document doc)
+        {
+
         }
 
         /// <summary>

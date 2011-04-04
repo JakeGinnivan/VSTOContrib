@@ -100,6 +100,17 @@ namespace Office.Contrib.RibbonFactory.Internal
         public IRibbonViewModel ResolveInstanceFor(object view)
         {
             var context = _viewContextProvider.GetContextForView(view);
+
+            //Sometimes can happen that view provider has not got events to tell us about a new view
+            // so we will have to try and create it
+            if (!_contextToViewModelLookup.ContainsKey(context))
+            {
+                var ribbonTypeForView = _viewContextProvider.GetRibbonTypeForView<TRibbonTypes>(view);
+                var newViewEventArgs = new NewViewEventArgs<TRibbonTypes>(view, context, ribbonTypeForView);
+
+                ViewProviderNewView(this, newViewEventArgs);
+            }
+
             return _contextToViewModelLookup[context];
         }
 

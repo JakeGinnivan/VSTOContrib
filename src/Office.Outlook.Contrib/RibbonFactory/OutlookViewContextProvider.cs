@@ -25,5 +25,13 @@ namespace Office.Outlook.Contrib.RibbonFactory
 
             return null;
         }
+
+        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        {
+            if (view is Explorer)
+                return (TRibbonType)(object)OutlookRibbonType.OutlookExplorer;
+
+            return (TRibbonType) (object) InspectorToRibbonTypeConverter.Convert((Inspector) view);
+        }
     }
 }

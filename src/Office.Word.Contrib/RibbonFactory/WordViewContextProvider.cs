@@ -25,5 +25,10 @@ namespace Office.Word.Contrib.RibbonFactory
 
             return null;
         }
+
+        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        {
+            return (TRibbonType)(object)WordRibbonType.WordDocument;
+        }
     }
 }

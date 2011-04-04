@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Office.Interop.PowerPoint;
 using Office.Contrib.RibbonFactory.Interfaces;
 
@@ -27,6 +28,11 @@ namespace Office.PowerPoint.Contrib.RibbonFactory
             //    return protectedWindow.Presentation;
 
             return null;
+        }
+
+        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        {
+            return (TRibbonType) (object) PowerPointRibbonType.PowerPointPresentation;
         }
     }
 }
