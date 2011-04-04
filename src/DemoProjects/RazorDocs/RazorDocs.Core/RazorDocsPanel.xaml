@@ -6,6 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Button Content="Generate"
+                Command="{Binding GenerateCommand}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="3"/>
     </Grid>
 </UserControl>

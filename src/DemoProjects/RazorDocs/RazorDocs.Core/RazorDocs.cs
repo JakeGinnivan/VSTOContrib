@@ -24,7 +24,6 @@ namespace RazorDocs.Core
 
         public void CurrentViewChanged(object currentView)
         {
-            
         }
 
         public IRibbonUI RibbonUi { get; set; }
