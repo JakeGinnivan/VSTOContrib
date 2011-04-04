@@ -31,12 +31,13 @@ namespace Office.Word.Contrib
 
         private void DocumentClose()
         {
-            ((DocumentEvents2_Event)Document).Close -= DocumentClose;
-            Document = null;
-
+            ((DocumentEvents2_Event)Document).Close -= DocumentClose; 
+            
             var handler = Closed;
-            if (handler != null) 
+            if (handler != null)
                 Closed(this, new DocumentClosedEventArgs(Document));
+
+            Document = null;
         }
     }
 }

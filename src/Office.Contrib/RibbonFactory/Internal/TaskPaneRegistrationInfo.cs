@@ -1,15 +1,16 @@
+using System;
 using System.Windows.Forms;
 
 namespace Office.Contrib.RibbonFactory.Internal
 {
     internal class TaskPaneRegistrationInfo
     {
-        public UserControl Control { get; set; }
+        public Func<UserControl> ControlFactory { get; set; }
         public string Title { get; set; }
 
-        public TaskPaneRegistrationInfo(UserControl control, string title)
+        public TaskPaneRegistrationInfo(Func<UserControl> controlFactory, string title)
         {
-            Control = control;
+            ControlFactory = controlFactory;
             Title = title;
         }
     }

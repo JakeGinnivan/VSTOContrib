@@ -46,15 +46,25 @@ namespace Office.Contrib.RibbonFactory.Internal
             customTaskPane.VisibleChanged += CustomTaskPaneVisibleChanged;
         }
 
+        public void Refresh(object view)
+        {
+
+        }
+
         void CustomTaskPaneVisibleChanged(object sender, EventArgs e)
         {
             var customTaskPane = (CustomTaskPane)sender;
             Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
 
             //Propagate changes, then raise adapter event
-            Do(c => c.Visible = customTaskPane.Visible);
+            Do(c =>
+                   {
+                       if (c != customTaskPane)
+                           c.Visible = customTaskPane.Visible;
+                   });
             var handler = VisibleChanged;
-            handler(this, EventArgs.Empty);
+            if (handler != null)
+                handler(this, EventArgs.Empty);
 
             Do(c => c.VisibleChanged += CustomTaskPaneVisibleChanged);
         }
@@ -65,9 +75,14 @@ namespace Office.Contrib.RibbonFactory.Internal
             Do(c=>c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
 
             //Propagate changes, then raise adapter event
-            Do(c => c.DockPosition = customTaskPane.DockPosition);
+            Do(c =>
+                   {
+                       if (c != customTaskPane)
+                           c.DockPosition = customTaskPane.DockPosition;
+                   });
             var handler = DockPositionChanged;
-            handler(this, EventArgs.Empty);
+            if (handler != null)
+                handler(this, EventArgs.Empty);
 
             Do(c => c.DockPositionChanged += CustomTaskPaneDockPositionChanged);
         }

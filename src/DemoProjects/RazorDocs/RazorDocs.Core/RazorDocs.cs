@@ -14,7 +14,6 @@ namespace RazorDocs.Core
     {
         private bool _panelShown;
         private Document _document;
-        private WpfPanelHost _control;
         private CustomTaskPane _razorDocsTaskPane;
 
         public void Initialised(object context)
@@ -42,18 +41,14 @@ namespace RazorDocs.Core
 
         public void RegisterTaskPanes(Register register)
         {
-            if (_control == null)
-            {
-                _control = new WpfPanelHost
+            _razorDocsTaskPane = register(
+                ()=>new WpfPanelHost
                 {
                     Child = new RazorDocsPanel
                     {
                         DataContext = new RazorDocsPanelViewModel(this)
                     }
-                };
-            }
-
-            _razorDocsTaskPane = register(_control, "RazorDocs");
+                }, "RazorDocs");
             _razorDocsTaskPane.Visible = true;
             PanelShown = true;
             _razorDocsTaskPane.VisibleChanged += TwitterTaskPaneVisibleChanged;
@@ -63,9 +58,6 @@ namespace RazorDocs.Core
         public void Cleanup()
         {
             _razorDocsTaskPane.VisibleChanged -= TwitterTaskPaneVisibleChanged;
-            if (_control == null) return;
-
-            _control.Dispose();
         }
 
         private void TwitterTaskPaneVisibleChanged(object sender, EventArgs e)

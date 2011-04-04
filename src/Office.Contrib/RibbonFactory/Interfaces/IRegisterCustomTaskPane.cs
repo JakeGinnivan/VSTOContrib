@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Microsoft.Office.Tools;
 
 namespace Office.Contrib.RibbonFactory.Interfaces
@@ -18,5 +19,5 @@ namespace Office.Contrib.RibbonFactory.Interfaces
     /// <summary>
     /// Allows the registration of custom task pane(s)
     /// </summary>
-    public delegate CustomTaskPane Register(UserControl control, string title);
+    public delegate CustomTaskPane Register(Func<UserControl> controlFactory, string title);
 }
