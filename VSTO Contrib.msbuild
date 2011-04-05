@@ -112,10 +112,10 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Compile">
-    <!--<xunit Assembly="src\Tests\VSTOContrib.Tests\bin\Build\VSTOContrib.Tests.dll" />
-    <xunit Assembly="src\Tests\VSTOContrib.Outlook.Tests\bin\Build\VSTOContrib.Outlook.Tests.dll" />
-    <xunit Assembly="src\Tests\VSTOContrib.Word.Tests\bin\Build\VSTOContrib.Word.Tests.dll" />
-    <xunit Assembly="src\Tests\VSTOContrib.Excel.Tests\bin\Build\VSTOContrib.Excel.Tests.dll" />-->
+    <xunit Assembly="src\TestProjects\VSTOContrib.Core.Tests\bin\Build\VSTOContrib.Core.Tests.dll" />
+    <xunit Assembly="src\TestProjects\VSTOContrib.Outlook.Tests\bin\Build\VSTOContrib.Outlook.Tests.dll" />
+    <xunit Assembly="src\TestProjects\VSTOContrib.Word.Tests\bin\Build\VSTOContrib.Word.Tests.dll" />
+    <xunit Assembly="src\TestProjects\VSTOContrib.Excel.Tests\bin\Build\VSTOContrib.Excel.Tests.dll" />
   </Target>
 
   <Target Name="NuGet" DependsOnTargets="Test">

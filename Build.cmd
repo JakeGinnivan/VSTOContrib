@@ -4,17 +4,19 @@ mkdir .\build\log\
 
 msbuild.exe /ToolsVersion:4.0 /target:Version "VSTO Contrib.msbuild" 
 
-msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v3.5 /p:TargetOfficeVersion=2007 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET35_2007_WithCastle.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
+msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v3.5 /p:TargetOfficeVersion=2007 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET35_2007.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
 if %errorlevel% neq 0 goto end
 
-msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v3.5 /p:TargetOfficeVersion=2010 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET35_2010_WithCastle.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
+msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v3.5 /p:TargetOfficeVersion=2010 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET35_2010.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
 if %errorlevel% neq 0 goto end
 
-msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.0 /p:TargetOfficeVersion=2007 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET40_2007_WithCastle.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
+msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.0 /p:TargetOfficeVersion=2007 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET40_2007.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
 if %errorlevel% neq 0 goto end
 
-msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.0 /p:TargetOfficeVersion=2010 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET40_2010_WithCastle.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
+msbuild.exe /ToolsVersion:4.0 /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.0 /p:TargetOfficeVersion=2010 /l:FileLogger,Microsoft.Build.Engine;logfile=.\build\log\NET40_2010.log;verbosity=diagnostic "VSTO Contrib.msbuild" 
 if %errorlevel% neq 0 goto end
+
+msbuild.exe /ToolsVersion:4.0 /target:Package "build\Build-NuGet.msbuild" 
 
 :end
 pause

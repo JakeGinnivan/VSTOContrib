@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>VSTOContrib.Word</id>
+    <version>0.9.0.48</version>
+    <title>VSTOContrib.Word</title>
+    <authors>Jake Ginnivan</authors>
+    <owners>Jake Ginnivan</owners>
+    <projectUrl>http://vstocontrib.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Makes VSTO development with Word far simpler, support DI/IoC, ViewModel per document (with context), WPF like binding in RibbonXML, WPF Support and more!</description>
+    <tags>VSTO,Office,Word</tags>
+  </metadata>
+</package>
