@@ -32,11 +32,12 @@ namespace Office.Outlook.Contrib
         private void InspectorClose()
         {
             ((InspectorEvents_10_Event)Inspector).Close -= InspectorClose;
-            Inspector = null;
 
             var handler = Closed;
             if (handler != null) 
                 Closed(this, new InspectorClosedEventArgs(Inspector));
+
+            Inspector = null;
         }
     }
 }

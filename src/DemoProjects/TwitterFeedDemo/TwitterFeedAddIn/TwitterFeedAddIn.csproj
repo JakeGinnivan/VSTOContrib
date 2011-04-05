@@ -224,10 +224,6 @@
       <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
       <Name>Office.Outlook.Contrib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TwitterDemo\TwitterFeedCore\TwitterFeedCore.csproj">
-      <Project>{B2F64018-D5F8-461B-B46C-087C224ADB19}</Project>
-      <Name>TwitterFeedCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

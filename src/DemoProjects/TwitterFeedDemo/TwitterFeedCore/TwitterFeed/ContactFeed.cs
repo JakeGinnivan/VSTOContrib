@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
-using Office.Contrib;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
@@ -23,7 +22,6 @@ namespace TwitterFeedCore.TwitterFeed
         private readonly ITwitterService _twitterService;
         private ContactAdapter _contactAdapter;
         private bool _panelShown;
-        private Inspector _inspector;
         private string _username;
         private ICustomTaskPaneWrapper _twitterTaskPane;
 
@@ -70,8 +68,7 @@ namespace TwitterFeedCore.TwitterFeed
 
         public void Initialised(object context)
         {
-            _inspector = (Inspector) context;
-            _contactAdapter = new ContactAdapter((ContactItem) _inspector.CurrentItem);
+            _contactAdapter = new ContactAdapter((ContactItem)context);
             TwitterUsername = _contactAdapter.TwitterUsername;
             if (!string.IsNullOrEmpty(TwitterUsername))
                 RefreshCommand.Execute(null);
@@ -79,7 +76,6 @@ namespace TwitterFeedCore.TwitterFeed
 
         public void CurrentViewChanged(object currentView)
         {
-            
         }
 
         public string TwitterUsername
