@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Office.Core;
-using Office.Contrib;
-using Office.Contrib.RibbonFactory;
-using Office.Contrib.RibbonFactory.Interfaces;
-using Office.Outlook.Contrib.RibbonFactory;
 using TwitterFeedCore;
+using VSTOContrib.Core;
+using VSTOContrib.Core.RibbonFactory;
+using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Outlook.RibbonFactory;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace TwitterFeedAddIn

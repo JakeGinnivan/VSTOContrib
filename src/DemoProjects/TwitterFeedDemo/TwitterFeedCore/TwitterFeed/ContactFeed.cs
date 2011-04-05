@@ -5,13 +5,13 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
-using Office.Contrib.Extensions;
-using Office.Contrib.RibbonFactory;
-using Office.Contrib.RibbonFactory.Interfaces;
-using Office.Contrib.RibbonFactory.Internal;
-using Office.Contrib.Wpf;
-using Office.Outlook.Contrib.RibbonFactory;
 using TwitterFeedCore.Services;
+using VSTOContrib.Core.Extensions;
+using VSTOContrib.Core.RibbonFactory;
+using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
+using VSTOContrib.Core.Wpf;
+using VSTOContrib.Outlook.RibbonFactory;
 
 namespace TwitterFeedCore.TwitterFeed
 {

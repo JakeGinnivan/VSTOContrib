@@ -1,0 +1,31 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#
+var programFiles = Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+Assembly officeAssembly = Assembly.ReflectionOnlyLoadFrom(programFiles + @"\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14\Office.dll");
+#>
+//<#=officeAssembly.FullName#>
+namespace VSTOContrib.Extensions.Proxies.Interfaces
+{
+<#
+foreach (var officeInterface in officeAssembly.GetTypes().Where(t => t.IsInterface)) 
+{ 
+#>
+	/// <summary>
+	/// Wrapper interface for <#= officeInterface.Name #> which adds IDispose to the interface
+	/// </summary>
+	public interface I<#= officeInterface.Name #> : <#= officeInterface.FullName #>, System.IDisposable 
+	{ 
+		/// <summary>
+        /// Gets the proxied resource.
+        /// </summary>
+        /// <value>The resource.</value>
+		<#= officeInterface.FullName #> Resource { get; }
+	}
+
+<# 
+}
+#>
+}

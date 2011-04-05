@@ -6,10 +6,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
-using Office.Contrib;
-using Office.Contrib.Extensions;
 using System.IO;
-using Office.Contrib.Wpf;
+using VSTOContrib.Core;
+using VSTOContrib.Core.Extensions;
+using VSTOContrib.Core.Wpf;
 
 namespace Add_inUninstaller
 {

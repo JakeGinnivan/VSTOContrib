@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Interop.Outlook;
-using Office.Outlook.Contrib.Extensions;
+using VSTOContrib.Outlook;
 
 namespace TwitterFeedCore
 {

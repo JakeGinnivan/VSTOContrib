@@ -1,0 +1,36 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#
+var programFiles = Environment.GetEnvironmentVariable("PROGRAMFILES(X86)") ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+Assembly officeAssembly = Assembly.ReflectionOnlyLoadFrom (programFiles + @"\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14\Office.dll");
+Assembly excelAssembly = Assembly.ReflectionOnlyLoadFrom(programFiles + @"\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14\Microsoft.Office.Interop.Excel.dll");
+#>
+using VSTOContrib.Extensions.Proxies;
+
+//<#=excelAssembly.FullName#>
+namespace VSTOContrib.Excel.Extensions.Proxies
+{
+	/// <summary>
+	/// Provides cleanup extension methods for interfaces exposed by Office.dll
+	/// </summary>
+	public static class OfficeCleanupExtensions
+	{
+<# 
+	foreach (var officeInterface in excelAssembly.GetTypes().Where(t => t.IsInterface)) 
+	{
+#>
+		/// <summary>
+		/// Wrapper interface for <#= officeInterface.Name #> which adds IDispose to the interface
+		/// </summary>
+		public static Interfaces.I<#= officeInterface.Name #> WithComCleanupProxy(this <#= officeInterface.FullName #> resource)
+		{
+			return resource.WithComCleanupProxy<<#= officeInterface.FullName #>, Interfaces.I<#= officeInterface.Name #>>();
+		}
+
+<#
+		}
+#>
+	}
+}

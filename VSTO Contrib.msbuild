@@ -5,10 +5,10 @@
     <TargetFrameworkVersion Condition="$(TargetFrameworkVersion)==''">v4.0</TargetFrameworkVersion>
     <FrameworkString Condition="$(TargetFrameworkVersion)=='v3.5'">NET35</FrameworkString>
     <FrameworkString Condition="$(TargetFrameworkVersion)=='v4.0'">NET40</FrameworkString>
+
+    <NuGetFrameworkString Condition="$(TargetFrameworkVersion)=='v3.5'">net20</NuGetFrameworkString>
+    <NuGetFrameworkString Condition="$(TargetFrameworkVersion)=='v4.0'">net40</NuGetFrameworkString>
     <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2010</TargetOfficeVersion>
-    <IncludeCastle Condition="$(IncludeCastle)==''">True</IncludeCastle>
-    <CastleString Condition="$(IncludeCastle)=='True'">WithCastleProxies</CastleString>
-    <CastleString Condition="$(IncludeCastle)!='True'">WithoutCastleProxies</CastleString>
     <Root>$(MSBuildProjectDirectory)\src\</Root>
     <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
     <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
@@ -23,8 +23,8 @@
     TaskName="Xunit.Runner.MSBuild.xunit"/>
 
   <PropertyGroup>
-    <Major>1</Major>
-    <Minor>2</Minor>
+    <Major>0</Major>
+    <Minor>9</Minor>
     <Build>0</Build>
     <Revision>0</Revision>
   </PropertyGroup>
@@ -42,7 +42,6 @@
     <Message Text="Drop path:       build\Artifacts" />
     <Message Text=".NET Version:    $(FrameworkString)" />
     <Message Text="Office Version:  $(TargetOfficeVersion)" />
-    <Message Text="Castle Proxies:  $(CastleString)" />
 
     <!-- Clean up -->
     <ItemGroup>
@@ -62,27 +61,30 @@
       Condition="$(Revision) != '-1' "/>
   </Target>
   <PropertyGroup>
-    <ExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions$(TargetOfficeVersion).tt</ExtensionsFile>
-    <InterfacesFile>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces$(TargetOfficeVersion).tt</InterfacesFile>
-    <ExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Contrib\Extensions\OfficeCleanupExtensions.cs</ExtensionsOutput>
-    <InterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Contrib\Interfaces\OfficeInterfaces.cs</InterfacesOutput>
-    <OutlookExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Extensions\OutlookCleanupExtensions$(TargetOfficeVersion).tt</OutlookExtensionsFile>
-    <OutlookInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Interfaces\OutlookInterfaces$(TargetOfficeVersion).tt</OutlookInterfacesFile>
-    <OutlookExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Extensions\OutlookCleanupExtensions.cs</OutlookExtensionsOutput>
-    <OutlookInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Outlook.Contrib\Interfaces\OutlookInterfaces.cs</OutlookInterfacesOutput>
-    <WordExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Extensions\WordCleanupExtensions$(TargetOfficeVersion).tt</WordExtensionsFile>
-    <WordInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Interfaces\WordInterfaces$(TargetOfficeVersion).tt</WordInterfacesFile>
-    <WordExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Extensions\WordCleanupExtensions.cs</WordExtensionsOutput>
-    <WordInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Word.Contrib\Interfaces\WordInterfaces.cs</WordInterfacesOutput>
-    <PowerPointExtensionsFile>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Extensions\PowerPointCleanupExtensions$(TargetOfficeVersion).tt</PowerPointExtensionsFile>
-    <PowerPointInterfacesFile>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces$(TargetOfficeVersion).tt</PowerPointInterfacesFile>
-    <PowerPointExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Extensions\PowerPointCleanupExtensions.cs</PowerPointExtensionsOutput>
-    <PowerPointInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces.cs</PowerPointInterfacesOutput>
+    <ExtensionsFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions$(TargetOfficeVersion).tt</ExtensionsFile>
+    <InterfacesFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces$(TargetOfficeVersion).tt</InterfacesFile>
+    <ExtensionsOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions.cs</ExtensionsOutput>
+    <InterfacesOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces.cs</InterfacesOutput>
+    
+    <OutlookExtensionsFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Outlook.Extensions.Proxies\OutlookCleanupExtensions$(TargetOfficeVersion).tt</OutlookExtensionsFile>
+    <OutlookInterfacesFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Outlook.Extensions.Proxies\Interfaces\OutlookInterfaces$(TargetOfficeVersion).tt</OutlookInterfacesFile>
+    <OutlookExtensionsOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Outlook.Extensions.Proxies\OutlookCleanupExtensions.cs</OutlookExtensionsOutput>
+    <OutlookInterfacesOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Outlook.Extensions.Proxies\Interfaces\OutlookInterfaces.cs</OutlookInterfacesOutput>
+    
+    <WordExtensionsFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Word.Extensions.Proxies\WordCleanupExtensions$(TargetOfficeVersion).tt</WordExtensionsFile>
+    <WordInterfacesFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Word.Extensions.Proxies\Interfaces\WordInterfaces$(TargetOfficeVersion).tt</WordInterfacesFile>
+    <WordExtensionsOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Word.Extensions.Proxies\WordCleanupExtensions.cs</WordExtensionsOutput>
+    <WordInterfacesOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Word.Extensions.Proxies\Interfaces\WordInterfaces.cs</WordInterfacesOutput>
+    
+    <PowerPointExtensionsFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.PowerPoint.Extensions.Proxies\PowerPointCleanupExtensions$(TargetOfficeVersion).tt</PowerPointExtensionsFile>
+    <PowerPointInterfacesFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.PowerPoint.Extensions.Proxies\Interfaces\PowerPointInterfaces$(TargetOfficeVersion).tt</PowerPointInterfacesFile>
+    <PowerPointExtensionsOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.PowerPoint.Extensions.Proxies\PowerPointCleanupExtensions.cs</PowerPointExtensionsOutput>
+    <PowerPointInterfacesOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.PowerPoint.Extensions.Proxies\Interfaces\PowerPointInterfaces.cs</PowerPointInterfacesOutput>
 	
-    <ExcelExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Extensions\ExcelCleanupExtensions$(TargetOfficeVersion).tt</ExcelExtensionsFile>
-    <ExcelInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Interfaces\ExcelInterfaces$(TargetOfficeVersion).tt</ExcelInterfacesFile>
-    <ExcelExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Extensions\ExcelCleanupExtensions.cs</ExcelExtensionsOutput>
-    <ExcelInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Interfaces\ExcelInterfaces.cs</ExcelInterfacesOutput>
+    <ExcelExtensionsFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Excel.Extensions.Proxies\ExcelCleanupExtensions$(TargetOfficeVersion).tt</ExcelExtensionsFile>
+    <ExcelInterfacesFile>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Excel.Extensions.Proxies\Interfaces\ExcelInterfaces$(TargetOfficeVersion).tt</ExcelInterfacesFile>
+    <ExcelExtensionsOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Excel.Extensions.Proxies\ExcelCleanupExtensions.cs</ExcelExtensionsOutput>
+    <ExcelInterfacesOutput>$(MSBuildProjectDirectory)\src\Extensions\VSTOContrib.Excel.Extensions.Proxies\Interfaces\ExcelInterfaces.cs</ExcelInterfacesOutput>
   </PropertyGroup>
 
   <Target Name="Compile" DependsOnTargets="GetVersion">
@@ -110,13 +112,55 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Compile">
-    <xunit Assembly="src\Tests\Office.Contrib.Tests\bin\Build\Office.Contrib.Tests.dll" />
-    <xunit Assembly="src\Tests\Office.Outlook.Contrib.Tests\bin\Build\Office.Outlook.Contrib.Tests.dll" />
-    <xunit Assembly="src\Tests\Office.Word.Contrib.Tests\bin\Build\Office.Word.Contrib.Tests.dll" />
-    <xunit Assembly="src\Tests\Office.Excel.Contrib.Tests\bin\Build\Office.Excel.Contrib.Tests.dll" />
+    <!--<xunit Assembly="src\Tests\VSTOContrib.Tests\bin\Build\VSTOContrib.Tests.dll" />
+    <xunit Assembly="src\Tests\VSTOContrib.Outlook.Tests\bin\Build\VSTOContrib.Outlook.Tests.dll" />
+    <xunit Assembly="src\Tests\VSTOContrib.Word.Tests\bin\Build\VSTOContrib.Word.Tests.dll" />
+    <xunit Assembly="src\Tests\VSTOContrib.Excel.Tests\bin\Build\VSTOContrib.Excel.Tests.dll" />-->
   </Target>
 
-  <Target Name="Publish" DependsOnTargets="Test">
+  <Target Name="NuGet" DependsOnTargets="Test">
+    <PropertyGroup>
+      <OutlookNuGetFolderName>build\Artifacts\NuGet\Outlook\$(NuGetFrameworkString)\</OutlookNuGetFolderName>
+      <PowerPointNuGetFolderName>build\Artifacts\NuGet\PowerPoint\$(NuGetFrameworkString)\</PowerPointNuGetFolderName>
+      <WordNuGetFolderName>build\Artifacts\NuGet\Word\$(NuGetFrameworkString)\</WordNuGetFolderName>
+      <ExcelNuGetFolderName>build\Artifacts\NuGet\Excel\$(NuGetFrameworkString)\</ExcelNuGetFolderName>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(OutlookNuGetFolderName)"
+             Condition="!Exists($(OutlookNuGetFolderName))" />
+    <MakeDir Directories="$(PowerPointNuGetFolderName)"
+             Condition="!Exists($(PowerPointNuGetFolderName))" />
+    <MakeDir Directories="$(WordNuGetFolderName)"
+             Condition="!Exists($(WordNuGetFolderName))" />
+    <MakeDir Directories="$(ExcelNuGetFolderName)"
+             Condition="!Exists($(ExcelNuGetFolderName))" />
+
+    <!--Outlook-->
+    <Copy SourceFiles="src\VSTOContrib.Outlook\bin\Build\VSTOContrib.Core.dll"
+          DestinationFiles="$(OutlookNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="src\VSTOContrib.Outlook\bin\Build\VSTOContrib.Outlook.dll"
+          DestinationFiles="$(OutlookNuGetFolderName)\VSTOContrib.Outlook.$(TargetOfficeVersion).dll"/>
+
+    <!--PowerPoint-->
+    <Copy SourceFiles="src\VSTOContrib.PowerPoint\bin\Build\VSTOContrib.Core.dll"
+          DestinationFiles="$(PowerPointNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="src\VSTOContrib.PowerPoint\bin\Build\VSTOContrib.PowerPoint.dll"
+          DestinationFiles="$(PowerPointNuGetFolderName)\VSTOContrib.PowerPoint.$(TargetOfficeVersion).dll"/>
+
+    <!--Word-->
+    <Copy SourceFiles="src\VSTOContrib.Word\bin\Build\VSTOContrib.Core.dll"
+          DestinationFiles="$(WordNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="src\VSTOContrib.Word\bin\Build\VSTOContrib.Word.dll"
+          DestinationFiles="$(WordNuGetFolderName)\VSTOContrib.Word.$(TargetOfficeVersion).dll"/>
+
+    <!--Excel-->
+    <Copy SourceFiles="src\VSTOContrib.Excel\bin\Build\VSTOContrib.Core.dll"
+          DestinationFiles="$(ExcelNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="src\VSTOContrib.Excel\bin\Build\VSTOContrib.Excel.dll"
+          DestinationFiles="$(ExcelNuGetFolderName)\VSTOContrib.Excel.$(TargetOfficeVersion).dll"/>
+  </Target>
+
+  <Target Name="Publish" DependsOnTargets="NuGet">
     <!--<MSBuild Projects="src\Demos\FacebookToOutlook\FacebookToOutlookAddin\FacebookToOutlookAddin.csproj"
              Properties="ApplicationVersion=$(Major).$(Minor).$(Build).$(Revision);PublishDir=bin\Publish\;OutputPath=bin\Build\"
              Targets="Publish" />-->
@@ -125,14 +169,14 @@
   <Target Name="Package" DependsOnTargets="Publish">
 
     <ItemGroup>
-      <OfficeZipFiles Include="src\Office.Contrib\bin\Build\*.*"
-                      Exclude="src\Office.Contrib\bin\Build\*vshost*" />
-      <OutlookZipFiles Include="src\Office.Outlook.Contrib\bin\Build\*.*"
-                       Exclude="src\Office.Outlook.Contrib\bin\Build\*vshost*" />
-      <WordZipFiles Include="src\Office.Word.Contrib\bin\Build\*.*"
-                    Exclude="src\Office.Word.Contrib\bin\Build\*vshost*" />
-      <PowerPointZipFiles Include="src\Office.PowerPoint.Contrib\bin\Build\*.*"
-                    Exclude="src\Office.PowerPoint.Contrib\bin\Build\*vshost*" />
+      <OutlookZipFiles Include="src\VSTOContrib.Outlook\bin\Build\*.*"
+                       Exclude="src\VSTOContrib.Outlook\bin\Build\*vshost*" />
+      <WordZipFiles Include="src\VSTOContrib.Word\bin\Build\*.*"
+                    Exclude="src\VSTOContrib.Word\bin\Build\*vshost*" />
+      <PowerPointZipFiles Include="src\VSTOContrib.PowerPoint\bin\Build\*.*"
+                          Exclude="src\VSTOContrib.PowerPoint\bin\Build\*vshost*" />
+      <ExcelZipFiles Include="src\VSTOContrib.Excel\bin\Build\*.*"
+                     Exclude="src\VSTOContrib.Excel\bin\Build\*vshost*" />
       <AddinUninstallerFiles Include="src\Add-inUninstaller\bin\Build\*.*"
                              Exclude="src\Add-inUninstaller\bin\Build\*vshost*" />
     </ItemGroup>
@@ -141,21 +185,21 @@
     </ItemGroup>
     <Delete Files="@(OldZipFiles)" />
 
-    <MakeDir Directories="build\Artifacts\$(FrameworkString)_$(CastleString)" Condition="!Exists('build\Artifacts\$(FrameworkString)_$(CastleString)')" />
+    <MakeDir Directories="build\Artifacts\$(FrameworkString)" Condition="!Exists('build\Artifacts\$(FrameworkString)')" />
 
-    <Zip Files="@(OfficeZipFiles)"
-         WorkingDirectory="src\Office.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(OutlookZipFiles)"
-         WorkingDirectory="src\Office.Outlook.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Outlook.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         WorkingDirectory="src\VSTOContrib.Outlook\bin\Build\"
+         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Outlook for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(WordZipFiles)"
-         WorkingDirectory="src\Office.Word.Contrib\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).Word.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         WorkingDirectory="src\VSTOContrib.Word\bin\Build\"
+         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Word for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PowerPointZipFiles)"
-           WorkingDirectory="src\Office.PowerPoint.Contrib\bin\Build\"
-           ZipFileName="build\Artifacts\$(FrameworkString)_$(CastleString)\Office$(TargetOfficeVersion).PowerPoint.Contrib.v$(Major).$(Minor).$(Build).$(Revision).zip" />
-    <Zip Files="@(PublishZipFiles)"
+           WorkingDirectory="src\VSTOContrib.PowerPoint\bin\Build\"
+           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.PowerPoint for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+    <Zip Files="@(ExcelZipFiles)"
+           WorkingDirectory="src\VSTOContrib.Excel\bin\Build\"
+           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Excel for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+    <Zip Files="@(AddinUninstallerFiles)"
            WorkingDirectory="src\Add-inUninstaller\bin\Build\"
            ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
   </Target>

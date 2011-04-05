@@ -1,8 +1,8 @@
 ﻿using System;
 using Autofac;
-using Office.Contrib.RibbonFactory.Interfaces;
 using TwitterFeedCore.Services;
 using TwitterFeedCore.TwitterFeed;
+using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace TwitterFeedCore
 {
