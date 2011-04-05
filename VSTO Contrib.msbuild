@@ -120,44 +120,44 @@
 
   <Target Name="NuGet" DependsOnTargets="Test">
     <PropertyGroup>
-      <OutlookNuGetFolderName>build\Artifacts\NuGet\Outlook\$(NuGetFrameworkString)\</OutlookNuGetFolderName>
+      <OutlookNuGetFolderName>build\Artifacts\NuGet\Outlook\</OutlookNuGetFolderName>
       <PowerPointNuGetFolderName>build\Artifacts\NuGet\PowerPoint\$(NuGetFrameworkString)\</PowerPointNuGetFolderName>
       <WordNuGetFolderName>build\Artifacts\NuGet\Word\$(NuGetFrameworkString)\</WordNuGetFolderName>
       <ExcelNuGetFolderName>build\Artifacts\NuGet\Excel\$(NuGetFrameworkString)\</ExcelNuGetFolderName>
     </PropertyGroup>
 
-    <MakeDir Directories="$(OutlookNuGetFolderName)"
-             Condition="!Exists($(OutlookNuGetFolderName))" />
-    <MakeDir Directories="$(PowerPointNuGetFolderName)"
-             Condition="!Exists($(PowerPointNuGetFolderName))" />
-    <MakeDir Directories="$(WordNuGetFolderName)"
-             Condition="!Exists($(WordNuGetFolderName))" />
-    <MakeDir Directories="$(ExcelNuGetFolderName)"
-             Condition="!Exists($(ExcelNuGetFolderName))" />
+    <MakeDir Directories="$(OutlookNuGetFolderName)lib\$(NuGetFrameworkString)\"
+             Condition="!Exists('$(OutlookNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
+    <MakeDir Directories="$(PowerPointNuGetFolderName)lib\$(NuGetFrameworkString)\"
+             Condition="!Exists('$(PowerPointNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
+    <MakeDir Directories="$(WordNuGetFolderName)lib\$(NuGetFrameworkString)\"
+             Condition="!Exists('$(WordNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
+    <MakeDir Directories="$(ExcelNuGetFolderName)lib\$(NuGetFrameworkString)\"
+             Condition="!Exists('$(ExcelNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
 
     <!--Outlook-->
     <Copy SourceFiles="src\VSTOContrib.Outlook\bin\Build\VSTOContrib.Core.dll"
-          DestinationFiles="$(OutlookNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(OutlookNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
     <Copy SourceFiles="src\VSTOContrib.Outlook\bin\Build\VSTOContrib.Outlook.dll"
-          DestinationFiles="$(OutlookNuGetFolderName)\VSTOContrib.Outlook.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(OutlookNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Outlook.$(TargetOfficeVersion).dll"/>
 
     <!--PowerPoint-->
     <Copy SourceFiles="src\VSTOContrib.PowerPoint\bin\Build\VSTOContrib.Core.dll"
-          DestinationFiles="$(PowerPointNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(PowerPointNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
     <Copy SourceFiles="src\VSTOContrib.PowerPoint\bin\Build\VSTOContrib.PowerPoint.dll"
-          DestinationFiles="$(PowerPointNuGetFolderName)\VSTOContrib.PowerPoint.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(PowerPointNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.PowerPoint.$(TargetOfficeVersion).dll"/>
 
     <!--Word-->
     <Copy SourceFiles="src\VSTOContrib.Word\bin\Build\VSTOContrib.Core.dll"
-          DestinationFiles="$(WordNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(WordNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
     <Copy SourceFiles="src\VSTOContrib.Word\bin\Build\VSTOContrib.Word.dll"
-          DestinationFiles="$(WordNuGetFolderName)\VSTOContrib.Word.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(WordNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Word.$(TargetOfficeVersion).dll"/>
 
     <!--Excel-->
     <Copy SourceFiles="src\VSTOContrib.Excel\bin\Build\VSTOContrib.Core.dll"
-          DestinationFiles="$(ExcelNuGetFolderName)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(ExcelNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
     <Copy SourceFiles="src\VSTOContrib.Excel\bin\Build\VSTOContrib.Excel.dll"
-          DestinationFiles="$(ExcelNuGetFolderName)\VSTOContrib.Excel.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(ExcelNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Excel.$(TargetOfficeVersion).dll"/>
   </Target>
 
   <Target Name="Publish" DependsOnTargets="NuGet">
