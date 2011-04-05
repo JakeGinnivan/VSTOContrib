@@ -26,6 +26,12 @@ namespace Office.Outlook.Contrib.RibbonFactory
             return null;
         }
 
+        /// <summary>
+        /// Gets the ribbon type for view.
+        /// </summary>
+        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
         public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
         {
             if (view is Explorer)

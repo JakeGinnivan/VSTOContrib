@@ -1,12 +1,12 @@
-using Microsoft.Office.Interop.Word;
+using Microsoft.Office.Interop.Excel;
 using Office.Contrib.RibbonFactory.Interfaces;
 
-namespace Office.Word.Contrib.RibbonFactory
+namespace Office.Excel.Contrib.RibbonFactory
 {
     /// <summary>
     /// Gets the document for a view
     /// </summary>
-    public class WordViewContextProvider : IViewContextProvider
+    public class ExcelViewContextProvider : IViewContextProvider
     {
         /// <summary>
         /// Gets the context for view.
@@ -15,9 +15,12 @@ namespace Office.Word.Contrib.RibbonFactory
         /// <returns></returns>
         public object GetContextForView(object view)
         {
+            //There seems to be no way get the current workbook for a window like every other office app
+            // ThisWorkbook returns the workbook associated with any running code, so *should* be ok..
+
             var window = view as Window;
             if (window != null)
-                return window.Document;
+                return window.Application.ThisWorkbook;
 
             //var protectedWindow = view as ProtectedViewWindow;
             //if (protectedWindow != null)
@@ -34,7 +37,7 @@ namespace Office.Word.Contrib.RibbonFactory
         /// <returns></returns>
         public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
         {
-            return (TRibbonType)(object)WordRibbonType.WordDocument;
+            return (TRibbonType)(object)ExcelRibbonType.ExcelWorkbook;
         }
     }
 }

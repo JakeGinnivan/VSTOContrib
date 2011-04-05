@@ -78,29 +78,29 @@
     <PowerPointInterfacesFile>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces$(TargetOfficeVersion).tt</PowerPointInterfacesFile>
     <PowerPointExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Extensions\PowerPointCleanupExtensions.cs</PowerPointExtensionsOutput>
     <PowerPointInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.PowerPoint.Contrib\Interfaces\PowerPointInterfaces.cs</PowerPointInterfacesOutput>
+	
+    <ExcelExtensionsFile>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Extensions\ExcelCleanupExtensions$(TargetOfficeVersion).tt</ExcelExtensionsFile>
+    <ExcelInterfacesFile>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Interfaces\ExcelInterfaces$(TargetOfficeVersion).tt</ExcelInterfacesFile>
+    <ExcelExtensionsOutput>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Extensions\ExcelCleanupExtensions.cs</ExcelExtensionsOutput>
+    <ExcelInterfacesOutput>$(MSBuildProjectDirectory)\src\Office.Excel.Contrib\Interfaces\ExcelInterfaces.cs</ExcelInterfacesOutput>
   </PropertyGroup>
 
   <Target Name="Compile" DependsOnTargets="GetVersion">
     <!--Regenerate TextTemplates-->
-    <Message Text='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
-    <Message Text='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
 
-    <Message Text='build\lib\TextTransform.exe -out "$(OutlookExtensionsOutput)" "$(OutlookExtensionsFile)"' />
-    <Message Text='build\lib\TextTransform.exe -out "$(OutlookInterfacesOutput)" "$(OutlookInterfacesFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(OutlookExtensionsOutput)" "$(OutlookExtensionsFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(OutlookInterfacesOutput)" "$(OutlookInterfacesFile)"' />
 
-    <Message Text='build\lib\TextTransform.exe -out "$(WordExtensionsOutput)" "$(WordExtensionsFile)"' />
-    <Message Text='build\lib\TextTransform.exe -out "$(WordInterfacesOutput)" "$(WordInterfacesFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(WordExtensionsOutput)" "$(WordExtensionsFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(WordInterfacesOutput)" "$(WordInterfacesFile)"' />
 
-    <Message Text='build\lib\TextTransform.exe -out "$(PowerPointExtensionsOutput)" "$(PowerPointExtensionsFile)"' />
-    <Message Text='build\lib\TextTransform.exe -out "$(PowerPointInterfacesOutput)" "$(PowerPointInterfacesFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(PowerPointExtensionsOutput)" "$(PowerPointExtensionsFile)"' />
     <Exec Command='build\lib\TextTransform.exe -out "$(PowerPointInterfacesOutput)" "$(PowerPointInterfacesFile)"' />
+	
+    <Exec Command='build\lib\TextTransform.exe -out "$(ExcelExtensionsOutput)" "$(ExcelExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(ExcelInterfacesOutput)" "$(ExcelInterfacesFile)"' />
 
     <!--Compile-->
     <ItemGroup>
@@ -113,6 +113,7 @@
     <xunit Assembly="src\Tests\Office.Contrib.Tests\bin\Build\Office.Contrib.Tests.dll" />
     <xunit Assembly="src\Tests\Office.Outlook.Contrib.Tests\bin\Build\Office.Outlook.Contrib.Tests.dll" />
     <xunit Assembly="src\Tests\Office.Word.Contrib.Tests\bin\Build\Office.Word.Contrib.Tests.dll" />
+    <xunit Assembly="src\Tests\Office.Excel.Contrib.Tests\bin\Build\Office.Excel.Contrib.Tests.dll" />
   </Target>
 
   <Target Name="Publish" DependsOnTargets="Test">

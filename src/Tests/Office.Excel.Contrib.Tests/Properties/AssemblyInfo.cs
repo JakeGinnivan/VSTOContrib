@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Office.Word.Contrib.Tests")]
+[assembly: AssemblyTitle("Office.Excel.Contrib.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jake Ginnivan")]
-[assembly: AssemblyProduct("Office.Word.Contrib.Tests")]
+[assembly: AssemblyProduct("Office.Excel.Contrib.Tests")]
 [assembly: AssemblyCopyright("Copyright © Jake Ginnivan 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,8 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("731a71dd-5fc2-437b-84c2-323b1f2d5a3a")]
-
+[assembly: Guid("03cb7eb7-30fb-4ac8-a1f8-f70b0fed8b34")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
