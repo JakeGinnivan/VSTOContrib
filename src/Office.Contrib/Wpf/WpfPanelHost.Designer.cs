@@ -1,4 +1,4 @@
-﻿namespace Office.Contrib
+﻿namespace Office.Contrib.Wpf
 {
     partial class WpfPanelHost
     {

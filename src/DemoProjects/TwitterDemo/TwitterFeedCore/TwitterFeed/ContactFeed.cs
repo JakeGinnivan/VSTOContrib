@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using Office.Contrib;
 using Office.Contrib.Extensions;
 using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
+using Office.Contrib.RibbonFactory.Internal;
+using Office.Contrib.Wpf;
 using Office.Outlook.Contrib.RibbonFactory;
 using TwitterFeedCore.Services;
-using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace TwitterFeedCore.TwitterFeed
 {
     [RibbonViewModel(OutlookRibbonType.OutlookContact)]
-    public class ContactFeed : ViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+    public class ContactFeed : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
         private readonly BackgroundWorker _worker = new BackgroundWorker();
         private readonly ITwitterService _twitterService;
@@ -26,8 +25,7 @@ namespace TwitterFeedCore.TwitterFeed
         private bool _panelShown;
         private Inspector _inspector;
         private string _username;
-        private WpfPanelHost _control;
-        private CustomTaskPane _twitterTaskPane;
+        private ICustomTaskPaneWrapper _twitterTaskPane;
 
         public ContactFeed(ITwitterService twitterService)
         {
@@ -45,8 +43,8 @@ namespace TwitterFeedCore.TwitterFeed
                                              Tweets.Add(tweet);
                                          RaisePropertyChanged("IsBusy");
                                      }));
-            RefreshCommand = new RelayCommand(Refresh, CanRefresh);
-            SaveUsernameCommand = new RelayCommand(SaveUsername);
+            RefreshCommand = new DelegateCommand(Refresh, CanRefresh);
+            SaveUsernameCommand = new DelegateCommand(SaveUsername);
         }
 
         public bool IsBusy { get { return _worker.IsBusy; } }
@@ -116,29 +114,23 @@ namespace TwitterFeedCore.TwitterFeed
 
         public void RegisterTaskPanes(Register register)
         {
-            _control = new WpfPanelHost
-                           {
-                               Child = new TwitterFeed
-                                           {
-                                               DataContext = this
-                                           }
-                           };
-
-            _twitterTaskPane = register(_control, "Twitter");
+            _twitterTaskPane = register(() => new WpfPanelHost
+            {
+                Child = new TwitterFeed
+                {
+                    DataContext = this
+                }
+            }, "Twitter");
             _twitterTaskPane.Visible = true;
             PanelShown = true;
             _twitterTaskPane.VisibleChanged += TwitterTaskPaneVisibleChanged;
             TwitterTaskPaneVisibleChanged(this, EventArgs.Empty);
         }
 
-        public override void Cleanup()
+        public void Cleanup()
         {
             _twitterTaskPane.VisibleChanged -= TwitterTaskPaneVisibleChanged;
             _contactAdapter.Contact.ReleaseComObject();
-            if (_control == null) return;
-
-            _control.Dispose();
-            base.Cleanup();
         }
 
         private void TwitterTaskPaneVisibleChanged(object sender, EventArgs e)

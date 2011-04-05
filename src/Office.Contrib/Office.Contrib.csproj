@@ -116,7 +116,8 @@
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
-    <Compile Include="RibbonFactory\OfficeViewModelBase.cs" />
+    <Compile Include="Wpf\DelegateCommand.cs" />
+    <Compile Include="Wpf\OfficeViewModelBase.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonFactoryImpl.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
@@ -127,10 +128,10 @@
     <Compile Include="RibbonFactory\ViewNotFoundException.cs" />
     <Compile Include="UpdateResult.cs" />
     <Compile Include="VstoClickOnceUpdater.cs" />
-    <Compile Include="WpfPanelHost.cs">
+    <Compile Include="Wpf\WpfPanelHost.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WpfPanelHost.Designer.cs">
+    <Compile Include="Wpf\WpfPanelHost.Designer.cs">
       <DependentUpon>WpfPanelHost.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -139,7 +140,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="WpfPanelHost.resx">
+    <EmbeddedResource Include="Wpf\WpfPanelHost.resx">
       <DependentUpon>WpfPanelHost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

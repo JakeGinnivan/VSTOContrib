@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using Office.Contrib;
 using Office.Contrib.Extensions;
 using System.IO;
+using Office.Contrib.Wpf;
 
 namespace Add_inUninstaller
 {

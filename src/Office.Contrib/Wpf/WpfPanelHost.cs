@@ -2,14 +2,14 @@
 using System.Windows;
 using System.Windows.Forms;
 
-namespace Office.Contrib
+namespace Office.Contrib.Wpf
 {
     /// <summary>
     /// Windows Forms user control that hosts a WPF user Control.
     /// Includes fix for a redraw issue that is present in Office 2007
     /// </summary>
     [ComVisible(true)]
-    [ProgId("Office.Utility.WpfPanelHost")]
+    [ProgId("Office.Contrib.Wpf.WpfPanelHost")]
     [Guid("59A7E2E3-B0AD-449A-81B9-58398873AC8B")]
     public partial class WpfPanelHost : UserControl
     {

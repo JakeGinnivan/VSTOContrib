@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace Office.Contrib.RibbonFactory
+namespace Office.Contrib.Wpf
 {
     /// <summary>
     /// View Model base for office ribbon view models

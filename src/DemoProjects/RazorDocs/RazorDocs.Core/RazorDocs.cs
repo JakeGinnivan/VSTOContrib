@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
-using Office.Contrib;
-using Office.Contrib.RibbonFactory;
 using Office.Contrib.RibbonFactory.Interfaces;
 using Office.Contrib.RibbonFactory.Internal;
+using Office.Contrib.Wpf;
 using Office.Word.Contrib.RibbonFactory;
-using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace RazorDocs.Core
 {

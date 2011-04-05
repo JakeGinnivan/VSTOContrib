@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace Add_inUninstaller
+namespace Office.Contrib.Wpf
 {
     /// <summary>
     ///     This class allows delegating the commanding logic to methods passed as parameters,
