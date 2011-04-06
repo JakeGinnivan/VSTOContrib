@@ -5,6 +5,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\build\Build-NuGet.msbuild = ..\build\Build-NuGet.msbuild
 		..\Build.cmd = ..\Build.cmd
+		..\build\Install.ps1 = ..\build\Install.ps1
 		..\README.txt = ..\README.txt
 		Information\SolutionInfo.cs = Information\SolutionInfo.cs
 		Information\VersionInfo.cs = Information\VersionInfo.cs

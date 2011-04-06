@@ -189,16 +189,16 @@
 
     <Zip Files="@(OutlookZipFiles)"
          WorkingDirectory="src\VSTOContrib.Outlook\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Outlook for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Outlook for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(WordZipFiles)"
          WorkingDirectory="src\VSTOContrib.Word\bin\Build\"
-         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Word for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Word for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(PowerPointZipFiles)"
            WorkingDirectory="src\VSTOContrib.PowerPoint\bin\Build\"
-           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.PowerPoint for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.PowerPoint for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(ExcelZipFiles)"
            WorkingDirectory="src\VSTOContrib.Excel\bin\Build\"
-           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Excel for $(TargetOfficeVersion) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+           ZipFileName="build\Artifacts\$(FrameworkString)\VSTOContrib.Excel for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
     <Zip Files="@(AddinUninstallerFiles)"
            WorkingDirectory="src\Add-inUninstaller\bin\Build\"
            ZipFileName="build\Artifacts\Add-inUninstaller.v$(Major).$(Minor).$(Build).$(Revision).zip" />
