@@ -18,3 +18,5 @@ glob:src/VSTOContrib.5.1.ReSharper.user
 glob:build/log/*
 glob:build/Artifacts/NuGet
 glob:build/*.nupkg
+syntax: glob
+src/VSTOContrib.sln.docstates

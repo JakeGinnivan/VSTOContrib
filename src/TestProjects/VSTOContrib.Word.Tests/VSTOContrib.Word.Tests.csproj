@@ -74,13 +74,13 @@
     <Reference Include="Microsoft.Office.Tools.Common.v9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="$(TargetFrameworkVersion)=='v3.5'" />
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="$(TargetFrameworkVersion)=='v4.0'" />
     <!--Office Interop References-->
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\..\lib\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2010'" />
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2010'" />
     <Reference Include="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2007'" />
     <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2007'" />
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\..\lib\NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonFactory\the_word_ribbon_factory.cs" />
     <Compile Include="RibbonFactory\Views\TestRibbonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

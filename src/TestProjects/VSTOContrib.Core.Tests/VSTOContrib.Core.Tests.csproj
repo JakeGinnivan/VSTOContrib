@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <!--Castle-->
-    <Reference Include="NSubstitute, Version=1.0.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+    <Reference Include="NSubstitute">
       <HintPath>..\..\..\lib\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
