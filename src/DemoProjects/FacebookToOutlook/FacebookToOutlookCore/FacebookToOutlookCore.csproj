@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>b5aecd83-49af-433d-af15-9542d6ab1545</ProjectGuid>
+    <ProjectGuid>{DB9B0EEB-756F-4ECB-8B28-457491CD71FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacebookToOutlookCore</RootNamespace>
@@ -31,17 +31,105 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\packages\AutoMapper.1.1.0.118\lib\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\..\..\packages\Facebook.5.0.26.0\lib\net40-client\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Model\Adapters\FacebookEventAdapter.cs" />
+    <Compile Include="Model\Adapters\FacebookUserAdapter.cs" />
+    <Compile Include="Model\BusyStatus.cs" />
+    <Compile Include="Model\FacebookEvent.cs" />
+    <Compile Include="Model\FacebookUser.cs" />
+    <Compile Include="Model\Interfaces\IFacebookEvent.cs" />
+    <Compile Include="Model\Interfaces\IFacebookUser.cs" />
+    <Compile Include="Model\Interfaces\IOutlookFacebookEvent.cs" />
+    <Compile Include="Model\Interfaces\IOutlookFacebookUser.cs" />
+    <Compile Include="Model\OutlookFacebookEvent.cs" />
+    <Compile Include="Model\OutlookFacebookUser.cs" />
+    <Compile Include="Model\RsvpStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\FacebookRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IApplicationSettings.cs" />
+    <Compile Include="Repositories\Interfaces\IFacebookRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IOutlookRepository.cs" />
+    <Compile Include="Repositories\OutlookDispatchingRepository.cs" />
+    <Compile Include="Repositories\OutlookRepository.cs" />
+    <Compile Include="Samples\Facebook\BatchRequests.cs" />
+    <Compile Include="Samples\Facebook\Dynamic\BatchRequests.cs" />
+    <Compile Include="Samples\Facebook\Dynamic\FQL.cs" />
+    <Compile Include="Samples\Facebook\Dynamic\GraphApi.cs" />
+    <Compile Include="Samples\Facebook\Dynamic\LegacyRestApi.cs" />
+    <Compile Include="Samples\Facebook\FQL.cs" />
+    <Compile Include="Samples\Facebook\GraphApi.cs" />
+    <Compile Include="Samples\Facebook\LegacyRestApi.cs" />
+    <Compile Include="Samples\Facebook\Winforms\FacebookLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Samples\Facebook\Winforms\FacebookLoginDialog.Designer.cs" />
+    <Compile Include="Samples\Facebook\Winforms\SampleRunner.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\FacebookRepositorySyncProviderAdapter.cs" />
+    <Compile Include="Services\Interfaces\IDialogService.cs" />
+    <Compile Include="Services\Interfaces\IOutlookMetaService.cs" />
+    <Compile Include="Services\OutlookMetaService.cs" />
+    <Compile Include="Services\OutlookRepositorySyncProviderAdapter.cs" />
+    <Compile Include="Views\FacebookLoginView.xaml.cs">
+      <DependentUpon>FacebookLoginView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Samples\Facebook\Dynamic\README.md" />
+    <None Include="Samples\Facebook\README.md" />
+    <None Include="Samples\Facebook\Winforms\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Extensions\VSTOContrib.Extensions.Proxies\VSTOContrib.Extensions.Proxies.csproj">
+      <Project>{F03D9BFE-3262-4C6B-9D70-16A4839061E8}</Project>
+      <Name>VSTOContrib.Extensions.Proxies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Extensions\VSTOContrib.Outlook.Extensions.Proxies\VSTOContrib.Outlook.Extensions.Proxies.csproj">
+      <Project>{7BE7BD72-EB05-45BC-A471-2056248AF852}</Project>
+      <Name>VSTOContrib.Outlook.Extensions.Proxies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\VSTOContrib.Core\VSTOContrib.Core.csproj">
+      <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
+      <Name>VSTOContrib.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\VSTOContrib.Outlook\VSTOContrib.Outlook.csproj">
+      <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
+      <Name>VSTOContrib.Outlook</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\Facebook\Winforms\FacebookLoginDialog.resx" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Views\FacebookLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
