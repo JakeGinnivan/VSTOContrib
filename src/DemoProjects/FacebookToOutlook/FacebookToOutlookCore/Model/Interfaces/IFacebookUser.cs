@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace FacebookToOutlook.Core
+namespace FacebookToOutlookCore.Model.Interfaces
 {
     public interface IFacebookUser : INotifyPropertyChanged
     {

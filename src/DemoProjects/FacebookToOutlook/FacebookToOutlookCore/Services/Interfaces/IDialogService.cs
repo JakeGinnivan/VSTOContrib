@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace FacebookToOutlook.Services
+namespace FacebookToOutlookCore.Services.Interfaces
 {
     public interface IDialogService
     {

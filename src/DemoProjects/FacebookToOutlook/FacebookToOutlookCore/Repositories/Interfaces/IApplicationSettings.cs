@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model;
 
-namespace FacebookToOutlook.Properties
+namespace FacebookToOutlookCore.Repositories.Interfaces
 {
     public interface IApplicationSettings
     {

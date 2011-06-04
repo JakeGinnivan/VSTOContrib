@@ -3,13 +3,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model.Interfaces;
 using Microsoft.Office.Interop.Outlook;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Outlook;
 using VSTOContrib.Outlook.Extensions.Proxies;
 
-namespace FacebookToOutlook.Data.Adapters
+namespace FacebookToOutlookCore.Model.Adapters
 {
     public class FacebookUserAdapter : IOutlookFacebookUser
     {

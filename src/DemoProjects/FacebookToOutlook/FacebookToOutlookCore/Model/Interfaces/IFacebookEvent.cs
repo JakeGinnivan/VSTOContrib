@@ -1,6 +1,6 @@
 using System;
 
-namespace FacebookToOutlook.Core
+namespace FacebookToOutlookCore.Model.Interfaces
 {
     public interface IFacebookEvent
     {

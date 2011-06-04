@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model.Interfaces;
 using Microsoft.Office.Interop.Outlook;
 using VSTOContrib.Outlook;
 
-namespace FacebookToOutlook.Data.Adapters
+namespace FacebookToOutlookCore.Model.Adapters
 {
     public class FacebookEventAdapter : IOutlookFacebookEvent
     {

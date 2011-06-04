@@ -1,6 +1,7 @@
 ﻿using System;
+using FacebookToOutlookCore.Model.Interfaces;
 
-namespace FacebookToOutlook.Core
+namespace FacebookToOutlookCore.Model
 {
     public class FacebookEvent : IFacebookEvent
     {

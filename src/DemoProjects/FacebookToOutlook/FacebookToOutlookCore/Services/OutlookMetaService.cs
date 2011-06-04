@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FacebookToOutlookCore.Services.Interfaces;
 using Microsoft.Office.Interop.Outlook;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Outlook.Extensions.Proxies;
 
-namespace FacebookToOutlook.Services
+namespace FacebookToOutlookCore.Services
 {
     public class OutlookMetaService : IOutlookMetaService
     {

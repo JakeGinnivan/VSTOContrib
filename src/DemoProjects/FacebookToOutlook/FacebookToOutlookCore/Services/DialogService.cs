@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using FacebookToOutlookCore.Services.Interfaces;
 
-namespace FacebookToOutlook.Services
+namespace FacebookToOutlookCore.Services
 {
     public class DialogService : IDialogService
     {

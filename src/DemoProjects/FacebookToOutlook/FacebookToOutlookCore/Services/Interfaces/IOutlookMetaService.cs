@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FacebookToOutlook.Services
+namespace FacebookToOutlookCore.Services.Interfaces
 {
     public interface IOutlookMetaService
     {

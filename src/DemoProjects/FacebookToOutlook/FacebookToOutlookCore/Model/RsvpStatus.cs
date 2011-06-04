@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FacebookToOutlook.Core
+namespace FacebookToOutlookCore.Model
 {
     [Flags]
     public enum RsvpStatus

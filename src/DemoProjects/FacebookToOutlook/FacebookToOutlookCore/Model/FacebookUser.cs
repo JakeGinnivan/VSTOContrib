@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using FacebookToOutlookCore.Model.Interfaces;
 
-namespace FacebookToOutlook.Core
+namespace FacebookToOutlookCore.Model
 {
     public class FacebookUser : IFacebookUser
     {

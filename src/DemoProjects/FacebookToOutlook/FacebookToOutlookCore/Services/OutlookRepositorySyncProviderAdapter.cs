@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model.Interfaces;
+using FacebookToOutlookCore.Repositories.Interfaces;
 using VSTOContrib.Outlook.Services;
 
-namespace FacebookToOutlook.Data.Adapters
+namespace FacebookToOutlookCore.Services
 {
     public class OutlookRepositorySyncProviderAdapter : ISynchronisationProvider<IFacebookEvent, long>
     {

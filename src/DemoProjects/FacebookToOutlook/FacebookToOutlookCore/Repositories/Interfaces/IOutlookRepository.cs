@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model.Interfaces;
 
-namespace FacebookToOutlook.Data
+namespace FacebookToOutlookCore.Repositories.Interfaces
 {
     public interface IOutlookRepository
     {

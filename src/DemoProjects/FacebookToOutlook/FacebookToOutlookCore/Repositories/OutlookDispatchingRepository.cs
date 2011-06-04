@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
-using FacebookToOutlook.Core;
+using FacebookToOutlookCore.Model.Interfaces;
+using FacebookToOutlookCore.Repositories.Interfaces;
 using Microsoft.Office.Interop.Outlook;
 
-namespace FacebookToOutlook.Data
+namespace FacebookToOutlookCore.Repositories
 {
     public class OutlookDispatchingRepository : IOutlookRepository
     {
         private readonly Dispatcher _outlookStaDispatcher;
         private readonly OutlookRepository _outlookEventRepository;
 
-        public OutlookDispatchingRepository(NameSpace session, IEventConfigurationSettings settings)
+        public OutlookDispatchingRepository(NameSpace session, IApplicationSettings settings)
         {
             _outlookEventRepository = new OutlookRepository(session, settings);
-            _outlookStaDispatcher = outlookStaDispatcher;
+            _outlookStaDispatcher = System.Windows.Application.Current.Dispatcher;
         }
 
         public IList<IOutlookFacebookUser> GetContacts()

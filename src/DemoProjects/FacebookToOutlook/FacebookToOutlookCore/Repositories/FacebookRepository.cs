@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.Dynamic;
 using System.Linq;
 using System.Threading;
-using AutoMapper;
 using Facebook;
-using FacebookToOutlook.Core;
-using FacebookToOutlook.Properties;
+using FacebookToOutlookCore.Model;
+using FacebookToOutlookCore.Repositories.Interfaces;
 using FacebookToOutlookCore.Views;
 
-namespace FacebookToOutlook.Data
+namespace FacebookToOutlookCore.Repositories
 {
     public class FacebookRepository : IFacebookRepository
     {

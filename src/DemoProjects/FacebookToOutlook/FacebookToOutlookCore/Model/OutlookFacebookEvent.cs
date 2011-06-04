@@ -1,4 +1,6 @@
-﻿namespace FacebookToOutlook.Core
+﻿using FacebookToOutlookCore.Model.Interfaces;
+
+namespace FacebookToOutlookCore.Model
 {
     public class OutlookFacebookEvent : FacebookEvent, IOutlookFacebookEvent
     {
