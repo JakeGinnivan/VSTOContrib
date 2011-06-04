@@ -21,3 +21,4 @@ glob:build/*.nupkg
 syntax: glob
 src/VSTOContrib.sln.docstates
 src/DemoProjects/FacebookToOutlook/FacebookToOutlookCore/FacebookToOutlookCore.csproj.user
+build/Artifacts/

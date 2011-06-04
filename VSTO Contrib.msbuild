@@ -64,7 +64,7 @@
       Condition="$(Revision) != '-1' "/>
   </Target>
   
-  <Target Name="BuildAll">
+  <Target Name="BuildAll" DependsOnTargets="GetVersion">
     <PropertyGroup>
       <CommonProperties>
         MSBuildCommunityTasksPath=$(MSBuildCommunityTasksPath);

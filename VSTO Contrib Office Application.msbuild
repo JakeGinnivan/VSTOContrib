@@ -54,9 +54,14 @@
   </Target>
 
   <Target Name="NuGet" DependsOnTargets="Test">
+    <ItemGroup>
+      <OldNuGetPackages Include="$(Root)*.zip" />
+    </ItemGroup>
+    <Delete Files="@(OldNuGetPackages)" />
+    
     <PropertyGroup>
       <ApplicationNuGetFolderName>$(Root)build\Artifacts\NuGet\$(OfficeApplication)\</ApplicationNuGetFolderName>
-      <NuGetManifest>$(Root)src\VSTOContrib.$(OfficeApplication)\VSTOContrib.$(OfficeApplication).nuspec</NuGetManifest>
+      <NuGetManifest>$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication).nuspec</NuGetManifest>
       <NuGet>$(Root)build\lib\NuGet.exe</NuGet>
     </PropertyGroup>
 
@@ -71,17 +76,30 @@
           DestinationFiles="$(ApplicationNuGetFolderName)tools\Install.ps1"/>
     <Copy SourceFiles="$(Root)build\Uninstall.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\Uninstall.ps1"/>
-
-    <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt"
-            DestinationFiles="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt"/>
+    <Copy SourceFiles="$(Root)build\VSTOContrib.nuspec"
+          DestinationFiles="$(NuGetManifest)"/>
+    <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt.pp"
+          DestinationFiles="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt.pp"/>
     <Copy SourceFiles="$(Root)build\AddinBootstrapper.cs.pp"
           DestinationFiles="$(ApplicationNuGetFolderName)content\AddinBootstrapper.cs.pp"/>
 
     <FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
+    
+    <FileUpdate Files="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt.pp"
+                Regex="{{Application}}"
+                ReplacementText="$(OfficeApplication)"/>
+    
+    <FileUpdate Files="$(NuGetManifest)"
+                Regex="{{Application}}"
+                ReplacementText="$(OfficeApplication)"/>
+    
+    <FileUpdate Files="$(NuGetManifest)"
+                Regex="{{Version}}"
+                ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/>
 
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build"' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts"' />
   </Target>
 
   <Target Name="Package" DependsOnTargets="NuGet">

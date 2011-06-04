@@ -12,7 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Information\VersionInfo.cs = Information\VersionInfo.cs
 		..\VSTO Contrib Office Application.msbuild = ..\VSTO Contrib Office Application.msbuild
 		..\VSTO Contrib.msbuild = ..\VSTO Contrib.msbuild
-		..\build\VSTOContrib.GettingStarted.txt = ..\build\VSTOContrib.GettingStarted.txt
+		..\build\VSTOContrib.GettingStarted.txt.pp = ..\build\VSTOContrib.GettingStarted.txt.pp
+		..\build\VSTOContrib.nuspec = ..\build\VSTOContrib.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}"
