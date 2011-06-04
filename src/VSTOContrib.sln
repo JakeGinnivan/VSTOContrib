@@ -3,13 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23064D22-01CB-4090-ADFE-D0A1EDAF8567}"
 	ProjectSection(SolutionItems) = preProject
-		..\build\Build-NuGet.msbuild = ..\build\Build-NuGet.msbuild
+		..\build\AddinBootstrapper.cs.pp = ..\build\AddinBootstrapper.cs.pp
 		..\Build.cmd = ..\Build.cmd
 		..\build\Install.ps1 = ..\build\Install.ps1
 		..\README.txt = ..\README.txt
 		Information\SolutionInfo.cs = Information\SolutionInfo.cs
+		..\build\Uninstall.ps1 = ..\build\Uninstall.ps1
 		Information\VersionInfo.cs = Information\VersionInfo.cs
+		..\VSTO Contrib Office Application.msbuild = ..\VSTO Contrib Office Application.msbuild
 		..\VSTO Contrib.msbuild = ..\VSTO Contrib.msbuild
+		..\build\VSTOContrib.GettingStarted.txt = ..\build\VSTOContrib.GettingStarted.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}"
@@ -69,6 +72,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlook", "DemoProjects\FacebookToOutlook\FacebookToOutlook\FacebookToOutlook.csproj", "{1383FE55-1CA7-4A2B-9C88-5A13A8C86BF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookToOutlookCore", "DemoProjects\FacebookToOutlook\FacebookToOutlookCore\FacebookToOutlookCore.csproj", "{DB9B0EEB-756F-4ECB-8B28-457491CD71FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.PowerPoint.Tests", "TestProjects\VSTOContrib.PowerPoint.Tests\VSTOContrib.PowerPoint.Tests.csproj", "{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,6 +165,10 @@ Global
 		{DB9B0EEB-756F-4ECB-8B28-457491CD71FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB9B0EEB-756F-4ECB-8B28-457491CD71FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB9B0EEB-756F-4ECB-8B28-457491CD71FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +178,7 @@ Global
 		{EF2FA399-7C3F-4C03-BA22-9A74B7BDBD67} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{AA2B915B-B6DA-428E-9E86-32D33AD255F3} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{A49AD821-7C7C-4411-9BF9-743CD5880D55} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
+		{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1} = {84E271C7-3D9C-473C-ACF4-F7BC0BB285C0}
 		{803D81D7-FB57-494B-B81A-ECEA9B6F5F25} = {86CBA84F-7056-4CA4-8378-0C5721BB0F87}
 		{B22F99EA-D080-4DC9-A0D6-F1657A742329} = {86CBA84F-7056-4CA4-8378-0C5721BB0F87}
 		{C1C8FAE5-7BB3-4532-91C0-DDAB0FC8FA29} = {86CBA84F-7056-4CA4-8378-0C5721BB0F87}

@@ -1,0 +1,103 @@
+﻿<Project DefaultTargets="Package" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ExtensionsBaseDir>$(Root)src\Extensions\</ExtensionsBaseDir>
+
+    <ExtensionsFile>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions$(TargetOfficeVersion).tt</ExtensionsFile>
+    <InterfacesFile>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces$(TargetOfficeVersion).tt</InterfacesFile>
+    <ExtensionsOutput>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions.cs</ExtensionsOutput>
+    <InterfacesOutput>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces.cs</InterfacesOutput>
+
+    <ApplicationExtensionsFile>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\$(OfficeApplication)CleanupExtensions$(TargetOfficeVersion).tt</ApplicationExtensionsFile>
+    <ApplicationInterfacesFile>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\Interfaces\$(OfficeApplication)Interfaces$(TargetOfficeVersion).tt</ApplicationInterfacesFile>
+    <ApplicationExtensionsOutput>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\$(OfficeApplication)CleanupExtensions.cs</ApplicationExtensionsOutput>
+    <ApplicationInterfacesOutput>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\Interfaces\$(OfficeApplication)Interfaces.cs</ApplicationInterfacesOutput>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+  <UsingTask
+    AssemblyFile="$(Root)lib\xunit.net\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit"/>
+  
+  <Target Name="Compile">
+    <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
+    <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
+    <Error Condition="$(TargetFrameworkVersion) == ''" Text="TargetFrameworkVersion variable must be defined" />
+    <Error Condition="$(FrameworkString) == ''" Text="FrameworkString variable must be defined" />
+    <Error Condition="$(NuGetFrameworkString) == ''" Text="NuGetFrameworkString variable must be defined" />
+    <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
+    <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
+    <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
+
+    <!--Regenerate TextTemplates-->
+    <Exec Command='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
+
+    <Exec Command='build\lib\TextTransform.exe -out "$(ApplicationExtensionsOutput)" "$(ApplicationExtensionsFile)"' />
+    <Exec Command='build\lib\TextTransform.exe -out "$(ApplicationInterfacesOutput)" "$(ApplicationInterfacesFile)"' />
+
+    <!--Compile-->
+    <ItemGroup>
+      <ProjectToBuild Include="
+                      $(Root)src\VSTOContrib.Core\VSTOContrib.Core.csproj;
+                      $(Root)src\VSTOContrib.$(OfficeApplication)\VSTOContrib.$(OfficeApplication).csproj;
+                      $(Root)src\Extensions\VSTOContrib.Extensions.Proxies\VSTOContrib.Extensions.Proxies.csproj;
+                      $(Root)src\Extensions\VSTOContrib.$(OfficeApplication).Extensions.Proxies\VSTOContrib.$(OfficeApplication).Extensions.Proxies.csproj;
+                      $(Root)src\TestProjects\VSTOContrib.Core.Tests\VSTOContrib.Core.Tests.csproj;
+                      $(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\VSTOContrib.$(OfficeApplication).Tests.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Compile">
+    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.Core.Tests\bin\Build\VSTOContrib.Core.Tests.dll" />
+    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\bin\Build\VSTOContrib.$(OfficeApplication).Tests.dll" />
+  </Target>
+
+  <Target Name="NuGet" DependsOnTargets="Test">
+    <PropertyGroup>
+      <ApplicationNuGetFolderName>$(Root)build\Artifacts\NuGet\$(OfficeApplication)\</ApplicationNuGetFolderName>
+      <NuGetManifest>$(Root)src\VSTOContrib.$(OfficeApplication)\VSTOContrib.$(OfficeApplication).nuspec</NuGetManifest>
+      <NuGet>$(Root)build\lib\NuGet.exe</NuGet>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\"
+             Condition="!Exists('$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\')" />
+
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.dll"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).dll"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).$(TargetOfficeVersion).dll"/>
+    <Copy SourceFiles="$(Root)build\Install.ps1"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\Install.ps1"/>
+    <Copy SourceFiles="$(Root)build\Uninstall.ps1"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\Uninstall.ps1"/>
+
+    <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt"
+            DestinationFiles="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt"/>
+    <Copy SourceFiles="$(Root)build\AddinBootstrapper.cs.pp"
+          DestinationFiles="$(ApplicationNuGetFolderName)content\AddinBootstrapper.cs.pp"/>
+
+    <FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
+                Regex="{{Application}}"
+                ReplacementText="$(OfficeApplication)"/>
+
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build"' />
+  </Target>
+
+  <Target Name="Package" DependsOnTargets="NuGet">
+    <ItemGroup>
+      <ZipFiles Include="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\*.*"
+                Exclude="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\*vshost*" />
+    </ItemGroup>
+    <ItemGroup>
+      <OldZipFiles Include="$(Root)*.zip" />
+    </ItemGroup>
+    <Delete Files="@(OldZipFiles)" />
+
+    <MakeDir Directories="$(Root)build\Artifacts\$(FrameworkString)" Condition="!Exists('$(Root)build\Artifacts\$(FrameworkString)')" />
+
+    <Zip Files="@(ZipFiles)"
+         WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
+         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+  </Target>
+</Project>

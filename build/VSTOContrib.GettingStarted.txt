@@ -1,0 +1,45 @@
+
+
+
+
+For Autofac integration use this bootstrapper instead of the default one
+
+using System;
+using Autofac;
+
+namespace TwitterFeedCore
+{
+    public class AddinBootstrapper : IDisposable
+    {
+        private readonly IContainer _container;
+
+        public AddinBootstrapper()
+        {
+            var containerBuilder = new ContainerBuilder();
+
+            RegisterComponents(containerBuilder);
+
+            _container = containerBuilder.Build();
+        }
+
+        private static void RegisterComponents(ContainerBuilder containerBuilder)
+        {
+            
+        }
+
+        public object Resolve(Type type)
+        {
+            return _container.Resolve(type);
+        }
+
+        public T Resolve<T>()
+        {
+            return _container.Resolve<T>();
+        }
+
+        public void Dispose()
+        {
+            _container.Dispose();
+        }
+    }
+}

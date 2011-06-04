@@ -85,18 +85,17 @@
     <Reference Include="Microsoft.Office.Tools.Common.v9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="$(TargetFrameworkVersion)=='v3.5'" />
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition="$(TargetFrameworkVersion)=='v4.0'" />
     <!--Office Interop References-->
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\packages\NSubstitute.1.1.0.0\lib\35\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2010'" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2010'" />
     <Reference Include="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2007'" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" Condition="$(TargetOfficeVersion)=='2007'" />
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\..\lib\NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="xunit">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\xUnit.net\xunit.dll</HintPath>
+      <HintPath>..\..\packages\xunit.1.8.0.1545\lib\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +109,9 @@
       <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
       <Name>VSTOContrib.Outlook</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
