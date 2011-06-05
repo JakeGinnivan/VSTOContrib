@@ -2,6 +2,12 @@
 Changes will be documented, and simple to fix. Just be aware that your solution may not compile after an update at this stage.**
 
 ------------------------------------------------------------------------------------------
+
+Feedback is very welcome!
+
+Start a discussion or raise an issue at http://vstocontrib.codeplex.com/
+
+------------------------------------------------------------------------------------------
                              To use the Ribbon Factory
 ------------------------------------------------------------------------------------------
 
@@ -53,10 +59,10 @@ using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Word.RibbonFactory;
 
-namespace RazorDocs.Core
+namespace MyAddin.Core
 {
     [WordRibbonViewModel]
-    public class RazorDocs : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+    public class DocumentViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
         private bool _panelShown;
         private Document _document;

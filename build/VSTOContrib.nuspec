@@ -8,7 +8,7 @@
     <owners>Jake Ginnivan</owners>
     <projectUrl>http://vstocontrib.codeplex.com/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Makes VSTO development with {{Application}} far simpler, support DI/IoC, ViewModel per workbook (with context), WPF like binding in RibbonXML, WPF Support and more!</description>
+    <description>Makes VSTO development with {{Application}} far nicer, support DI/IoC, ViewModel per context (Document, Workbook, ApointmentItem etc), WPF like binding in RibbonXML, WPF Support and more!</description>
     <tags>VSTO,Office,{{Application}}</tags>
   </metadata>
 </package>
