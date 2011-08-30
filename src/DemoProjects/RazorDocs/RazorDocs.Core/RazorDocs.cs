@@ -50,16 +50,16 @@ namespace RazorDocs.Core
                 }, "RazorDocs");
             _razorDocsTaskPane.Visible = true;
             PanelShown = true;
-            _razorDocsTaskPane.VisibleChanged += TwitterTaskPaneVisibleChanged;
-            TwitterTaskPaneVisibleChanged(this, EventArgs.Empty);
+            _razorDocsTaskPane.VisibleChanged += RazorDocsTaskPaneVisibleChanged;
+            RazorDocsTaskPaneVisibleChanged(this, EventArgs.Empty);
         }
 
         public void Cleanup()
         {
-            _razorDocsTaskPane.VisibleChanged -= TwitterTaskPaneVisibleChanged;
+            _razorDocsTaskPane.VisibleChanged -= RazorDocsTaskPaneVisibleChanged;
         }
 
-        private void TwitterTaskPaneVisibleChanged(object sender, EventArgs e)
+        private void RazorDocsTaskPaneVisibleChanged(object sender, EventArgs e)
         {
             _panelShown = _razorDocsTaskPane.Visible;
             RaisePropertyChanged(()=>PanelShown);

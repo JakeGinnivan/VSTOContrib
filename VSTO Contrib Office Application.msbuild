@@ -69,9 +69,9 @@
              Condition="!Exists('$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\')" />
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\VSTOContrib.Core.$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).$(TargetOfficeVersion).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)build\Install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\Install.ps1"/>
     <Copy SourceFiles="$(Root)build\Uninstall.ps1"

@@ -23,7 +23,7 @@ if ($frameworkVersion -eq 'v4.0')
     $netVersionFolder = 'net35'
 }
 
-$vstoContribCoreDll = Join-Path (Join-Path $toolsPath $netVersionFolder) "VSTOContrib.Core.$officeVersion.dll"
-$vstoContribApplicationDll = Join-Path (Join-Path $toolsPath $netVersionFolder) "VSTOContrib.{{Application}}.$officeVersion.dll"
+$vstoContribCoreDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.Core.$officeVersion.dll"
+$vstoContribApplicationDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.{{Application}}.dll"
 $project.Object.References.Add($vstoContribCoreDll)
 $project.Object.References.Add($vstoContribApplicationDll)

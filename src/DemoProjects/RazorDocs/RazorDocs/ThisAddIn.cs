@@ -17,6 +17,8 @@ namespace RazorDocs
         {
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+            else
+                System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             //Check for updates
             new VstoClickOnceUpdater()

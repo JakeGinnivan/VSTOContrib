@@ -60,10 +60,10 @@ namespace VSTOContrib.Outlook
             {
                 var format = type == OlUserPropertyType.olInteger ? OlFormatNumber.olFormatNumberAllDigits : Type.Missing;
 
-                if (property == null && create)
+                if (property.Resource == null && create)
                     userProperties.Add(name, type, false, format).ReleaseComObject();
 
-                if (property == null)
+                if (property.Resource == null)
                     return defaultValue;
 
                 var value = property.Resource.Value;
@@ -116,10 +116,11 @@ namespace VSTOContrib.Outlook
             {
                 var format = type == OlUserPropertyType.olInteger ? OlFormatNumber.olFormatNumberAllDigits : Type.Missing;
 
-                if (property == null) using (var newProperty = userProperties.Add(name, type, addToFolder, format).WithComCleanup())
-                    {
-                        newProperty.Resource.Value = value;
-                    }
+                if (property.Resource == null) 
+                using (var newProperty = userProperties.Add(name, type, addToFolder, format).WithComCleanup())
+                {
+                    newProperty.Resource.Value = value;
+                }
                 else
                     property.Resource.Value = value;
             }
