@@ -49,7 +49,7 @@ namespace RazorDocs
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
             _core.Dispose();
-            //System.Windows.Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void InternalStartup()

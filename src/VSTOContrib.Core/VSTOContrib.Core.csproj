@@ -96,6 +96,7 @@
     <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
     <Compile Include="RibbonFactory\Interfaces\Internal\ICustomTaskPaneRegister.cs" />
+    <Compile Include="RibbonFactory\Internal\ICustomTaskPaneWrapper.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />

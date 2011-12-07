@@ -10,6 +10,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
     {
         private readonly CustomTaskPane _original;
         private readonly List<CustomTaskPane> _customTaskPanes;
+        private bool _disposed;
 
         public OneToManyCustomTaskPaneAdapter(CustomTaskPane original)
         {
@@ -20,11 +21,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public bool ViewRegistered(object view)
         {
+            if (_disposed) return false;
             return _customTaskPanes.Any(c => c.Window == view);
         }
 
         public void Add(CustomTaskPane customTaskPane)
         {
+            if (_disposed) return;
             //Sync new task pane's properties up
             customTaskPane.Visible = _original.Visible;
             customTaskPane.DockPosition = _original.DockPosition;
@@ -53,6 +56,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void CustomTaskPaneVisibleChanged(object sender, EventArgs e)
         {
+            if (_disposed) return;
             var customTaskPane = (CustomTaskPane)sender;
             Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
 
@@ -71,7 +75,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void CustomTaskPaneDockPositionChanged(object sender, EventArgs e)
         {
-            var customTaskPane = (CustomTaskPane) sender;
+            if (_disposed) return;
+            var customTaskPane = (CustomTaskPane)sender;
             Do(c=>c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
 
             //Propagate changes, then raise adapter event
@@ -89,6 +94,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private void Do(Action<CustomTaskPane> action)
         {
+            if (_disposed) return;
             foreach (var customTaskPane in _customTaskPanes)
             {
                 action(customTaskPane);
@@ -145,6 +151,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void Dispose()
         {
+            _disposed = true;
             Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
             Do(c => c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
             Do(c => c.Dispose());
@@ -152,6 +159,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void CleanupView(object view)
         {
+            if (_disposed) return;
             foreach (var customTaskPane in _customTaskPanes.Where(customTaskPane => customTaskPane.Window == view))
             {
                 _customTaskPanes.Remove(customTaskPane);
@@ -159,61 +167,5 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 break;
             }
         }
-    }
-
-    /// <summary>
-    /// Office 2007 CustomTaskPane is a sealed class, Office2010 is a interface.
-    /// This wrapper interface is so I can maintain compatibility with both
-    /// </summary>
-    public interface ICustomTaskPaneWrapper : IDisposable
-    {
-        /// <summary>
-        /// Gets the control.
-        /// </summary>
-        /// <value>The control.</value>
-        UserControl Control { get; }
-        /// <summary>
-        /// Gets the title.
-        /// </summary>
-        /// <value>The title.</value>
-        string Title { get; }
-        /// <summary>
-        /// Gets the window.
-        /// </summary>
-        /// <value>The window.</value>
-        object Window { get; }
-        /// <summary>
-        /// Gets or sets the dock position.
-        /// </summary>
-        /// <value>The dock position.</value>
-        Microsoft.Office.Core.MsoCTPDockPosition DockPosition { get; set; }
-        /// <summary>
-        /// Gets or sets the dock position restrict.
-        /// </summary>
-        /// <value>The dock position restrict.</value>
-        Microsoft.Office.Core.MsoCTPDockPositionRestrict DockPositionRestrict { get; set; }
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        int Width { get; set; }
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>The height.</value>
-        int Height { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ICustomTaskPaneWrapper"/> is visible.
-        /// </summary>
-        /// <value><c>true</c> if visible; otherwise, <c>false</c>.</value>
-        bool Visible { get; set; }
-        /// <summary>
-        /// Occurs when [visible changed].
-        /// </summary>
-        event EventHandler VisibleChanged;
-        /// <summary>
-        /// Occurs when [dock position changed].
-        /// </summary>
-        event EventHandler DockPositionChanged;
     }
 }

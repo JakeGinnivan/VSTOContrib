@@ -17,7 +17,7 @@ namespace RazorDocs.Core
 
         public void Initialised(object context)
         {
-            _document = (Document) context;
+            _document = (Document)context;
         }
 
         public void CurrentViewChanged(object currentView)
@@ -34,18 +34,18 @@ namespace RazorDocs.Core
                 if (_panelShown == value) return;
                 _panelShown = value;
                 _razorDocsTaskPane.Visible = value;
-                RaisePropertyChanged(()=>PanelShown);
+                RaisePropertyChanged(() => PanelShown);
             }
         }
 
         public void RegisterTaskPanes(Register register)
         {
             _razorDocsTaskPane = register(
-                ()=>new WpfPanelHost
+                () => new WpfPanelHost
                 {
                     Child = new RazorDocsPanel
                     {
-                        DataContext = new RazorDocsPanelViewModel(this)
+                        //DataContext = new RazorDocsPanelViewModel(this)
                     }
                 }, "RazorDocs");
             _razorDocsTaskPane.Visible = true;
@@ -62,7 +62,7 @@ namespace RazorDocs.Core
         private void RazorDocsTaskPaneVisibleChanged(object sender, EventArgs e)
         {
             _panelShown = _razorDocsTaskPane.Visible;
-            RaisePropertyChanged(()=>PanelShown);
+            RaisePropertyChanged(() => PanelShown);
         }
     }
 }

@@ -170,8 +170,11 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             //TODO write test around context/view cleanup
             _customTaskPaneRegister.Cleanup(context);
-            var viewModelInstance = _contextToViewModelLookup[context];
 
+            if (!_contextToViewModelLookup.ContainsKey(context))
+                return;
+
+            var viewModelInstance = _contextToViewModelLookup[context];
 
             var notifyOfPropertyChanged = viewModelInstance as INotifyPropertyChanged;
             if (notifyOfPropertyChanged != null)
