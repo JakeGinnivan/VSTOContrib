@@ -71,7 +71,7 @@ namespace VSTOContrib.Outlook
         /// <param name="converter">The converter to use to convert the object to.</param>
         /// <param name="defaultValue">The default value to use if user property not found.</param>
         /// <returns>User property vlaue or default</returns>
-        private static T GetPropertyValue<T>(UserProperties userProperties, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
+        public static T GetPropertyValue<T>(this UserProperties userProperties, string name, OlUserPropertyType type, bool create, Func<object, T> converter, T defaultValue)
         {
             using (var property = userProperties.Find(name, true).WithComCleanup())
             {
@@ -142,7 +142,7 @@ namespace VSTOContrib.Outlook
         /// <param name="type">The type of the user property.</param>
         /// <param name="value">The value to set.</param>
         /// <param name="addToFolder">if set to <c>true</c> add to containing folder. Enables search/display column for user property.</param>
-        private static void SetPropertyValue<T>(UserProperties userProperties, string name, OlUserPropertyType type, T value, bool addToFolder)
+        public static void SetPropertyValue<T>(this UserProperties userProperties, string name, OlUserPropertyType type, T value, bool addToFolder)
         {
             using (var property = userProperties.Find(name, true).WithComCleanup())
             {
