@@ -32,11 +32,11 @@ namespace VSTOContrib.Outlook
         private void ExplorerClose()
         {
             ((ExplorerEvents_10_Event)Explorer).Close -= ExplorerClose;
-            Explorer = null;
 
             var handler = Closed;
             if (handler != null) 
                 Closed(this, new ExplorerClosedEventArgs(Explorer));
+            Explorer = null;
         }
     }
 }

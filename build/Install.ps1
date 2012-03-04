@@ -27,3 +27,5 @@ $vstoContribCoreDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFold
 $vstoContribApplicationDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.{{Application}}.dll"
 $project.Object.References.Add($vstoContribCoreDll)
 $project.Object.References.Add($vstoContribApplicationDll)
+
+$project.Save()
