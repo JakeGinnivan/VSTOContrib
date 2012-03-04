@@ -45,12 +45,12 @@
                       $(Root)src\TestProjects\VSTOContrib.Core.Tests\VSTOContrib.Core.Tests.csproj;
                       $(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\VSTOContrib.$(OfficeApplication).Tests.csproj" />
     </ItemGroup>
-    <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;Platform=Any CPU;OutputPath=bin\Build;" />
+    <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=$(Configuration);Platform=AnyCPU;" />
   </Target>
 
   <Target Name="Test" DependsOnTargets="Compile">
-    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.Core.Tests\bin\Build\VSTOContrib.Core.Tests.dll" />
-    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\bin\Build\VSTOContrib.$(OfficeApplication).Tests.dll" />
+    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.Core.Tests\bin\$(Configuration)\VSTOContrib.Core.Tests.dll" />
+    <xunit Assembly="$(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).Tests.dll" />
   </Target>
 
   <Target Name="NuGet" DependsOnTargets="Test">
@@ -68,14 +68,14 @@
     <MakeDir Directories="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\"
              Condition="!Exists('$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\')" />
 
-    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.dll"
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
-    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.pdb"
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
     
-    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).dll"
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
-    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).pdb"
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
     
     <Copy SourceFiles="$(Root)build\Install.ps1"
