@@ -22,7 +22,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public ExcelRibbonFactory(params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<ExcelRibbonType>(assemblies))
+            : base(new RibbonFactoryController<ExcelRibbonType>(assemblies))
         {
         }
 
@@ -34,7 +34,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         public ExcelRibbonFactory(
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<ExcelRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryController<ExcelRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 

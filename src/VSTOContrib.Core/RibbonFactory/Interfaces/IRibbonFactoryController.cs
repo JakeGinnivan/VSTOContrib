@@ -8,7 +8,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     /// <summary>
     /// 
     /// </summary>
-    public interface IRibbonFactoryImpl
+    public interface IRibbonFactoryController
     {
         /// <summary>
         /// Initialises the specified view provider.

@@ -22,7 +22,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// </summary>
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public PowerPointRibbonFactory(params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<PowerPointRibbonType>(assemblies))
+            : base(new RibbonFactoryController<PowerPointRibbonType>(assemblies))
         {
         }
 
@@ -34,7 +34,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         public PowerPointRibbonFactory(
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<PowerPointRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryController<PowerPointRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 

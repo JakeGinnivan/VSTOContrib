@@ -20,13 +20,13 @@ namespace VSTOContrib.Core.RibbonFactory
 
         private bool _initialsed;
         private static readonly object InstanceLock = new object();
-        private readonly IRibbonFactoryImpl _ribbonFactoryImpl;
+        private readonly IRibbonFactoryController _ribbonFactoryController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RibbonFactory"/> class.
         /// </summary>
-        /// <param name="ribbonFactoryImpl"></param>
-        protected RibbonFactory(IRibbonFactoryImpl ribbonFactoryImpl)
+        /// <param name="ribbonFactoryController"></param>
+        protected RibbonFactory(IRibbonFactoryController ribbonFactoryController)
         {
             lock (InstanceLock)
             {
@@ -35,7 +35,7 @@ namespace VSTOContrib.Core.RibbonFactory
                 Current = this;
             }
 
-            _ribbonFactoryImpl = ribbonFactoryImpl;
+            _ribbonFactoryController = ribbonFactoryController;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace VSTOContrib.Core.RibbonFactory
 
             _initialsed = true;
 
-            return _ribbonFactoryImpl.Initialise(
+            return _ribbonFactoryController.Initialise(
                 viewProvider, 
                 ribbonFactory,
                 viewContextProvider,
@@ -83,12 +83,12 @@ namespace VSTOContrib.Core.RibbonFactory
         ///</summary>
         public IViewLocationStrategy LocateViewStrategy
         {
-            get { return _ribbonFactoryImpl.LocateViewStrategy; }
+            get { return _ribbonFactoryController.LocateViewStrategy; }
             set
             {
                 if (value == null) return;
 
-                _ribbonFactoryImpl.LocateViewStrategy = value;
+                _ribbonFactoryController.LocateViewStrategy = value;
             }
         }
 
@@ -104,7 +104,7 @@ namespace VSTOContrib.Core.RibbonFactory
         // ReSharper disable InconsistentNaming
         public virtual void Ribbon_Load(IRibbonUI ribbonUi)
         {
-            _ribbonFactoryImpl.RibbonLoaded(ribbonUi);
+            _ribbonFactoryController.RibbonLoaded(ribbonUi);
         }
         // ReSharper restore InconsistentNaming
 
@@ -115,7 +115,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetCustomUI(string ribbonId)
         {
-            return _ribbonFactoryImpl.GetCustomUI(ribbonId);
+            return _ribbonFactoryController.GetCustomUI(ribbonId);
         }
 
 
@@ -131,7 +131,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="control"></param>
         public void OnAction(IRibbonControl control)
         {
-            _ribbonFactoryImpl.Invoke(control, () => OnAction(null));
+            _ribbonFactoryController.Invoke(control, () => OnAction(null));
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="selectedIndex"></param>
         public void SelectionOnAction(IRibbonControl control, string selectedId, int selectedIndex)
         {
-            _ribbonFactoryImpl.Invoke(control, () => SelectionOnAction(null, null, 0), selectedId, selectedIndex);
+            _ribbonFactoryController.Invoke(control, () => SelectionOnAction(null, null, 0), selectedId, selectedIndex);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="pressed"></param>
         public void PressedOnAction(IRibbonControl control, bool pressed)
         {
-            _ribbonFactoryImpl.Invoke(control, () => PressedOnAction(null, true), pressed);
+            _ribbonFactoryController.Invoke(control, () => PressedOnAction(null, true), pressed);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetDescription(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetDescription(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetDescription(null));
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetEnabled(IRibbonControl control)
         {
-            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetEnabled(null));
+            return (bool)_ribbonFactoryController.InvokeGet(control, () => GetEnabled(null));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetImageMso(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetImageMso(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetImageMso(null));
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetLabel(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetLabel(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetLabel(null));
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetKeyTip(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetKeyTip(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetKeyTip(null));
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetScreenTip(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetScreenTip(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetScreenTip(null));
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetSuperTip(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetSuperTip(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetSuperTip(null));
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetVisible(IRibbonControl control)
         {
-            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetVisible(null));
+            return (bool)_ribbonFactoryController.InvokeGet(control, () => GetVisible(null));
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetShowImage(IRibbonControl control)
         {
-            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetShowImage(null));
+            return (bool)_ribbonFactoryController.InvokeGet(control, () => GetShowImage(null));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetShowLabel(IRibbonControl control)
         {
-            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetShowLabel(null));
+            return (bool)_ribbonFactoryController.InvokeGet(control, () => GetShowLabel(null));
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public int GetItemCount(IRibbonControl control)
         {
-            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetItemCount(null));
+            return (int)_ribbonFactoryController.InvokeGet(control, () => GetItemCount(null));
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemId(IRibbonControl control, int index)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemId(null, 0));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetItemId(null, 0));
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemLabel(IRibbonControl control, int index)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemLabel(null, 0));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetItemLabel(null, 0));
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemScreenTip(IRibbonControl control, int index)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemScreenTip(null, 0));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetItemScreenTip(null, 0));
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemSuperTip(IRibbonControl control, int index)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetItemSuperTip(null, 0));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetItemSuperTip(null, 0));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemId(IRibbonControl control)
         {
-            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetSelectedItemId(null));
+            return (int)_ribbonFactoryController.InvokeGet(control, () => GetSelectedItemId(null));
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public int GetSelectedItemIndex(IRibbonControl control)
         {
-            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetSelectedItemIndex(null));
+            return (int)_ribbonFactoryController.InvokeGet(control, () => GetSelectedItemIndex(null));
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetContent(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetContent(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetContent(null));
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetText(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetText(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetText(null));
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetTitle(IRibbonControl control)
         {
-            return (string)_ribbonFactoryImpl.InvokeGet(control, () => GetTitle(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetTitle(null));
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetPressed(IRibbonControl control)
         {
-            return (bool)_ribbonFactoryImpl.InvokeGet(control, () => GetPressed(null));
+            return (bool)_ribbonFactoryController.InvokeGet(control, () => GetPressed(null));
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public RibbonControlSize GetSize(IRibbonControl control)
         {
-            return (RibbonControlSize)_ribbonFactoryImpl.InvokeGet(control, () => GetSize(null));
+            return (RibbonControlSize)_ribbonFactoryController.InvokeGet(control, () => GetSize(null));
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public int GetItemHeight(IRibbonControl control)
         {
-            return (int)_ribbonFactoryImpl.InvokeGet(control, () => GetItemHeight(control));
+            return (int)_ribbonFactoryController.InvokeGet(control, () => GetItemHeight(control));
         }
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetImage(IRibbonControl control)
         {
-            return (IPictureDisp)_ribbonFactoryImpl.InvokeGet(control, () => GetImage(null));
+            return (IPictureDisp)_ribbonFactoryController.InvokeGet(control, () => GetImage(null));
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public IPictureDisp GetItemImage(IRibbonControl control, int index)
         {
-            return (IPictureDisp)_ribbonFactoryImpl.InvokeGet(control, () => GetItemImage(null, 0), index);
+            return (IPictureDisp)_ribbonFactoryController.InvokeGet(control, () => GetItemImage(null, 0), index);
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="text">The text.</param>
         public void OnTextChanged(IRibbonControl control, string text)
         {
-            _ribbonFactoryImpl.Invoke(control, () => OnTextChanged(null, null), text);
+            _ribbonFactoryController.Invoke(control, () => OnTextChanged(null, null), text);
         }
     }
 }

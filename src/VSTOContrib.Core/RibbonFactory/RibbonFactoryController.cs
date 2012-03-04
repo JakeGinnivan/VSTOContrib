@@ -16,7 +16,7 @@ namespace VSTOContrib.Core.RibbonFactory
     /// Because you cannot make a generic type COM visible, moving all code that requires generics into this class
     /// </summary>
     /// <typeparam name="TRibbonTypes"></typeparam>
-    public class RibbonFactoryImpl<TRibbonTypes> : IRibbonFactoryImpl where TRibbonTypes : struct
+    public class RibbonFactoryController<TRibbonTypes> : IRibbonFactoryController where TRibbonTypes : struct
     {
         private IViewLocationStrategy _viewLocationStrategy;
 
@@ -35,11 +35,11 @@ namespace VSTOContrib.Core.RibbonFactory
         private IViewProvider<TRibbonTypes> _viewProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RibbonFactoryImpl&lt;TRibbonTypes&gt;"/> class.
+        /// Initializes a new instance of the <see cref="RibbonFactoryController{TRibbonTypes}"/> class.
         /// </summary>
         /// <param name="viewLocationStrategy">The view location strategy.</param>
         /// <param name="assemblies">The assemblies.</param>
-        public RibbonFactoryImpl(
+        public RibbonFactoryController(
             ICollection<Assembly> assemblies,
             IViewLocationStrategy viewLocationStrategy = null)
         {
@@ -112,6 +112,10 @@ namespace VSTOContrib.Core.RibbonFactory
                 ?? ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui4)).Single();
 
             customUi.SetAttributeValue("onLoad", loadMethodName);
+            
+            //And for automatic image loading support
+            if (customUi.Attribute("loadImage") == null)
+                customUi.SetAttributeValue("loadImage", "GetPicture");
 
             foreach (var value in _ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
             {

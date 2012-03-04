@@ -15,7 +15,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestStubs
             IViewProvider<TestRibbonTypes> viewProvider,
             IViewContextProvider contextProvider,
             params Assembly[] assemblies) 
-            : base(new RibbonFactoryImpl<TestRibbonTypes>(assemblies, new DefaultViewLocationStrategy()))
+            : base(new RibbonFactoryController<TestRibbonTypes>(assemblies, new DefaultViewLocationStrategy()))
         {
             _viewProvider = viewProvider;
             _contextProvider = contextProvider;

@@ -39,7 +39,7 @@ namespace TwitterFeedCore.TwitterFeed
                                          foreach (
                                              var tweet in (List<Tweet>) e.Result)
                                              Tweets.Add(tweet);
-                                         RaisePropertyChanged("IsBusy");
+                                         OnPropertyChanged("IsBusy");
                                      }));
             RefreshCommand = new DelegateCommand(Refresh, CanRefresh);
             SaveUsernameCommand = new DelegateCommand(SaveUsername);
@@ -58,7 +58,7 @@ namespace TwitterFeedCore.TwitterFeed
             if (_worker.IsBusy) return;
 
             _worker.RunWorkerAsync(TwitterUsername);
-            RaisePropertyChanged("IsBusy");
+            OnPropertyChanged("IsBusy");
         }
 
         private bool CanRefresh()
@@ -84,7 +84,7 @@ namespace TwitterFeedCore.TwitterFeed
             set
             {
                 _username = value;
-                RaisePropertyChanged("TwitterUsername");
+                OnPropertyChanged("TwitterUsername");
             }
         }
 
@@ -104,7 +104,7 @@ namespace TwitterFeedCore.TwitterFeed
                 if (_panelShown == value) return;
                 _panelShown = value;
                 _twitterTaskPane.Visible = value;
-                RaisePropertyChanged("PanelShown");
+                OnPropertyChanged("PanelShown");
             }
         }
 
@@ -132,7 +132,7 @@ namespace TwitterFeedCore.TwitterFeed
         private void TwitterTaskPaneVisibleChanged(object sender, EventArgs e)
         {
             _panelShown = _twitterTaskPane.Visible;
-            RaisePropertyChanged("PanelShown");
+            OnPropertyChanged("PanelShown");
         }
     }
 }

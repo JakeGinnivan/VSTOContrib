@@ -34,7 +34,7 @@ namespace RazorDocs.Core
                 if (_panelShown == value) return;
                 _panelShown = value;
                 _razorDocsTaskPane.Visible = value;
-                RaisePropertyChanged(() => PanelShown);
+                OnPropertyChanged(() => PanelShown);
             }
         }
 
@@ -62,7 +62,7 @@ namespace RazorDocs.Core
         private void RazorDocsTaskPaneVisibleChanged(object sender, EventArgs e)
         {
             _panelShown = _razorDocsTaskPane.Visible;
-            RaisePropertyChanged(() => PanelShown);
+            OnPropertyChanged(() => PanelShown);
         }
     }
 }

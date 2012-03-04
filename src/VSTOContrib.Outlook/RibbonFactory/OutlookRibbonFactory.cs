@@ -24,7 +24,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         public OutlookRibbonFactory(
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<OutlookRibbonType>(assemblies))
+            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies))
         {
         }
 
@@ -34,7 +34,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         public OutlookRibbonFactory(
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<OutlookRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 

@@ -22,7 +22,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public WordRibbonFactory(params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<WordRibbonType>(assemblies))
+            : base(new RibbonFactoryController<WordRibbonType>(assemblies))
         {
         }
 
@@ -34,7 +34,7 @@ namespace VSTOContrib.Word.RibbonFactory
         public WordRibbonFactory(
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryImpl<WordRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryController<WordRibbonType>(assemblies, viewLocationStrategy))
         {
         }
 
