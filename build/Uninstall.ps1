@@ -1,3 +1,3 @@
 param($installPath, $toolsPath, $package, $project)
 
-$project.Object.References | Where-Object { $_.Name.StartsWith('VSTOContrib') } | { $_.Remove() }
+$project.Object.References | Where-Object -FilterScript { $_.Name.StartsWith('VSTOContrib') } | ForEach-Object { $_.Remove() }

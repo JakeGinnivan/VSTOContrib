@@ -70,8 +70,14 @@
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.dll"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.Core.pdb"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
+    
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).dll"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\VSTOContrib.$(OfficeApplication).pdb"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
+    
     <Copy SourceFiles="$(Root)build\Install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\Install.ps1"/>
     <Copy SourceFiles="$(Root)build\Uninstall.ps1"

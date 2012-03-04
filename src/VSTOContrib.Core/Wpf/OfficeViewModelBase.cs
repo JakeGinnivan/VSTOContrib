@@ -22,7 +22,7 @@ namespace VSTOContrib.Core.Wpf
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        protected virtual IPictureDisp GetPicture(string image)
+        public virtual IPictureDisp GetPicture(string image)
         {
             using (var memoryStream = new MemoryStream())
             using (var bitmap = new Bitmap(memoryStream))
