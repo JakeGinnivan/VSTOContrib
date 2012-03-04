@@ -76,7 +76,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Explorer, e.Explorer.CurrentFolder));
+                handler(this, new ViewClosedEventArgs(e.Explorer, null));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)

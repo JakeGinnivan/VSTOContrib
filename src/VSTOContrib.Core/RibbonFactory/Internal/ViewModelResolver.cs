@@ -118,7 +118,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             _ribbonUiLookup.Add(_currentlyLoadingRibbon, ribbonUi);
 
-            if (_ribbonTypeLookup.ContainsKey(_currentlyLoadingRibbon))
+            if (!_ribbonTypeLookup.ContainsKey(_currentlyLoadingRibbon))
                 return;
             var viewModelType = _ribbonTypeLookup[_currentlyLoadingRibbon];
             foreach (var viewModelLookup in _contextToViewModelLookup.Values

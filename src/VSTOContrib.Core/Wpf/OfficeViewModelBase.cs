@@ -22,23 +22,21 @@ namespace VSTOContrib.Core.Wpf
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public virtual IPictureDisp GetPicture(string image)
+        public virtual Bitmap GetPicture(string image)
         {
-            using (var memoryStream = new MemoryStream())
-            using (var bitmap = new Bitmap(memoryStream))
-            {
-                if (!image.StartsWith("/"))
-                    image = string.Concat("/", image);
+            var memoryStream = new MemoryStream();
+            var bitmap = new Bitmap(memoryStream);
+            if (!image.StartsWith("/"))
+                image = string.Concat("/", image);
 
-                var encoder = new BmpBitmapEncoder();
-                var packApplicationComponent = string.Format(
-                    "pack://application:,,,/{0};component{1}",
-                    GetType().Assembly.GetName().Name,
-                    image);
-                encoder.Frames.Add(BitmapFrame.Create(new Uri(packApplicationComponent)));
-                encoder.Save(memoryStream);
-                return PictureConverter.ImageToPictureDisp(bitmap);
-            }
+            var encoder = new BmpBitmapEncoder();
+            var packApplicationComponent = string.Format(
+                "pack://application:,,,/{0};component{1}",
+                GetType().Assembly.GetName().Name,
+                image);
+            encoder.Frames.Add(BitmapFrame.Create(new Uri(packApplicationComponent)));
+            encoder.Save(memoryStream);
+            return bitmap;
         }
 
         protected virtual IPictureDisp GetPicture(Image fromImage)
