@@ -46,7 +46,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, inspector.CurrentItem, ribbonType);
+            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, wrapper.CurrentContext, ribbonType);
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -61,7 +61,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, explorer.CurrentFolder, OutlookRibbonType.OutlookExplorer);
+            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, wrapper.CurrentContext, OutlookRibbonType.OutlookExplorer);
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -76,7 +76,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Explorer, null));
+                handler(this, new ViewClosedEventArgs(e.Explorer, e.CurrentContext));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)
@@ -87,7 +87,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Inspector, e.Inspector.CurrentItem));
+                handler(this, new ViewClosedEventArgs(e.Inspector, e.CurrentContext));
         }
 
         public void Initialise()

@@ -12,9 +12,11 @@ namespace VSTOContrib.Outlook
         /// Initializes a new instance of the <see cref="ExplorerClosedEventArgs"/> class.
         /// </summary>
         /// <param name="explorer">The explorer.</param>
-        public ExplorerClosedEventArgs(Explorer explorer)
+        /// <param name="currentContext"> </param>
+        public ExplorerClosedEventArgs(Explorer explorer, MAPIFolder currentContext)
         {
             Explorer = explorer;
+            CurrentContext = currentContext;
         }
 
         /// <summary>
@@ -22,5 +24,10 @@ namespace VSTOContrib.Outlook
         /// </summary>
         /// <value>The inspector.</value>
         public Explorer Explorer { get; private set; }
+
+        /// <summary>
+        /// The currently selected folder on the Explorer window
+        /// </summary>
+        public MAPIFolder CurrentContext { get; set; }
     }
 }

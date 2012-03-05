@@ -8,6 +8,8 @@ namespace VSTOContrib.Outlook
     /// </summary>
     public class InspectorWrapper
     {
+        private object _currentContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InspectorWrapper"/> class.
         /// </summary>
@@ -16,6 +18,7 @@ namespace VSTOContrib.Outlook
         {
             Inspector = inspector;
             ((InspectorEvents_10_Event)Inspector).Close += InspectorClose;
+            CurrentContext = Inspector.CurrentItem;
         }
 
         /// <summary>
@@ -28,6 +31,12 @@ namespace VSTOContrib.Outlook
         /// </summary>
         /// <value>The inspector.</value>
         public Inspector Inspector { get; private set; }
+
+        public object CurrentContext
+        {
+            get { return _currentContext; }
+            set { _currentContext = value; }
+        }
 
         private void InspectorClose()
         {

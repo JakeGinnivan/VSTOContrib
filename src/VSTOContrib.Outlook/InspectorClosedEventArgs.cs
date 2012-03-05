@@ -12,9 +12,11 @@ namespace VSTOContrib.Outlook
         /// 
         /// </summary>
         /// <param name="inspector"></param>
-        public InspectorClosedEventArgs(Inspector inspector)
+        /// <param name="currentContext">The current context for the inspector</param>
+        public InspectorClosedEventArgs(Inspector inspector, object currentContext)
         {
             Inspector = inspector;
+            CurrentContext = currentContext;
         }
 
         /// <summary>
@@ -22,5 +24,10 @@ namespace VSTOContrib.Outlook
         /// </summary>
         /// <value>The inspector.</value>
         public Inspector Inspector { get; private set; }
+
+        /// <summary>
+        /// Gets the current context for the inspector
+        /// </summary>
+        public object CurrentContext { get; set; }
     }
 }
