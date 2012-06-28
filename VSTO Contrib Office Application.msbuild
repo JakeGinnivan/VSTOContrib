@@ -62,7 +62,7 @@
     <PropertyGroup>
       <ApplicationNuGetFolderName>$(Root)build\Artifacts\NuGet\$(OfficeApplication)\</ApplicationNuGetFolderName>
       <NuGetManifest>$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication).nuspec</NuGetManifest>
-      <NuGet>$(Root)build\lib\NuGet.exe</NuGet>
+      <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
     </PropertyGroup>
 
     <MakeDir Directories="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\"
@@ -105,7 +105,16 @@
                 Regex="{{Version}}"
                 ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/>
 
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts"' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Exclude WordQuickstart.dll' />
+
+    <PropertyGroup>
+      <QuickStartRoot>$(Root)src\Quickstart\$(OfficeApplication)Quickstart\</QuickStartRoot>
+      <QuickStartSpec>$(QuickStartRoot)$(OfficeApplication)QuickStart.nuspec</QuickStartSpec>
+    </PropertyGroup>
+    
+    <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(Major).$(Minor).$(Build).$(Revision)'
+          Condition="Exists('$(QuickStartSpec)') AND '$(TargetOfficeVersion)' == '2010'"/>
+  
   </Target>
 
   <Target Name="Package" DependsOnTargets="NuGet">

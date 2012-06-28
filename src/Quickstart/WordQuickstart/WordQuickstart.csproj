@@ -157,6 +157,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddinBootstrapper.cs" />
+    <Compile Include="DocumentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -187,6 +188,9 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="WordQuickstart.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VSTOContrib.Core\VSTOContrib.Core.csproj">
@@ -197,6 +201,12 @@
       <Project>{9D3119D9-B898-45E8-92AF-2566DA3F85FC}</Project>
       <Name>VSTOContrib.Word</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DocumentView.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

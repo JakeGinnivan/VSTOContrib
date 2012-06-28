@@ -14,8 +14,8 @@ namespace VSTOContrib.Word.RibbonFactory
     [ComVisible(true)]
     public class WordRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private static Application _wordApplication;
-        private WordViewProvider _wordViewProvider;
+        static Application wordApplication;
+        WordViewProvider wordViewProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
@@ -48,12 +48,12 @@ namespace VSTOContrib.Word.RibbonFactory
             Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection)
         {
-            if (_wordApplication == null)
+            if (wordApplication == null)
                 throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
 
-            _wordViewProvider = new WordViewProvider(_wordApplication);
+            wordViewProvider = new WordViewProvider(wordApplication);
             return InitialiseFactoryInternal(
-                _wordViewProvider,  
+                wordViewProvider,  
                 ribbonFactory,
                 new WordViewContextProvider(),
                 customTaskPaneCollection);
@@ -66,7 +66,7 @@ namespace VSTOContrib.Word.RibbonFactory
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
         {
             //Word does not raise a new document event when we are starting up, and initialise is too soon
-            _wordViewProvider.RegisterOpenDocuments();
+            wordViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
         }
 
@@ -76,7 +76,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="application"></param>
         public static void SetApplication(Application application)
         {
-            _wordApplication = application;
+            wordApplication = application;
         }
     }
 }

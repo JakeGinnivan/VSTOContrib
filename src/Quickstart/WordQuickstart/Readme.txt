@@ -1,4 +1,7 @@
-﻿using System;
+﻿To get started your ThisAddIn.cs should look something like this
+
+
+using System;
 using System.Windows;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;

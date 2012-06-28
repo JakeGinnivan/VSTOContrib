@@ -54,8 +54,6 @@
   </Target>
 
   <Target Name="Version" DependsOnTargets="GetVersion">
-    <RemoveDir Directories="build\Artifacts\" />
-
     <AssemblyInfo CodeLanguage="CS"
       OutputFile="$(Root)src\Information\VersionInfo.cs"
       AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
