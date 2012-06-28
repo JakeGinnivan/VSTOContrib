@@ -1,6 +1,3 @@
-**Note - VSTO Contrib is still under active development, and as such the bootstrapping method signatures may change.
-Changes will be documented, and simple to fix. Just be aware that your solution may not compile after an update at this stage.**
-
 ------------------------------------------------------------------------------------------
 
 Feedback is very welcome!

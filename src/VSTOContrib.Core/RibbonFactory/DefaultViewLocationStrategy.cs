@@ -27,7 +27,7 @@ namespace VSTOContrib.Core.RibbonFactory
             var viewAssembly = viewModelType.Assembly;
 
             var manifestResourceNames = viewAssembly.GetManifestResourceNames();
-            var resources = manifestResourceNames.Where(r => r.EndsWith(".xml"));
+            var resources = manifestResourceNames.Where(r => r.EndsWith(".xml")).ToArray();
             var viewName = viewModelType.Name;
             var exactName = viewName + ".xml";
             var noViewName = viewName.Replace("Model", string.Empty) + ".xml";

@@ -25,3 +25,9 @@ build/Artifacts/
 *.user
 *.suo
 *.dotCover
+src/_NCrunch_VSTOContrib
+src/_UpgradeReport_Files
+src/packages
+src/UpgradeLog.XML
+src/UpgradeLog.htm
+Thumbs.db

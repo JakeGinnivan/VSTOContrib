@@ -11,4 +11,10 @@
     <description>Makes VSTO development with {{Application}} far nicer, support DI/IoC, ViewModel per context (Document, Workbook, ApointmentItem etc), WPF like binding in RibbonXML, WPF Support and more!</description>
     <tags>VSTO,Office,{{Application}}</tags>
   </metadata>
+  <frameworkAssemblies>
+    <frameworkAssembly assemblyName="PresentationCore"  />
+    <frameworkAssembly assemblyName="PresentationFramework"  />
+    <frameworkAssembly assemblyName="WindowsBase"  />
+    <frameworkAssembly assemblyName="System.Xaml" targetFramework="net40" />
+  </frameworkAssemblies>
 </package>

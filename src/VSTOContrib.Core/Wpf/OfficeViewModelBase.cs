@@ -39,11 +39,21 @@ namespace VSTOContrib.Core.Wpf
             return bitmap;
         }
 
+        /// <summary>
+        /// Converts a Image into a IPictureDisp image
+        /// </summary>
+        /// <param name="fromImage"></param>
+        /// <returns></returns>
         protected virtual IPictureDisp GetPicture(Image fromImage)
         {
             return PictureConverter.ImageToPictureDisp(fromImage);
         }
 
+        /// <summary>
+        /// Converts a Icon into a IPictureDisp image
+        /// </summary>
+        /// <param name="fromIcon"></param>
+        /// <returns></returns>
         protected virtual IPictureDisp GetPicture(Icon fromIcon)
         {
             return PictureConverter.IconToPictureDisp(fromIcon);
