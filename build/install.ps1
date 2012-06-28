@@ -1,5 +1,7 @@
 param($installPath, $toolsPath, $package, $project)
 
+write-host "Adding VSTO Contrib References"
+
 $interopAssembly = $project.Object.References | Where-Object { $_.Name.StartsWith('Microsoft.Office.Interop.{{Application}}') }
 $frameworkVersionString = $project.Properties.Item('TargetFrameworkMoniker').Value
 $frameworkVersionString -match 'Version=(v\d\.\d)' > null
