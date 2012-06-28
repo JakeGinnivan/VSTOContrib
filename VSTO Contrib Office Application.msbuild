@@ -78,10 +78,10 @@
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
     
-    <Copy SourceFiles="$(Root)build\Install.ps1"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\Install.ps1"/>
-    <Copy SourceFiles="$(Root)build\Uninstall.ps1"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\Uninstall.ps1"/>
+    <Copy SourceFiles="$(Root)build\install.ps1"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
+    <Copy SourceFiles="$(Root)build\uninstall.ps1"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\uninstall.ps1"/>
     <Copy SourceFiles="$(Root)build\VSTOContrib.nuspec"
           DestinationFiles="$(NuGetManifest)"/>
     <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt.pp"
