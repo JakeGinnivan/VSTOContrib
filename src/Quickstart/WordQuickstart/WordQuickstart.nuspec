@@ -12,9 +12,6 @@
     <description>Sets up the basic VSTO Contrib Project structure</description>
     <copyright>Copyright Jake Ginnivan 2012</copyright>
     <tags>VSTO Quickstart</tags>
-    <dependencies>
-      <dependency id="VSTOContrib.Word" />
-    </dependencies>
   </metadata>
   <files>
     <file src="AddinBootstrapper.cs" target="content" />

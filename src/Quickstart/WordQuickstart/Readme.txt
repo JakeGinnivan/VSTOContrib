@@ -1,4 +1,6 @@
-﻿To get started your ThisAddIn.cs should look something like this
+﻿First install VSTOContrib.Word if you haven't already (you need to install separately for installer to run correctly)
+
+To get started your ThisAddIn.cs should look something like this
 
 
 using System;

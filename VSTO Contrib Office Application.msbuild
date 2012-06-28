@@ -86,8 +86,6 @@
           DestinationFiles="$(NuGetManifest)"/>
     <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt.pp"
           DestinationFiles="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt.pp"/>
-    <Copy SourceFiles="$(Root)build\AddinBootstrapper.cs.pp"
-          DestinationFiles="$(ApplicationNuGetFolderName)content\AddinBootstrapper.cs.pp"/>
 
     <FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
                 Regex="{{Application}}"
