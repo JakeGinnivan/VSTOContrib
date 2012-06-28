@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.txt = ..\README.txt
 		..\VSTO Contrib Office Application.msbuild = ..\VSTO Contrib Office Application.msbuild
 		..\VSTO Contrib.msbuild = ..\VSTO Contrib.msbuild
-		..\build\AddinBootstrapper.cs.pp = ..\build\AddinBootstrapper.cs.pp
 		..\build\Install.ps1 = ..\build\Install.ps1
 		..\build\Uninstall.ps1 = ..\build\Uninstall.ps1
 		..\build\VSTOContrib.GettingStarted.txt.pp = ..\build\VSTOContrib.GettingStarted.txt.pp

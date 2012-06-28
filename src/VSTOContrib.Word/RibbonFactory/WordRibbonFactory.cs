@@ -52,6 +52,7 @@ namespace VSTOContrib.Word.RibbonFactory
                 throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
 
             wordViewProvider = new WordViewProvider(wordApplication);
+            wordViewProvider.RegisterOpenDocuments();
             return InitialiseFactoryInternal(
                 wordViewProvider,  
                 ribbonFactory,
@@ -66,7 +67,8 @@ namespace VSTOContrib.Word.RibbonFactory
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
         {
             //Word does not raise a new document event when we are starting up, and initialise is too soon
-            wordViewProvider.RegisterOpenDocuments();
+            if (wordViewProvider != null)
+                wordViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
         }
 
