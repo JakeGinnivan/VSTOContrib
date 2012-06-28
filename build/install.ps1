@@ -1,6 +1,6 @@
 param($installPath, $toolsPath, $package, $project)
 
-write-host "Adding VSTO Contrib References"
+Write-Host "Adding VSTO Contrib References"
 
 $interopAssembly = $project.Object.References | Where-Object { $_.Name.StartsWith('Microsoft.Office.Interop.{{Application}}') }
 $frameworkVersionString = $project.Properties.Item('TargetFrameworkMoniker').Value
@@ -23,17 +23,17 @@ if ($frameworkVersion -eq 'v4.0')
     $netVersionFolder = 'net40'
 } elseif ($frameworkVersion -eq 'v3.5')
 {
-	write-host "Installing for .net 3.5"
+	Write-Host "Installing for .net 3.5"
     $netVersionFolder = 'net35'
 } else 
 {
-	write-host "Unknown .net framework version $frameworkVersion"
+	Write-Host "Unknown .net framework version $frameworkVersion"
 }
 
 $vstoContribCoreDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.Core.dll"
 $vstoContribApplicationDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.{{Application}}.dll"
 
-write-host "Adding references to $vstoContribCoreDll and $vstoContribApplicationDll"
+Write-Host "Adding references to $vstoContribCoreDll and $vstoContribApplicationDll"
 $project.Object.References.Add($vstoContribCoreDll)
 $project.Object.References.Add($vstoContribApplicationDll)
 
