@@ -30,6 +30,8 @@ if ($frameworkVersion -eq 'v4.0')
 	Write-Host "Unknown .net framework version $frameworkVersion"
 }
 
+$netVersionFolder = "bin-" + $netVersionFolder
+
 $vstoContribCoreDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.Core.dll"
 $vstoContribApplicationDll = Join-Path (Join-Path (Join-Path $toolsPath $netVersionFolder) $officeVersion) "VSTOContrib.{{Application}}.dll"
 

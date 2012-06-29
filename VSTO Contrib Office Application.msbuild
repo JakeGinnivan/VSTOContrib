@@ -66,17 +66,17 @@
     </PropertyGroup>
 
     <MakeDir Directories="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\"
-             Condition="!Exists('$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\')" />
+             Condition="!Exists('$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\')" />
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
     
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
     
     <Copy SourceFiles="$(Root)build\install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
