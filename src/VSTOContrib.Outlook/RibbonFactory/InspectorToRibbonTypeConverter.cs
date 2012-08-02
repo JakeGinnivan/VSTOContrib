@@ -40,6 +40,8 @@ namespace VSTOContrib.Outlook.RibbonFactory
                 return ConvertPost(item);
             if (messageClass.StartsWith("IPM.Task"))
                 return OutlookRibbonType.OutlookTask;
+            if (messageClass.StartsWith("IPM.OLE.CLASS"))
+                return OutlookRibbonType.OutlookAppointment;
 
             throw new ArgumentOutOfRangeException(string.Format("MessageClass {0} is unrecognised", messageClass));
         }
