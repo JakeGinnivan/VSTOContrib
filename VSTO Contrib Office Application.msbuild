@@ -65,7 +65,7 @@
       <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
     </PropertyGroup>
 
-    <MakeDir Directories="$(ApplicationNuGetFolderName)tools\$(NuGetFrameworkString)\"
+    <MakeDir Directories="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\"
              Condition="!Exists('$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\')" />
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
