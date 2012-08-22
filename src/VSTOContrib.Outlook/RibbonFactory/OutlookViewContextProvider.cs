@@ -23,6 +23,10 @@ namespace VSTOContrib.Outlook.RibbonFactory
             if (explorer != null)
                 return explorer.CurrentFolder;
 
+            var selection = view as Selection;
+            if (selection != null)
+                return GetContextForView(selection.Parent);
+
             return null;
         }
 

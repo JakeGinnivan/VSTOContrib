@@ -18,10 +18,12 @@ namespace OutlookQuickStart
 
         public byte[] GetFormRegionStorage(object outlookItem, OlFormRegionMode formRegionMode, OlFormRegionSize formRegionSize)
         {
+            return null;
         }
 
         public IFormRegion CreateFormRegion(FormRegion formRegion)
         {
+            return null;
         }
 
         public FormRegionKindConstants Kind { get; private set; }

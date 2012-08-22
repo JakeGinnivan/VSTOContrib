@@ -315,9 +315,9 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         /// <param name="control">The control.</param>
         /// <returns></returns>
-        public int GetSelectedItemId(IRibbonControl control)
+        public string GetSelectedItemId(IRibbonControl control)
         {
-            return (int)_ribbonFactoryController.InvokeGet(control, () => GetSelectedItemId(null));
+            return (string)_ribbonFactoryController.InvokeGet(control, () => GetSelectedItemId(null));
         }
 
         /// <summary>
