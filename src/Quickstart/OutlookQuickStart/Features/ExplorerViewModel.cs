@@ -21,11 +21,9 @@ namespace OutlookQuickStart.Features
         public void EmailItems(IRibbonControl control)
         {
             if (explorer.Selection.Count == 1)
-
             {
                 var title = ((MailItem) explorer.Selection[1]).Subject;
             }
-
         }
 
         public void CurrentViewChanged(object currentView)

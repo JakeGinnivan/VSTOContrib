@@ -231,7 +231,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="Features\MailItemView.xml" />
+    <EmbeddedResource Include="Features\MailItemView.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormRegion1.resx">
       <DependentUpon>FormRegion1.cs</DependentUpon>
     </EmbeddedResource>
