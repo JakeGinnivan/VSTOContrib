@@ -41,6 +41,10 @@ namespace VSTOContrib.Outlook.RibbonFactory
             if (view is Explorer)
                 return (TRibbonType)(object)OutlookRibbonType.OutlookExplorer;
 
+            var selection = view as Selection;
+            if (selection != null)
+                return GetRibbonTypeForView<TRibbonType>(selection.Parent);
+
             return (TRibbonType) (object) InspectorToRibbonTypeConverter.Convert((Inspector) view);
         }
     }
