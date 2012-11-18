@@ -69,7 +69,7 @@ namespace VSTOContrib.Word.RibbonFactory
         {
             _wordApplication.WindowActivate += WordApplicationWindowActivate;
             _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
-            //TODO protected window activate    
+            //TODO protected window activate
         }
 
         static void WordApplicationDocumentOpen(Document doc)
