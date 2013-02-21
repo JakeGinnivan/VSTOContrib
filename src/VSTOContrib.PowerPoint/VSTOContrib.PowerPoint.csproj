@@ -46,9 +46,6 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Information\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonFactory\PowerPointRibbonFactory.cs" />
     <Compile Include="RibbonFactory\PowerPointRibbonType.cs" />

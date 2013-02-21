@@ -18,14 +18,7 @@
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Deployment.Tasks.Targets"/>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Mercurial.tasks"/>
 
-  <PropertyGroup>
-    <Major>0</Major>
-    <Minor>10</Minor>
-    <Build>0</Build>
-    <Revision>0</Revision>
-  </PropertyGroup>
-
-  <Target Name="GetVersion">
+  <Target Name="Cleanup">
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(TargetFrameworkVersion) == ''" Text="TargetFrameworkVersion variable must be defined" />
     <Error Condition="$(FrameworkString) == ''" Text="FrameworkString variable must be defined" />
@@ -33,10 +26,7 @@
     <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
-    
-    <HgVersion LocalPath=".">
-      <Output TaskParameter="Revision" PropertyName="Revision" />
-    </HgVersion>
+
     <!-- Diagnostics -->
     <Message Text="Diagnostics:"/>
     <Message Text="Build Number:    $(Major).$(Minor).$(Build).$(Revision)" />
@@ -52,16 +42,8 @@
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
   </Target>
-
-  <Target Name="Version" DependsOnTargets="GetVersion">
-    <AssemblyInfo CodeLanguage="CS"
-      OutputFile="$(Root)src\Information\VersionInfo.cs"
-      AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
-      AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)"
-      Condition="$(Revision) != '-1' "/>
-  </Target>
   
-  <Target Name="BuildAll" DependsOnTargets="GetVersion">
+  <Target Name="BuildAll" DependsOnTargets="Cleanup">
     <PropertyGroup>
       <CommonProperties>
         MSBuildCommunityTasksPath=$(MSBuildCommunityTasksPath);

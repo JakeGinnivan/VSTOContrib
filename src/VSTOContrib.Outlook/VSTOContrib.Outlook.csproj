@@ -55,9 +55,6 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Information\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="CancelEventArgs.cs" />
     <Compile Include="ComComponentCategoriesManager.cs" />
     <Compile Include="ExplorerClosedEventArgs.cs" />

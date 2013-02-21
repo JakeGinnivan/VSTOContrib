@@ -57,9 +57,6 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Information\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Extensions\ComCleanupEnumerator.cs" />
     <Compile Include="Extensions\ComCleanupWrapper.cs" />
     <Compile Include="ClickOnceUpdater.cs" />
