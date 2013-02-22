@@ -54,10 +54,8 @@
         TargetOfficeVersion=$(TargetOfficeVersion);
         Root=$(Root);
         ProgramFiles32=$(ProgramFiles32);
-        Major=$(Major);
-        Minor=$(Minor);
-        Build=$(Build);
-        Revision=$(Revision)
+        Version=$(Version);
+        Configuration=$(Configuration)
       </CommonProperties>
     </PropertyGroup>
     <MSBuild Projects="VSTO Contrib Office Application.msbuild" Properties="OfficeApplication=Outlook;$(CommonProperties)" />
