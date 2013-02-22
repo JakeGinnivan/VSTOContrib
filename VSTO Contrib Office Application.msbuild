@@ -1,18 +1,4 @@
 ﻿<Project DefaultTargets="Package" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ExtensionsBaseDir>$(Root)src\Extensions\</ExtensionsBaseDir>
-
-    <ExtensionsFile>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions$(TargetOfficeVersion).tt</ExtensionsFile>
-    <InterfacesFile>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces$(TargetOfficeVersion).tt</InterfacesFile>
-    <ExtensionsOutput>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\OfficeCleanupExtensions.cs</ExtensionsOutput>
-    <InterfacesOutput>$(ExtensionsBaseDir)VSTOContrib.Extensions.Proxies\Interfaces\OfficeInterfaces.cs</InterfacesOutput>
-
-    <ApplicationExtensionsFile>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\$(OfficeApplication)CleanupExtensions$(TargetOfficeVersion).tt</ApplicationExtensionsFile>
-    <ApplicationInterfacesFile>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\Interfaces\$(OfficeApplication)Interfaces$(TargetOfficeVersion).tt</ApplicationInterfacesFile>
-    <ApplicationExtensionsOutput>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\$(OfficeApplication)CleanupExtensions.cs</ApplicationExtensionsOutput>
-    <ApplicationInterfacesOutput>$(ExtensionsBaseDir)VSTOContrib.$(OfficeApplication).Extensions.Proxies\Interfaces\$(OfficeApplication)Interfaces.cs</ApplicationInterfacesOutput>
-  </PropertyGroup>
-
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <UsingTask
     AssemblyFile="$(Root)lib\xunit.net\xunit.runner.msbuild.dll"
@@ -28,20 +14,11 @@
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
 
-    <!--Regenerate TextTemplates-->
-    <Exec Command='build\lib\TextTransform.exe -out "$(ExtensionsOutput)" "$(ExtensionsFile)"' />
-    <Exec Command='build\lib\TextTransform.exe -out "$(InterfacesOutput)" "$(InterfacesFile)"' />
-
-    <Exec Command='build\lib\TextTransform.exe -out "$(ApplicationExtensionsOutput)" "$(ApplicationExtensionsFile)"' />
-    <Exec Command='build\lib\TextTransform.exe -out "$(ApplicationInterfacesOutput)" "$(ApplicationInterfacesFile)"' />
-
     <!--Compile-->
     <ItemGroup>
       <ProjectToBuild Include="
                       $(Root)src\VSTOContrib.Core\VSTOContrib.Core.csproj;
                       $(Root)src\VSTOContrib.$(OfficeApplication)\VSTOContrib.$(OfficeApplication).csproj;
-                      $(Root)src\Extensions\VSTOContrib.Extensions.Proxies\VSTOContrib.Extensions.Proxies.csproj;
-                      $(Root)src\Extensions\VSTOContrib.$(OfficeApplication).Extensions.Proxies\VSTOContrib.$(OfficeApplication).Extensions.Proxies.csproj;
                       $(Root)src\TestProjects\VSTOContrib.Core.Tests\VSTOContrib.Core.Tests.csproj;
                       $(Root)src\TestProjects\VSTOContrib.$(OfficeApplication).Tests\VSTOContrib.$(OfficeApplication).Tests.csproj" />
     </ItemGroup>
@@ -103,7 +80,7 @@
     
     <FileUpdate Files="$(NuGetManifest)"
                 Regex="{{Version}}"
-                ReplacementText="$(Major).$(Minor).$(Build).$(Revision)"/>
+                ReplacementText="$(Vesion)"/>
 
     <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Exclude WordQuickstart.dll' />
 
@@ -112,7 +89,7 @@
       <QuickStartSpec>$(QuickStartRoot)$(OfficeApplication)QuickStart.nuspec</QuickStartSpec>
     </PropertyGroup>
     
-    <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(Major).$(Minor).$(Build).$(Revision)'
+    <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(Version)'
           Condition="Exists('$(QuickStartSpec)') AND '$(TargetOfficeVersion)' == '2010'"/>
   
   </Target>
@@ -131,6 +108,6 @@
 
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) ($(FrameworkString)) v$(Major).$(Minor).$(Build).$(Revision).zip" />
+         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) ($(FrameworkString)) v$(Version).zip" />
   </Target>
 </Project>

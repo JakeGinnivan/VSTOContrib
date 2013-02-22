@@ -12,6 +12,7 @@
     <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
     <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+    <Version Condition="$(Version)==''">1.0.0.0</Version>
   </PropertyGroup>
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
@@ -29,7 +30,7 @@
 
     <!-- Diagnostics -->
     <Message Text="Diagnostics:"/>
-    <Message Text="Build Number:    $(Major).$(Minor).$(Build).$(Revision)" />
+    <Message Text="Build Number:    $(Version)" />
     <Message Text="Project root:    $(Root)" />
     <Message Text="Drop path:       build\Artifacts" />
     <Message Text=".NET Version:    $(FrameworkString)" />
