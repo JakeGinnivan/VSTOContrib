@@ -80,7 +80,7 @@
     
     <FileUpdate Files="$(NuGetManifest)"
                 Regex="{{Version}}"
-                ReplacementText="$(Vesion)"/>
+                ReplacementText="$(Version)"/>
 
     <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Exclude WordQuickstart.dll' />
 
