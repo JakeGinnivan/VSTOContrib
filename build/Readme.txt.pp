@@ -2,43 +2,71 @@
 
 Feedback is very welcome!
 
-Start a discussion or raise an issue at http://vstocontrib.codeplex.com/
+Start a discussion or raise an issue at http://vstocontrib.codeplex.com/ or https://github.com/JakeGinnivan/VSTOContrib
 
 ------------------------------------------------------------------------------------------
-                             To use the Ribbon Factory
+                                   Introduction
 ------------------------------------------------------------------------------------------
+VSTO Contrib lets you easily unit test, use IoC/DI and develop in a MVVM style within Office Add-ins. 
 
- 1. Expand VSTO generated code (or delete the region). 
- 2. Ignore the comment about not modifying the contents of the internal startup method
- 3. Edit the InternalStartup method to look like this (or copy and overwrite)
+It supports Outlook, Word, Excel and PowerPoint 2007+, and has both .net 3.5 and 4.0 builds.
 
-        private void InternalStartup()
-        {
-            _core = new AddinBootstrapper();
-            {{Application}}RibbonFactory.SetApplication(Application);
-            RibbonFactory.Current.InitialiseFactory(
-                t => (IRibbonViewModel)_core.Resolve(t),
-                CustomTaskPanes);
-
-            Startup += ThisAddInStartup;
-            Shutdown += ThisAddInShutdown;
-        }
-
- 4. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
-
-        protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
-        {
-            return new {{Application}}RibbonFactory(typeof(AddinBootstrapper).Assembly);
-        }
-
- 5. Modify the ThisAddinShutdown method and add the following two lines
-
-            _core.Dispose();
-            System.Windows.Application.Current.Shutdown();
-
- 6. Move the AddinBootstrapper.cs to a class library, this class library will hold all your application logic, and will be testable!
 
 ------------------------------------------------------------------------------------------
+                                   Getting Started
+------------------------------------------------------------------------------------------
+If you want to manually or you are putting VSTO Contrib into an existing project 
+follow these instructions. If you have just installed VSTO Contrib into a new project
+install the QuickStart projects
+
+1. Create an empty class library (Maybe $rootnamespace$.Core ?)
+2. Expand VSTO generated code (or delete the region). 
+3. Ignore the comment about not modifying the contents of the internal startup method
+4. Add a private field to store your bootstrapper
+
+    private AddinBootstrapper _core;
+
+5. Edit the InternalStartup method to look like this (or copy and overwrite)
+
+	private void InternalStartup()
+	{
+		_core = new AddinBootstrapper();
+		VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory.SetApplication(Application);
+		VSTOContrib.Core.RibbonFactory.RibbonFactory.Current.InitialiseFactory(
+			t => (VSTOContrib.Core.RibbonFactory.Interfaces.IRibbonViewModel)_core.Resolve(t),
+			CustomTaskPanes);
+
+		Startup += ThisAddIn_Startup;
+		Shutdown += ThisAddIn_Shutdown;
+	}
+
+6. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
+
+	protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
+	{
+		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(typeof(AddinBootstrapper).Assembly);
+	}
+
+7. Modify the `ThisAddinShutdown` method and add the following two lines
+
+	_core.Dispose();
+	System.Windows.Application.Current.Shutdown();
+
+8. Move the AddinBootstrapper.cs to a class library, this class library will hold all your application logic, and will be testable!
+
+
+
+Now VSTO Contrib is ready to go! Next step is to create a ViewModel.
+
+ViewModel's in VSTO Contrib are the way you interact with the application you are hosted in. VSTO Contrib will create an instance of a view model PER CONTEXT.
+
+Contexts in VSTO Contrib vary per application, in Outlook context are appointments, mail items, and explorers (main windows). In word each document is a context,
+PowerPoint is a presentation, and excel is a spreadsheet. VSTO Contrib will handle window management, ribbon events wire up and
+registering custom task panes in each window etc.
+
+Best of all, view models are testable! Follow the instructions to create your first view model.
+
+-----------------------------------------------------------------------------------------
                                      To Create a ViewModel
 ------------------------------------------------------------------------------------------
 

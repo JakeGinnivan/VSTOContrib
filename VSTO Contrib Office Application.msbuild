@@ -10,7 +10,6 @@
     <Error Condition="$(TargetFrameworkVersion) == ''" Text="TargetFrameworkVersion variable must be defined" />
     <Error Condition="$(FrameworkString) == ''" Text="FrameworkString variable must be defined" />
     <Error Condition="$(NuGetFrameworkString) == ''" Text="NuGetFrameworkString variable must be defined" />
-    <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
 
@@ -43,17 +42,17 @@
     </PropertyGroup>
 
     <MakeDir Directories="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\"
-             Condition="!Exists('$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\')" />
+             Condition="!Exists('$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.pdb"/>
     
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).pdb"/>
     
     <Copy SourceFiles="$(Root)build\install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
@@ -61,8 +60,8 @@
           DestinationFiles="$(ApplicationNuGetFolderName)tools\uninstall.ps1"/>
     <Copy SourceFiles="$(Root)build\VSTOContrib.nuspec"
           DestinationFiles="$(NuGetManifest)"/>
-    <Copy SourceFiles="$(Root)build\VSTOContrib.GettingStarted.txt.pp"
-          DestinationFiles="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt.pp"/>
+    <Copy SourceFiles="$(Root)build\Readme.txt.pp"
+          DestinationFiles="$(ApplicationNuGetFolderName)Readme.txt.pp"/>
     <Copy SourceFiles="$(Root)build\AddinBootstrapper.cs.pp"
           DestinationFiles="$(ApplicationNuGetFolderName)content\AddinBootstrapper.cs.pp"/>
 
@@ -70,7 +69,7 @@
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
     
-    <FileUpdate Files="$(ApplicationNuGetFolderName)content\VSTOContrib.GettingStarted.txt.pp"
+    <FileUpdate Files="$(ApplicationNuGetFolderName)Readme.txt.pp"
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
     
@@ -82,7 +81,7 @@
                 Regex="{{Version}}"
                 ReplacementText="$(Version)"/>
 
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Exclude WordQuickstart.dll' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts"' />
 
     <PropertyGroup>
       <QuickStartRoot>$(Root)src\Quickstart\$(OfficeApplication)Quickstart\</QuickStartRoot>
@@ -90,7 +89,7 @@
     </PropertyGroup>
     
     <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(Version)'
-          Condition="Exists('$(QuickStartSpec)') AND '$(TargetOfficeVersion)' == '2010'"/>
+          Condition="Exists('$(QuickStartSpec)')"/>
   
   </Target>
 
@@ -108,6 +107,6 @@
 
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) ($(FrameworkString)) v$(Version).zip" />
+         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) ($(FrameworkString)) v$(Version).zip" />
   </Target>
 </Project>

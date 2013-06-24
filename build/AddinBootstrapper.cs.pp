@@ -2,7 +2,7 @@ using System;
 
 namespace $rootnamespace$Core
 {
-    public class AddinBootstrapper2 : IDisposable
+    public class AddinBootstrapper : IDisposable
     {
         public object Resolve(Type type)
         {
