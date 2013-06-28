@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 #pragma warning disable 414
-namespace OutlookAddIn1 {
+namespace TwitterFeedOutlookAddin {
     
     
     /// 

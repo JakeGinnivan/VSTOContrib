@@ -8,43 +8,43 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     class OneToManyCustomTaskPaneAdapter : ICustomTaskPaneWrapper
     {
-        private readonly CustomTaskPane _original;
-        private readonly List<CustomTaskPane> _customTaskPanes;
-        private bool _disposed;
+        private readonly CustomTaskPane original;
+        private readonly List<CustomTaskPane> customTaskPanes;
+        private bool disposed;
 
         public OneToManyCustomTaskPaneAdapter(CustomTaskPane original)
         {
-            _original = original;
-            _customTaskPanes = new List<CustomTaskPane>();
+            this.original = original;
+            customTaskPanes = new List<CustomTaskPane>();
             Add(original);
         }
 
         public bool ViewRegistered(object view)
         {
-            if (_disposed) return false;
-            return _customTaskPanes.Any(c => c.Window == view);
+            if (disposed) return false;
+            return customTaskPanes.Any(c => c.Window == view);
         }
 
         public void Add(CustomTaskPane customTaskPane)
         {
-            if (_disposed) return;
+            if (disposed) return;
             //Sync new task pane's properties up
-            customTaskPane.Visible = _original.Visible;
-            customTaskPane.DockPosition = _original.DockPosition;
+            customTaskPane.Visible = original.Visible;
+            customTaskPane.DockPosition = original.DockPosition;
 
 
-            if (_original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop &&
-                _original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionBottom)
+            if (original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop &&
+                original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionBottom)
             {
-                customTaskPane.Width = _original.Width;
+                customTaskPane.Width = original.Width;
             }
-            if (_original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionLeft &&
-                _original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionRight)
+            if (original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionLeft &&
+                original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionRight)
             {
-                customTaskPane.Height = _original.Height;
+                customTaskPane.Height = original.Height;
             }
             
-            _customTaskPanes.Add(customTaskPane);
+            customTaskPanes.Add(customTaskPane);
             customTaskPane.DockPositionChanged += CustomTaskPaneDockPositionChanged;
             customTaskPane.VisibleChanged += CustomTaskPaneVisibleChanged;
         }
@@ -56,7 +56,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void CustomTaskPaneVisibleChanged(object sender, EventArgs e)
         {
-            if (_disposed) return;
+            if (disposed) return;
             var customTaskPane = (CustomTaskPane)sender;
             Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
 
@@ -75,7 +75,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void CustomTaskPaneDockPositionChanged(object sender, EventArgs e)
         {
-            if (_disposed) return;
+            if (disposed) return;
             var customTaskPane = (CustomTaskPane)sender;
             Do(c=>c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
 
@@ -94,8 +94,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private void Do(Action<CustomTaskPane> action)
         {
-            if (_disposed) return;
-            foreach (var customTaskPane in _customTaskPanes)
+            if (disposed) return;
+            foreach (var customTaskPane in customTaskPanes)
             {
                 action(customTaskPane);
             }
@@ -103,34 +103,34 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public UserControl Control
         {
-            get { return _original.Control; }
+            get { return original.Control; }
         }
 
         public string Title
         {
-            get { return _original.Title; }
+            get { return original.Title; }
         }
 
         public object Window
         {
-            get { return _original.Window; }
+            get { return original.Window; }
         }
 
         public Microsoft.Office.Core.MsoCTPDockPosition DockPosition
         {
-            get { return _original.DockPosition; }
+            get { return original.DockPosition; }
             set { Do(c=>c.DockPosition = value); }
         }
 
         public Microsoft.Office.Core.MsoCTPDockPositionRestrict DockPositionRestrict
         {
-            get { return _original.DockPositionRestrict; }
+            get { return original.DockPositionRestrict; }
             set { Do(c => c.DockPositionRestrict = value); }
         }
 
         public bool Visible
         {
-            get { return _original.Visible; }
+            get { return original.Visible; }
             set { Do(c=>c.Visible = value); }
         }
 
@@ -139,19 +139,19 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public int Height
         {
-            get { return _original.Height; }
+            get { return original.Height; }
             set { Do(c=>c.Height = value); }
         }
 
         public int Width
         {
-            get { return _original.Width; }
+            get { return original.Width; }
             set { Do(c => c.Width = value); }
         }
 
         public void Dispose()
         {
-            _disposed = true;
+            disposed = true;
             Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
             Do(c => c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
             Do(c => c.Dispose());
@@ -159,10 +159,10 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void CleanupView(object view)
         {
-            if (_disposed) return;
-            foreach (var customTaskPane in _customTaskPanes.Where(customTaskPane => customTaskPane.Window == view))
+            if (disposed) return;
+            foreach (var customTaskPane in customTaskPanes.Where(customTaskPane => customTaskPane.Window == view))
             {
-                _customTaskPanes.Remove(customTaskPane);
+                customTaskPanes.Remove(customTaskPane);
                 customTaskPane.Dispose();
                 break;
             }

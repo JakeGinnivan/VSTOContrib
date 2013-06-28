@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OutlookAddIn1
+namespace TwitterResultsWordAddin
 {
     public class AddinBootstrapper : IDisposable
     {

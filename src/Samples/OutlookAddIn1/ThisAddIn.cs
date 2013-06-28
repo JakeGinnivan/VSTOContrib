@@ -2,12 +2,12 @@
 using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
+using TwitterFeedOutlookAddin.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Outlook.RibbonFactory;
-using Application = System.Windows.Application;
 
-namespace OutlookAddIn1
+namespace TwitterFeedOutlookAddin
 {
     public partial class ThisAddIn
     {

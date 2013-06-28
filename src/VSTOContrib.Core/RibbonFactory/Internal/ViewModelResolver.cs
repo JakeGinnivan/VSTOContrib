@@ -72,20 +72,27 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void ViewProviderNewView(object sender, NewViewEventArgs<TRibbonTypes> e)
         {
-            if (!ribbonTypeLookup.ContainsKey(e.RibbonType)) return;
+            var viewModel = GetOrCreateViewModel(e);
+            if (viewModel == null) return;
+            customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, e.ViewInstance);
+            e.Handled = true;
+        }
+
+        IRibbonViewModel GetOrCreateViewModel(NewViewEventArgs<TRibbonTypes> e)
+        {
+            if (!ribbonTypeLookup.ContainsKey(e.RibbonType)) return null;
             if (contextToViewModelLookup.ContainsKey(e.ViewContext))
             {
                 //Tell viewmodel there is a new view active
                 var ribbonViewModel = contextToViewModelLookup[e.ViewContext];
                 ribbonViewModel.CurrentViewChanged(e.ViewInstance);
-                customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, e.ViewInstance);
-                return; 
+                return ribbonViewModel;
             }
 
             currentlyLoadingRibbon = e.RibbonType;
-            contextToViewModelLookup.Add(e.ViewContext, BuildViewModel(e.RibbonType, e.ViewInstance, e.ViewContext));
-
-            e.Handled = true;
+            IRibbonViewModel buildViewModel = BuildViewModel(e.RibbonType, e.ViewInstance, e.ViewContext);
+            contextToViewModelLookup.Add(e.ViewContext, buildViewModel);
+            return buildViewModel;
         }
 
         private void CreateRibbonTypeToViewModelTypeLookup(Type ribbonViewModel)
@@ -109,7 +116,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 var ribbonTypeForView = viewContextProvider.GetRibbonTypeForView<TRibbonTypes>(view);
                 var newViewEventArgs = new NewViewEventArgs<TRibbonTypes>(view, context, ribbonTypeForView);
 
-                ViewProviderNewView(this, newViewEventArgs);
+                GetOrCreateViewModel(newViewEventArgs);
             }
 
             return contextToViewModelLookup[context];
