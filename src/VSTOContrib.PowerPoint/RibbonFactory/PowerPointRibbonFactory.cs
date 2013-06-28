@@ -14,7 +14,6 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     [ComVisible(true)]
     public class PowerPointRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private static Application powerPointApplication;
         private PowerPointViewProvider powerPointViewProvider;
 
         /// <summary>
@@ -45,18 +44,15 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         {
         }
 
-        /// <summary>
-        /// Initialises the ribbon factory.
-        /// </summary>
-        public override IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection)
+        protected override void ShuttingDown()
         {
-            if (powerPointApplication == null)
-                throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
+            powerPointViewProvider.Initialise();
+        }
 
-            powerPointViewProvider = new PowerPointViewProvider(powerPointApplication);
-            return InitialiseFactoryInternal(
-                powerPointViewProvider);
+        protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
+        {
+            powerPointViewProvider = new PowerPointViewProvider((Application)application);
+            controller.Initialise(powerPointViewProvider);
         }
 
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
@@ -64,15 +60,6 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             //Word does not raise a new document event when we are starting up, and initialise is too soon
             powerPointViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
-        }
-
-        /// <summary>
-        /// Sets the PowerPoint application Instance
-        /// </summary>
-        /// <param name="application"></param>
-        public static void SetApplication(Application application)
-        {
-            powerPointApplication = application;
         }
     }
 }

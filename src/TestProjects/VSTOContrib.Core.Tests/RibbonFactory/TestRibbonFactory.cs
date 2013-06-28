@@ -21,10 +21,14 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             this.viewProvider = viewProvider;
         }
 
-        public override IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection)
+        protected override void ShuttingDown()
         {
-            return InitialiseFactoryInternal(viewProvider);
+            
+        }
+
+        protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
+        {
+            controller.Initialise(viewProvider);
         }
     }
 }

@@ -26,14 +26,13 @@ namespace OutlookAddIn1
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(()=>CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
+            core = new AddinBootstrapper();
+            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
         }
 
         private void InternalStartup()
         {
-            core = new AddinBootstrapper();
-            OutlookRibbonFactory.SetApplication(Application);
-            RibbonFactory.Current.InitialiseFactory(CustomTaskPanes);
+            RibbonFactory.Current.SetApplication(Application, this);
 
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;

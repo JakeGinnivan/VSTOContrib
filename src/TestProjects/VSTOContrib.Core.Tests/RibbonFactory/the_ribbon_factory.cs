@@ -10,7 +10,6 @@ using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
 using Xunit;
-using VSTOContrib.Testing;
 
 namespace VSTOContrib.Core.Tests.RibbonFactory
 {
@@ -42,10 +41,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         [Fact]
         public void cannot_initialise_twice()
         {
-            ribbonFactoryUnderTest.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create());
 
-            Assert.Throws<InvalidOperationException>(() => ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection()));
+            Assert.Throws<InvalidOperationException>(() => ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create()));
         }
 
         [Fact]
@@ -65,9 +63,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         [Fact]
         public void resolves_associated_view_for_viewmodel()
         {
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
-
             var customUI1 = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             var customUI2 = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType2.GetEnumDescription());
             Assert.Contains("view1", customUI1);
@@ -78,9 +73,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_toggle_button()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
-
             // act
             var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
 
@@ -93,8 +85,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_button()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             // act
             var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
@@ -108,8 +98,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_get()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create());
             var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
@@ -130,8 +119,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_set()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create());
             var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
@@ -152,9 +140,8 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_listens_to_property_changed_events()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
+            ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create());
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
@@ -172,8 +159,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_getenabled_can_bind_to_method()
         {
             // arrange
-            ribbonFactoryUnderTest.InitialiseFactory(
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactoryUnderTest.SetApplication(null, AddInBaseFactory.Create());
             var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow
@@ -209,7 +195,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider,
                 new TestContextProvider(), Assembly.GetExecutingAssembly());
-            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
             var processedRibbon = ribbonFactory.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
@@ -247,7 +233,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 },
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
-            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             var view2Instance = new TestWindow { Context = new TestWindowContext() };
@@ -271,8 +257,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             // arrange
             ribbonFactoryUnderTest.ClearCurrent();
             var viewModels = new List<TestRibbonViewModel>();
-            var ribbonFactory = new TestRibbonFactory(
-                t =>
+            var ribbonFactory = new TestRibbonFactory(t =>
                 {
                     var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
                     viewModels.Add(testRibbon);
@@ -280,7 +265,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 },
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
-            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             var view2Instance = new TestWindow { Context = new TestWindowContext() };
@@ -319,25 +304,18 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         }
     }
 
-    public class TestContextProvider : IViewContextProvider
+    public class AddInBaseFactory
     {
-        public object GetContextForView(object view)
+        private class TestAddIn : AddInBase
         {
-            return ((TestWindow)view).Context;
+            public TestAddIn() : base(Substitute.For<Factory>(), null, null, null)
+            {
+            }
         }
 
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public static AddInBase Create()
         {
-            return (TRibbonType)(object)TestRibbonTypes.RibbonType1;
+            return new TestAddIn();
         }
-    }
-
-    public class TestWindowContext
-    {
-    }
-
-    public class TestWindow
-    {
-        public TestWindowContext Context { get; set; }
     }
 }

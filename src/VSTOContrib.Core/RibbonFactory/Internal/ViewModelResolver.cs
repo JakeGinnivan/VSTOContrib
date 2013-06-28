@@ -8,7 +8,7 @@ using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
-    internal class ViewModelResolver<TRibbonTypes> : IDisposable, IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct 
+    internal class ViewModelResolver<TRibbonTypes> : IViewModelResolver<TRibbonTypes> where TRibbonTypes : struct 
     {
         /// <summary>
         /// Used when a new explorer or inspector is created to lookup the appropriate viewmodel type
@@ -185,11 +185,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             viewModelInstance.Cleanup();
 
             contextToViewModelLookup.Remove(context);
-        }
-
-        public void Dispose()
-        {
-            viewProvider.Dispose();
         }
 
         public void RegisterCallbackControl(TRibbonTypes ribbonType, string controlCallback, string ribbonControl)

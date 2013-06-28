@@ -78,18 +78,15 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
         /// <param name="viewProvider">The view provider.</param>
         /// <returns></returns>
-        public IDisposable Initialise<TRibbonType>(
-            IViewProvider<TRibbonType> viewProvider)
+        public void Initialise<TRibbonType>(IViewProvider<TRibbonType> viewProvider)
         {
             this.viewProvider = (IViewProvider<TRibbonTypes>)viewProvider;
 
             ribbonViewModelResolver.Initialise(this.viewProvider);
 
             this.viewProvider.Initialise();
-
-            return ribbonViewModelResolver;
         }
-
+        
         /// <summary>
         ///     Gets the custom UI.
         /// </summary>

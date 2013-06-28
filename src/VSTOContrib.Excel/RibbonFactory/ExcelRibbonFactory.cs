@@ -14,8 +14,7 @@ namespace VSTOContrib.Excel.RibbonFactory
     [ComVisible(true)]
     public class ExcelRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private static Application excelApplication;
-        private ExcelViewProvider excelViewProvider;
+        ExcelViewProvider excelViewProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExcelRibbonFactory"/> class.
@@ -44,21 +43,18 @@ namespace VSTOContrib.Excel.RibbonFactory
         {
         }
 
-        /// <summary>
-        /// Initialises the ribbon factory.
-        /// </summary>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <returns></returns>
-        public override IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection)
+        protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            if (excelApplication == null)
-                throw new InvalidOperationException("Set Excel application instance first trough SetApplication()");
-
-            excelViewProvider = new ExcelViewProvider(excelApplication);
-            return InitialiseFactoryInternal(
-                excelViewProvider);
+            var app = (Application) application;
+            excelViewProvider = new ExcelViewProvider(app);
+            controller.Initialise(excelViewProvider);
         }
+
+        protected override void ShuttingDown()
+        {
+            excelViewProvider.Dispose();
+        }
+            
 
         /// <summary>
         /// Ribbon_s the load.
@@ -69,15 +65,6 @@ namespace VSTOContrib.Excel.RibbonFactory
             //Excel does not raise a new document event when we are starting up, and initialise is too soon
             excelViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
-        }
-
-        /// <summary>
-        /// Sets the Outlook application Instance
-        /// </summary>
-        /// <param name="application"></param>
-        public static void SetApplication(Application application)
-        {
-            excelApplication = application;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
     [ComVisible(true)]
     public class OutlookRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private static _Application outlookApplication;
+        OutlookViewProvider viewProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OutlookRibbonFactory"/> class.
@@ -49,31 +49,15 @@ namespace VSTOContrib.Outlook.RibbonFactory
         {
         }
 
-        /// <summary>
-        /// Initialises the factory.
-        /// </summary>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <returns>
-        /// Disposible object to call on outlook shutdown
-        /// </returns>
-        /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
-        public override IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection)
+        protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            if (outlookApplication == null)
-                throw new InvalidOperationException("Set Outlook application instance first trough SetApplication()");
+            viewProvider = new OutlookViewProvider((_Application) application);
 
-            return InitialiseFactoryInternal(
-                new OutlookViewProvider(outlookApplication));
+            controller.Initialise(viewProvider);
         }
-
-        /// <summary>
-        /// Sets the Outlook application Instance
-        /// </summary>
-        /// <param name="application"></param>
-        public static void SetApplication(_Application application)
+        protected override void ShuttingDown()
         {
-            outlookApplication = application;
+            viewProvider.Dispose();
         }
     }
 }

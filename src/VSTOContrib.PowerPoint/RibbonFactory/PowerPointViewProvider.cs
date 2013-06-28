@@ -11,13 +11,13 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     /// </summary>
     public class PowerPointViewProvider : IViewProvider<PowerPointRibbonType>
     {
-        private readonly Application _powerPointApplication;
+        private readonly Application powerPointApplication;
 
         public PowerPointViewProvider(Application powerPointApplication)
         {
-            _powerPointApplication = powerPointApplication;
-            ((EApplication_Event)_powerPointApplication).NewPresentation += PowerPointViewProviderNewPresentation;
-            _powerPointApplication.WindowActivate += PowerPointApplicationWindowActivate;
+            this.powerPointApplication = powerPointApplication;
+            ((EApplication_Event)this.powerPointApplication).NewPresentation += PowerPointViewProviderNewPresentation;
+            this.powerPointApplication.WindowActivate += PowerPointApplicationWindowActivate;
         }
 
         void PowerPointApplicationWindowActivate(Presentation pres, DocumentWindow window)
@@ -82,7 +82,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
-            using (var presentations = _powerPointApplication.Presentations.WithComCleanup())
+            using (var presentations = powerPointApplication.Presentations.WithComCleanup())
             {
                 foreach (Presentation presentation in presentations.Resource)
                 {

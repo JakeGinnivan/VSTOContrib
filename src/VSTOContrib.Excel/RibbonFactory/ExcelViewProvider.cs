@@ -12,8 +12,8 @@ namespace VSTOContrib.Excel.RibbonFactory
     /// </summary>
     public class ExcelViewProvider : IViewProvider<ExcelRibbonType>
     {
-        private readonly Dictionary<Workbook, List<Window>> _documents;
-        private Application _excelApplication;
+        private readonly Dictionary<Workbook, List<Window>> documents;
+        private Application excelApplication;
         private readonly WorkbookClosedMonitor _monitor;
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <param name="excelApplication">The Excel application.</param>
         public ExcelViewProvider(Application excelApplication)
         {
-            _documents = new Dictionary<Workbook, List<Window>>();
-            _excelApplication = excelApplication;
+            documents = new Dictionary<Workbook, List<Window>>();
+            this.excelApplication = excelApplication;
             _monitor = new WorkbookClosedMonitor(excelApplication);
             _monitor.WorkbookClosed += MonitorWorkbookClosed;
         }
@@ -33,29 +33,29 @@ namespace VSTOContrib.Excel.RibbonFactory
             var handler = ViewClosed;
             if (handler == null) return;
 
-            var windows = _documents[e.Workbook];
+            var windows = documents[e.Workbook];
 
             foreach (var window in windows)
             {
                 handler(this, new ViewClosedEventArgs(window, e.Workbook));
                 window.ReleaseComObject();
             }
-            _documents.Remove(e.Workbook);
+            documents.Remove(e.Workbook);
         }
 
         void ExcelApplicationWindowActivate(Workbook doc, Window wn)
         {
             var handler = NewView;
             if (handler == null) return;
-            if (!_documents.ContainsKey(doc))
+            if (!documents.ContainsKey(doc))
             {
-                _documents.Add(doc, new List<Window>());
+                documents.Add(doc, new List<Window>());
             }
 
             //Check if we have this window registered
-            if (_documents[doc].Contains(wn)) return;
+            if (documents[doc].Contains(wn)) return;
 
-            _documents[doc].Add(wn);
+            documents[doc].Add(wn);
             handler(this, new NewViewEventArgs<ExcelRibbonType>(wn, doc, ExcelRibbonType.ExcelWorkbook));
         }
 
@@ -64,7 +64,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            _excelApplication.WindowActivate += ExcelApplicationWindowActivate;
+            excelApplication.WindowActivate += ExcelApplicationWindowActivate;
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Dispose()
         {
-            _excelApplication.WindowActivate -= ExcelApplicationWindowActivate;
-            _excelApplication = null;
+            excelApplication.WindowActivate -= ExcelApplicationWindowActivate;
+            excelApplication = null;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
-            using (var documents = _excelApplication.Workbooks.WithComCleanup())
+            using (var documents = excelApplication.Workbooks.WithComCleanup())
             {
                 foreach (Workbook document in documents.Resource)
                 {

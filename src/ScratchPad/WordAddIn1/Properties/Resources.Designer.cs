@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WordAddIn1.Properties {
+namespace TwitterResultsWordAddin.Properties {
     
     
     /// <summary>

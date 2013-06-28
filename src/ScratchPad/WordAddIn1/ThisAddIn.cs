@@ -5,7 +5,7 @@ using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Word.RibbonFactory;
 
-namespace WordAddIn1
+namespace TwitterResultsWordAddin
 {
     public partial class ThisAddIn
     {
@@ -33,9 +33,7 @@ namespace WordAddIn1
         /// </summary>
         private void InternalStartup()
         {
-            WordRibbonFactory.SetApplication(Application);
-            RibbonFactory.Current.InitialiseFactory(
-                CustomTaskPanes);
+            RibbonFactory.Current.SetApplication(Application, this);
 
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;

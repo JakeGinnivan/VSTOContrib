@@ -14,7 +14,6 @@ namespace VSTOContrib.Word.RibbonFactory
     [ComVisible(true)]
     public class WordRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        static Application wordApplication;
         WordViewProvider wordViewProvider;
 
         /// <summary>
@@ -44,21 +43,15 @@ namespace VSTOContrib.Word.RibbonFactory
         {
         }
 
-        /// <summary>
-        /// Initialises the ribbon factory.
-        /// </summary>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <returns></returns>
-        public override IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection)
+        protected override void ShuttingDown()
         {
-            if (wordApplication == null)
-                throw new InvalidOperationException("Set Word application instance first trough SetApplication()");
+            wordViewProvider.Dispose();
+        }
 
-            wordViewProvider = new WordViewProvider(wordApplication);
-            wordViewProvider.RegisterOpenDocuments();
-            return InitialiseFactoryInternal(
-                wordViewProvider);
+        protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
+        {
+            wordViewProvider = new WordViewProvider((Application)application);
+            controller.Initialise(wordViewProvider);
         }
 
         /// <summary>
@@ -71,15 +64,6 @@ namespace VSTOContrib.Word.RibbonFactory
             if (wordViewProvider != null)
                 wordViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
-        }
-
-        /// <summary>
-        /// Sets the Outlook application Instance
-        /// </summary>
-        /// <param name="application"></param>
-        public static void SetApplication(Application application)
-        {
-            wordApplication = application;
         }
     }
 }

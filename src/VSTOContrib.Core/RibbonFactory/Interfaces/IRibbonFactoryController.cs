@@ -15,7 +15,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// <typeparam name="TRibbonTypes">The type of the ribbon types.</typeparam>
         /// <param name="viewProvider">The view provider.</param>
         /// <returns></returns>
-        IDisposable Initialise<TRibbonTypes>(
+        void Initialise<TRibbonTypes>(
             IViewProvider<TRibbonTypes> viewProvider);
 
         /// <summary>

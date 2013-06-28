@@ -12,9 +12,9 @@ namespace VSTOContrib.Word.RibbonFactory
     /// </summary>
     public class WordViewProvider : IViewProvider<WordRibbonType>
     {
-        private readonly Dictionary<Document, List<Window>> _documents;
-        private readonly Dictionary<Document, DocumentWrapper> _documentWrappers;
-        private Application _wordApplication;
+        private readonly Dictionary<Document, List<Window>> documents;
+        private readonly Dictionary<Document, DocumentWrapper> documentWrappers;
+        private Application wordApplication;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WordViewProvider"/> class.
@@ -22,27 +22,27 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="wordApplication">The word application.</param>
         public WordViewProvider(Application wordApplication)
         {
-            _documentWrappers = new Dictionary<Document, DocumentWrapper>();
-            _documents = new Dictionary<Document, List<Window>>();
-            _wordApplication = wordApplication;
+            documentWrappers = new Dictionary<Document, DocumentWrapper>();
+            documents = new Dictionary<Document, List<Window>>();
+            this.wordApplication = wordApplication;
         }
 
         void WordApplicationWindowActivate(Document doc, Window wn)
         {
             var handler = NewView;
             if (handler == null) return;
-            if (!_documents.ContainsKey(doc))
+            if (!documents.ContainsKey(doc))
             {
-                _documents.Add(doc, new List<Window>());
+                documents.Add(doc, new List<Window>());
                 var documentWrapper = new DocumentWrapper(doc);
                 documentWrapper.Closed += DocumentClosed;
-                _documentWrappers.Add(doc, documentWrapper);
+                documentWrappers.Add(doc, documentWrapper);
             }
 
             //Check if we have this window registered
-            if (_documents[doc].Contains(wn)) return;
+            if (documents[doc].Contains(wn)) return;
 
-            _documents[doc].Add(wn);
+            documents[doc].Add(wn);
             handler(this, new NewViewEventArgs<WordRibbonType>(wn, doc, WordRibbonType.WordDocument));
         }
 
@@ -51,15 +51,15 @@ namespace VSTOContrib.Word.RibbonFactory
             var handler = ViewClosed;
             if (handler == null) return;
 
-            _documentWrappers.Remove(e.Document);
-            var windows = _documents[e.Document];
+            documentWrappers.Remove(e.Document);
+            var windows = documents[e.Document];
 
             foreach (var window in windows)
             {
                 handler(this, new ViewClosedEventArgs(window, e.Document));
                 window.ReleaseComObject();
             }
-            _documents.Remove(e.Document);
+            documents.Remove(e.Document);
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            _wordApplication.WindowActivate += WordApplicationWindowActivate;
-            _wordApplication.DocumentOpen += WordApplicationDocumentOpen;
+            wordApplication.WindowActivate += WordApplicationWindowActivate;
+            wordApplication.DocumentOpen += WordApplicationDocumentOpen;
             //TODO protected window activate
         }
 
@@ -101,8 +101,8 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         public void Dispose()
         {
-            _wordApplication.WindowActivate -= WordApplicationWindowActivate;
-            _wordApplication = null;
+            wordApplication.WindowActivate -= WordApplicationWindowActivate;
+            wordApplication = null;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
-            using (var documents = _wordApplication.Documents.WithComCleanup())
+            using (var documents = wordApplication.Documents.WithComCleanup())
             {
                 foreach (Document document in documents.Resource)
                 {

@@ -6,7 +6,7 @@ using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Word.RibbonFactory;
 
-namespace WordAddIn1
+namespace TwitterResultsWordAddin
 {
     [WordRibbonViewModel]
     public class DocumentViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
@@ -17,7 +17,9 @@ namespace WordAddIn1
 
         public void Initialised(object context)
         {
-            document = (Document)context;
+            document = context as Document;
+            if (document == null)
+                PanelShown = false;
         }
 
         public void CurrentViewChanged(object currentView)
@@ -47,7 +49,7 @@ namespace WordAddIn1
                     {
                         DataContext = new MyAddinPanelViewModel() //Viewmodel for the user control
                     }
-                }, "MyAddin Awesome Taskpane");
+                }, "Twitter Results");
             myAddinTaskPane.Visible = true;
             PanelShown = true;
             myAddinTaskPane.VisibleChanged += TaskPaneVisibleChanged;

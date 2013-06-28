@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23064D22-01CB-4090-ADFE-D0A1EDAF8567}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\AddinBootstrapper.cs.pp = ..\build\AddinBootstrapper.cs.pp
@@ -40,19 +42,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add-inUninstaller", "Add-in
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.PowerPoint", "VSTOContrib.PowerPoint\VSTOContrib.PowerPoint.csproj", "{B2E0CA45-DFA9-447B-B473-9A17756BF79A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.Testing", "VSTOContrib.Testing\VSTOContrib.Testing.csproj", "{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.Excel", "VSTOContrib.Excel\VSTOContrib.Excel.csproj", "{37CBBF12-5453-49EB-9251-5CABCCA6ADCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.Excel.Tests", "TestProjects\VSTOContrib.Excel.Tests\VSTOContrib.Excel.Tests.csproj", "{A49AD821-7C7C-4411-9BF9-743CD5880D55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.PowerPoint.Tests", "TestProjects\VSTOContrib.PowerPoint.Tests\VSTOContrib.PowerPoint.Tests.csproj", "{C26F2473-A2A7-4731-A9DC-DD64E1B9ABC1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scratchpad", "Scratchpad", "{41BCBF9C-8728-4E18-9B97-C16C21758FA6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{41BCBF9C-8728-4E18-9B97-C16C21758FA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookAddIn1", "ScratchPad\OutlookAddIn1\OutlookAddIn1.csproj", "{060413C5-01B0-46FE-8248-DDA1872F72CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordAddIn1", "ScratchPad\WordAddIn1\WordAddIn1.csproj", "{5ADBDC50-50D6-4B5A-95A5-ABCF70463D1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterResultsWordAddin", "ScratchPad\WordAddIn1\TwitterResultsWordAddin.csproj", "{5ADBDC50-50D6-4B5A-95A5-ABCF70463D1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTOContrib.Work.Quickstart", "VSTOContrib.Work.Quickstart\VSTOContrib.Work.Quickstart.csproj", "{03BC80FE-F5B0-41E4-B2B7-2A7575D31078}"
 EndProject
@@ -94,10 +94,6 @@ Global
 		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2E0CA45-DFA9-447B-B473-9A17756BF79A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11D3C038-400C-42A0-BC9F-D00CBFE50E5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37CBBF12-5453-49EB-9251-5CABCCA6ADCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{37CBBF12-5453-49EB-9251-5CABCCA6ADCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37CBBF12-5453-49EB-9251-5CABCCA6ADCD}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -38,35 +38,6 @@ namespace VSTOContrib.Core.RibbonFactory
             this.ribbonFactoryController = ribbonFactoryController;
         }
 
-        /// <summary>
-        /// Initialises and builds up the ribbon factory
-        /// </summary>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
-        /// <returns>
-        /// Disposible object to call on outlook shutdown
-        /// </returns>
-        /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
-        public abstract IDisposable InitialiseFactory(
-            CustomTaskPaneCollection customTaskPaneCollection);
-
-        /// <summary>
-        /// Initialises the factory internal.
-        /// </summary>
-        /// <typeparam name="TRibbonTypes">The type of the ribbon types.</typeparam>
-        /// <param name="viewProvider">The view provider.</param>
-        /// <returns></returns>
-        protected IDisposable InitialiseFactoryInternal<TRibbonTypes>(
-            IViewProvider<TRibbonTypes> viewProvider) where TRibbonTypes : struct
-        {
-            if (initialsed)
-                throw new InvalidOperationException("Ribbon Factory already Initialised");
-
-            initialsed = true;
-
-            return ribbonFactoryController.Initialise(
-                viewProvider);
-        }
-
         ///<summary>
         /// Gets or Sets the strategy that fetches the Ribbon XML for a given view
         ///</summary>
@@ -80,6 +51,33 @@ namespace VSTOContrib.Core.RibbonFactory
                 ribbonFactoryController.LocateViewStrategy = value;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="application">The office application object</param>
+        /// <param name="addinBase">Your add-in instance</param>
+        public void SetApplication(object application, AddInBase addinBase)
+        {
+            if (initialsed)
+                throw new InvalidOperationException("Ribbon Factory already Initialised");
+
+            initialsed = true;
+
+            addinBase.Shutdown += (sender, args) => ShuttingDown();
+
+            InitialiseRibbonFactoryController(ribbonFactoryController, application);
+        }
+
+        /// <summary>
+        /// Called when the add-in is shutting down
+        /// </summary>
+        protected abstract void ShuttingDown();
+
+        /// <summary>
+        /// Initialisation callback for ribbon factory. The implementation must initialise the controller and 
+        /// </summary>
+        protected abstract void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application);
 
         /// <summary>
         /// Current instance of RibbonFactory
