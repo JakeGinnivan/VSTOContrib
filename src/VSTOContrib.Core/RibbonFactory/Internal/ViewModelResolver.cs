@@ -26,15 +26,15 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private readonly RibbonViewModelHelper ribbonViewModelHelper;
         private readonly ICustomTaskPaneRegister customTaskPaneRegister;
-        private Func<Type, IRibbonViewModel> ribbonFactory;
+        private readonly IViewContextProvider viewContextProvider;
+        private readonly Func<Type, IRibbonViewModel> ribbonFactory;
         private IViewProvider<TRibbonTypes> viewProvider;
         private TRibbonTypes currentlyLoadingRibbon;
-        private IViewContextProvider viewContextProvider;
 
-        public ViewModelResolver(
-            IEnumerable<Type> viewModelType, 
-            RibbonViewModelHelper ribbonViewModelHelper,
-            ICustomTaskPaneRegister customTaskPaneRegister)
+        public ViewModelResolver(IEnumerable<Type> viewModelType, RibbonViewModelHelper ribbonViewModelHelper, ICustomTaskPaneRegister customTaskPaneRegister, 
+            IViewContextProvider viewContextProvider,
+            Func<Type, IRibbonViewModel> ribbonFactory
+            )
         {
             currentlyLoadingRibbon = (TRibbonTypes)(object)1;
             notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
@@ -43,6 +43,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             ribbonUiLookup = new Dictionary<TRibbonTypes, IRibbonUI>();
             this.ribbonViewModelHelper = ribbonViewModelHelper;
             this.customTaskPaneRegister = customTaskPaneRegister;
+            this.viewContextProvider = viewContextProvider;
+            this.ribbonFactory = ribbonFactory;
 
             foreach (var ribbonType in viewModelType)
             {
@@ -51,12 +53,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         }
 
         public void Initialise(
-            Func<Type, IRibbonViewModel> ribbonFactory,
-            IViewProvider<TRibbonTypes> viewProvider,
-            IViewContextProvider viewContextProvider)
+            IViewProvider<TRibbonTypes> viewProvider)
         {
-            this.viewContextProvider = viewContextProvider;
-            this.ribbonFactory = ribbonFactory;
             this.viewProvider = viewProvider;
 
             this.viewProvider.NewView += ViewProviderNewView;
@@ -102,7 +100,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public IRibbonViewModel ResolveInstanceFor(object view)
         {
-            var context = viewContextProvider.GetContextForView(view);
+            var context = viewContextProvider.GetContextForView(view) ?? NullContext.Instance;
 
             //Sometimes can happen that view provider has not got events to tell us about a new view
             // so we will have to try and create it
@@ -135,7 +133,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             var viewModelType = ribbonTypeLookup[ribbonType];
             var ribbonViewModel = ribbonFactory(viewModelType);
-            ribbonViewModel.Initialised(viewContext);
+            ribbonViewModel.Initialised(viewContext == NullContext.Instance ? null : viewContext);
             ribbonViewModel.CurrentViewChanged(viewInstance);
             customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, viewInstance);
             ListenForINotifyPropertyChanged(ribbonViewModel);
@@ -201,18 +199,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 notifyChangeTargetLookup.Add(type, new List<KeyValuePair<string, string>>());
 
             notifyChangeTargetLookup[type].Add(new KeyValuePair<string, string>(controlCallback, ribbonControl));
-        }
-    }
-
-    internal class ViewModelKey
-    {
-        public object View { get; private set; }
-        public object Context { get; private set; }
-
-        public ViewModelKey(object view, object context)
-        {
-            View = view;
-            Context = context;
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
+using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
+using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
 using Xunit;
@@ -10,14 +13,16 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_view_model_resolver
     {
-        private readonly Func<IEnumerable<Type>, ViewModelResolver<TestRibbonTypes>> _resolverFactory;
+        private readonly Func<IEnumerable<Type>, ViewModelResolver<TestRibbonTypes>> resolverFactory;
 
         public the_view_model_resolver()
         {
-            _resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
+            resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
                 vms,
                 new RibbonViewModelHelper(),
-                new CustomTaskPaneRegister());
+                new CustomTaskPaneRegister(new Lazy<CustomTaskPaneCollection>(()=>Substitute.For<CustomTaskPaneCollection>())),
+                new TestContextProvider(),
+                t=>(IRibbonViewModel)Activator.CreateInstance(t));
         }
 
         [Fact]
@@ -27,7 +32,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var viewModels = new [] {typeof(TestViewModel), typeof(TestViewModel2)};
 
             // act/assert
-            Assert.Throws<InvalidOperationException>(()=>_resolverFactory(viewModels));
+            Assert.Throws<InvalidOperationException>(()=>resolverFactory(viewModels));
         }
 
         [RibbonViewModel(TestRibbonTypes.RibbonType1)]

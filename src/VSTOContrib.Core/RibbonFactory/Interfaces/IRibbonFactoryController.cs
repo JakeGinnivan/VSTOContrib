@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
 
 namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
@@ -15,15 +14,9 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// </summary>
         /// <typeparam name="TRibbonTypes">The type of the ribbon types.</typeparam>
         /// <param name="viewProvider">The view provider.</param>
-        /// <param name="ribbonFactory">The ribbon factory.</param>
-        /// <param name="viewContextProvider">The view context provider.</param>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <returns></returns>
         IDisposable Initialise<TRibbonTypes>(
-            IViewProvider<TRibbonTypes> viewProvider,
-            Func<Type, IRibbonViewModel> ribbonFactory,
-            IViewContextProvider viewContextProvider,
-            CustomTaskPaneCollection customTaskPaneCollection);
+            IViewProvider<TRibbonTypes> viewProvider);
 
         /// <summary>
         /// Gets the custom UI.

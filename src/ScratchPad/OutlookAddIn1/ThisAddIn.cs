@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Outlook.RibbonFactory;
@@ -12,7 +13,7 @@ namespace OutlookAddIn1
     {
         AddinBootstrapper core;
 
-        private void ThisAddInStartup(object sender, System.EventArgs e)
+        private void ThisAddInStartup(object sender, EventArgs e)
         {
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
@@ -25,16 +26,14 @@ namespace OutlookAddIn1
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            return new OutlookRibbonFactory(typeof(AddinBootstrapper).Assembly);
+            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(()=>CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
         }
 
         private void InternalStartup()
         {
             core = new AddinBootstrapper();
             OutlookRibbonFactory.SetApplication(Application);
-            RibbonFactory.Current.InitialiseFactory(
-                t => (IRibbonViewModel)core.Resolve(t),
-                CustomTaskPanes);
+            RibbonFactory.Current.InitialiseFactory(CustomTaskPanes);
 
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;

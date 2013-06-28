@@ -12,14 +12,12 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// <summary>
         /// Initialises and builds up the ribbon factory
         /// </summary>
-        /// <param name="ribbonFactory">The ribbon factory.</param>
         /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <returns>
         /// Disposible object to call on outlook shutdown
         /// </returns>
         /// <exception cref="ViewNotFoundException">If the view cannot be located for a view model</exception>
         IDisposable InitialiseFactory(
-            Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection);
 
         /// <summary>

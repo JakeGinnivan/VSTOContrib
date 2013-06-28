@@ -8,24 +8,23 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class TestRibbonFactory<TRibbonType> : Core.RibbonFactory.RibbonFactory where TRibbonType : struct
     {
-        private readonly IViewProvider<TRibbonType> _viewProvider;
-        private readonly IViewContextProvider _viewContextProvider;
+        private readonly IViewProvider<TRibbonType> viewProvider;
 
         public TestRibbonFactory(
+            Func<Type, IRibbonViewModel> ribbonFactory,
+            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewProvider<TRibbonType> viewProvider, 
             IViewContextProvider viewContextProvider,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<TRibbonType>(assemblies))
+            : base(new RibbonFactoryController<TRibbonType>(assemblies, viewContextProvider, ribbonFactory, customTaskPaneCollection))
         {
-            _viewProvider = viewProvider;
-            _viewContextProvider = viewContextProvider;
+            this.viewProvider = viewProvider;
         }
 
         public override IDisposable InitialiseFactory(
-            Func<Type, IRibbonViewModel> ribbonFactory, 
             CustomTaskPaneCollection customTaskPaneCollection)
         {
-            return InitialiseFactoryInternal(_viewProvider, ribbonFactory, _viewContextProvider, customTaskPaneCollection);
+            return InitialiseFactoryInternal(viewProvider);
         }
     }
 }

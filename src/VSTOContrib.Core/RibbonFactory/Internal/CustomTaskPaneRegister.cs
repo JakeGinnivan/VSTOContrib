@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -8,19 +9,15 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     internal class CustomTaskPaneRegister : ICustomTaskPaneRegister
     {
-        private CustomTaskPaneCollection _customTaskPaneCollection;
-        private readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> _registrationInfo;
-        private readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> _ribbonTaskPanes;
+        readonly Lazy<CustomTaskPaneCollection> customTaskPaneCollection;
+        private readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
+        private readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
 
-        public CustomTaskPaneRegister()
+        public CustomTaskPaneRegister(Lazy<CustomTaskPaneCollection> customTaskPaneCollection)
         {
-            _registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
-            _ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
-        }
-
-        public void Initialise(CustomTaskPaneCollection customTaskPaneCollection)
-        {
-            _customTaskPaneCollection = customTaskPaneCollection;
+            this.customTaskPaneCollection = customTaskPaneCollection;
+            registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
+            ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
         }
 
         public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view)
@@ -28,34 +25,34 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
             if (registersCustomTaskPanes == null) return;
 
-            if (!_registrationInfo.ContainsKey(ribbonViewModel))
+            if (!registrationInfo.ContainsKey(ribbonViewModel))
             {
                 registersCustomTaskPanes.RegisterTaskPanes(
                     (controlFactory, title) =>
                         {
                             var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
-                            if (!_registrationInfo.ContainsKey(ribbonViewModel))
-                                _registrationInfo.Add(ribbonViewModel, new List<TaskPaneRegistrationInfo>());
-                            _registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
+                            if (!registrationInfo.ContainsKey(ribbonViewModel))
+                                registrationInfo.Add(ribbonViewModel, new List<TaskPaneRegistrationInfo>());
+                            registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
 
                             var taskPane = Register(view, taskPaneRegistrationInfo);
                             var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane);
 
-                            if (!_ribbonTaskPanes.ContainsKey(ribbonViewModel))
-                                _ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
+                            if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
+                                ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
 
-                            _ribbonTaskPanes[ribbonViewModel].Add(taskPaneAdapter);
+                            ribbonTaskPanes[ribbonViewModel].Add(taskPaneAdapter);
                             return taskPaneAdapter;
                         });
             }
             else
             {
-                var adapters = _ribbonTaskPanes[ribbonViewModel];
+                var adapters = ribbonTaskPanes[ribbonViewModel];
                 foreach (var taskPaneAdapter in adapters)
                 {
                     if (!taskPaneAdapter.ViewRegistered(view))
                     {
-                        foreach (var taskPaneRegistrationInfo in _registrationInfo[ribbonViewModel])
+                        foreach (var taskPaneRegistrationInfo in registrationInfo[ribbonViewModel])
                         {
                             taskPaneAdapter.Add(Register(view, taskPaneRegistrationInfo));
                         }
@@ -68,14 +65,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private CustomTaskPane Register(object view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
         {
-            var taskPane = _customTaskPaneCollection.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
+            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
 
             return taskPane;
         }
 
         public void Cleanup(object view)
         {
-            foreach (var adapter in _ribbonTaskPanes.Values.SelectMany(v=>v))
+            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v=>v))
             {
                 adapter.CleanupView(view);
             }

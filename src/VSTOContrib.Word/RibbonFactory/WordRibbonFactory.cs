@@ -20,32 +20,36 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <summary>
         /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
         /// </summary>
+        /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
+        /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
-        public WordRibbonFactory(params Assembly[] assemblies)
-            : base(new RibbonFactoryController<WordRibbonType>(assemblies))
+        public WordRibbonFactory(Func<Type, IRibbonViewModel> ribbonFactory, Lazy<CustomTaskPaneCollection> customTaskPaneCollection, params Assembly[] assemblies)
+            : base(new RibbonFactoryController<WordRibbonType>(assemblies, new WordViewContextProvider(), ribbonFactory, customTaskPaneCollection))
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WordRibbonFactory"/> class.
         /// </summary>
+        /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
+        /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
         /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public WordRibbonFactory(
+            Func<Type, IRibbonViewModel> ribbonFactory,
+            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<WordRibbonType>(assemblies, viewLocationStrategy))
+            : base(new RibbonFactoryController<WordRibbonType>(assemblies, new WordViewContextProvider(), ribbonFactory, customTaskPaneCollection, viewLocationStrategy))
         {
         }
 
         /// <summary>
         /// Initialises the ribbon factory.
         /// </summary>
-        /// <param name="ribbonFactory">The ribbon factory.</param>
         /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <returns></returns>
         public override IDisposable InitialiseFactory(
-            Func<Type, IRibbonViewModel> ribbonFactory,
             CustomTaskPaneCollection customTaskPaneCollection)
         {
             if (wordApplication == null)
@@ -54,10 +58,7 @@ namespace VSTOContrib.Word.RibbonFactory
             wordViewProvider = new WordViewProvider(wordApplication);
             wordViewProvider.RegisterOpenDocuments();
             return InitialiseFactoryInternal(
-                wordViewProvider,  
-                ribbonFactory,
-                new WordViewContextProvider(),
-                customTaskPaneCollection);
+                wordViewProvider);
         }
 
         /// <summary>

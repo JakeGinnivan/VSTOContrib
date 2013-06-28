@@ -88,8 +88,10 @@
     <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
     <Compile Include="RibbonFactory\Interfaces\Internal\ICustomTaskPaneRegister.cs" />
     <Compile Include="RibbonFactory\Internal\ICustomTaskPaneWrapper.cs" />
+    <Compile Include="RibbonFactory\Internal\NullContext.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
+    <Compile Include="RibbonFactory\Internal\ViewModelKey.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
     <Compile Include="Wpf\DelegateCommand.cs" />
     <Compile Include="Wpf\OfficeViewModelBase.cs" />

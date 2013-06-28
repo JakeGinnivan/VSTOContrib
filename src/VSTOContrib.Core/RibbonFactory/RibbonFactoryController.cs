@@ -21,45 +21,49 @@ namespace VSTOContrib.Core.RibbonFactory
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
 
-        readonly ControlCallbackLookup _controlCallbackLookup;
-        readonly CustomTaskPaneRegister _customTaskPaneRegister;
-        readonly RibbonViewModelHelper _ribbonViewModelHelper;
-        readonly ViewModelResolver<TRibbonTypes> _ribbonViewModelResolver;
-        readonly Dictionary<TRibbonTypes, string> _ribbonXmlFromTypeLookup;
+        readonly ControlCallbackLookup controlCallbackLookup;
+        readonly RibbonViewModelHelper ribbonViewModelHelper;
+        readonly ViewModelResolver<TRibbonTypes> ribbonViewModelResolver;
+        readonly Dictionary<TRibbonTypes, string> ribbonXmlFromTypeLookup;
 
         /// <summary>
         ///     Lookup from a viewmodel type to it's ribbon XML
         /// </summary>
-        readonly Dictionary<string, CallbackTarget<TRibbonTypes>> _tagToCallbackTargetLookup;
+        readonly Dictionary<string, CallbackTarget<TRibbonTypes>> tagToCallbackTargetLookup;
 
-        IViewLocationStrategy _viewLocationStrategy;
+        IViewLocationStrategy viewLocationStrategy;
 
-        IViewProvider<TRibbonTypes> _viewProvider;
+        IViewProvider<TRibbonTypes> viewProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RibbonFactoryController{TRibbonTypes}" /> class.
         /// </summary>
-        /// <param name="viewLocationStrategy">The view location strategy.</param>
         /// <param name="assemblies">The assemblies.</param>
+        /// <param name="viewContextProvider">The view context provider</param>
+        /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
+        /// <param name="customTaskPaneCollection"></param>
+        /// <param name="viewLocationStrategy">The view location strategy.</param>
         public RibbonFactoryController(
             ICollection<Assembly> assemblies,
+            IViewContextProvider viewContextProvider, 
+            Func<Type, IRibbonViewModel> ribbonFactory, 
+            Lazy<CustomTaskPaneCollection> customTaskPaneCollection, 
             IViewLocationStrategy viewLocationStrategy = null)
         {
             if (assemblies.Count == 0)
                 throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
 
-            _controlCallbackLookup = new ControlCallbackLookup(GetRibbonElements());
-            _ribbonXmlFromTypeLookup = new Dictionary<TRibbonTypes, string>();
-            _ribbonViewModelHelper = new RibbonViewModelHelper();
-            _tagToCallbackTargetLookup = new Dictionary<string, CallbackTarget<TRibbonTypes>>();
-            _viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
+            controlCallbackLookup = new ControlCallbackLookup(GetRibbonElements());
+            ribbonXmlFromTypeLookup = new Dictionary<TRibbonTypes, string>();
+            ribbonViewModelHelper = new RibbonViewModelHelper();
+            tagToCallbackTargetLookup = new Dictionary<string, CallbackTarget<TRibbonTypes>>();
+            this.viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
             List<Type> ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
-            _customTaskPaneRegister = new CustomTaskPaneRegister();
-            _ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, _ribbonViewModelHelper, _customTaskPaneRegister);
+            ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
+                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, ribbonFactory);
 
-            var loadExpression = ((Expression<Action<RibbonFactory>>) (r => r.Ribbon_Load(null)));
+            var loadExpression = ((Expression<Action<RibbonFactory>>)(r => r.Ribbon_Load(null)));
             string loadMethodName = loadExpression.GetMethodName();
 
             foreach (Type viewModelType in ribbonTypes)
@@ -73,25 +77,17 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
         /// <param name="viewProvider">The view provider.</param>
-        /// <param name="ribbonFactory">The ribbon factory.</param>
-        /// <param name="viewContextProvider">The view context provider.</param>
-        /// <param name="customTaskPaneCollection">The custom task pane collection.</param>
         /// <returns></returns>
         public IDisposable Initialise<TRibbonType>(
-            IViewProvider<TRibbonType> viewProvider,
-            Func<Type, IRibbonViewModel> ribbonFactory,
-            IViewContextProvider viewContextProvider,
-            CustomTaskPaneCollection customTaskPaneCollection)
+            IViewProvider<TRibbonType> viewProvider)
         {
-            _viewProvider = (IViewProvider<TRibbonTypes>) viewProvider;
+            this.viewProvider = (IViewProvider<TRibbonTypes>)viewProvider;
 
-            _ribbonViewModelResolver.Initialise(ribbonFactory, _viewProvider, viewContextProvider);
+            ribbonViewModelResolver.Initialise(this.viewProvider);
 
-            _customTaskPaneRegister.Initialise(customTaskPaneCollection);
+            this.viewProvider.Initialise();
 
-            _viewProvider.Initialise();
-
-            return _ribbonViewModelResolver;
+            return ribbonViewModelResolver;
         }
 
         /// <summary>
@@ -112,9 +108,9 @@ namespace VSTOContrib.Core.RibbonFactory
                 return null;
             }
 
-            return !_ribbonXmlFromTypeLookup.ContainsKey(enumFromDescription)
+            return !ribbonXmlFromTypeLookup.ContainsKey(enumFromDescription)
                        ? null
-                       : _ribbonXmlFromTypeLookup[enumFromDescription];
+                       : ribbonXmlFromTypeLookup[enumFromDescription];
         }
 
         /// <summary>
@@ -127,9 +123,9 @@ namespace VSTOContrib.Core.RibbonFactory
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             CallbackTarget<TRibbonTypes> callbackTarget =
-                _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
-            IRibbonViewModel viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+            IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
             Type type = viewModelInstance.GetType();
             PropertyInfo property = type.GetProperty(callbackTarget.Method);
@@ -176,9 +172,9 @@ namespace VSTOContrib.Core.RibbonFactory
             try
             {
                 CallbackTarget<TRibbonTypes> callbackTarget =
-                    _tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                    tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
-                IRibbonViewModel viewModelInstance = _ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+                IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
                 Type type = viewModelInstance.GetType();
                 PropertyInfo property = type.GetProperty(callbackTarget.Method);
@@ -223,7 +219,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="ribbonUi">The ribbon UI.</param>
         public void RibbonLoaded(IRibbonUI ribbonUi)
         {
-            _ribbonViewModelResolver.RibbonLoaded(ribbonUi);
+            ribbonViewModelResolver.RibbonLoaded(ribbonUi);
         }
 
         /// <summary>
@@ -232,11 +228,11 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <value>The locate view strategy.</value>
         public IViewLocationStrategy LocateViewStrategy
         {
-            get { return _viewLocationStrategy; }
+            get { return viewLocationStrategy; }
             set
             {
                 if (value == null) return;
-                _viewLocationStrategy = value;
+                viewLocationStrategy = value;
             }
         }
 
@@ -247,10 +243,10 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="loadMethodName">Name of the load method.</param>
         public void LocateAndRegisterViewXml(Type viewModelType, string loadMethodName)
         {
-            var resourceText = (string) _viewLocationStrategy.GetType()
+            var resourceText = (string)viewLocationStrategy.GetType()
                                                              .GetMethod("LocateViewForViewModel")
                                                              .MakeGenericMethod(viewModelType)
-                                                             .Invoke(_viewLocationStrategy, new object[] {});
+                                                             .Invoke(viewLocationStrategy, new object[] { });
 
             XDocument ribbonDoc = XDocument.Parse(resourceText);
 
@@ -265,17 +261,17 @@ namespace VSTOContrib.Core.RibbonFactory
             if (customUi.Attribute("loadImage") == null)
                 customUi.SetAttributeValue("loadImage", "GetPicture");
 
-            foreach (TRibbonTypes value in _ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
+            foreach (TRibbonTypes value in ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
             {
                 WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
-                _ribbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
+                ribbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
             }
         }
 
         void WireUpEvents(TRibbonTypes ribbonTypes, XContainer ribbonDoc, XNamespace xNamespace)
         {
             //Go through each type of Ribbon 
-            foreach (string ribbonControl in _controlCallbackLookup.RibbonControls)
+            foreach (string ribbonControl in controlCallbackLookup.RibbonControls)
             {
                 //Get each instance of that control in the ribbon definition file
                 IEnumerable<XElement> xElements =
@@ -287,7 +283,7 @@ namespace VSTOContrib.Core.RibbonFactory
                     if (elementId == null) continue;
 
                     //Go through each possible callback, Concat with common methods on all controls
-                    foreach (string controlCallback in _controlCallbackLookup.GetVstoControlCallbacks(ribbonControl))
+                    foreach (string controlCallback in controlCallbackLookup.GetVstoControlCallbacks(ribbonControl))
                     {
                         //Look for a defined callback
                         XAttribute callbackAttribute = xElement.Attribute(XName.Get(controlCallback));
@@ -295,17 +291,17 @@ namespace VSTOContrib.Core.RibbonFactory
                         if (callbackAttribute == null) continue;
                         string currentCallback = callbackAttribute.Value;
                         //Set the callback value to the callback method defined on this factory
-                        string factoryMethodName = _controlCallbackLookup.GetFactoryMethodName(ribbonControl,
+                        string factoryMethodName = controlCallbackLookup.GetFactoryMethodName(ribbonControl,
                                                                                                controlCallback);
                         callbackAttribute.SetValue(factoryMethodName);
 
                         //Set the tag attribute of the element, this is needed to know where to 
                         // direct the callback
                         string callbackTag = BuildTag(ribbonTypes, elementId, factoryMethodName);
-                        _tagToCallbackTargetLookup.Add(callbackTag,
+                        tagToCallbackTargetLookup.Add(callbackTag,
                                                        new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + elementId.Value));
-                        _ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, elementId.Value);
+                        ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, elementId.Value);
                     }
                 }
             }
@@ -318,7 +314,7 @@ namespace VSTOContrib.Core.RibbonFactory
 
         static IEnumerable<Type> GetTRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Type ribbonViewModelType = typeof (IRibbonViewModel);
+            Type ribbonViewModelType = typeof(IRibbonViewModel);
             return assemblies
                 .Select(
                     assembly =>

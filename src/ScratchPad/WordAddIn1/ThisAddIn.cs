@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Office.Core;
+using System;
+using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Word.RibbonFactory;
@@ -16,7 +18,13 @@ namespace WordAddIn1
 
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
+            core.Dispose();
+        }
 
+        protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            core = new AddinBootstrapper();
+            return new WordRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
         }
 
         /// <summary>
@@ -25,10 +33,8 @@ namespace WordAddIn1
         /// </summary>
         private void InternalStartup()
         {
-            core = new AddinBootstrapper();
             WordRibbonFactory.SetApplication(Application);
             RibbonFactory.Current.InitialiseFactory(
-                t => (IRibbonViewModel)core.Resolve(t),
                 CustomTaskPanes);
 
             Startup += ThisAddInStartup;

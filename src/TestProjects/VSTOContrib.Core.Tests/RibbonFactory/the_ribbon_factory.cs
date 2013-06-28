@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
 using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -15,54 +16,60 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_ribbon_factory : IDisposable
     {
-        private readonly IViewProvider<TestRibbonTypes> _viewProvider;
-        private readonly TestRibbonFactory _ribbonFactoryUnderTest;
-
+        private readonly IViewProvider<TestRibbonTypes> viewProvider;
+        private readonly TestRibbonFactory ribbonFactoryUnderTest;
+        TestRibbonViewModel viewModel;
         public the_ribbon_factory()
         {
-            _viewProvider = Substitute.For<IViewProvider<TestRibbonTypes>>();
-            _ribbonFactoryUnderTest = new TestRibbonFactory(_viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
+            viewProvider = Substitute.For<IViewProvider<TestRibbonTypes>>();
+            ribbonFactoryUnderTest = new TestRibbonFactory(
+                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider,
+                new TestContextProvider(),
+                Assembly.GetExecutingAssembly());
         }
 
         [Fact]
         public void cannot_create_multiple_instances()
         {
-            Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(_viewProvider, new TestContextProvider()));
+            Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(
+                t => (IRibbonViewModel)Activator.CreateInstance(t),
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider, new TestContextProvider()));
         }
 
         [Fact]
         public void cannot_initialise_twice()
         {
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => (IRibbonViewModel) Activator.CreateInstance(t),
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+            ribbonFactoryUnderTest.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
 
-            Assert.Throws<InvalidOperationException>(() => _ribbonFactoryUnderTest.InitialiseFactory(
-                t=>(IRibbonViewModel)Activator.CreateInstance(t),
-                OfficeObjectMother.CreateCustomTaskPaneCollection()));            
+            Assert.Throws<InvalidOperationException>(() => ribbonFactoryUnderTest.InitialiseFactory(
+                OfficeObjectMother.CreateCustomTaskPaneCollection()));
         }
 
         [Fact]
         public void default_constructor_uses_default_view_model_locator()
         {
-            Assert.IsType<DefaultViewLocationStrategy>(_ribbonFactoryUnderTest.LocateViewStrategy);
+            Assert.IsType<DefaultViewLocationStrategy>(ribbonFactoryUnderTest.LocateViewStrategy);
         }
 
         [Fact]
         public void initialise_throws_when_no_assemblies_specified_to_scan()
         {
-            Assert.Throws<InvalidOperationException>(()=>new TestRibbonFactory(_viewProvider, new TestContextProvider()));
+            Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(t => (IRibbonViewModel)Activator.CreateInstance(t),
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider, new TestContextProvider()));
         }
 
         [Fact]
         public void resolves_associated_view_for_viewmodel()
         {
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => (IRibbonViewModel) Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
 
-            var customUI1 = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
-            var customUI2 = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType2.GetEnumDescription());
+            var customUI1 = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var customUI2 = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType2.GetEnumDescription());
             Assert.Contains("view1", customUI1);
             Assert.Contains("view2", customUI2);
         }
@@ -71,12 +78,11 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_toggle_button()
         {
             // arrange
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => (IRibbonViewModel) Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             // act
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
 
             // assert
             Assert.Contains("onAction=\"PressedOnAction\"", processedRibbon);
@@ -87,12 +93,11 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_callbacks_modified_to_ribbon_factory_callbacks_for_button()
         {
             // arrange
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => (IRibbonViewModel)Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
 
             // act
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
 
             // assert
             Assert.Contains("onAction=\"OnAction\"", processedRibbon);
@@ -103,21 +108,19 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_get()
         {
             // arrange
-            TestRibbonViewModel viewModel = null;
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
-            var viewInstance = new TestWindow{Context = new TestWindowContext()};
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
             viewModel.PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
             var ribbonControl = GetRibbonControl("testTogglePanelButton", toggleButtonTag, viewInstance);
-            var isPressed = _ribbonFactoryUnderTest.GetPressed(ribbonControl);
+            var isPressed = ribbonFactoryUnderTest.GetPressed(ribbonControl);
 
             // assert
             Assert.True(isPressed);
@@ -127,21 +130,19 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_set()
         {
             // arrange
-            TestRibbonViewModel viewModel = null;
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
-            var viewInstance = new TestWindow{ Context = new TestWindowContext()};
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
             viewModel.PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
             var ribbonControl = GetRibbonControl("testTogglePanelButton", toggleButtonTag, viewInstance);
-            _ribbonFactoryUnderTest.PressedOnAction(ribbonControl, false);
+            ribbonFactoryUnderTest.PressedOnAction(ribbonControl, false);
 
             // assert
             Assert.False(viewModel.PanelShown);
@@ -151,16 +152,14 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void toggle_button_is_bound_to_property_listens_to_property_changed_events()
         {
             // arrange
-            TestRibbonViewModel viewModel = null;
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
-            var viewInstance = new TestWindow{Context = new TestWindowContext()};
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
             var ribbon = Substitute.For<IRibbonUI>();
-            _ribbonFactoryUnderTest.Ribbon_Load(ribbon);
+            ribbonFactoryUnderTest.Ribbon_Load(ribbon);
 
             // act
             viewModel.OnPropertyChanged(new PropertyChangedEventArgs("PanelShown"));
@@ -173,24 +172,22 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_xml_getenabled_can_bind_to_method()
         {
             // arrange
-            TestRibbonViewModel viewModel = null;
-            _ribbonFactoryUnderTest.InitialiseFactory(
-                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+            ribbonFactoryUnderTest.InitialiseFactory(
                 OfficeObjectMother.CreateCustomTaskPaneCollection());
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+            var processedRibbon = ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow
                                    {
                                        Context = new TestWindowContext()
                                    };
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
             viewModel.PanelShown = true;
             var buttonTag = GetTag(processedRibbon, "actionButton");
 
             // act
             var ribbonControl = GetRibbonControl("actionButton", buttonTag, viewInstance);
-            var isEnabled = _ribbonFactoryUnderTest.GetEnabled(ribbonControl);
+            var isEnabled = ribbonFactoryUnderTest.GetEnabled(ribbonControl);
 
             // assert
             Assert.True(isEnabled);
@@ -201,21 +198,25 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             // arrange
             var viewModels = new List<TestRibbonViewModel>();
-            _ribbonFactoryUnderTest.InitialiseFactory(
+            ribbonFactoryUnderTest.ClearCurrent();
+            var ribbonFactory = new TestRibbonFactory(
                 t =>
-                    {
-                        var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
-                        viewModels.Add(testRibbon);
-                        return testRibbon;
-                    },
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
-            var processedRibbon = _ribbonFactoryUnderTest.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
+                {
+                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
+                    viewModels.Add(testRibbon);
+                    return testRibbon;
+                },
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider,
+                new TestContextProvider(), Assembly.GetExecutingAssembly());
+            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
+            var processedRibbon = ribbonFactory.GetCustomUI(TestRibbonTypes.RibbonType1.GetEnumDescription());
             //Open new view to create a viewmodel for view
-            var viewInstance = new TestWindow{Context = new TestWindowContext()};
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
             var view2Instance = new TestWindow { Context = new TestWindowContext() };
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 view2Instance, view2Instance.Context, TestRibbonTypes.RibbonType1));
             var buttonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
@@ -223,8 +224,8 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             viewModels[1].PanelShown = true;
             var ribbonControl = GetRibbonControl("testTogglePanelButton", buttonTag, viewInstance);
             var ribbon2Control = GetRibbonControl("testTogglePanelButton", buttonTag, view2Instance);
-            var isPressed = _ribbonFactoryUnderTest.GetPressed(ribbonControl);
-            var is2Pressed = _ribbonFactoryUnderTest.GetPressed(ribbon2Control);
+            var isPressed = ribbonFactory.GetPressed(ribbonControl);
+            var is2Pressed = ribbonFactory.GetPressed(ribbon2Control);
 
             // assert
             Assert.False(isPressed);
@@ -236,24 +237,27 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             // arrange
             var viewModels = new List<TestRibbonViewModel>();
-            _ribbonFactoryUnderTest.InitialiseFactory(
+            ribbonFactoryUnderTest.ClearCurrent();
+            var ribbonFactory = new TestRibbonFactory(
                 t =>
-                    {
-                        var testRibbon = (TestRibbonViewModel) Activator.CreateInstance(t);
-                        viewModels.Add(testRibbon);
-                        return testRibbon;
-                    },
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+                {
+                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
+                    viewModels.Add(testRibbon);
+                    return testRibbon;
+                },
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
+            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
-            var viewInstance = new TestWindow {Context = new TestWindowContext()};
-            var view2Instance = new TestWindow {Context = new TestWindowContext()};
+            var viewInstance = new TestWindow { Context = new TestWindowContext() };
+            var view2Instance = new TestWindow { Context = new TestWindowContext() };
 
             // act
 
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                                                                         viewInstance, viewInstance.Context,
                                                                         TestRibbonTypes.RibbonType1));
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                                                                         view2Instance, viewInstance.Context,
                                                                         TestRibbonTypes.RibbonType1));
 
@@ -265,25 +269,28 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void new_window_with_different_context_does_not_create_new_viewmodel()
         {
             // arrange
+            ribbonFactoryUnderTest.ClearCurrent();
             var viewModels = new List<TestRibbonViewModel>();
-            _ribbonFactoryUnderTest.InitialiseFactory(
+            var ribbonFactory = new TestRibbonFactory(
                 t =>
                 {
                     var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
                     viewModels.Add(testRibbon);
                     return testRibbon;
                 },
-                OfficeObjectMother.CreateCustomTaskPaneCollection());
+                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
+            ribbonFactory.InitialiseFactory(OfficeObjectMother.CreateCustomTaskPaneCollection());
             //Open new view to create a viewmodel for view
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             var view2Instance = new TestWindow { Context = new TestWindowContext() };
 
             // act
 
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                                                                         viewInstance, viewInstance.Context,
                                                                         TestRibbonTypes.RibbonType1));
-            _viewProvider.NewView += Raise.EventWith(_viewProvider, new NewViewEventArgs<TestRibbonTypes>(
+            viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                                                                         view2Instance, view2Instance.Context,
                                                                         TestRibbonTypes.RibbonType1));
 
@@ -293,7 +300,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 
         private static string GetTag(string ribbonXml, string controlId)
         {
-            var tagExpression = new Regex("\\<.*? id=\\\""+controlId+"\\\".*?tag=\\\"(.*?)\\\"");
+            var tagExpression = new Regex("\\<.*? id=\\\"" + controlId + "\\\".*?tag=\\\"(.*?)\\\"");
             return tagExpression.Match(ribbonXml).Groups[1].Value;
         }
 
@@ -308,7 +315,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 
         public void Dispose()
         {
-            _ribbonFactoryUnderTest.ClearCurrent();
+            ribbonFactoryUnderTest.ClearCurrent();
         }
     }
 
@@ -316,7 +323,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
     {
         public object GetContextForView(object view)
         {
-            return ((TestWindow) view).Context;
+            return ((TestWindow)view).Context;
         }
 
         public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
