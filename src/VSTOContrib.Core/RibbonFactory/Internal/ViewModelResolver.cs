@@ -133,13 +133,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             var viewModelType = ribbonTypeLookup[ribbonType];
             var ribbonViewModel = ribbonFactory(viewModelType);
-            ribbonViewModel.Initialised(viewContext == NullContext.Instance ? null : viewContext);
-            ribbonViewModel.CurrentViewChanged(viewInstance);
-            customTaskPaneRegister.RegisterCustomTaskPanes(ribbonViewModel, viewInstance);
-            ListenForINotifyPropertyChanged(ribbonViewModel);
 
             if (ribbonUiLookup.ContainsKey(ribbonType))
                 ribbonViewModel.RibbonUi = ribbonUiLookup[ribbonType];
+
+            ListenForINotifyPropertyChanged(ribbonViewModel);
+            ribbonViewModel.Initialised(viewContext == NullContext.Instance ? null : viewContext);
+            ribbonViewModel.CurrentViewChanged(viewInstance);
 
             return ribbonViewModel;
         }

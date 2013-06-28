@@ -342,6 +342,8 @@ namespace VSTOContrib.Core.RibbonFactory
                                                               {"getDescription", f => f.GetDescription(null)}
                                                           }
                        },
+                       {"group", new Dictionary<string, Expression<Action<RibbonFactory>>>()},
+                       {"tab", new Dictionary<string, Expression<Action<RibbonFactory>>>()},
                        {
                            "button", new Dictionary<string, Expression<Action<RibbonFactory>>>
                                      {

@@ -14,16 +14,27 @@ namespace TwitterResultsWordAddin
         private bool panelShown;
         private Document document;
         private ICustomTaskPaneWrapper myAddinTaskPane;
+        bool ribbonVisible;
 
         public void Initialised(object context)
         {
             document = context as Document;
-            if (document == null)
-                PanelShown = false;
+        }
+
+        public bool RibbonVisible
+        {
+            get { return ribbonVisible; }
+            set
+            {
+                ribbonVisible = value;
+                RaisePropertyChanged(()=>RibbonVisible);
+            }
         }
 
         public void CurrentViewChanged(object currentView)
         {
+            RibbonVisible = document != null;
+            panelShown = document != null;
         }
 
         public IRibbonUI RibbonUi { get; set; }
@@ -47,11 +58,10 @@ namespace TwitterResultsWordAddin
                 {
                     Child = new MyAddinPanel //This is a WPF User control
                     {
-                        DataContext = new MyAddinPanelViewModel() //Viewmodel for the user control
+                        DataContext = new MyAddinPanelViewModel(GetHashCode()) //Viewmodel for the user control
                     }
                 }, "Twitter Results");
             myAddinTaskPane.Visible = true;
-            PanelShown = true;
             myAddinTaskPane.VisibleChanged += TaskPaneVisibleChanged;
             TaskPaneVisibleChanged(this, EventArgs.Empty);
         }

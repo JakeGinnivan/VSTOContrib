@@ -6,9 +6,9 @@ namespace TwitterResultsWordAddin
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MyAddinPanelViewModel()
+        public MyAddinPanelViewModel(int getHashCode)
         {
-            Text = "Test";
+            Text = getHashCode.ToString();
         }
 
         public string Text { get; set; }

@@ -3,7 +3,7 @@
   <ribbon>
     <tabs>
       <tab idMso="TabHome">
-        <group id="myAddinGroup" label="Sample Addin Group">
+        <group id="myAddinGroup" label="Sample Addin Group" getVisible="RibbonVisible">
           <toggleButton id="showMyAddinPaneButton" onAction="PanelShown" getPressed="PanelShown" label="Show Panel" showImage="false" />
         </group>
       </tab>
