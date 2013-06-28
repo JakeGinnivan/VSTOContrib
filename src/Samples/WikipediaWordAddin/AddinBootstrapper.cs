@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitterResultsWordAddin
+namespace WikipediaWordAddin
 {
     public class AddinBootstrapper : IDisposable
     {

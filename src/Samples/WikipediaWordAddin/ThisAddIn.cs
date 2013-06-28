@@ -1,11 +1,12 @@
-﻿using Microsoft.Office.Core;
-using System;
+﻿using System;
+using System.Windows;
+using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Word.RibbonFactory;
 
-namespace TwitterResultsWordAddin
+namespace WikipediaWordAddin
 {
     public partial class ThisAddIn
     {
@@ -19,10 +20,13 @@ namespace TwitterResultsWordAddin
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
             core.Dispose();
+            System.Windows.Application.Current.Shutdown();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
+            if (System.Windows.Application.Current == null)
+                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
             core = new AddinBootstrapper();
             return new WordRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
         }
