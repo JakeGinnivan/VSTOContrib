@@ -12,12 +12,12 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestStubs
         private readonly IViewProvider<TestRibbonTypes> viewProvider;
 
         public TestRibbonFactory(
-            Func<Type, IRibbonViewModel> ribbonFactory, 
+            IViewModelFactory viewModelFactory, 
             Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewProvider<TestRibbonTypes> viewProvider,
             IViewContextProvider contextProvider,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<TestRibbonTypes>(assemblies, contextProvider, ribbonFactory, customTaskPaneCollection, Substitute.For<Factory>(), new DefaultViewLocationStrategy()))
+            : base(new RibbonFactoryController<TestRibbonTypes>(assemblies, contextProvider, viewModelFactory, customTaskPaneCollection, Substitute.For<Factory>(), new DefaultViewLocationStrategy()))
         {
             this.viewProvider = viewProvider;
         }

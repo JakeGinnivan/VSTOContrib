@@ -28,14 +28,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         readonly RibbonViewModelHelper ribbonViewModelHelper;
         readonly ICustomTaskPaneRegister customTaskPaneRegister;
         readonly IViewContextProvider viewContextProvider;
-        readonly Func<Type, IRibbonViewModel> ribbonFactory;
+        readonly IViewModelFactory viewModelFactory;
         readonly Factory vstoFactory;
         IViewProvider<TRibbonTypes> viewProvider;
         TRibbonTypes currentlyLoadingRibbon;
 
         public ViewModelResolver(IEnumerable<Type> viewModelType, RibbonViewModelHelper ribbonViewModelHelper, 
             ICustomTaskPaneRegister customTaskPaneRegister, IViewContextProvider viewContextProvider,
-            Func<Type, IRibbonViewModel> ribbonFactory, Factory vstoFactory)
+            IViewModelFactory viewModelFactory, Factory vstoFactory)
         {
             currentlyLoadingRibbon = (TRibbonTypes)(object)1;
             notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
@@ -45,7 +45,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             this.ribbonViewModelHelper = ribbonViewModelHelper;
             this.customTaskPaneRegister = customTaskPaneRegister;
             this.viewContextProvider = viewContextProvider;
-            this.ribbonFactory = ribbonFactory;
+            this.viewModelFactory = viewModelFactory;
             this.vstoFactory = vstoFactory;
 
             foreach (var ribbonType in viewModelType)
@@ -141,7 +141,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         private IRibbonViewModel BuildViewModel(TRibbonTypes ribbonType, object viewInstance, object viewContext)
         {
             var viewModelType = ribbonTypeLookup[ribbonType];
-            var ribbonViewModel = ribbonFactory(viewModelType);
+            var ribbonViewModel = viewModelFactory.Resolve(viewModelType);
             ribbonViewModel.VstoFactory = vstoFactory;
 
             if (ribbonUiLookup.ContainsKey(ribbonType))
@@ -190,9 +190,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             if (notifyOfPropertyChanged != null)
                 notifyOfPropertyChanged.PropertyChanged -= NotifiesOfPropertyChangedPropertyChanged;
 
-            var disposible = viewModelInstance as IDisposable;
-            if (disposible != null) disposible.Dispose();
             viewModelInstance.Cleanup();
+            viewModelFactory.Release(viewModelInstance);
 
             contextToViewModelLookup.Remove(context);
         }
@@ -204,6 +203,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 notifyChangeTargetLookup.Add(type, new List<KeyValuePair<string, string>>());
 
             notifyChangeTargetLookup[type].Add(new KeyValuePair<string, string>(controlCallback, ribbonControl));
+        }
+
+        public void Dispose()
+        {
+            var disposable = viewModelFactory as IDisposable;
+            if (disposable != null)
+                disposable.Dispose();
         }
     }
 }

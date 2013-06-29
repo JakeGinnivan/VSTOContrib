@@ -2,16 +2,15 @@
 using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
+using VSTOContrib.Autofac;
 using VSTOContrib.Core.RibbonFactory;
-using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Word.RibbonFactory;
+using WikipediaWordAddin.Core;
 
 namespace WikipediaWordAddin
 {
     public partial class ThisAddIn
     {
-        AddinBootstrapper core;
-
         private void ThisAddInStartup(object sender, EventArgs e)
         {
             RibbonFactory.Current.SetApplication(Application, this);
@@ -19,7 +18,6 @@ namespace WikipediaWordAddin
 
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
-            core.Dispose();
             System.Windows.Application.Current.Shutdown();
         }
 
@@ -29,8 +27,7 @@ namespace WikipediaWordAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            core = new AddinBootstrapper();
-            return new WordRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
+            return new WordRibbonFactory(new AutofacViewModelFactory(new AddinModule()), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinModule).Assembly);
         }
 
         /// <summary>

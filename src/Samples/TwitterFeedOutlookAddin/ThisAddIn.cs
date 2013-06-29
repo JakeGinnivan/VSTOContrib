@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Windows;
+using Autofac;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using TwitterFeedOutlookAddin.Core;
+using TwitterFeedOutlookAddin.Core.Services;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Outlook.RibbonFactory;
@@ -11,7 +14,7 @@ namespace TwitterFeedOutlookAddin
 {
     public partial class ThisAddIn
     {
-        AddinBootstrapper core;
+        IContainer container;
 
         private void ThisAddInStartup(object sender, EventArgs e)
         {
@@ -22,12 +25,19 @@ namespace TwitterFeedOutlookAddin
         void ThisAddInShutdown(object sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+            container.Dispose();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            core = new AddinBootstrapper();
-            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
+            var containerBuilder = new ContainerBuilder();
+
+            containerBuilder.RegisterType<TwitterService>().As<ITwitterService>();
+            containerBuilder.RegisterType<ContactFeed>()
+                .As<IRibbonViewModel>()
+                .AsSelf();
+            container = containerBuilder.Build();
+            return new OutlookRibbonFactory(new DefaultViewModelFactory(), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(ContactFeed).Assembly);
         }
 
         private void InternalStartup()

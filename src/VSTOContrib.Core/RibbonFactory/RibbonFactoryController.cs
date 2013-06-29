@@ -40,14 +40,14 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <param name="viewContextProvider">The view context provider</param>
-        /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
+        /// <param name="viewModelFactory">A delegate taking a type and returning an instance of the requested type</param>
         /// <param name="customTaskPaneCollection"></param>
         /// <param name="vstoFactory">The VSTO factory</param>
         /// <param name="viewLocationStrategy">The view location strategy.</param>
         public RibbonFactoryController(
             ICollection<Assembly> assemblies,
-            IViewContextProvider viewContextProvider, 
-            Func<Type, IRibbonViewModel> ribbonFactory,
+            IViewContextProvider viewContextProvider,
+            IViewModelFactory viewModelFactory,
             Lazy<CustomTaskPaneCollection> customTaskPaneCollection, 
             Factory vstoFactory, 
             IViewLocationStrategy viewLocationStrategy = null)
@@ -63,7 +63,7 @@ namespace VSTOContrib.Core.RibbonFactory
             List<Type> ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
             ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, ribbonFactory, vstoFactory);
+                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, viewModelFactory, vstoFactory);
 
             var loadExpression = ((Expression<Action<RibbonFactory>>)(r => r.Ribbon_Load(null)));
             string loadMethodName = loadExpression.GetMethodName();
@@ -438,6 +438,11 @@ namespace VSTOContrib.Core.RibbonFactory
                                       }
                        }
                    };
+        }
+
+        public void Dispose()
+        {
+            ribbonViewModelResolver.Dispose();
         }
     }
 }

@@ -63,6 +63,7 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="DefaultViewModelFactory.cs" />
     <Compile Include="Extensions\ComCleanupEnumerator.cs" />
     <Compile Include="Extensions\ComCleanupWrapper.cs" />
     <Compile Include="ClickOnceUpdater.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Helpers\PictureConverter.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IViewModelFactory.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

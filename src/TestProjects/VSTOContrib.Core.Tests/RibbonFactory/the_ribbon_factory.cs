@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Core;
@@ -15,14 +16,16 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_ribbon_factory : IDisposable
     {
-        private readonly IViewProvider<TestRibbonTypes> viewProvider;
-        private readonly TestRibbonFactory ribbonFactoryUnderTest;
-        TestRibbonViewModel viewModel;
+        readonly IViewProvider<TestRibbonTypes> viewProvider;
+        readonly TestRibbonFactory ribbonFactoryUnderTest;
+        readonly TestViewModelFactory viewModelFactory;
+
         public the_ribbon_factory()
         {
             viewProvider = Substitute.For<IViewProvider<TestRibbonTypes>>();
+            viewModelFactory = new TestViewModelFactory();
             ribbonFactoryUnderTest = new TestRibbonFactory(
-                t => viewModel = (TestRibbonViewModel)Activator.CreateInstance(t),
+                viewModelFactory,
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider,
                 new TestContextProvider(),
@@ -33,7 +36,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void cannot_create_multiple_instances()
         {
             Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(
-                t => (IRibbonViewModel)Activator.CreateInstance(t),
+                new TestViewModelFactory(), 
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider()));
         }
@@ -55,7 +58,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         [Fact]
         public void initialise_throws_when_no_assemblies_specified_to_scan()
         {
-            Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(t => (IRibbonViewModel)Activator.CreateInstance(t),
+            Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(new TestViewModelFactory(), 
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider()));
         }
@@ -104,7 +107,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
-            viewModel.PanelShown = true;
+            viewModelFactory.ViewModels.Single().PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
@@ -125,7 +128,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var viewInstance = new TestWindow { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
-            viewModel.PanelShown = true;
+            viewModelFactory.ViewModels.Single().PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
@@ -133,7 +136,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             ribbonFactoryUnderTest.PressedOnAction(ribbonControl, false);
 
             // assert
-            Assert.False(viewModel.PanelShown);
+            Assert.False(viewModelFactory.ViewModels.Single().PanelShown);
         }
 
         [Fact]
@@ -149,7 +152,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             ribbonFactoryUnderTest.Ribbon_Load(ribbon);
 
             // act
-            viewModel.OnPropertyChanged(new PropertyChangedEventArgs("PanelShown"));
+            viewModelFactory.ViewModels.Single().OnPropertyChanged(new PropertyChangedEventArgs("PanelShown"));
 
             // assert
             ribbon.Received().InvalidateControl("testTogglePanelButton");
@@ -168,7 +171,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                                    };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs<TestRibbonTypes>(
                 viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1));
-            viewModel.PanelShown = true;
+            viewModelFactory.ViewModels.Single().PanelShown = true;
             var buttonTag = GetTag(processedRibbon, "actionButton");
 
             // act
@@ -183,15 +186,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void ribbon_factory_calls_back_to_correct_view_model()
         {
             // arrange
-            var viewModels = new List<TestRibbonViewModel>();
             ribbonFactoryUnderTest.ClearCurrent();
             var ribbonFactory = new TestRibbonFactory(
-                t =>
-                {
-                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
-                    viewModels.Add(testRibbon);
-                    return testRibbon;
-                },
+                viewModelFactory,
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider,
                 new TestContextProvider(), Assembly.GetExecutingAssembly());
@@ -207,7 +204,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var buttonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
-            viewModels[1].PanelShown = true;
+            viewModelFactory.ViewModels[1].PanelShown = true;
             var ribbonControl = GetRibbonControl("testTogglePanelButton", buttonTag, viewInstance);
             var ribbon2Control = GetRibbonControl("testTogglePanelButton", buttonTag, view2Instance);
             var isPressed = ribbonFactory.GetPressed(ribbonControl);
@@ -222,15 +219,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void new_window_with_same_context_does_not_create_new_viewmodel()
         {
             // arrange
-            var viewModels = new List<TestRibbonViewModel>();
             ribbonFactoryUnderTest.ClearCurrent();
             var ribbonFactory = new TestRibbonFactory(
-                t =>
-                {
-                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
-                    viewModels.Add(testRibbon);
-                    return testRibbon;
-                },
+                viewModelFactory,
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
@@ -248,7 +239,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                                                                         TestRibbonTypes.RibbonType1));
 
             // assert
-            Assert.Equal(1, viewModels.Count);
+            Assert.Equal(1, viewModelFactory.ViewModels.Count);
         }
 
         [Fact]
@@ -257,12 +248,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             // arrange
             ribbonFactoryUnderTest.ClearCurrent();
             var viewModels = new List<TestRibbonViewModel>();
-            var ribbonFactory = new TestRibbonFactory(t =>
-                {
-                    var testRibbon = (TestRibbonViewModel)Activator.CreateInstance(t);
-                    viewModels.Add(testRibbon);
-                    return testRibbon;
-                },
+            var ribbonFactory = new TestRibbonFactory(new TestViewModelFactory(),
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
@@ -301,21 +287,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void Dispose()
         {
             ribbonFactoryUnderTest.ClearCurrent();
-        }
-    }
-
-    public class AddInBaseFactory
-    {
-        private class TestAddIn : AddInBase
-        {
-            public TestAddIn() : base(Substitute.For<Factory>(), null, null, null)
-            {
-            }
-        }
-
-        public static AddInBase Create()
-        {
-            return new TestAddIn();
         }
     }
 }

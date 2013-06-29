@@ -7,7 +7,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     /// <summary>
     /// 
     /// </summary>
-    public interface IRibbonFactoryController
+    public interface IRibbonFactoryController : IDisposable
     {
         /// <summary>
         /// Initialises the specified view provider.

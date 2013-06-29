@@ -4,7 +4,6 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
-using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
 using Xunit;
@@ -22,7 +21,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 new RibbonViewModelHelper(),
                 new CustomTaskPaneRegister(new Lazy<CustomTaskPaneCollection>(()=>Substitute.For<CustomTaskPaneCollection>())),
                 new TestContextProvider(),
-                t=>(IRibbonViewModel)Activator.CreateInstance(t),
+                new TestViewModelFactory(), 
                 Substitute.For<Factory>());
         }
 

@@ -6,7 +6,7 @@ using WikipediaWordAddin.Services;
 
 namespace WikipediaWordAddin.Core.Services
 {
-    public class WikipediaService
+    public class WikipediaService : IWikipediaService
     {
         public SearchResults Search(string search)
         {

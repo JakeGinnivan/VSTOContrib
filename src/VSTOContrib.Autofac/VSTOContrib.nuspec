@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>VSTOContrib.Autofac</id>
+    <version>{{Version}}</version>
+    <title>VSTOContrib.Autofac</title>
+    <authors>Jake Ginnivan</authors>
+    <owners>Jake Ginnivan</owners>
+    <projectUrl>http://vstocontrib.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Adds Autofac support to VSTO Contrib</description>
+    <tags>VSTO,Office,Autofac,IoC</tags>
+    <dependencies>
+      <dependency id="Autofac" />
+    </dependencies>
+  </metadata>
+</package>

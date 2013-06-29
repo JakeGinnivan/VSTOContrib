@@ -64,7 +64,11 @@ namespace VSTOContrib.Core.RibbonFactory
 
             initialsed = true;
 
-            addinBase.Shutdown += (sender, args) => ShuttingDown();
+            addinBase.Shutdown += (sender, args) =>
+            {
+                ribbonFactoryController.Dispose();
+                ShuttingDown();
+            };
 
             InitialiseRibbonFactoryController(ribbonFactoryController, application);
         }
