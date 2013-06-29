@@ -27,7 +27,7 @@ namespace TwitterFeedOutlookAddin
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             core = new AddinBootstrapper();
-            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
+            return new OutlookRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
         }
 
         private void InternalStartup()

@@ -174,21 +174,10 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AddinBootstrapper.cs" />
-    <Compile Include="DocumentViewModel.cs" />
-    <Compile Include="Services\Query.cs" />
-    <Compile Include="Services\SearchInfo.cs" />
-    <Compile Include="Services\SearchResult.cs" />
-    <Compile Include="Services\SearchResults.cs" />
-    <Compile Include="WikipediaResultsView.xaml.cs">
-      <DependentUpon>WikipediaResultsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WikipediaResultsViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NotifyPropertyChanged.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -207,7 +196,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\WikipediaService.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -229,15 +217,10 @@
       <Project>{9d3119d9-b898-45e8-92af-2566da3f85fc}</Project>
       <Name>VSTOContrib.Word</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="WikipediaResultsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DocumentView.xml" />
+    <ProjectReference Include="..\WikipediaWordAddin.Core\WikipediaWordAddin.Core.csproj">
+      <Project>{3006b5a9-02cd-400a-83c2-090f0fdcd0c4}</Project>
+      <Name>WikipediaWordAddin.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

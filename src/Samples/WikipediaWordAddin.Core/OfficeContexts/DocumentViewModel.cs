@@ -6,9 +6,11 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Word.RibbonFactory;
+using WikipediaWordAddin.Core.WpfControls;
 using Document = Microsoft.Office.Interop.Word.Document;
+using Factory = Microsoft.Office.Tools.Factory;
 
-namespace WikipediaWordAddin
+namespace WikipediaWordAddin.Core.OfficeContexts
 {
     [WordRibbonViewModel]
     public class DocumentViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
@@ -24,13 +26,17 @@ namespace WikipediaWordAddin
             wikipediaResultsViewModel = new WikipediaResultsViewModel();
         }
 
+        public IRibbonUI RibbonUi { get; set; }
+
+        public Factory VstoFactory { get; set; }
+
         public void Initialised(object context)
         {
             document = context as Document;
 
             if (document != null)
             {
-                vstoDocument = Globals.Factory.GetVstoObject(document);
+                vstoDocument = ((ApplicationFactory)VstoFactory).GetVstoObject(document);
                 vstoDocument.SelectionChange += VstoDocumentOnSelectionChange;
             }
         }
@@ -50,7 +56,7 @@ namespace WikipediaWordAddin
             set
             {
                 ribbonVisible = value;
-                RaisePropertyChanged(()=>RibbonVisible);
+                OnPropertyChanged(()=>RibbonVisible);
             }
         }
 
@@ -59,9 +65,7 @@ namespace WikipediaWordAddin
             RibbonVisible = document != null;
             panelShown = document != null;
         }
-
-        public IRibbonUI RibbonUi { get; set; }
-
+        
         public bool PanelShown
         {
             get { return panelShown; }
@@ -70,7 +74,7 @@ namespace WikipediaWordAddin
                 if (panelShown == value) return;
                 panelShown = value;
                 myAddinTaskPane.Visible = value;
-                RaisePropertyChanged(() => PanelShown);
+                OnPropertyChanged(() => PanelShown);
             }
         }
 
@@ -97,7 +101,7 @@ namespace WikipediaWordAddin
         private void TaskPaneVisibleChanged(object sender, EventArgs e)
         {
             panelShown = myAddinTaskPane.Visible;
-            RaisePropertyChanged(() => PanelShown);
+            OnPropertyChanged(() => PanelShown);
         }
     }
 }

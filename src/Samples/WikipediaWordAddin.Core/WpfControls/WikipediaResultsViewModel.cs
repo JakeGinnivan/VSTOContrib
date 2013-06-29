@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using VSTOContrib.Core;
+using WikipediaWordAddin.Core.Services;
 using WikipediaWordAddin.Services;
 
-namespace WikipediaWordAddin
+namespace WikipediaWordAddin.Core.WpfControls
 {
     public class WikipediaResultsViewModel : NotifyPropertyChanged
     {
@@ -40,7 +42,7 @@ namespace WikipediaWordAddin
             {
                 if (Equals(value, searchResults)) return;
                 searchResults = value;
-                OnPropertyChanged("SearchResults");
+                OnPropertyChanged(()=>SearchResults);
             }
         }
     }

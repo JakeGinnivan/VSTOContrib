@@ -24,12 +24,14 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
         /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
+        /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public OutlookRibbonFactory(
             Func<Type, IRibbonViewModel> ribbonFactory,
             Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Factory vstoFactory, 
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, new OutlookViewContextProvider(), ribbonFactory, customTaskPaneCollection))
+            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, new OutlookViewContextProvider(), ribbonFactory, customTaskPaneCollection, vstoFactory))
         {
         }
 
@@ -39,13 +41,15 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
         /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
+        /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
         public OutlookRibbonFactory(
             Func<Type, IRibbonViewModel> ribbonFactory,
             Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
+            Factory vstoFactory, 
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, new OutlookViewContextProvider(), ribbonFactory, customTaskPaneCollection, viewLocationStrategy))
+            : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, new OutlookViewContextProvider(), ribbonFactory, customTaskPaneCollection, vstoFactory, viewLocationStrategy))
         {
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Excel.RibbonFactory
@@ -16,6 +17,13 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         /// <value>The ribbon UI.</value>
         public IRibbonUI RibbonUi { get; set; }
+
+        /// <summary>
+        /// Used to get the VSTO versions of the context. For example
+        /// 
+        /// var vstodocument = ((Microsoft.Office.Tools.Word.ApplicationFactory)VstoFactory).GetVstoObject(document);
+        /// </summary>
+        public Factory VstoFactory { get; set; }
 
         /// <summary>
         /// Called when the window that the ribbon is shown in is opened

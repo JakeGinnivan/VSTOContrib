@@ -22,7 +22,8 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 new RibbonViewModelHelper(),
                 new CustomTaskPaneRegister(new Lazy<CustomTaskPaneCollection>(()=>Substitute.For<CustomTaskPaneCollection>())),
                 new TestContextProvider(),
-                t=>(IRibbonViewModel)Activator.CreateInstance(t));
+                t=>(IRibbonViewModel)Activator.CreateInstance(t),
+                Substitute.For<Factory>());
         }
 
         [Fact]

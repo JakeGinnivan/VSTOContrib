@@ -56,9 +56,9 @@
         Configuration=$(Configuration)
       </CommonProperties>
     </PropertyGroup>
-    <MSBuild Projects="VSTO Contrib Office Application.msbuild" Properties="OfficeApplication=Outlook;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.msbuild" Properties="OfficeApplication=Excel;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.msbuild" Properties="OfficeApplication=Word;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.msbuild" Properties="OfficeApplication=PowerPoint;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;$(CommonProperties)" />
   </Target>
 </Project>

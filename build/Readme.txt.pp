@@ -5,12 +5,43 @@ Feedback is very welcome!
 Start a discussion or raise an issue at http://vstocontrib.codeplex.com/ or https://github.com/JakeGinnivan/VSTOContrib
 
 ------------------------------------------------------------------------------------------
-                                   Introduction
+                                      Introduction
 ------------------------------------------------------------------------------------------
 VSTO Contrib lets you easily unit test, use IoC/DI and develop in a MVVM style within Office Add-ins. 
 
-It supports Outlook, Word, Excel and PowerPoint 2007+, and has both .net 3.5 and 4.0 builds.
+It supports Outlook, Word, Excel and PowerPoint 2010+, and supports .net 4.0.
 
+
+------------------------------------------------------------------------------------------
+                                      Terminology
+------------------------------------------------------------------------------------------
+
+
+|  Term    |                             Meaning                                         |
+|----------------------------------------------------------------------------------------|
+|   View   |   The Window/Inspector                                                      |
+| Context  |   The document, spreadsheet, slideshow or Item (MailItem, ContactItem etc)  |
+
+
+------------------------------------------------------------------------------------------
+                                    Breaking Changes
+------------------------------------------------------------------------------------------
+Since v0.10.x there have been numerous changes to the internals of VSTO Contrib, this
+is to allow full support for Office 2013 and simplify the getting started experience!
+
+ - RaisePropertyChanged has been removed, use OnPropertyChanged instead
+ - NotifyPropertyChanged base class is available to use for your WPF view models
+ - Bootstrapping is far simpler, see the getting started for the new bootstrapping code
+   - No longer need to modify internal startup
+
+------------------------------------------------------------------------------------------
+                                      Whats New
+------------------------------------------------------------------------------------------
+
+ - A viewmodel is created when there is no context (for example, word is open with no documents)
+ - The VSTO Factory is now available in viewmodels, so you can get VSTO objects, for example in word:
+    - vstoDocument = ((ApplicationFactory)VstoFactory).GetVstoObject(document);
+      vstoDocument.SelectionChange += VstoDocumentOnSelectionChange;
 
 ------------------------------------------------------------------------------------------
                                    Getting Started
@@ -20,40 +51,32 @@ follow these instructions. If you have just installed VSTO Contrib into a new pr
 install the QuickStart projects
 
 1. Create an empty class library (Maybe $rootnamespace$.Core ?)
-2. Expand VSTO generated code (or delete the region). 
-3. Ignore the comment about not modifying the contents of the internal startup method
-4. Add a private field to store your bootstrapper
+2. Move the AddinBootstrapper.cs to the empty class library, this class library will hold all your application logic, and will be testable!
+3. Add a private field to store your AddIn
 
     private AddinBootstrapper _core;
 
-5. Edit the InternalStartup method to look like this (or copy and overwrite)
-
-	private void InternalStartup()
-	{
-		_core = new AddinBootstrapper();
-		VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory.SetApplication(Application);
-		VSTOContrib.Core.RibbonFactory.RibbonFactory.Current.InitialiseFactory(
-			t => (VSTOContrib.Core.RibbonFactory.Interfaces.IRibbonViewModel)_core.Resolve(t),
-			CustomTaskPanes);
-
-		Startup += ThisAddIn_Startup;
-		Shutdown += ThisAddIn_Shutdown;
-	}
-
-6. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
+4. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
+   There are a number of arguments required. This is because much of the VSTO addin is code generated, so you have to pass it in
 
 	protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
 	{
-		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(typeof(AddinBootstrapper).Assembly);
+		//Required for WPF support
+        if (System.Windows.Application.Current == null)
+            new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+
+        _core = new AddinBootstrapper();
+		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(t => (IRibbonViewModel)_core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
 	}
 
-7. Modify the `ThisAddinShutdown` method and add the following two lines
+5. Modify the `ThisAddin_Startup` method and add the following line
+
+	RibbonFactory.Current.SetApplication(Application, this);
+
+6. Modify the `ThisAddin_Shutdown` method and add the following two lines
 
 	_core.Dispose();
 	System.Windows.Application.Current.Shutdown();
-
-8. Move the AddinBootstrapper.cs to a class library, this class library will hold all your application logic, and will be testable!
-
 
 
 Now VSTO Contrib is ready to go! Next step is to create a ViewModel.

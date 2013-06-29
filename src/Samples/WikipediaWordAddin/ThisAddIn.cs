@@ -14,7 +14,7 @@ namespace WikipediaWordAddin
 
         private void ThisAddInStartup(object sender, EventArgs e)
         {
-
+            RibbonFactory.Current.SetApplication(Application, this);
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -25,10 +25,12 @@ namespace WikipediaWordAddin
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
+            //Required for WPF support
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+
             core = new AddinBootstrapper();
-            return new WordRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), typeof(AddinBootstrapper).Assembly);
+            return new WordRibbonFactory(t => (IRibbonViewModel)core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
         }
 
         /// <summary>
@@ -37,8 +39,6 @@ namespace WikipediaWordAddin
         /// </summary>
         private void InternalStartup()
         {
-            RibbonFactory.Current.SetApplication(Application, this);
-
             Startup += ThisAddInStartup;
             Shutdown += ThisAddInShutdown;
         }

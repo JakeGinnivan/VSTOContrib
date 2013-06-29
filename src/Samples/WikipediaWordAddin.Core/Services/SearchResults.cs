@@ -1,4 +1,6 @@
-﻿namespace WikipediaWordAddin.Services
+﻿using VSTOContrib.Core;
+
+namespace WikipediaWordAddin.Services
 {
     public class SearchResults : NotifyPropertyChanged
     {

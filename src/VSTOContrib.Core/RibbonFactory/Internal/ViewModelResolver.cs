@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
 
@@ -13,28 +14,28 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         /// <summary>
         /// Used when a new explorer or inspector is created to lookup the appropriate viewmodel type
         /// </summary>
-        private readonly Dictionary<TRibbonTypes, Type> ribbonTypeLookup;
+        readonly Dictionary<TRibbonTypes, Type> ribbonTypeLookup;
         /// <summary>
         /// Internal lookup for Context instances to view model lookups
         /// </summary>
-        private readonly Dictionary<object, IRibbonViewModel> contextToViewModelLookup;
-        private readonly Dictionary<TRibbonTypes, IRibbonUI> ribbonUiLookup;
+        readonly Dictionary<object, IRibbonViewModel> contextToViewModelLookup;
+        readonly Dictionary<TRibbonTypes, IRibbonUI> ribbonUiLookup;
         /// <summary>
         /// Looks up ViewModelType, callback method name, control id, controlId used to invalidate :)
         /// </summary>
-        private readonly Dictionary<Type, List<KeyValuePair<string,string>>> notifyChangeTargetLookup;
+        readonly Dictionary<Type, List<KeyValuePair<string,string>>> notifyChangeTargetLookup;
 
-        private readonly RibbonViewModelHelper ribbonViewModelHelper;
-        private readonly ICustomTaskPaneRegister customTaskPaneRegister;
-        private readonly IViewContextProvider viewContextProvider;
-        private readonly Func<Type, IRibbonViewModel> ribbonFactory;
-        private IViewProvider<TRibbonTypes> viewProvider;
-        private TRibbonTypes currentlyLoadingRibbon;
+        readonly RibbonViewModelHelper ribbonViewModelHelper;
+        readonly ICustomTaskPaneRegister customTaskPaneRegister;
+        readonly IViewContextProvider viewContextProvider;
+        readonly Func<Type, IRibbonViewModel> ribbonFactory;
+        readonly Factory vstoFactory;
+        IViewProvider<TRibbonTypes> viewProvider;
+        TRibbonTypes currentlyLoadingRibbon;
 
-        public ViewModelResolver(IEnumerable<Type> viewModelType, RibbonViewModelHelper ribbonViewModelHelper, ICustomTaskPaneRegister customTaskPaneRegister, 
-            IViewContextProvider viewContextProvider,
-            Func<Type, IRibbonViewModel> ribbonFactory
-            )
+        public ViewModelResolver(IEnumerable<Type> viewModelType, RibbonViewModelHelper ribbonViewModelHelper, 
+            ICustomTaskPaneRegister customTaskPaneRegister, IViewContextProvider viewContextProvider,
+            Func<Type, IRibbonViewModel> ribbonFactory, Factory vstoFactory)
         {
             currentlyLoadingRibbon = (TRibbonTypes)(object)1;
             notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
@@ -45,6 +46,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             this.customTaskPaneRegister = customTaskPaneRegister;
             this.viewContextProvider = viewContextProvider;
             this.ribbonFactory = ribbonFactory;
+            this.vstoFactory = vstoFactory;
 
             foreach (var ribbonType in viewModelType)
             {
@@ -140,6 +142,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             var viewModelType = ribbonTypeLookup[ribbonType];
             var ribbonViewModel = ribbonFactory(viewModelType);
+            ribbonViewModel.VstoFactory = vstoFactory;
 
             if (ribbonUiLookup.ContainsKey(ribbonType))
                 ribbonViewModel.RibbonUi = ribbonUiLookup[ribbonType];

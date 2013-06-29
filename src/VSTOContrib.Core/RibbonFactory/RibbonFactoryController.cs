@@ -42,12 +42,14 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="viewContextProvider">The view context provider</param>
         /// <param name="ribbonFactory">A delegate taking a type and returning an instance of the requested type</param>
         /// <param name="customTaskPaneCollection"></param>
+        /// <param name="vstoFactory">The VSTO factory</param>
         /// <param name="viewLocationStrategy">The view location strategy.</param>
         public RibbonFactoryController(
             ICollection<Assembly> assemblies,
             IViewContextProvider viewContextProvider, 
-            Func<Type, IRibbonViewModel> ribbonFactory, 
+            Func<Type, IRibbonViewModel> ribbonFactory,
             Lazy<CustomTaskPaneCollection> customTaskPaneCollection, 
+            Factory vstoFactory, 
             IViewLocationStrategy viewLocationStrategy = null)
         {
             if (assemblies.Count == 0)
@@ -61,7 +63,7 @@ namespace VSTOContrib.Core.RibbonFactory
             List<Type> ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
             ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, ribbonFactory);
+                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, ribbonFactory, vstoFactory);
 
             var loadExpression = ((Expression<Action<RibbonFactory>>)(r => r.Ribbon_Load(null)));
             string loadMethodName = loadExpression.GetMethodName();

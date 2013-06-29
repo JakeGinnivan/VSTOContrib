@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Microsoft.Office.Tools;
+using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
@@ -16,7 +17,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestStubs
             IViewProvider<TestRibbonTypes> viewProvider,
             IViewContextProvider contextProvider,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<TestRibbonTypes>(assemblies, contextProvider, ribbonFactory, customTaskPaneCollection, new DefaultViewLocationStrategy()))
+            : base(new RibbonFactoryController<TestRibbonTypes>(assemblies, contextProvider, ribbonFactory, customTaskPaneCollection, Substitute.For<Factory>(), new DefaultViewLocationStrategy()))
         {
             this.viewProvider = viewProvider;
         }

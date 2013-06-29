@@ -2,8 +2,9 @@
 using System.Net;
 using System.Web;
 using Newtonsoft.Json;
+using WikipediaWordAddin.Services;
 
-namespace WikipediaWordAddin.Services
+namespace WikipediaWordAddin.Core.Services
 {
     public class WikipediaService
     {

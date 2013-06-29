@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq.Expressions;
 using System.Windows.Media.Imaging;
 using VSTOContrib.Core.Helpers;
 using stdole;
@@ -12,7 +10,7 @@ namespace VSTOContrib.Core.Wpf
     /// <summary>
     /// View Model base for office ribbon view models
     /// </summary>
-    public class OfficeViewModelBase : INotifyPropertyChanged
+    public class OfficeViewModelBase : NotifyPropertyChanged
     {
         /// <summary>
         /// OOTB support for /Resources/Image.png (as embedded resource),
@@ -58,53 +56,5 @@ namespace VSTOContrib.Core.Wpf
         {
             return PictureConverter.IconToPictureDisp(fromIcon);
         }
-
-        /// <summary>
-        /// Notifies subscribers of the property change.
-        /// </summary>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <param name="property">The property expression.</param>
-        protected virtual void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> property)
-        {
-            RaisePropertyChanged(property);
-        }
-
-        /// <summary>
-        /// Notifies subscribers of the property change.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            RaisePropertyChanged(propertyName);
-        }
-
-        /// <summary>
-        /// Notifies subscribers of the property change.
-        /// </summary>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <param name="property">The property expression.</param>
-        protected virtual void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> property)
-        {
-            var memberExpression = property.Body as MemberExpression;
-            if (memberExpression != null)
-            {
-                RaisePropertyChanged(memberExpression.Member.Name);
-            }
-        }
-
-        /// <summary>
-        /// Notifies subscribers of the property change.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected virtual void RaisePropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
