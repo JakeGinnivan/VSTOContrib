@@ -7,9 +7,6 @@
   <Target Name="Compile">
     <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
-    <Error Condition="$(TargetFrameworkVersion) == ''" Text="TargetFrameworkVersion variable must be defined" />
-    <Error Condition="$(FrameworkString) == ''" Text="FrameworkString variable must be defined" />
-    <Error Condition="$(NuGetFrameworkString) == ''" Text="NuGetFrameworkString variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
 
@@ -41,18 +38,15 @@
       <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
     </PropertyGroup>
 
-    <MakeDir Directories="$(ApplicationNuGetFolderName)tools\bin-$(NuGetFrameworkString)\"
-             Condition="!Exists('$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\')" />
-
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.Core.pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.pdb"/>
     
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\$(NuGetFrameworkString)\VSTOContrib.$(OfficeApplication).pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).pdb"/>
     
     <Copy SourceFiles="$(Root)build\install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
@@ -76,12 +70,8 @@
     <FileUpdate Files="$(NuGetManifest)"
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
-    
-    <FileUpdate Files="$(NuGetManifest)"
-                Regex="{{Version}}"
-                ReplacementText="$(Version)"/>
 
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts"' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
 
     <PropertyGroup>
       <QuickStartRoot>$(Root)src\Quickstart\$(OfficeApplication)Quickstart\</QuickStartRoot>
@@ -103,10 +93,8 @@
     </ItemGroup>
     <Delete Files="@(OldZipFiles)" />
 
-    <MakeDir Directories="$(Root)build\Artifacts\$(FrameworkString)" Condition="!Exists('$(Root)build\Artifacts\$(FrameworkString)')" />
-
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\$(FrameworkString)\VSTOContrib.$(OfficeApplication) ($(FrameworkString)) v$(Version).zip" />
+         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) v$(Version).zip" />
   </Target>
 </Project>

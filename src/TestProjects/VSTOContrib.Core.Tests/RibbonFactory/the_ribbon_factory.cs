@@ -247,8 +247,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             // arrange
             ribbonFactoryUnderTest.ClearCurrent();
-            var viewModels = new List<TestRibbonViewModel>();
-            var ribbonFactory = new TestRibbonFactory(new TestViewModelFactory(),
+            var ribbonFactory = new TestRibbonFactory(viewModelFactory,
                 new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
@@ -266,7 +265,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                                                                         TestRibbonTypes.RibbonType1));
 
             // assert
-            Assert.Equal(2, viewModels.Count);
+            Assert.Equal(2, viewModelFactory.ViewModels.Count);
         }
 
         private static string GetTag(string ribbonXml, string controlId)

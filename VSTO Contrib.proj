@@ -1,14 +1,6 @@
 ﻿<Project DefaultTargets="BuildAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\build\lib\</MSBuildCommunityTasksPath>
-    <TargetFrameworkVersion Condition="$(TargetFrameworkVersion)==''">v4.0</TargetFrameworkVersion>
-    <FrameworkString Condition="$(TargetFrameworkVersion)=='v3.5'">NET35</FrameworkString>
-    <FrameworkString Condition="$(TargetFrameworkVersion)=='v4.0'">NET40</FrameworkString>
-    <FrameworkString Condition="$(TargetFrameworkVersion)=='v4.5'">NET45</FrameworkString>
-
-    <NuGetFrameworkString Condition="$(TargetFrameworkVersion)=='v3.5'">net35</NuGetFrameworkString>
-    <NuGetFrameworkString Condition="$(TargetFrameworkVersion)=='v4.0'">net40</NuGetFrameworkString>
-    <NuGetFrameworkString Condition="$(TargetFrameworkVersion)=='v4.5'">net45</NuGetFrameworkString>
     <Root>$(MSBuildProjectDirectory)\</Root>
     <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
     <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
@@ -22,9 +14,6 @@
 
   <Target Name="Cleanup">
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
-    <Error Condition="$(TargetFrameworkVersion) == ''" Text="TargetFrameworkVersion variable must be defined" />
-    <Error Condition="$(FrameworkString) == ''" Text="FrameworkString variable must be defined" />
-    <Error Condition="$(NuGetFrameworkString) == ''" Text="NuGetFrameworkString variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
 
@@ -47,9 +36,6 @@
     <PropertyGroup>
       <CommonProperties>
         MSBuildCommunityTasksPath=$(MSBuildCommunityTasksPath);
-        TargetFrameworkVersion=$(TargetFrameworkVersion);
-        FrameworkString=$(FrameworkString);
-        NuGetFrameworkString=$(NuGetFrameworkString);
         Root=$(Root);
         ProgramFiles32=$(ProgramFiles32);
         Version=$(Version);
@@ -60,5 +46,15 @@
     <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;$(CommonProperties)" />
     <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;$(CommonProperties)" />
     <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;$(CommonProperties)" />
+
+    <MSBuild Projects="$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;" />
+
+    <PropertyGroup>
+      <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
+      <NuGetManifest>$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.nuspec</NuGetManifest>
+      <AutofacNuGetFolder>$(Root)build\Artifacts\NuGet\Autofac\</AutofacNuGetFolder>
+    </PropertyGroup>
+    
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
   </Target>
 </Project>

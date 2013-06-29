@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>VSTOContrib.{{Application}}</id>
-    <version>{{Version}}</version>
+    <version>$Version$</version>
     <title>VSTOContrib.{{Application}}</title>
     <authors>Jake Ginnivan</authors>
     <owners>Jake Ginnivan</owners>

@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="VSTOContrib.nuspec" />
+    <None Include="VSTOContrib.Autofac.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
