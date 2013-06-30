@@ -54,7 +54,15 @@
       <NuGetManifest>$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.nuspec</NuGetManifest>
       <AutofacNuGetFolder>$(Root)build\Artifacts\NuGet\Autofac\</AutofacNuGetFolder>
     </PropertyGroup>
+
+
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\bin\$(Configuration)\VSTOContrib.Autofac.dll"
+          DestinationFiles="$(AutofacNuGetFolder)lib\net40\VSTOContrib.Autofac.dll"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\bin\$(Configuration)\VSTOContrib.Autofac.pdb"
+          DestinationFiles="$(AutofacNuGetFolder)lib\net40\VSTOContrib.Autofac.pdb"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\Readme.txt"
+          DestinationFiles="$(AutofacNuGetFolder)Readme.txt"/>
     
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
   </Target>
 </Project>

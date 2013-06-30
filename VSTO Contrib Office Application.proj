@@ -50,20 +50,16 @@
     
     <Copy SourceFiles="$(Root)build\install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
-    <Copy SourceFiles="$(Root)build\uninstall.ps1"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\uninstall.ps1"/>
     <Copy SourceFiles="$(Root)build\VSTOContrib.nuspec"
           DestinationFiles="$(NuGetManifest)"/>
-    <Copy SourceFiles="$(Root)build\Readme.txt.pp"
-          DestinationFiles="$(ApplicationNuGetFolderName)Readme.txt.pp"/>
-    <Copy SourceFiles="$(Root)build\AddinBootstrapper.cs.pp"
-          DestinationFiles="$(ApplicationNuGetFolderName)content\AddinBootstrapper.cs.pp"/>
+    <Copy SourceFiles="$(Root)build\Readme.txt"
+          DestinationFiles="$(ApplicationNuGetFolderName)Readme.txt"/>
 
     <FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
     
-    <FileUpdate Files="$(ApplicationNuGetFolderName)Readme.txt.pp"
+    <FileUpdate Files="$(ApplicationNuGetFolderName)Readme.txt"
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
     

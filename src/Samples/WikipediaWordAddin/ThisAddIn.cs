@@ -3,6 +3,7 @@ using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using VSTOContrib.Autofac;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Word.RibbonFactory;
 using WikipediaWordAddin.Core;

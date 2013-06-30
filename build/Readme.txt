@@ -50,32 +50,26 @@ If you want to manually or you are putting VSTO Contrib into an existing project
 follow these instructions. If you have just installed VSTO Contrib into a new project
 install the QuickStart projects
 
-1. Create an empty class library (Maybe $rootnamespace$.Core ?)
-2. Move the AddinBootstrapper.cs to the empty class library, this class library will hold all your application logic, and will be testable!
-3. Add a private field to store your AddIn
-
-    private AddinBootstrapper _core;
-
-4. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
+1. Create an empty class library (Maybe MyAddin.Core ?)
+2. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
    There are a number of arguments required. This is because much of the VSTO addin is code generated, so you have to pass it in
 
 	protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
 	{
 		//Required for WPF support
         if (System.Windows.Application.Current == null)
-            new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+            new System.Windows.Application { ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown };
 
-        _core = new AddinBootstrapper();
-		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(t => (IRibbonViewModel)_core.Resolve(t), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinBootstrapper).Assembly);
+		var assemblyContainingViewModels = typeof (ThisAddIn).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
+		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(new VSTOContrib.Core.DefaultViewModelFactory(), new Lazy<Microsoft.Office.Tools.CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, assemblyContainingViewModels);
 	}
 
-5. Modify the `ThisAddin_Startup` method and add the following line
+3. Modify the `ThisAddin_Startup` method and add the following line
 
-	RibbonFactory.Current.SetApplication(Application, this);
+	VSTOContrib.Core.RibbonFactory.RibbonFactory.Current.SetApplication(Application, this);
 
-6. Modify the `ThisAddin_Shutdown` method and add the following two lines
+4. Modify the `ThisAddin_Shutdown` method and add the following two lines
 
-	_core.Dispose();
 	System.Windows.Application.Current.Shutdown();
 
 
@@ -174,6 +168,11 @@ namespace MyAddin.Core
 
 *Notice that the onAction and getPressed are the same, VSTO Contrib will bind the callbacks to the PanelShown property on your ViewModel!*
 
+The RibbonXml file must be named the same as the viewmodel and be in the same folder, for example FooViewModel.cs can be named:
+Foo.xml
+FooView.xml
+FooViewModel.xml
+
 <?xml version="1.0" encoding="UTF-8"?>
 <customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
   <ribbon>
@@ -186,51 +185,3 @@ namespace MyAddin.Core
     </tabs>
   </ribbon>
 </customUI>
-
-------------------------------------------------------------------------------------------
-
-Grab the VSTO Contrib source from codeplex for some sample projects...
-
-------------------------------------------------------------------------------------------
-
-For Autofac integration use this bootstrapper instead of the default one
-
-using System;
-using Autofac;
-
-namespace $rootnamespace$Core
-{
-    public class AddinBootstrapper : IDisposable
-    {
-        private readonly IContainer _container;
-
-        public AddinBootstrapper()
-        {
-            var containerBuilder = new ContainerBuilder();
-
-            RegisterComponents(containerBuilder);
-
-            _container = containerBuilder.Build();
-        }
-
-        private static void RegisterComponents(ContainerBuilder containerBuilder)
-        {
-            
-        }
-
-        public object Resolve(Type type)
-        {
-            return _container.Resolve(type);
-        }
-
-        public T Resolve<T>()
-        {
-            return _container.Resolve<T>();
-        }
-
-        public void Dispose()
-        {
-            _container.Dispose();
-        }
-    }
-}

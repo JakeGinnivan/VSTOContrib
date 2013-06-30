@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using VSTOContrib.Autofac;
 using WikipediaWordAddin.Core.Services;
+using WikipediaWordAddin.Core.WpfControls;
 
 namespace WikipediaWordAddin.Core
 {
@@ -10,6 +11,7 @@ namespace WikipediaWordAddin.Core
         {
             builder.RegisterType<WikipediaService>().As<IWikipediaService>().InstancePerLifetimeScope();
             builder.RegisterRibbonViewModels(typeof(AddinModule).Assembly);
+            builder.RegisterType<WikipediaResultsViewModel>().AsSelf().InstancePerLifetimeScope();
         }
     }
 }
