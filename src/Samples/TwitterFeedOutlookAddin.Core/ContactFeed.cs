@@ -8,7 +8,6 @@ using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
 using TwitterFeedOutlookAddin.Core.Services;
 using VSTOContrib.Core.Extensions;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
@@ -16,7 +15,7 @@ using VSTOContrib.Outlook.RibbonFactory;
 
 namespace TwitterFeedOutlookAddin.Core
 {
-    [RibbonViewModel(OutlookRibbonType.OutlookContact)]
+    [OutlookRibbonViewModel(OutlookRibbonType.OutlookContact)]
     public class ContactFeed : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
         readonly BackgroundWorker worker = new BackgroundWorker();

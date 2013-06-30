@@ -14,17 +14,19 @@ namespace WikipediaWordAddin.Core.WpfControls
         SearchResults searchResults;
         string searchText;
         TaskScheduler uiScheduler;
+        IWikipediaService wikipediaService;
 
-        public WikipediaResultsViewModel()
+        public WikipediaResultsViewModel(IWikipediaService wikipediaService)
         {
             searchTimer.Elapsed += DoSearch;
             Application.Current.Dispatcher.Invoke(new Action(() => uiScheduler = TaskScheduler.FromCurrentSynchronizationContext()));
+            this.wikipediaService = wikipediaService;
         }
 
         void DoSearch(object sender, ElapsedEventArgs e)
         {
             searchTimer.Stop();
-            Task.Factory.StartNew(() => new WikipediaService().Search(searchText))
+            Task.Factory.StartNew(() => wikipediaService.Search(searchText))
                 .ContinueWith(r => SearchResults = r.Result, uiScheduler);
         }
 

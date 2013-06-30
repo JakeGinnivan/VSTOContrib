@@ -21,9 +21,9 @@ namespace WikipediaWordAddin.Core.OfficeContexts
         ICustomTaskPaneWrapper myAddinTaskPane;
         Microsoft.Office.Tools.Word.Document vstoDocument;
 
-        public DocumentViewModel()
+        public DocumentViewModel(WikipediaResultsViewModel wikipediaResultsViewModel)
         {
-            wikipediaResultsViewModel = new WikipediaResultsViewModel();
+            this.wikipediaResultsViewModel = wikipediaResultsViewModel;
         }
 
         public IRibbonUI RibbonUi { get; set; }
