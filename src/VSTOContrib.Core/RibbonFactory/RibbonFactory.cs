@@ -264,7 +264,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemId(IRibbonControl control, int index)
         {
-            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemId(null, 0));
+            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemId(null, index));
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemLabel(IRibbonControl control, int index)
         {
-            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemLabel(null, 0));
+            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemLabel(null, index));
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemScreenTip(IRibbonControl control, int index)
         {
-            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemScreenTip(null, 0));
+            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemScreenTip(null, index));
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetItemSuperTip(IRibbonControl control, int index)
         {
-            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemSuperTip(null, 0));
+            return (string)ribbonFactoryController.InvokeGet(control, () => GetItemSuperTip(null, index));
         }
 
         /// <summary>
