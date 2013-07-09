@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     internal class RibbonViewModelHelper
     {
-        private readonly Dictionary<Type, IEnumerable<object>> _ribbonTypes
-            = new Dictionary<Type, IEnumerable<object>>();
+        private readonly Dictionary<Type, object> viewModelRibbonTypes = new Dictionary<Type, object>();
 
         public IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct 
         {
@@ -15,19 +15,46 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             if (!enumType.IsEnum) throw new ArgumentException("TRibbonTypes must be a enum type");
 
-            var viewModelMetaAttributes = ribbonViewModel.GetCustomAttributes(typeof(RibbonViewModelAttribute), false);
+            if (viewModelRibbonTypes.ContainsKey(ribbonViewModel)) return (TRibbonTypes[])viewModelRibbonTypes[ribbonViewModel];
 
-            if (viewModelMetaAttributes.Length == 0)
-                throw new InvalidOperationException("All IRibbonViewModel's must be marked up with a RibbonViewModel");
+            var viewModelMetaAttributes = (RibbonViewModelAttribute)ribbonViewModel.GetCustomAttributes(typeof(RibbonViewModelAttribute), false).SingleOrDefault();
+            var viewModelType = GetRibbonTypeAttributeValue<TRibbonTypes>(enumType, viewModelMetaAttributes);
 
-            var viewModelMetaData = (RibbonViewModelAttribute)viewModelMetaAttributes[0];
+            if (viewModelType == null)
+                throw new InvalidOperationException("All IRibbonViewModel's must be marked up with a RibbonViewModel type. For example [OutlookRibbonViewModel(OutlookRibbonType.OutlookContact)]");
 
-            if (!_ribbonTypes.ContainsKey(enumType))
-                _ribbonTypes.Add(enumType, Enum.GetValues(enumType).Cast<object>());
+            if (!viewModelRibbonTypes.ContainsKey(ribbonViewModel))
+            {
+                var ribbonTypesFor = Enum.GetValues(enumType).Cast<object>()
+                    .Where(value => (viewModelType & (int)value) == (int)value)
+                    .Cast<TRibbonTypes>()
+                    .ToArray();
 
-            return _ribbonTypes[enumType]
-                .Where(value => ((int)viewModelMetaData.Type & (int)value) == (int)value)
-                .Cast<TRibbonTypes>();
+                viewModelRibbonTypes.Add(ribbonViewModel, ribbonTypesFor);
+            }
+
+            return (TRibbonTypes[]) viewModelRibbonTypes[ribbonViewModel];
+        }
+
+        static int? GetRibbonTypeAttributeValue<TRibbonTypes>(Type enumType, RibbonViewModelAttribute viewModelMetaAttributes) where TRibbonTypes : struct
+        {
+            var defaultValue = new Lazy<TRibbonTypes?>(() =>
+            {
+                var defaultAttribute = (DefaultValueAttribute)enumType.GetCustomAttributes(typeof (DefaultValueAttribute), false).SingleOrDefault();
+                if (defaultAttribute != null)
+                    return (TRibbonTypes) defaultAttribute.Value;
+                return null;
+            });
+            int? viewModelType;
+
+            if (viewModelMetaAttributes == null && !defaultValue.Value.HasValue)
+                viewModelType = null;
+            else if (viewModelMetaAttributes != null)
+                viewModelType = (int)viewModelMetaAttributes.Type;
+            else
+                viewModelType = (int) (object) defaultValue.Value.Value;
+
+            return viewModelType;
         }
     }
 }

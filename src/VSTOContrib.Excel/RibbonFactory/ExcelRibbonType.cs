@@ -5,6 +5,7 @@ namespace VSTOContrib.Excel.RibbonFactory
     /// <summary>
     /// 
     /// </summary>
+    [DefaultValue(ExcelWorkbook)]
     public enum ExcelRibbonType
     {
         /// <summary>

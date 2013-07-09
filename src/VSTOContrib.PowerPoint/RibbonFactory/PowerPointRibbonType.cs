@@ -5,6 +5,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     /// <summary>
     /// 
     /// </summary>
+    [DefaultValue(PowerPointPresentation)]
     public enum PowerPointRibbonType
     {
         /// <summary>

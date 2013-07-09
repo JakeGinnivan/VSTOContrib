@@ -31,13 +31,13 @@ namespace TwitterFeedOutlookAddin.Core
             Tweets = new ObservableCollection<Tweet>();
             worker.DoWork += (sender, e) =>
             {
-                e.Result = this.twitterService.GetTwitterStreamForUsername((string) e.Argument);
+                e.Result = this.twitterService.GetTwitterStreamForUsername((string)e.Argument);
             };
             worker.RunWorkerCompleted += (sender, e) => System.Windows.Application.Current.Dispatcher.BeginInvoke(
-                (System.Action) (() =>
+                (System.Action)(() =>
                 {
                     foreach (
-                        var tweet in (List<Tweet>) e.Result)
+                        var tweet in (List<Tweet>)e.Result)
                         Tweets.Add(tweet);
                     OnPropertyChanged("IsBusy");
                 }));
@@ -73,7 +73,7 @@ namespace TwitterFeedOutlookAddin.Core
 
         public void Initialised(object context)
         {
-            contactAdapter = new ContactAdapter((ContactItem) context);
+            contactAdapter = new ContactAdapter((ContactItem)context);
             TwitterUsername = contactAdapter.TwitterUsername;
             if (!string.IsNullOrEmpty(TwitterUsername))
                 RefreshCommand.Execute(null);
@@ -105,7 +105,7 @@ namespace TwitterFeedOutlookAddin.Core
         {
             get { return panelShown; }
             set
-            {   
+            {
                 if (panelShown == value) return;
                 panelShown = value;
                 twitterTaskPane.Visible = value;

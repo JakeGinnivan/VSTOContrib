@@ -5,6 +5,7 @@ namespace VSTOContrib.Word.RibbonFactory
     /// <summary>
     /// 
     /// </summary>
+    [DefaultValue(WordDocument)]
     public enum WordRibbonType
     {
         /// <summary>
