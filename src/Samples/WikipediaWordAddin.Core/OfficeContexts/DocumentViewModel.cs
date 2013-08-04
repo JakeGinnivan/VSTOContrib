@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
+using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;

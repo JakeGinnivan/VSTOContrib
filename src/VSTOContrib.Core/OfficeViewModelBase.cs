@@ -2,10 +2,10 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
-using VSTOContrib.Core.Helpers;
 using stdole;
+using VSTOContrib.Core.Helpers;
 
-namespace VSTOContrib.Core.Wpf
+namespace VSTOContrib.Core
 {
     /// <summary>
     /// View Model base for office ribbon view models
@@ -16,7 +16,9 @@ namespace VSTOContrib.Core.Wpf
         /// OOTB support for /Resources/Image.png (as embedded resource),
         ///  or storing the image in the Resources and use the Image overload
         /// 
-        /// pack://application:,,,/MyAddin.Logic;component/Resources/someImage.jpg
+        /// For example: GetPicture(/Resources/Image.png) will load the following pack uri
+        /// (assuming your viewmodel is in the MyAddin.Logic assembly)
+        /// pack://application:,,,/MyAddin.Logic;component/Resources/Image.jpg
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>

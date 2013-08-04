@@ -279,8 +279,7 @@ namespace VSTOContrib.Core.RibbonFactory
                 foreach (XElement xElement in xElements)
                 {
                     XAttribute elementId = xElement.Attribute(XName.Get("id"));
-                    if (elementId == null) continue;
-
+                    
                     //Go through each possible callback, Concat with common methods on all controls
                     foreach (string controlCallback in controlCallbackLookup.GetVstoControlCallbacks(ribbonControl))
                     {
@@ -288,6 +287,13 @@ namespace VSTOContrib.Core.RibbonFactory
                         XAttribute callbackAttribute = xElement.Attribute(XName.Get(controlCallback));
 
                         if (callbackAttribute == null) continue;
+                        if (elementId == null)
+                        {
+                            throw new InvalidOperationException(string.Format(
+                                "VSTO Contrib Requires controls to have an id when callbacks are registered. Control='{0}', Callback='{1}'", 
+                                ribbonControl, controlCallback));
+                        }
+
                         string currentCallback = callbackAttribute.Value;
                         //Set the callback value to the callback method defined on this factory
                         string factoryMethodName = controlCallbackLookup.GetFactoryMethodName(ribbonControl,
