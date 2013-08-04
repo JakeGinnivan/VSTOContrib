@@ -54,8 +54,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
-        public void Initialise(
-            IViewProvider<TRibbonTypes> viewProvider)
+        public void Initialise(IViewProvider<TRibbonTypes> viewProvider)
         {
             this.viewProvider = viewProvider;
 

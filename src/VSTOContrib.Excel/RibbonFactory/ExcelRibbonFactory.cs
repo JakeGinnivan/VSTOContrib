@@ -47,6 +47,9 @@ namespace VSTOContrib.Excel.RibbonFactory
         {
         }
 
+        /// <summary>
+        /// Initialisation callback for ribbon factory. The implementation must initialise the controller and 
+        /// </summary>
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
             var app = (Application) application;
@@ -54,11 +57,13 @@ namespace VSTOContrib.Excel.RibbonFactory
             controller.Initialise(excelViewProvider);
         }
 
+        /// <summary>
+        /// Called when the add-in is shutting down
+        /// </summary>
         protected override void ShuttingDown()
         {
             excelViewProvider.Dispose();
         }
-            
 
         /// <summary>
         /// Ribbon_s the load.
@@ -67,7 +72,8 @@ namespace VSTOContrib.Excel.RibbonFactory
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
         {
             //Excel does not raise a new document event when we are starting up, and initialise is too soon
-            excelViewProvider.RegisterOpenDocuments();
+            if (excelViewProvider != null)
+                excelViewProvider.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
         }
     }

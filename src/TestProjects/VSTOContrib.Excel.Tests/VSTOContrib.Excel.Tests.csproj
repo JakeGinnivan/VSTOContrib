@@ -36,8 +36,16 @@
     <Reference Include="NSubstitute">
       <HintPath>..\..\packages\NSubstitute.1.1.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
-    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+		<SpecificVersion>False</SpecificVersion>
+	  <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+	</Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+		<SpecificVersion>False</SpecificVersion>
+	  <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+	</Reference>
     <Reference Include="System" />
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.8.0.1545\lib\xunit.dll</HintPath>
