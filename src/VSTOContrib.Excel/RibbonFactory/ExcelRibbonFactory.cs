@@ -55,6 +55,7 @@ namespace VSTOContrib.Excel.RibbonFactory
             var app = (Application) application;
             excelViewProvider = new ExcelViewProvider(app);
             controller.Initialise(excelViewProvider);
+            excelViewProvider.RegisterOpenDocuments();
         }
 
         /// <summary>

@@ -60,6 +60,15 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             this.viewProvider.NewView += ViewProviderNewView;
             this.viewProvider.ViewClosed += ViewProviderViewClosed;
+            this.viewProvider.UpdateCustomTaskPanesVsibilityForContext += 
+                ViewProviderOnUpdateCustomTaskPanesVsibilityForContext;
+        }
+
+        void ViewProviderOnUpdateCustomTaskPanesVsibilityForContext(object sender, 
+            HideCustomTaskPanesForContextEventArgs<TRibbonTypes> hideCustomTaskPanesForContextEventArgs)
+        {
+            customTaskPaneRegister.ChangeVisibilityForContext(hideCustomTaskPanesForContextEventArgs.Context,
+                hideCustomTaskPanesForContextEventArgs.Visible);
         }
 
         void ViewProviderViewClosed(object sender, ViewClosedEventArgs e)
@@ -75,7 +84,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             var viewModel = GetOrCreateViewModel(e);
             if (viewModel == null) return;
-            customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, e.ViewInstance);
+            customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, e.ViewInstance, e.ViewContext);
             e.Handled = true;
         }
 

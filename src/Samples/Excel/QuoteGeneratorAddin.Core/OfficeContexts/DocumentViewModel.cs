@@ -95,7 +95,7 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
             using (var application = workbook.Application.WithComCleanup())
             using (var selection = ((Range)application.Resource.Selection).WithComCleanup())
             {
-                selection.Resource.Value = new[] {quotes.GetQuote()};
+                selection.Resource.Value = new[] {quotes.GetQuote() + GetHashCode()};
             }
         }
 

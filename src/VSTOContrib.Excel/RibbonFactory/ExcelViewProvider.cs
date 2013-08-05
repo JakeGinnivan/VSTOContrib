@@ -12,9 +12,9 @@ namespace VSTOContrib.Excel.RibbonFactory
     /// </summary>
     public class ExcelViewProvider : IViewProvider<ExcelRibbonType>
     {
-        private readonly Dictionary<Workbook, List<Window>> documents;
-        private Application excelApplication;
-        private readonly WorkbookClosedMonitor _monitor;
+        readonly Dictionary<Workbook, List<Window>> workbooks;
+        Application excelApplication;
+        Window singleWindow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExcelViewProvider"/> class.
@@ -22,10 +22,10 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <param name="excelApplication">The Excel application.</param>
         public ExcelViewProvider(Application excelApplication)
         {
-            documents = new Dictionary<Workbook, List<Window>>();
+            workbooks = new Dictionary<Workbook, List<Window>>();
             this.excelApplication = excelApplication;
-            _monitor = new WorkbookClosedMonitor(excelApplication);
-            _monitor.WorkbookClosed += MonitorWorkbookClosed;
+            var monitor = new WorkbookClosedMonitor(excelApplication);
+            monitor.WorkbookClosed += MonitorWorkbookClosed;
         }
 
         void MonitorWorkbookClosed(object sender, WorkbookClosedEventArgs e)
@@ -33,30 +33,15 @@ namespace VSTOContrib.Excel.RibbonFactory
             var handler = ViewClosed;
             if (handler == null) return;
 
-            var windows = documents[e.Workbook];
+            var windows = workbooks[e.Workbook];
 
             foreach (var window in windows)
             {
                 handler(this, new ViewClosedEventArgs(window, e.Workbook));
-                window.ReleaseComObject();
+                if (!excelApplication.ShowWindowsInTaskbar)
+                    window.ReleaseComObject();
             }
-            documents.Remove(e.Workbook);
-        }
-
-        void ExcelApplicationWindowActivate(Workbook doc, Window wn)
-        {
-            var handler = NewView;
-            if (handler == null) return;
-            if (!documents.ContainsKey(doc))
-            {
-                documents.Add(doc, new List<Window>());
-            }
-
-            //Check if we have this window registered
-            if (documents[doc].Contains(wn)) return;
-
-            documents[doc].Add(wn);
-            handler(this, new NewViewEventArgs<ExcelRibbonType>(wn, doc, ExcelRibbonType.ExcelWorkbook));
+            workbooks.Remove(e.Workbook);
         }
 
         /// <summary>
@@ -64,7 +49,44 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            excelApplication.WindowActivate += ExcelApplicationWindowActivate;
+            ((AppEvents_Event)excelApplication).NewWorkbook += OnNewWorkbook;
+        }
+
+        void OnNewWorkbook(Workbook wb)
+        {
+            var handler = NewView;
+            if (handler == null) return;
+            if (!workbooks.ContainsKey(wb))
+                workbooks.Add(wb, new List<Window>());
+
+            if (excelApplication.ShowWindowsInTaskbar)
+            {
+                if (singleWindow == null)
+                {
+                    singleWindow = wb.Windows[1];
+                }
+                workbooks[wb].Add(singleWindow);
+                handler(this, new NewViewEventArgs<ExcelRibbonType>(singleWindow, wb, ExcelRibbonType.ExcelWorkbook));
+            }
+            else
+            {
+                foreach (var window in wb.Windows.ComLinq<Window>())
+                {
+                    workbooks[wb].Add(window);
+                    handler(this, new NewViewEventArgs<ExcelRibbonType>(window, wb, ExcelRibbonType.ExcelWorkbook));
+                }
+            }
+
+            wb.WindowActivate += wn =>
+            {
+                if (excelApplication.ShowWindowsInTaskbar && !workbooks[wb].Contains(singleWindow))
+                    workbooks[wb].Add(singleWindow);
+                if (!excelApplication.ShowWindowsInTaskbar && !workbooks[wb].Contains(wn))
+                    workbooks[wb].Add(wn);
+                
+                UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
+            };
+            wb.WindowDeactivate += wn => UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, false));
         }
 
         /// <summary>
@@ -77,13 +99,18 @@ namespace VSTOContrib.Excel.RibbonFactory
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
         /// <summary>
+        /// Raise when the custom task panes for a context need to change their visibility
+        /// </summary>
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
+
+        /// <summary>
         /// Cleanups the references to a view.
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="context"></param>
         public void CleanupReferencesTo(object view, object context)
         {
-            
+
         }
 
         /// <summary>
@@ -91,27 +118,17 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Dispose()
         {
-            excelApplication.WindowActivate -= ExcelApplicationWindowActivate;
             excelApplication = null;
         }
 
         /// <summary>
-        /// Registers the open Excel documents.
+        /// Registers the open Excel workbooks.
         /// </summary>
         public void RegisterOpenDocuments()
         {
-            using (var documents = excelApplication.Workbooks.WithComCleanup())
+            foreach (var wb in excelApplication.Workbooks.ComLinq<Workbook>())
             {
-                foreach (Workbook document in documents.Resource)
-                {
-                    using (var windows = document.Windows.WithComCleanup())
-                    {
-                        foreach (Window window in windows.Resource)
-                        {
-                            ExcelApplicationWindowActivate(document, window);
-                        }
-                    }
-                }
+                OnNewWorkbook(wb);
             }
         }
     }
