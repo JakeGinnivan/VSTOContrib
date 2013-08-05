@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Office.Tools;
 
@@ -12,8 +13,9 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         private readonly List<CustomTaskPane> customTaskPanes;
         private bool disposed;
 
-        public OneToManyCustomTaskPaneAdapter(CustomTaskPane original)
+        public OneToManyCustomTaskPaneAdapter(CustomTaskPane original, object viewContext)
         {
+            ViewContext = viewContext;
             this.original = original;
             customTaskPanes = new List<CustomTaskPane>();
             Add(original);
@@ -101,6 +103,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
+        public object ViewContext { get; private set; }
+
         public UserControl Control
         {
             get { return original.Control; }
@@ -160,10 +164,17 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         public void CleanupView(object view)
         {
             if (disposed) return;
-            foreach (var customTaskPane in customTaskPanes.Where(customTaskPane => customTaskPane.Window == view))
+            foreach (var customTaskPane in customTaskPanes)
             {
+                try
+                {
+                    var taskPaneWindow = customTaskPane.Window;
+                    if (taskPaneWindow != view) continue;
+                    customTaskPane.Dispose();
+                }
+                catch (COMException){}
                 customTaskPanes.Remove(customTaskPane);
-                customTaskPane.Dispose();
+                CleanupView(view);
                 break;
             }
         }

@@ -20,7 +20,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
         }
 
-        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view)
+        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view, object viewContext)
         {
             var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
             if (registersCustomTaskPanes == null) return;
@@ -36,7 +36,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                             registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
 
                             var taskPane = Register(view, taskPaneRegistrationInfo);
-                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane);
+                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext);
 
                             if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
                                 ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
@@ -75,6 +75,15 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v=>v))
             {
                 adapter.CleanupView(view);
+            }
+        }
+
+        public void ChangeVisibilityForContext(object context, bool visible)
+        {
+            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v).Where(v=>v.ViewContext == context))
+            {
+                //TODO Remember what it was 
+                adapter.Visible = visible;
             }
         }
     }

@@ -3,14 +3,13 @@ using System;
 namespace VSTOContrib.Core.RibbonFactory
 {
     /// <summary>
-    /// 
+    /// Arguments for a new View being Opened
     /// </summary>
-    /// <typeparam name="TRibbonTypes"></typeparam>
     public class NewViewEventArgs<TRibbonTypes> : EventArgs
     {
-        private readonly object _viewInstance;
-        private readonly object _viewContext;
-        private readonly TRibbonTypes _ribbonType;
+        readonly object viewInstance;
+        readonly object viewContext;
+        readonly TRibbonTypes ribbonType;
 
         /// <summary>
         /// 
@@ -20,9 +19,9 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="ribbonType"></param>
         public NewViewEventArgs(object viewInstance, object viewContext, TRibbonTypes ribbonType)
         {
-            _viewInstance = viewInstance;
-            _viewContext = viewContext;
-            _ribbonType = ribbonType;
+            this.viewInstance = viewInstance;
+            this.viewContext = viewContext;
+            this.ribbonType = ribbonType;
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         public TRibbonTypes RibbonType
         {
-            get { return _ribbonType; }
+            get { return ribbonType; }
         }
 
         /// <summary>
@@ -38,14 +37,14 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         public object ViewInstance
         {
-            get { return _viewInstance; }
+            get { return viewInstance; }
         }
 
         ///<summary>
         ///</summary>
         public object ViewContext
         {
-            get { return _viewContext; }
+            get { return viewContext; }
         }
 
         /// <summary>

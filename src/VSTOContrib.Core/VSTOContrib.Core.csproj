@@ -85,6 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RibbonFactory\HideCustomTaskPanesForContextEventArgs.cs" />
     <Compile Include="RibbonFactory\Internal\CallbackTarget.cs" />
     <Compile Include="RibbonFactory\Internal\ControlCallbackLookup.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewContextProvider.cs" />
