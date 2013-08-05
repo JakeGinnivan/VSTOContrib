@@ -87,6 +87,11 @@ namespace VSTOContrib.Word.RibbonFactory
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
         /// <summary>
+        /// Raise when the custom task panes for a context need to change their visibility
+        /// </summary>
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<WordRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
+
+        /// <summary>
         /// Cleanups the references to a view.
         /// </summary>
         /// <param name="view">The view.</param>

@@ -15,12 +15,9 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <returns></returns>
         public object GetContextForView(object view)
         {
-            //There seems to be no way get the current workbook for a window like every other office app
-            // ThisWorkbook returns the workbook associated with any running code, so *should* be ok..
-
             var window = view as Window;
             if (window != null)
-                return window.Application.ThisWorkbook;
+                return window.Application.ActiveWorkbook;
 
             //var protectedWindow = view as ProtectedViewWindow;
             //if (protectedWindow != null)

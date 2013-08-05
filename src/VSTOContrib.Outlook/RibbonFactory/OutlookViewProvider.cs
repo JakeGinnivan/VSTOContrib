@@ -8,8 +8,8 @@ namespace VSTOContrib.Outlook.RibbonFactory
 {
     internal class OutlookViewProvider : IViewProvider<OutlookRibbonType>
     {
-        private Explorers _explorers;
-        private Inspectors _inspectors;
+        Explorers explorers;
+        Inspectors inspectors;
 
         /// <summary>
         /// 
@@ -17,23 +17,23 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// <param name="outlookApplication"></param>
         public OutlookViewProvider(_Application outlookApplication) 
         {
-            _explorers = outlookApplication.Explorers;
-            _inspectors = outlookApplication.Inspectors;
+            explorers = outlookApplication.Explorers;
+            inspectors = outlookApplication.Inspectors;
         }
 
         private void RegisterExplorers()
         {
-            _explorers.NewExplorer += NewExplorer;
+            explorers.NewExplorer += NewExplorer;
 
-            foreach (Explorer explorer in _explorers)
+            foreach (Explorer explorer in explorers)
                 NewExplorer(explorer);
         }
 
         private void RegisterInspectors()
         {
-            _inspectors.NewInspector += NewInspector;
+            inspectors.NewInspector += NewInspector;
 
-            foreach (Inspector inspector in _inspectors)
+            foreach (Inspector inspector in inspectors)
                 NewInspector(inspector);
         }
 
@@ -98,6 +98,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
         public event EventHandler<NewViewEventArgs<OutlookRibbonType>> NewView;
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<OutlookRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
 
         public void CleanupReferencesTo(object view, object context)
         {
@@ -105,12 +106,12 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
         public void Dispose()
         {
-            _explorers.NewExplorer -= NewExplorer;
-            _inspectors.NewInspector -= NewInspector;
-            _explorers.ReleaseComObject();
-            _inspectors.ReleaseComObject();
-            _explorers = null;
-            _inspectors = null;
+            explorers.NewExplorer -= NewExplorer;
+            inspectors.NewInspector -= NewInspector;
+            explorers.ReleaseComObject();
+            inspectors.ReleaseComObject();
+            explorers = null;
+            inspectors = null;
         }
     }
 }

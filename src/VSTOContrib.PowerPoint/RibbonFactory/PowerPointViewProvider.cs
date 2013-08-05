@@ -7,7 +7,7 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 namespace VSTOContrib.PowerPoint.RibbonFactory
 {
     /// <summary>
-    /// 
+    /// PowerPoint View Provider
     /// </summary>
     public class PowerPointViewProvider : IViewProvider<PowerPointRibbonType>
     {
@@ -59,6 +59,8 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// Occurs when [view closed].
         /// </summary>
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
+
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<PowerPointRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

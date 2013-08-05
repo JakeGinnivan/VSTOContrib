@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace AddTextAddin.Properties {
+    using System;
     
     
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.Wpf;
 using VSTOContrib.PowerPoint.RibbonFactory;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
