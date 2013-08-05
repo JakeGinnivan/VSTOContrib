@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Office.Interop.Excel;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
@@ -38,7 +39,7 @@ namespace VSTOContrib.Excel.RibbonFactory
             foreach (var window in windows)
             {
                 handler(this, new ViewClosedEventArgs(window, e.Workbook));
-                if (!excelApplication.ShowWindowsInTaskbar)
+                if (!IsMdi())
                     window.ReleaseComObject();
             }
             workbooks.Remove(e.Workbook);
@@ -59,18 +60,16 @@ namespace VSTOContrib.Excel.RibbonFactory
             if (!workbooks.ContainsKey(wb))
                 workbooks.Add(wb, new List<Window>());
 
-            if (excelApplication.ShowWindowsInTaskbar)
+            if (IsMdi())
             {
                 if (singleWindow == null)
-                {
                     singleWindow = wb.Windows[1];
-                }
                 workbooks[wb].Add(singleWindow);
                 handler(this, new NewViewEventArgs<ExcelRibbonType>(singleWindow, wb, ExcelRibbonType.ExcelWorkbook));
             }
             else
             {
-                foreach (var window in wb.Windows.ComLinq<Window>())
+                foreach (Window window in wb.Windows)
                 {
                     workbooks[wb].Add(window);
                     handler(this, new NewViewEventArgs<ExcelRibbonType>(window, wb, ExcelRibbonType.ExcelWorkbook));
@@ -79,14 +78,34 @@ namespace VSTOContrib.Excel.RibbonFactory
 
             wb.WindowActivate += wn =>
             {
-                if (excelApplication.ShowWindowsInTaskbar && !workbooks[wb].Contains(singleWindow))
+                if (IsMdi() && !workbooks[wb].Contains(singleWindow))
                     workbooks[wb].Add(singleWindow);
-                if (!excelApplication.ShowWindowsInTaskbar && !workbooks[wb].Contains(wn))
-                    workbooks[wb].Add(wn);
-                
-                UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
+                if (!IsMdi() && !workbooks[wb].Contains(wn))
+                {
+                    var windows = workbooks[wb];
+                    if (windows.All(w => w.Hwnd != wn.Hwnd))
+                    {
+                        windows.Add(wn);
+                        handler(this, new NewViewEventArgs<ExcelRibbonType>(wn, wb, ExcelRibbonType.ExcelWorkbook));
+                    }
+                }
+
+                if (IsMdi())
+                    UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
             };
-            wb.WindowDeactivate += wn => UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, false));
+            wb.WindowDeactivate += wn =>
+            {
+                if (IsMdi())
+                {
+                    var args = new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, false);
+                    UpdateCustomTaskPanesVsibilityForContext(this, args);
+                }
+            };
+        }
+
+        bool IsMdi()
+        {
+            return excelApplication.ShowWindowsInTaskbar && new Version(excelApplication.Version).Major <= 14;
         }
 
         /// <summary>
