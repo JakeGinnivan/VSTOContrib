@@ -83,7 +83,7 @@ namespace VSTOContrib.Excel.RibbonFactory
                 if (!IsMdi() && !workbooks[wb].Contains(wn))
                 {
                     var windows = workbooks[wb];
-                    if (windows.All(w => w.Hwnd != wn.Hwnd))
+                    if (windows.All(w => ((dynamic)w).Hwnd != ((dynamic)wn).Hwnd))
                     {
                         windows.Add(wn);
                         handler(this, new NewViewEventArgs<ExcelRibbonType>(wn, wb, ExcelRibbonType.ExcelWorkbook));
@@ -105,7 +105,7 @@ namespace VSTOContrib.Excel.RibbonFactory
 
         bool IsMdi()
         {
-            return excelApplication.ShowWindowsInTaskbar && new Version(excelApplication.Version).Major <= 14;
+            return new Version(excelApplication.Version).Major <= 14;
         }
 
         /// <summary>
