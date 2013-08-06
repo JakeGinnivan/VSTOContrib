@@ -6,10 +6,11 @@
     <title>VSTOContrib.{{Application}}</title>
     <authors>Jake Ginnivan</authors>
     <owners>Jake Ginnivan</owners>
-    <projectUrl>http://vstocontrib.codeplex.com/</projectUrl>
+    <projectUrl>https://github.com/JakeGinnivan/VSTOContrib</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Makes VSTO development with {{Application}} far nicer, support DI/IoC, ViewModel per context (Document, Workbook, ApointmentItem etc), WPF like binding in RibbonXML, WPF Support and more!</description>
     <tags>VSTO,Office,{{Application}}</tags>
+    <releaseNotes>Many bug fixes, Office 2013 support added, 2007 support dropped (might still work, untested). Simplfied setup</releaseNotes>
   <frameworkAssemblies>
     <frameworkAssembly assemblyName="PresentationCore" targetFramework="net40" />
     <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net40" />
