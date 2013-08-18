@@ -8,6 +8,7 @@
     <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
+    <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
 
     <!--Compile-->
@@ -39,14 +40,14 @@
     </PropertyGroup>
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
     
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
     
     <Copy SourceFiles="$(Root)build\install.ps1"
           DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
@@ -91,6 +92,6 @@
 
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) v$(Version).zip" />
+         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) v$(Version).zip" />
   </Target>
 </Project>
