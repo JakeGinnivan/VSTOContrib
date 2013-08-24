@@ -279,6 +279,7 @@ namespace VSTOContrib.Core.RibbonFactory
                 foreach (XElement xElement in xElements)
                 {
                     XAttribute elementId = xElement.Attribute(XName.Get("id"));
+                    XAttribute elementQId = xElement.Attribute(XName.Get("idQ"));
                     
                     //Go through each possible callback, Concat with common methods on all controls
                     foreach (string controlCallback in controlCallbackLookup.GetVstoControlCallbacks(ribbonControl))
@@ -287,10 +288,10 @@ namespace VSTOContrib.Core.RibbonFactory
                         XAttribute callbackAttribute = xElement.Attribute(XName.Get(controlCallback));
 
                         if (callbackAttribute == null) continue;
-                        if (elementId == null)
+                        if (elementId == null && elementQId == null)
                         {
                             throw new InvalidOperationException(string.Format(
-                                "VSTO Contrib Requires controls to have an id when callbacks are registered. Control='{0}', Callback='{1}'", 
+                                "VSTO Contrib Requires controls to have an id or an idQ when callbacks are registered. Control='{0}', Callback='{1}'", 
                                 ribbonControl, controlCallback));
                         }
 
@@ -305,8 +306,9 @@ namespace VSTOContrib.Core.RibbonFactory
                         string callbackTag = BuildTag(ribbonTypes, elementId, factoryMethodName);
                         tagToCallbackTargetLookup.Add(callbackTag,
                                                        new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
-                        xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + elementId.Value));
-                        ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, elementId.Value);
+                        var id = (elementId ?? elementQId).Value;
+                        xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + id));
+                        ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, id);
                     }
                 }
             }
