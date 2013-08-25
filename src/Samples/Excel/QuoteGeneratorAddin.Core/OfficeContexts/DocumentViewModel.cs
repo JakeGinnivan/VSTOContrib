@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
+using QuoteGeneratorAddin.Core.Properties;
+using stdole;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -32,6 +35,8 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
         {
             workbook = context as Workbook;
         }
+
+        public Bitmap ShowPanelImage { get { return Resources.icon; } }
 
         public bool RibbonVisible
         {

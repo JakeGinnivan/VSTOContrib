@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using stdole;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
@@ -380,14 +380,15 @@ namespace VSTOContrib.Core.RibbonFactory
             return (int)ribbonFactoryController.InvokeGet(control, () => GetItemHeight(control));
         }
 
+#if OFFICE2007
         /// <summary>
         /// GetImage
         /// </summary>
         /// <param name="control">The control.</param>
         /// <returns></returns>
-        public IPictureDisp GetImage(IRibbonControl control)
+        public stdole.IPictureDisp GetImage(IRibbonControl control)
         {
-            return (IPictureDisp)ribbonFactoryController.InvokeGet(control, () => GetImage(null));
+            return (stdole.IPictureDisp)ribbonFactoryController.InvokeGet(control, () => GetImage(null));
         }
 
         /// <summary>
@@ -396,11 +397,32 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <param name="control">The control.</param>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public IPictureDisp GetItemImage(IRibbonControl control, int index)
+        public stdole.IPictureDisp GetItemImage(IRibbonControl control, int index)
         {
-            return (IPictureDisp)ribbonFactoryController.InvokeGet(control, () => GetItemImage(null, 0), index);
+            return (stdole.IPictureDisp)ribbonFactoryController.InvokeGet(control, () => GetItemImage(null, 0), index);
+        }
+#else
+        /// <summary>
+        /// GetImage
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns></returns>
+        public Bitmap GetImage(IRibbonControl control)
+        {
+            return (Bitmap)ribbonFactoryController.InvokeGet(control, () => GetImage(null));
         }
 
+        /// <summary>
+        /// GetItemImage
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public Bitmap GetItemImage(IRibbonControl control, int index)
+        {
+            return (Bitmap)ribbonFactoryController.InvokeGet(control, () => GetItemImage(null, 0), index);
+        }
+#endif
         /// <summary>
         /// OnTextChanged callback
         /// </summary>

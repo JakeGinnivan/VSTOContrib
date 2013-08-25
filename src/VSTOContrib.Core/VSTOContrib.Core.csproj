@@ -11,6 +11,7 @@
     <RootNamespace>VSTOContrib.Core</RootNamespace>
     <AssemblyName>VSTOContrib.Core</AssemblyName>
     <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2013</TargetOfficeVersion>
+    <Office2007 Condition="$(TargetOfficeVersion)=='2007'">TRUE</Office2007>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
