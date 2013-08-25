@@ -129,7 +129,7 @@ namespace MyAddin.Core
                 if (_panelShown == value) return;
                 _panelShown = value;
                 _myAddinTaskPane.Visible = value;
-                RaisePropertyChanged(()=>PanelShown);
+                OnPropertyChanged(()=>PanelShown);
             }
         }
 
@@ -157,7 +157,7 @@ namespace MyAddin.Core
         private void TaskPaneVisibleChanged(object sender, EventArgs e)
         {
             _panelShown = _myAddinTaskPane.Visible;
-            RaisePropertyChanged(()=>PanelShown);
+            OnPropertyChanged(()=>PanelShown);
         }
     }
 }
