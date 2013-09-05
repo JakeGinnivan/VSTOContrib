@@ -34,15 +34,18 @@ namespace VSTOContrib.Excel.RibbonFactory
             var handler = ViewClosed;
             if (handler == null) return;
 
-            var windows = workbooks[e.Workbook];
-
-            foreach (var window in windows)
+            if (workbooks.ContainsKey(e.Workbook))
             {
-                handler(this, new ViewClosedEventArgs(window, e.Workbook));
-                if (!IsMdi())
-                    window.ReleaseComObject();
+                var windows = workbooks[e.Workbook];
+
+                foreach (var window in windows)
+                {
+                    handler(this, new ViewClosedEventArgs(window, e.Workbook));
+                    if (!IsMdi())
+                        window.ReleaseComObject();
+                }
+                workbooks.Remove(e.Workbook);
             }
-            workbooks.Remove(e.Workbook);
         }
 
         /// <summary>
