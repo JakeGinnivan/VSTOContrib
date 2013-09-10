@@ -303,10 +303,9 @@ namespace VSTOContrib.Core.RibbonFactory
 
                         //Set the tag attribute of the element, this is needed to know where to 
                         // direct the callback
-                        string callbackTag = BuildTag(ribbonTypes, elementId, factoryMethodName);
-                        tagToCallbackTargetLookup.Add(callbackTag,
-                                                       new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
                         var id = (elementId ?? elementQId).Value;
+                        string callbackTag = BuildTag(ribbonTypes, id, factoryMethodName);
+                        tagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + id));
                         ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, id);
                     }
@@ -314,9 +313,9 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        static string BuildTag(TRibbonTypes viewModelType, XAttribute elementId, string factoryMethodName)
+        static string BuildTag(TRibbonTypes viewModelType, string elementId, string factoryMethodName)
         {
-            return viewModelType + elementId.Value + factoryMethodName;
+            return viewModelType + elementId + factoryMethodName;
         }
 
         static IEnumerable<Type> GetTRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)
