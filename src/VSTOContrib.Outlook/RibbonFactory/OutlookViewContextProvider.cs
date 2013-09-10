@@ -21,7 +21,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
             var explorer = view as Explorer;
             if (explorer != null)
-                return explorer.CurrentFolder;
+                return explorer;
 
             var selection = view as Selection;
             if (selection != null)

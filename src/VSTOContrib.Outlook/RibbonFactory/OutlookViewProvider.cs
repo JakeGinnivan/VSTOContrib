@@ -61,14 +61,14 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, wrapper.CurrentContext, OutlookRibbonType.OutlookExplorer);
+            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, explorer, OutlookRibbonType.OutlookExplorer);
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
                 explorer.ReleaseComObject();
         }
 
-        private void ExplorerClosed(object sender, ExplorerClosedEventArgs e)
+        private void ExplorerClosed(object sender, ExplorerEventArgs e)
         {
             var wrapper = (ExplorerWrapper)sender;
             wrapper.Closed -= ExplorerClosed;
@@ -76,7 +76,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var handler = ViewClosed;
 
             if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Explorer, e.CurrentContext));
+                handler(this, new ViewClosedEventArgs(e.Explorer, e.Explorer));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)

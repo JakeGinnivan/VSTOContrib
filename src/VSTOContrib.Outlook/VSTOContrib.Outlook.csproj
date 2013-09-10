@@ -21,7 +21,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\VSTOContrib.Outlook.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,7 +64,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
-  <ItemGroup>    
+  <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -81,7 +83,7 @@
     </Compile>
     <Compile Include="CancelEventArgs.cs" />
     <Compile Include="ComComponentCategoriesManager.cs" />
-    <Compile Include="ExplorerClosedEventArgs.cs" />
+    <Compile Include="ExplorerEventArgs.cs" />
     <Compile Include="ExplorerWrapper.cs" />
     <Compile Include="InspectorClosedEventArgs.cs" />
     <Compile Include="InspectorWrapper.cs" />

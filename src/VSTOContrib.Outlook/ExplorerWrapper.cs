@@ -16,19 +16,12 @@ namespace VSTOContrib.Outlook
         {
             Explorer = explorer;
             ((ExplorerEvents_10_Event)Explorer).Close += ExplorerClose;
-            Explorer.FolderSwitch += ExplorerOnFolderSwitch;
-            CurrentContext = Explorer.CurrentFolder;
-        }
-
-        private void ExplorerOnFolderSwitch()
-        {
-            CurrentContext = Explorer.CurrentFolder;
         }
 
         /// <summary>
         /// Occurs when inspector is closed.
         /// </summary>
-        public event EventHandler<ExplorerClosedEventArgs> Closed;
+        public event EventHandler<ExplorerEventArgs> Closed;
 
         /// <summary>
         /// Gets the inspector.
@@ -36,18 +29,13 @@ namespace VSTOContrib.Outlook
         /// <value>The inspector.</value>
         public Explorer Explorer { get; private set; }
 
-        /// <summary>
-        /// The current folder relating to the explorer
-        /// </summary>
-        public MAPIFolder CurrentContext { get; private set; }
-
         private void ExplorerClose()
         {
             ((ExplorerEvents_10_Event)Explorer).Close -= ExplorerClose;
 
             var handler = Closed;
             if (handler != null) 
-                Closed(this, new ExplorerClosedEventArgs(Explorer, CurrentContext));
+                Closed(this, new ExplorerEventArgs(Explorer));
             Explorer = null;
         }
     }
