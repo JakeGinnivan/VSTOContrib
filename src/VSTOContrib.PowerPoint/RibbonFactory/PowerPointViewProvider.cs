@@ -60,7 +60,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// </summary>
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<PowerPointRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<PowerPointRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

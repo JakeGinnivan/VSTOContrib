@@ -98,7 +98,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
         public event EventHandler<NewViewEventArgs<OutlookRibbonType>> NewView;
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<OutlookRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<OutlookRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
 
         public void CleanupReferencesTo(object view, object context)
         {

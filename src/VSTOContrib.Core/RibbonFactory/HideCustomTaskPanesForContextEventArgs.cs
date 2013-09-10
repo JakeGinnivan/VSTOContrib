@@ -3,7 +3,7 @@ using System;
 namespace VSTOContrib.Core.RibbonFactory
 {
     /// <summary>
-    /// Arguments for the UpdateCustomTaskPanesVsibilityForContext event
+    /// Arguments for the UpdateCustomTaskPanesVisibilityForContext event
     /// </summary>
     public class HideCustomTaskPanesForContextEventArgs<TRibbonTypes> : EventArgs
     {

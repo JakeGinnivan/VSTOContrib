@@ -60,11 +60,11 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             this.viewProvider.NewView += ViewProviderNewView;
             this.viewProvider.ViewClosed += ViewProviderViewClosed;
-            this.viewProvider.UpdateCustomTaskPanesVsibilityForContext += 
-                ViewProviderOnUpdateCustomTaskPanesVsibilityForContext;
+            this.viewProvider.UpdateCustomTaskPanesVisibilityForContext += 
+                ViewProviderOnUpdateCustomTaskPanesVisibilityForContext;
         }
 
-        void ViewProviderOnUpdateCustomTaskPanesVsibilityForContext(object sender, 
+        void ViewProviderOnUpdateCustomTaskPanesVisibilityForContext(object sender, 
             HideCustomTaskPanesForContextEventArgs<TRibbonTypes> hideCustomTaskPanesForContextEventArgs)
         {
             customTaskPaneRegister.ChangeVisibilityForContext(hideCustomTaskPanesForContextEventArgs.Context,

@@ -94,14 +94,14 @@ namespace VSTOContrib.Excel.RibbonFactory
                 }
 
                 if (IsMdi())
-                    UpdateCustomTaskPanesVsibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
+                    UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
             };
             wb.WindowDeactivate += wn =>
             {
                 if (IsMdi())
                 {
                     var args = new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, false);
-                    UpdateCustomTaskPanesVsibilityForContext(this, args);
+                    UpdateCustomTaskPanesVisibilityForContext(this, args);
                 }
             };
         }
@@ -123,7 +123,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility
         /// </summary>
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>> UpdateCustomTaskPanesVsibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

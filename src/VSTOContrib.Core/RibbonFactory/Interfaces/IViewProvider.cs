@@ -26,7 +26,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility
         /// </summary>
-        event EventHandler<HideCustomTaskPanesForContextEventArgs<TRibbonTypes>> UpdateCustomTaskPanesVsibilityForContext;
+        event EventHandler<HideCustomTaskPanesForContextEventArgs<TRibbonTypes>> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Unregister any event handlers, and release any references to a view instance
