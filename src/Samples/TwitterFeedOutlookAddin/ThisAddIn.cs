@@ -5,6 +5,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using TwitterFeedOutlookAddin.Core;
 using TwitterFeedOutlookAddin.Core.Services;
+using VSTOContrib.Autofac;
 using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -33,11 +34,9 @@ namespace TwitterFeedOutlookAddin
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<TwitterService>().As<ITwitterService>();
-            containerBuilder.RegisterType<ContactFeed>()
-                .As<IRibbonViewModel>()
-                .AsSelf();
+            containerBuilder.RegisterRibbonViewModels(typeof(ContactFeed).Assembly);
             container = containerBuilder.Build();
-            return new OutlookRibbonFactory(new DefaultViewModelFactory(), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(ContactFeed).Assembly);
+            return new OutlookRibbonFactory(new AutofacViewModelFactory(container), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(ContactFeed).Assembly);
         }
 
         private void InternalStartup()
