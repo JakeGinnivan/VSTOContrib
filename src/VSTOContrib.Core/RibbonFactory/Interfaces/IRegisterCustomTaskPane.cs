@@ -19,5 +19,5 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     /// <summary>
     /// Allows the registration of custom task pane(s)
     /// </summary>
-    public delegate ICustomTaskPaneWrapper Register(Func<UserControl> controlFactory, string title);
+    public delegate ICustomTaskPaneWrapper Register(Func<UserControl> controlFactory, string title, bool initallyVisible = true);
 }
