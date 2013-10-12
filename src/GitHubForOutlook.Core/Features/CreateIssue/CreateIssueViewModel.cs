@@ -31,6 +31,11 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
             {
                 var createdIssue = await new CreateIssuesApi(githubApi.Context).CreateIssue(SelectedRepository, IssueTitle, IssueDescription);
                 currentMailItem.UserProperties.SetPropertyValue("GitHubIssueId", OlUserPropertyType.olNumber, createdIssue.Id, false);
+                var reply = currentMailItem.ReplyAll();
+                reply.Body = string.Format("I have created an issue at {0} to track this issue.\r\n\r\nThanks for reporting it.", 
+                    createdIssue.HtmlUrl);
+                reply.Display(Modal: false);
+
                 taskPane.Visible = false;
             }
             finally
@@ -51,9 +56,8 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
         public async void CreateIssueFor(MailItem selectedMailItem)
         {
             IssueTitle = selectedMailItem.Subject;
-            IssueDescription = string.Format("Reported by email from {0} ({1}) at {2}\r\n\r\n{3}",
+            IssueDescription = string.Format("Reported by email from {0} at {1}\r\n\r\n{2}",
                 selectedMailItem.SenderName,
-                selectedMailItem.SenderEmailAddress.Replace("@", " at ").Replace(".", " dot "),
                 selectedMailItem.ReceivedTime.ToString("U"),
                 selectedMailItem.Body);
             currentMailItem = selectedMailItem;

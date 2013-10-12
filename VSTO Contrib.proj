@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="BuildAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="BuildAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\build\lib\</MSBuildCommunityTasksPath>
     <Root>$(MSBuildProjectDirectory)\</Root>
@@ -44,22 +44,25 @@
         Configuration=$(Configuration)
       </CommonProperties>
     </PropertyGroup>
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2007;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2007;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2007;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2007;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2007;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2007;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2007;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2007;$(CommonProperties)" ToolsVersion="4.0" />
 
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2010;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2010;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2010;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2010;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2010;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2010;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2010;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2010;$(CommonProperties)" ToolsVersion="4.0" />
 
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2013;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2013;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2013;$(CommonProperties)" />
-    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2013;$(CommonProperties)" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;TargetOfficeVersion=2013;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;TargetOfficeVersion=2013;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;TargetOfficeVersion=2013;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;TargetOfficeVersion=2013;$(CommonProperties)" ToolsVersion="4.0" />
 
-    <MSBuild Projects="$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;" />
+    <MSBuild Projects="$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;" ToolsVersion="4.0" />
+
+    <MSBuild Projects="$(Root)src\Samples\Outlook\GitHubForOutlookAddin\GitHubForOutlookAddin.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;"
+             Targets="Publish" ToolsVersion="4.0"/>
 
     <PropertyGroup>
       <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>

@@ -15,7 +15,7 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
 
         public async Task<IEnumerable<Repository>> GetMyRepositories()
         {
-            HttpWebRequest request = CreateRequest("/user/repos");
+            HttpWebRequest request = CreateRequest("/user/repos?sort=updated");
             var apiResponse = await Complete<IEnumerable<Repository>>(request);
             return apiResponse.Result;
         }
