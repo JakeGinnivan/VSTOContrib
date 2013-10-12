@@ -28,7 +28,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             if (!registrationInfo.ContainsKey(ribbonViewModel))
             {
                 registersCustomTaskPanes.RegisterTaskPanes(
-                    (controlFactory, title) =>
+                    (controlFactory, title, initiallyVisible) =>
                         {
                             var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
                             if (!registrationInfo.ContainsKey(ribbonViewModel))
@@ -36,7 +36,10 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                             registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
 
                             var taskPane = Register(view, taskPaneRegistrationInfo);
-                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext);
+                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext)
+                            {
+                                Visible = initiallyVisible
+                            };
 
                             if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
                                 ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
