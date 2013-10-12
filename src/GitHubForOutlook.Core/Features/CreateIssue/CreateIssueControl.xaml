@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="GitHubForOutlook.Core.Features.CreateIssue.CreateIssueControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:createIssue="clr-namespace:GitHubForOutlook.Core.Features.CreateIssue"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance createIssue:CreateIssueViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConveter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Project"/>
+        <ComboBox ItemsSource="{Binding Repositories}" DisplayMemberPath="Name" Text="{Binding SelectedRepository}"
+                  IsEditable="True" Grid.Row="1"/>
+        <Label Content="Issue Title" Grid.Row="2"/>
+        <TextBox Text="{Binding IssueTitle}" Grid.Row="3"/>
+        <Label Content="Issue Description" Grid.Row="4"/>
+        <TextBox Text="{Binding IssueDescription}" AcceptsReturn="True" MinHeight="80" TextWrapping="Wrap" Grid.Row="5"/>
+
+        <ProgressBar Height="5" Grid.Row="6" IsIndeterminate="True" Margin="10" Visibility="{Binding CreatingIssue, Converter={StaticResource BooleanToVisibilityConveter}}"/>
+        <Button HorizontalAlignment="Center" Grid.Row="7" Content="Create Issue" Margin="5" Command="{Binding CreateIssueCommand}"></Button>
+    </Grid>
+</UserControl>
