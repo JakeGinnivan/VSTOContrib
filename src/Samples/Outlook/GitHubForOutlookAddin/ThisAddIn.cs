@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using GitHubForOutlook.Core;
-using Microsoft.Office.Tools;
 using VSTOContrib.Autofac;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Outlook.RibbonFactory;
@@ -28,7 +27,7 @@ namespace GitHubForOutlookAddin
 
             return new OutlookRibbonFactory(
                 new AutofacViewModelFactory(new AddinModule()), 
-                new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), 
+                () => CustomTaskPanes, 
                 Globals.Factory, typeof(AddinModule).Assembly);
         }
 

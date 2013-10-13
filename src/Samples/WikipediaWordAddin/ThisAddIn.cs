@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
 using VSTOContrib.Autofac;
-using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Word.RibbonFactory;
 using WikipediaWordAddin.Core;
@@ -28,7 +26,7 @@ namespace WikipediaWordAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            return new WordRibbonFactory(new AutofacViewModelFactory(new AddinModule()), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, typeof(AddinModule).Assembly);
+            return new WordRibbonFactory(new AutofacViewModelFactory(new AddinModule()), () => CustomTaskPanes, Globals.Factory, typeof(AddinModule).Assembly);
         }
 
         /// <summary>

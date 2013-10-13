@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

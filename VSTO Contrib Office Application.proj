@@ -3,13 +3,27 @@
   <UsingTask
     AssemblyFile="$(Root)lib\xunit.net\xunit.runner.msbuild.dll"
     TaskName="Xunit.Runner.MSBuild.xunit"/>
-  
-  <Target Name="Compile">
+
+  <Target Name="Clean">
     <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
+
+    <ItemGroup>
+      <ProjectFiles Include="$(Root)**\*.*proj" />
+      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)bin')" />
+      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)obj')" />
+    </ItemGroup>
+
+    <Delete Files="@(OldArtifacts)" ContinueOnError="true" />
+    <RemoveDir Directories="build\Artifacts" ContinueOnError="true" />
+    <RemoveDir Directories="@(OldDirectories)" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="Compile" DependsOnTargets="Clean">
+    
 
     <!--Compile-->
     <ItemGroup>
@@ -40,25 +54,25 @@
     </PropertyGroup>
 
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.Core.dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.Core.pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.Core.pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.Core.pdb"/>
     
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).dll"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).dll"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).dll"/>
     <Copy SourceFiles="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\$(Configuration)\VSTOContrib.$(OfficeApplication).pdb"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\bin\$(TargetOfficeVersion)\VSTOContrib.$(OfficeApplication).pdb"/>
+          DestinationFiles="$(ApplicationNuGetFolderName)lib\net40\VSTOContrib.$(OfficeApplication).pdb"/>
     
-    <Copy SourceFiles="$(Root)build\install.ps1"
-          DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>
+    <!--<Copy SourceFiles="$(Root)build\install.ps1"
+          DestinationFiles="$(ApplicationNuGetFolderName)tools\install.ps1"/>-->
     <Copy SourceFiles="$(Root)build\VSTOContrib.nuspec"
           DestinationFiles="$(NuGetManifest)"/>
     <Copy SourceFiles="$(Root)build\Readme.txt"
           DestinationFiles="$(ApplicationNuGetFolderName)Readme.txt"/>
 
-    <FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
+    <!--<FileUpdate Files="$(ApplicationNuGetFolderName)tools\Install.ps1"
                 Regex="{{Application}}"
-                ReplacementText="$(OfficeApplication)"/>
+                ReplacementText="$(OfficeApplication)"/>-->
     
     <FileUpdate Files="$(ApplicationNuGetFolderName)Readme.txt"
                 Regex="{{Application}}"

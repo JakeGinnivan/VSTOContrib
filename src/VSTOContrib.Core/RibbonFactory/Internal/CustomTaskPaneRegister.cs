@@ -9,13 +9,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     internal class CustomTaskPaneRegister : ICustomTaskPaneRegister
     {
-        readonly Lazy<CustomTaskPaneCollection> customTaskPaneCollection;
+        readonly Func<CustomTaskPaneCollection> customTaskPaneCollection;
         private readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
         private readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
 
-        public CustomTaskPaneRegister(Lazy<CustomTaskPaneCollection> customTaskPaneCollection)
+        public CustomTaskPaneRegister(Func<object> customTaskPaneCollection)
         {
-            this.customTaskPaneCollection = customTaskPaneCollection;
+            this.customTaskPaneCollection = ()=>(CustomTaskPaneCollection)customTaskPaneCollection();
             registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
             ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
         }
@@ -68,7 +68,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private CustomTaskPane Register(object view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
         {
-            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
+            var taskPane = customTaskPaneCollection().Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
 
             return taskPane;
         }

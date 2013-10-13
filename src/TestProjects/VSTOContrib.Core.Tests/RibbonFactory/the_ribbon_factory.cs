@@ -25,7 +25,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             viewModelFactory = new TestViewModelFactory();
             ribbonFactoryUnderTest = new TestRibbonFactory(
                 viewModelFactory,
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider,
                 new TestContextProvider(),
                 Assembly.GetExecutingAssembly());
@@ -36,7 +36,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(
                 new TestViewModelFactory(), 
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider, new TestContextProvider()));
         }
 
@@ -58,7 +58,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void initialise_throws_when_no_assemblies_specified_to_scan()
         {
             Assert.Throws<InvalidOperationException>(() => new TestRibbonFactory(new TestViewModelFactory(), 
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider, new TestContextProvider()));
         }
 
@@ -188,7 +188,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             ribbonFactoryUnderTest.ClearCurrent();
             var ribbonFactory = new TestRibbonFactory(
                 viewModelFactory,
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider,
                 new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
@@ -221,7 +221,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             ribbonFactoryUnderTest.ClearCurrent();
             var ribbonFactory = new TestRibbonFactory(
                 viewModelFactory,
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
             //Open new view to create a viewmodel for view
@@ -247,7 +247,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             // arrange
             ribbonFactoryUnderTest.ClearCurrent();
             var ribbonFactory = new TestRibbonFactory(viewModelFactory,
-                new Lazy<CustomTaskPaneCollection>(() => Substitute.For<CustomTaskPaneCollection>()),
+                () => Substitute.For<CustomTaskPaneCollection>(),
                 viewProvider, new TestContextProvider(), Assembly.GetExecutingAssembly());
             ribbonFactory.SetApplication(null, AddInBaseFactory.Create());
             //Open new view to create a viewmodel for view
@@ -278,7 +278,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var ribbonControl = Substitute.For<IRibbonControl>();
             ribbonControl.Id.Returns(id);
             ribbonControl.Tag.Returns(tag);
-            ribbonControl.Context.Returns(view);
+            ((object)ribbonControl.Context).Returns(view);
             return ribbonControl;
         }
 

@@ -26,7 +26,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         public PowerPointRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<object> customTaskPaneCollection,
             Factory vstoFactory,
             params Assembly[] assemblies)
             : base(new RibbonFactoryController<PowerPointRibbonType>(assemblies, new PowerPointViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory))
@@ -43,7 +43,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
         public PowerPointRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
             Factory vstoFactory,
             params Assembly[] assemblies)

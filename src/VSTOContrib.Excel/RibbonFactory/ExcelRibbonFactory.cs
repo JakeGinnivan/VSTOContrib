@@ -24,7 +24,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
         /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
-        public ExcelRibbonFactory(IViewModelFactory viewModelFactory, Lazy<CustomTaskPaneCollection> customTaskPaneCollection, Factory vstoFactory, params Assembly[] assemblies)
+        public ExcelRibbonFactory(IViewModelFactory viewModelFactory, Func<object> customTaskPaneCollection, Factory vstoFactory, params Assembly[] assemblies)
             : base(new RibbonFactoryController<ExcelRibbonType>(assemblies, new ExcelViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory))
         {
         }
@@ -39,7 +39,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public ExcelRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
             Factory vstoFactory,
             params Assembly[] assemblies)
