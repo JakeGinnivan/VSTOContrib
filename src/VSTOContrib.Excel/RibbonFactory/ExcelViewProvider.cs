@@ -53,10 +53,11 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            ((AppEvents_Event)excelApplication).NewWorkbook += OnNewWorkbook;
+            ((AppEvents_Event)excelApplication).NewWorkbook += OnInitialise;
+            ((AppEvents_Event)excelApplication).WorkbookOpen += OnInitialise;
         }
 
-        void OnNewWorkbook(Workbook wb)
+        void OnInitialise(Workbook wb)
         {
             var handler = NewView;
             if (handler == null) return;
@@ -150,7 +151,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         {
             foreach (var wb in excelApplication.Workbooks.ComLinq<Workbook>())
             {
-                OnNewWorkbook(wb);
+                OnInitialise(wb);
             }
         }
     }
