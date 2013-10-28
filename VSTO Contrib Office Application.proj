@@ -3,28 +3,23 @@
   <UsingTask
     AssemblyFile="$(Root)lib\xunit.net\xunit.runner.msbuild.dll"
     TaskName="Xunit.Runner.MSBuild.xunit"/>
-
   <Target Name="Clean">
+
+    <ItemGroup>
+      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)bin')" />
+      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)obj')" />
+    </ItemGroup>
+
+    <RemoveDir Directories="@(OldDirectories)" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="Compile">
     <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
-
-    <ItemGroup>
-      <ProjectFiles Include="$(Root)**\*.*proj" />
-      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)bin')" />
-      <OldDirectories Include="@(ProjectFiles->'%(RootDir)%(Directory)obj')" />
-    </ItemGroup>
-
-    <Delete Files="@(OldArtifacts)" ContinueOnError="true" />
-    <RemoveDir Directories="build\Artifacts" ContinueOnError="true" />
-    <RemoveDir Directories="@(OldDirectories)" ContinueOnError="true" />
-  </Target>
-
-  <Target Name="Compile" DependsOnTargets="Clean">
     
-
     <!--Compile-->
     <ItemGroup>
       <ProjectToBuild Include="

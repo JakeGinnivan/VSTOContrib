@@ -25,13 +25,8 @@
     <Message Text="Project root:    $(Root)" />
     <Message Text="Drop path:       build\Artifacts" />
     <Message Text="Office Version:  $(TargetOfficeVersion)" />
-    
-    <!-- Clean up -->
-    <ItemGroup>
-      <FilesToDelete Include="$(Root)**\bin\**\*.*" />
-      <FilesToDelete Include="$(Root)**\obj\**\*.*" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
+
+    <RemoveDir Directories="build\Artifacts" ContinueOnError="true" />
   </Target>
   
   <Target Name="BuildAll" DependsOnTargets="Cleanup">
