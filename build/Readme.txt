@@ -61,7 +61,7 @@ install the QuickStart projects
             new System.Windows.Application { ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown };
 
 		var assemblyContainingViewModels = typeof (ThisAddIn).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
-		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(new VSTOContrib.Core.DefaultViewModelFactory(), new Lazy<Microsoft.Office.Tools.CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, assemblyContainingViewModels);
+		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(new VSTOContrib.Core.DefaultViewModelFactory(), () => CustomTaskPanes, Globals.Factory, assemblyContainingViewModels);
 	}
 
 3. Modify the `ThisAddin_Startup` method and add the following line

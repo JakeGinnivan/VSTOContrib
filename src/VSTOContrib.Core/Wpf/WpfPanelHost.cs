@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using UserControl = System.Windows.Forms.UserControl;
 
 namespace VSTOContrib.Core.Wpf
 {
@@ -33,7 +35,12 @@ namespace VSTOContrib.Core.Wpf
             }
             set
             {
-                elementHost1.Child = value;
+                elementHost1.Child = new ScrollViewer
+                {
+                    Content = value,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                };
                 elementHost1.Width++;
                 elementHost1.Dock = DockStyle.Fill;
             }

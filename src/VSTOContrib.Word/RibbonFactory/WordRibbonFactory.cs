@@ -66,6 +66,7 @@ namespace VSTOContrib.Word.RibbonFactory
         {
             wordViewProvider = new WordViewProvider((Application)application);
             controller.Initialise(wordViewProvider);
+            wordViewProvider.RegisterOpenDocuments();
         }
 
         /// <summary>

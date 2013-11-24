@@ -100,6 +100,7 @@ UpgradeLog*.XML
 # NuGet temporary packages folder
 packages
 
+*.ide
 # any logs
 *.log
 
