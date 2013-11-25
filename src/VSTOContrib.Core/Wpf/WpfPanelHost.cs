@@ -38,7 +38,7 @@ namespace VSTOContrib.Core.Wpf
                 elementHost1.Child = new ScrollViewer
                 {
                     Content = value,
-                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto
                 };
                 elementHost1.Width++;
