@@ -24,7 +24,11 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
         /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         /// <param name="assemblies">Assemblies to scan for view models</param>
-        public WordRibbonFactory(IViewModelFactory viewModelFactory, Lazy<CustomTaskPaneCollection> customTaskPaneCollection, Factory vstoFactory, params Assembly[] assemblies)
+        public WordRibbonFactory(
+            IViewModelFactory viewModelFactory,
+            Func<object> customTaskPaneCollection, 
+            Factory vstoFactory, 
+            params Assembly[] assemblies)
             : base(new RibbonFactoryController<WordRibbonType>(assemblies, new WordViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory))
         {
         }
@@ -39,7 +43,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public WordRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
             Factory vstoFactory,
             params Assembly[] assemblies)
@@ -62,6 +66,7 @@ namespace VSTOContrib.Word.RibbonFactory
         {
             wordViewProvider = new WordViewProvider((Application)application);
             controller.Initialise(wordViewProvider);
+            wordViewProvider.RegisterOpenDocuments();
         }
 
         /// <summary>

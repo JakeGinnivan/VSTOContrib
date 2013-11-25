@@ -29,7 +29,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// <param name="assemblies">Assemblies to scan for view models</param>
         public OutlookRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<object> customTaskPaneCollection,
             Factory vstoFactory, 
             params Assembly[] assemblies)
             : base(new RibbonFactoryController<OutlookRibbonType>(assemblies, new OutlookViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory))
@@ -46,7 +46,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
         public OutlookRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewLocationStrategy viewLocationStrategy,
             Factory vstoFactory, 
             params Assembly[] assemblies)

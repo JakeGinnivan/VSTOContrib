@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using AddTextAddin.Core;
-using Microsoft.Office.Tools;
 using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.PowerPoint.RibbonFactory;
@@ -18,7 +17,7 @@ namespace AddTextAddin
             new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
 		var assemblyContainingViewModels = typeof (PresentationViewModel).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
-		return new PowerPointRibbonFactory(new DefaultViewModelFactory(), new Lazy<CustomTaskPaneCollection>(() => CustomTaskPanes), Globals.Factory, assemblyContainingViewModels);
+		return new PowerPointRibbonFactory(new DefaultViewModelFactory(), () => CustomTaskPanes, Globals.Factory, assemblyContainingViewModels);
 	}
 
         private void ThisAddIn_Startup(object sender, EventArgs e)

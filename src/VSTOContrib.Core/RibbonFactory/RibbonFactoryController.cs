@@ -48,7 +48,7 @@ namespace VSTOContrib.Core.RibbonFactory
             ICollection<Assembly> assemblies,
             IViewContextProvider viewContextProvider,
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection, 
+            Func<object> customTaskPaneCollection, 
             Factory vstoFactory, 
             IViewLocationStrategy viewLocationStrategy = null)
         {

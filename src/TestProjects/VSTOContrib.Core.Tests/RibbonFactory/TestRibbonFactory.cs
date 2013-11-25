@@ -13,7 +13,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 
         public TestRibbonFactory(
             IViewModelFactory viewModelFactory,
-            Lazy<CustomTaskPaneCollection> customTaskPaneCollection,
+            Func<CustomTaskPaneCollection> customTaskPaneCollection,
             IViewProvider<TRibbonType> viewProvider, 
             IViewContextProvider viewContextProvider,
             params Assembly[] assemblies)
