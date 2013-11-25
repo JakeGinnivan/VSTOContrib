@@ -9,7 +9,7 @@ Start a discussion or raise an issue at http://vstocontrib.codeplex.com/ or http
 ------------------------------------------------------------------------------------------
 VSTO Contrib lets you easily unit test, use IoC/DI and develop in a MVVM style within Office Add-ins. 
 
-It supports Outlook, Word, Excel and PowerPoint 2010+, and supports .net 4.0.
+It supports Outlook, Word, Excel and PowerPoint 2013+, and supports .net 4.0.
 
 
 ------------------------------------------------------------------------------------------
@@ -26,6 +26,11 @@ It supports Outlook, Word, Excel and PowerPoint 2010+, and supports .net 4.0.
 ------------------------------------------------------------------------------------------
                                     Breaking Changes
 ------------------------------------------------------------------------------------------
+v0.15
+ - Switched to Embedded Interop Assemblies, you will start getting compiler warnings to switch over to Embedded Interop Assemblies
+   Simply right click on the assembly in question, properties, then set Embed interop assemblies to True 
+
+v0.10
 Since v0.10.x there have been numerous changes to the internals of VSTO Contrib, this
 is to allow full support for Office 2013 and simplify the getting started experience!
 
