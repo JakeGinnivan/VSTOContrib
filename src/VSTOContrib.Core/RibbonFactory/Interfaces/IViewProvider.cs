@@ -2,11 +2,7 @@ using System;
 
 namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="TRibbonTypes"></typeparam>
-    public interface IViewProvider<TRibbonTypes> : IDisposable
+    public interface IViewProvider : IDisposable
     {
         /// <summary>
         /// 
@@ -16,7 +12,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// <summary>
         /// Raise when a new view is created
         /// </summary>
-        event EventHandler<NewViewEventArgs<TRibbonTypes>> NewView;
+        event EventHandler<NewViewEventArgs> NewView;
 
         /// <summary>
         /// Raise when a view is closed, 
@@ -26,7 +22,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility
         /// </summary>
-        event EventHandler<HideCustomTaskPanesForContextEventArgs<TRibbonTypes>> UpdateCustomTaskPanesVisibilityForContext;
+        event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Unregister any event handlers, and release any references to a view instance

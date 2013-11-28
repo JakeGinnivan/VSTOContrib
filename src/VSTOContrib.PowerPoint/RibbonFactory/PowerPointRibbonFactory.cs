@@ -1,10 +1,8 @@
-using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.PowerPoint.RibbonFactory
@@ -17,37 +15,10 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     {
         private PowerPointViewProvider powerPointViewProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PowerPointRibbonFactory"/> class.
-        /// </summary>
-        /// <param name="viewModelFactory">A view model factory</param>
-        /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
-        /// <param name="assemblies">Assemblies to scan for view models</param>
-        /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
         public PowerPointRibbonFactory(
-            IViewModelFactory viewModelFactory,
-            Func<object> customTaskPaneCollection,
-            Factory vstoFactory,
+            AddInBase addInBase,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<PowerPointRibbonType>(assemblies, new PowerPointViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PowerPointRibbonFactory"/> class.
-        /// </summary>
-        /// <param name="viewModelFactory">A view model factory</param>
-        /// <param name="customTaskPaneCollection">A delayed resolution instance of the custom task pane collection of your addin 'new Lazy(()=>CustomTaskPaneCollection)'</param>
-        /// <param name="assemblies">Assemblies to scan for view models</param>
-        /// <param name="vstoFactory">The VSTO factory (Globals.Factory)</param>
-        /// <param name="viewLocationStrategy">The view location strategy, null for default strategy.</param>
-        public PowerPointRibbonFactory(
-            IViewModelFactory viewModelFactory,
-            Func<CustomTaskPaneCollection> customTaskPaneCollection,
-            IViewLocationStrategy viewLocationStrategy,
-            Factory vstoFactory,
-            params Assembly[] assemblies)
-            : base(new RibbonFactoryController<PowerPointRibbonType>(assemblies, new PowerPointViewContextProvider(), viewModelFactory, customTaskPaneCollection, vstoFactory, viewLocationStrategy))
+            : base(addInBase, assemblies, new PowerPointViewContextProvider(), PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
         {
         }
 

@@ -2,7 +2,6 @@
 using System.Windows;
 using QuoteGeneratorAddin.Core;
 using VSTOContrib.Autofac;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Excel.RibbonFactory;
 using Office = Microsoft.Office.Core;
 
@@ -12,7 +11,6 @@ namespace QuoteGeneratorAddin
     {
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
-            RibbonFactory.Current.SetApplication(Application, this);
         }
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)
@@ -26,7 +24,10 @@ namespace QuoteGeneratorAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            return new ExcelRibbonFactory(new AutofacViewModelFactory(new AddinModule()), () => CustomTaskPanes, Globals.Factory, typeof(AddinModule).Assembly);
+            return new ExcelRibbonFactory(this , typeof(AddinModule).Assembly)
+            {
+                ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
+            };
         }
 
         #region VSTO generated code

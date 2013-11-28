@@ -26,6 +26,16 @@ It supports Outlook, Word, Excel and PowerPoint 2013+, and supports .net 4.0.
 ------------------------------------------------------------------------------------------
                                     Breaking Changes
 ------------------------------------------------------------------------------------------
+v1.0.0-RC
+Delete RibbonFactory.Current.SetApplication(Application, this);
+
+    return new WordRibbonFactory(new AutofacViewModelFactory(new AddinModule()), () => CustomTaskPanes, Globals.Factory, typeof(AddinModule).Assembly);
+is now
+    return new WordRibbonFactory(this, typeof(AddinModule).Assembly)
+    {
+        ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
+    };
+
 v0.15
  - Switched to Embedded Interop Assemblies, you will start getting compiler warnings to switch over to Embedded Interop Assemblies
    Simply right click on the assembly in question, properties, then set Embed interop assemblies to True 

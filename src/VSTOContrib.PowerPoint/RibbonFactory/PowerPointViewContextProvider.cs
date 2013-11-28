@@ -1,4 +1,5 @@
 using Microsoft.Office.Interop.PowerPoint;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.PowerPoint.RibbonFactory
@@ -29,9 +30,9 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             return null;
         }
 
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public string GetRibbonTypeForView(object view)
         {
-            return (TRibbonType) (object) PowerPointRibbonType.PowerPointPresentation;
+            return PowerPointRibbonType.PowerPointPresentation.GetEnumDescription();
         }
     }
 }

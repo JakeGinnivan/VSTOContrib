@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using VSTOContrib.Core.Annotations;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
-    internal class ViewModelRibbonTypesLookupProvider
+    class ViewModelRibbonTypesLookupProvider
     {
-        private readonly Dictionary<Type, object> viewModelRibbonTypes = new Dictionary<Type, object>();
+        readonly Dictionary<Type, string[]> viewModelRibbonTypes = new Dictionary<Type, string[]>();
         static ViewModelRibbonTypesLookupProvider instance;
 
         public static ViewModelRibbonTypesLookupProvider Instance
@@ -15,52 +15,28 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             get { return instance ?? (instance = new ViewModelRibbonTypesLookupProvider()); }
         }
 
-        public IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct
+        public string[] GetRibbonTypesFor(Type ribbonViewModel, [CanBeNull] string fallbackType)
         {
-            var enumType = typeof(TRibbonTypes);
-
-            if (!enumType.IsEnum) throw new ArgumentException("TRibbonTypes must be a enum type");
-
-            if (viewModelRibbonTypes.ContainsKey(ribbonViewModel)) return (TRibbonTypes[])viewModelRibbonTypes[ribbonViewModel];
-
-            var viewModelMetaAttributes = (RibbonViewModelAttribute)ribbonViewModel.GetCustomAttributes(typeof(RibbonViewModelAttribute), false).SingleOrDefault();
-            var viewModelType = GetRibbonTypeAttributeValue<TRibbonTypes>(enumType, viewModelMetaAttributes);
-
-            if (viewModelType == null)
-                throw new InvalidOperationException("All IRibbonViewModel's must be marked up with a RibbonViewModel type. For example [OutlookRibbonViewModel(OutlookRibbonType.OutlookContact)]");
-
-            if (!viewModelRibbonTypes.ContainsKey(ribbonViewModel))
+            lock (viewModelRibbonTypes)
             {
-                var ribbonTypesFor = Enum.GetValues(enumType).Cast<object>()
-                    .Where(value => (viewModelType & (int)value) == (int)value)
-                    .Cast<TRibbonTypes>()
+                if (viewModelRibbonTypes.ContainsKey(ribbonViewModel))
+                    return viewModelRibbonTypes[ribbonViewModel];
+
+                var viewModelTypes = ribbonViewModel
+                    .GetCustomAttributes(typeof(RibbonViewModelAttribute), false)
+                    .OfType<RibbonViewModelAttribute>()
+                    .Select(r => r.Type)
                     .ToArray();
 
-                viewModelRibbonTypes.Add(ribbonViewModel, ribbonTypesFor);
+                var ribbonTypesDefined = viewModelTypes.Any();
+                if (!ribbonTypesDefined && fallbackType == null)
+                    throw new InvalidOperationException("All IRibbonViewModel's must be marked up with a RibbonViewModel type. For example [OutlookRibbonViewModel(OutlookRibbonType.OutlookContact)]");
+
+                var ribbonTypes = ribbonTypesDefined ? viewModelTypes : new[] {fallbackType};
+                viewModelRibbonTypes.Add(ribbonViewModel, ribbonTypes);
+
+                return viewModelRibbonTypes[ribbonViewModel];
             }
-
-            return (TRibbonTypes[])viewModelRibbonTypes[ribbonViewModel];
-        }
-
-        static int? GetRibbonTypeAttributeValue<TRibbonTypes>(Type enumType, RibbonViewModelAttribute viewModelMetaAttributes) where TRibbonTypes : struct
-        {
-            var defaultValue = new Lazy<TRibbonTypes?>(() =>
-            {
-                var defaultAttribute = (DefaultValueAttribute)enumType.GetCustomAttributes(typeof(DefaultValueAttribute), false).SingleOrDefault();
-                if (defaultAttribute != null)
-                    return (TRibbonTypes)defaultAttribute.Value;
-                return null;
-            });
-            int? viewModelType;
-
-            if (viewModelMetaAttributes == null && !defaultValue.Value.HasValue)
-                viewModelType = null;
-            else if (viewModelMetaAttributes != null)
-                viewModelType = (int)viewModelMetaAttributes.Type;
-            else
-                viewModelType = (int)(object)defaultValue.Value.Value;
-
-            return viewModelType;
         }
     }
 }

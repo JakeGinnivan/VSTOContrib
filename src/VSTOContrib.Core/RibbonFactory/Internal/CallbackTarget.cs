@@ -2,27 +2,26 @@
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
-    internal class CallbackTarget<TRibbonType> where TRibbonType : struct 
+    internal class CallbackTarget
     {
-        private readonly TRibbonType _ribbonType;
-        private readonly string _method;
+        private readonly string ribbonType;
+        private readonly string method;
 
-        public CallbackTarget(TRibbonType ribbonType, string method)
+        public CallbackTarget(string ribbonType, string method)
         {
-            if (!typeof(TRibbonType).IsEnum) throw new ArgumentException("Ribbon type must be enum");
 
-            _ribbonType = ribbonType;
-            _method = method;
+            this.ribbonType = ribbonType;
+            this.method = method;
         }
 
         public string Method
         {
-            get { return _method; }
+            get { return method; }
         }
 
-        public TRibbonType RibbonType
+        public string RibbonType
         {
-            get { return _ribbonType; }
+            get { return ribbonType; }
         }
     }
 }

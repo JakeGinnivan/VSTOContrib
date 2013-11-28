@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 using AddTextAddin.Core;
-using VSTOContrib.Core;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.PowerPoint.RibbonFactory;
 using Office = Microsoft.Office.Core;
 
@@ -11,18 +9,17 @@ namespace AddTextAddin
     public partial class ThisAddIn
     {
         protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
-	{
-		//Required for WPF support
-        if (System.Windows.Application.Current == null)
-            new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        {
+            //Required for WPF support
+            if (System.Windows.Application.Current == null)
+                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-		var assemblyContainingViewModels = typeof (PresentationViewModel).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
-		return new PowerPointRibbonFactory(new DefaultViewModelFactory(), () => CustomTaskPanes, Globals.Factory, assemblyContainingViewModels);
-	}
+            var assemblyContainingViewModels = typeof(PresentationViewModel).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
+            return new PowerPointRibbonFactory(this, assemblyContainingViewModels);
+        }
 
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
-            RibbonFactory.Current.SetApplication(Application, this);
         }
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)

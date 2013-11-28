@@ -2,60 +2,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.Annotations;
 using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
-    class RibbonXmlRewriter<TRibbonTypes> where TRibbonTypes : struct
+    class RibbonXmlRewriter
     {
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
-        IViewLocationStrategy viewLocationStrategy;
-        readonly ControlCallbackLookup controlCallbackLookup;
-        readonly VstoContribContext<TRibbonTypes> vstoContribContext;
-        readonly ViewModelResolver<TRibbonTypes> ribbonViewModelResolver;
 
-        public RibbonXmlRewriter(IViewLocationStrategy viewLocationStrategy, VstoContribContext<TRibbonTypes> vstoContribContext, ViewModelResolver<TRibbonTypes> ribbonViewModelResolver)
+        readonly ControlCallbackLookup controlCallbackLookup;
+        readonly VstoContribContext vstoContribContext;
+        readonly ViewModelResolver ribbonViewModelResolver;
+
+        public RibbonXmlRewriter(VstoContribContext vstoContribContext, ViewModelResolver ribbonViewModelResolver)
         {
             controlCallbackLookup = new ControlCallbackLookup();
-            this.viewLocationStrategy = viewLocationStrategy;
             this.vstoContribContext = vstoContribContext;
             this.ribbonViewModelResolver = ribbonViewModelResolver;
         }
 
-        /// <summary>
-        ///     Gets or sets the locate view strategy.
-        /// </summary>
-        /// <value>The locate view strategy.</value>
-        public IViewLocationStrategy LocateViewStrategy
+        public void LocateAndRegisterViewXml(
+            Type viewModelType, string loadMethodName,
+            [CanBeNull] string fallbackRibbonType)
         {
-            get { return viewLocationStrategy; }
-            set
-            {
-                if (value == null) return;
-                viewLocationStrategy = value;
-            }
-        }
-
-        /// <summary>
-        ///     Locates the and register view XML.
-        /// </summary>
-        /// <param name="viewModelType">Type of the view model.</param>
-        /// <param name="loadMethodName">Name of the load method.</param>
-        public void LocateAndRegisterViewXml(Type viewModelType, string loadMethodName)
-        {
-            var resourceText = (string)viewLocationStrategy.GetType()
+            var resourceText = (string)vstoContribContext.ViewLocationStrategy.GetType()
                 .GetMethod("LocateViewForViewModel")
                 .MakeGenericMethod(viewModelType)
-                .Invoke(viewLocationStrategy, new object[] { });
+                .Invoke(vstoContribContext.ViewLocationStrategy, new object[] { });
 
             XDocument ribbonDoc = XDocument.Parse(resourceText);
 
             //We have to override the Ribbon_Load event to make sure we get the callback
             XElement customUi =
-                ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui)).SingleOrDefault()
-                ?? ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui4)).Single();
+                ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui)).SingleOrDefault() ?? 
+                ribbonDoc.Descendants(XName.Get("customUI", OfficeCustomui4)).Single();
 
             customUi.SetAttributeValue("onLoad", loadMethodName);
 
@@ -63,14 +45,14 @@ namespace VSTOContrib.Core.RibbonFactory
             if (customUi.Attribute("loadImage") == null)
                 customUi.SetAttributeValue("loadImage", "GetPicture");
 
-            foreach (TRibbonTypes value in ViewModelRibbonTypesLookupProvider.Instance.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
+            foreach (var value in ViewModelRibbonTypesLookupProvider.Instance.GetRibbonTypesFor(viewModelType, fallbackRibbonType))
             {
                 WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
                 vstoContribContext.RibbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
             }
         }
 
-        void WireUpEvents(TRibbonTypes ribbonTypes, XContainer ribbonDoc, XNamespace xNamespace)
+        void WireUpEvents(string ribbonTypes, XContainer ribbonDoc, XNamespace xNamespace)
         {
             //Go through each type of Ribbon 
             foreach (string ribbonControl in controlCallbackLookup.RibbonControls)
@@ -108,7 +90,7 @@ namespace VSTOContrib.Core.RibbonFactory
                         // direct the callback
                         var id = (elementId ?? elementQId).Value;
                         string callbackTag = BuildTag(ribbonTypes, id, factoryMethodName);
-                        vstoContribContext.TagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
+                        vstoContribContext.TagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget(ribbonTypes, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + id));
                         ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, id);
                     }
@@ -116,7 +98,7 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        static string BuildTag(TRibbonTypes viewModelType, string elementId, string factoryMethodName)
+        static string BuildTag(string viewModelType, string elementId, string factoryMethodName)
         {
             return viewModelType + elementId + factoryMethodName;
         }

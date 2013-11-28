@@ -17,35 +17,28 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         }
 
         [Fact]
-        public void throws_when_generic_type_not_enum()
-        {
-            Assert.Throws<ArgumentException>(
-                () => helperUnderTest.GetRibbonTypesFor<TestStruct>(typeof (TestRibbonViewModel)));
-        }
-
-        [Fact]
         public void returns_single_ribbon_type_value()
         {
-            var results = helperUnderTest.GetRibbonTypesFor<TestRibbonTypes>(typeof(TestRibbonViewModel));
+            var results = helperUnderTest.GetRibbonTypesFor(typeof(TestRibbonViewModel), null);
 
-            Assert.Equal(TestRibbonTypes.RibbonType1, results.Single());
+            Assert.Equal(TestRibbonTypes.RibbonType1.GetEnumDescription(), results.Single());
         }
 
         [Fact]
         public void returns_multiple_ribbon_type_value()
         {
-            var results = helperUnderTest.GetRibbonTypesFor<TestRibbonTypes>(typeof(TestRibbonViewModel2)).ToList();
+            var results = helperUnderTest.GetRibbonTypesFor(typeof(TestRibbonViewModel2), null).ToList();
 
-            Assert.Equal(TestRibbonTypes.RibbonType2, results[0]);
-            Assert.Equal(TestRibbonTypes.RibbonType3, results[1]);
+            Assert.Equal(TestRibbonTypes.RibbonType2.GetEnumDescription(), results[0]);
+            Assert.Equal(TestRibbonTypes.RibbonType3.GetEnumDescription(), results[1]);
         }
 
         [Fact]
         public void allows_default_for_ribbon_type_enums()
         {
-            var results = helperUnderTest.GetRibbonTypesFor<TestRibbonTypesWithDefault>(typeof(TestRibbonViewModelWithEnumWithDefault)).ToList();
+            var results = helperUnderTest.GetRibbonTypesFor(typeof(TestRibbonViewModelWithEnumWithDefault), "Foo").ToList();
 
-            Assert.Equal(TestRibbonTypesWithDefault.RibbonType, results[0]);
+            Assert.Equal("Foo", results[0]);
         }
     }
 

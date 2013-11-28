@@ -1,23 +1,20 @@
-using System;
 using System.Reflection;
 using Microsoft.Office.Tools;
-using NSubstitute;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Core.Tests.RibbonFactory
 {
-    public class TestRibbonFactory<TRibbonType> : Core.RibbonFactory.RibbonFactory where TRibbonType : struct
+    public class TestRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private readonly IViewProvider<TRibbonType> viewProvider;
+        private readonly IViewProvider viewProvider;
 
         public TestRibbonFactory(
-            IViewModelFactory viewModelFactory,
-            Func<CustomTaskPaneCollection> customTaskPaneCollection,
-            IViewProvider<TRibbonType> viewProvider, 
+            AddInBase addInBase,
+            IViewProvider viewProvider, 
             IViewContextProvider viewContextProvider,
+            string fallbackRibbonType,
             params Assembly[] assemblies)
-            : base(new RibbonFactoryController<TRibbonType>(assemblies, viewContextProvider, viewModelFactory, customTaskPaneCollection, Substitute.For<Factory>()))
+            : base(addInBase, assemblies, viewContextProvider, fallbackRibbonType)
         {
             this.viewProvider = viewProvider;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
@@ -13,9 +14,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         private readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
         private readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
 
-        public CustomTaskPaneRegister(Func<object> customTaskPaneCollection)
+        public CustomTaskPaneRegister(AddInBase addinBase)
         {
-            this.customTaskPaneCollection = ()=>(CustomTaskPaneCollection)customTaskPaneCollection();
+            customTaskPaneCollection = () =>
+            {
+                var field = addinBase.GetType().GetField("CustomTaskPanes", BindingFlags.Instance | BindingFlags.NonPublic);
+                return (CustomTaskPaneCollection)field.GetValue(addinBase);
+            };
             registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
             ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
         }

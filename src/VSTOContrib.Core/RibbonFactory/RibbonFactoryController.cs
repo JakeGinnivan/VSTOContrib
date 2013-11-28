@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 
@@ -14,102 +13,54 @@ namespace VSTOContrib.Core.RibbonFactory
     /// <summary>
     ///     Because you cannot make a generic type COM visible, moving all code that requires generics into this class
     /// </summary>
-    /// <typeparam name="TRibbonTypes"></typeparam>
-    public class RibbonFactoryController<TRibbonTypes> : IRibbonFactoryController where TRibbonTypes : struct
+    class RibbonFactoryController : IRibbonFactoryController
     {
-        readonly ViewModelResolver<TRibbonTypes> ribbonViewModelResolver;
+        readonly ViewModelResolver ribbonViewModelResolver;
+        readonly VstoContribContext vstoContribContext;
+        IViewProvider viewProvider;
 
-        IViewProvider<TRibbonTypes> viewProvider;
-        readonly VstoContribContext<TRibbonTypes> vstoContribContext;
-        readonly RibbonXmlRewriter<TRibbonTypes> ribbonXmlRewriter;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RibbonFactoryController{TRibbonTypes}" /> class.
-        /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <param name="viewContextProvider">The view context provider</param>
-        /// <param name="viewModelFactory">A delegate taking a type and returning an instance of the requested type</param>
-        /// <param name="customTaskPaneCollection"></param>
-        /// <param name="vstoFactory">The VSTO factory</param>
-        /// <param name="viewLocationStrategy">The view location strategy.</param>
         public RibbonFactoryController(
-            ICollection<Assembly> assemblies,
             IViewContextProvider viewContextProvider,
-            IViewModelFactory viewModelFactory,
-            Func<object> customTaskPaneCollection, 
-            Factory vstoFactory, 
-            IViewLocationStrategy viewLocationStrategy = null)
+            VstoContribContext vstoContribContext)
         {
-            if (assemblies.Count == 0)
-                throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
+            this.vstoContribContext = vstoContribContext;
+            var ribbonTypes = GetTRibbonTypesInAssemblies(vstoContribContext.Assemblies).ToList();
 
-            vstoContribContext = new VstoContribContext<TRibbonTypes>();
-            var ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
+            var customTaskPaneRegister = new CustomTaskPaneRegister(vstoContribContext.AddinBase);
+            ribbonViewModelResolver = new ViewModelResolver(
+                ribbonTypes, customTaskPaneRegister, viewContextProvider, 
+                vstoContribContext);
 
-            ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, viewModelFactory, vstoFactory);
-
-            ribbonXmlRewriter = new RibbonXmlRewriter<TRibbonTypes>(
-                viewLocationStrategy ?? new DefaultViewLocationStrategy(),
-                vstoContribContext, ribbonViewModelResolver);
+            var ribbonXmlRewriter = new RibbonXmlRewriter(vstoContribContext, ribbonViewModelResolver);
 
             var loadExpression = ((Expression<Action<RibbonFactory>>)(r => r.Ribbon_Load(null)));
             string loadMethodName = loadExpression.GetMethodName();
 
             foreach (Type viewModelType in ribbonTypes)
             {
-                ribbonXmlRewriter.LocateAndRegisterViewXml(viewModelType, loadMethodName);
+                ribbonXmlRewriter.LocateAndRegisterViewXml(viewModelType, loadMethodName, vstoContribContext.FallbackRibbonType);
             }
         }
 
-        /// <summary>
-        ///     Initialises the specified view provider.
-        /// </summary>
-        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
-        /// <param name="viewProvider">The view provider.</param>
-        /// <returns></returns>
-        public void Initialise<TRibbonType>(IViewProvider<TRibbonType> viewProvider)
+        public void Initialise(IViewProvider viewProvider)
         {
-            this.viewProvider = (IViewProvider<TRibbonTypes>)viewProvider;
+            this.viewProvider = viewProvider;
 
             ribbonViewModelResolver.Initialise(this.viewProvider);
 
             this.viewProvider.Initialise();
         }
-        
-        /// <summary>
-        ///     Gets the custom UI.
-        /// </summary>
-        /// <param name="ribbonId">The ribbon id.</param>
-        /// <returns></returns>
+
         public string GetCustomUI(string ribbonId)
         {
-            TRibbonTypes enumFromDescription;
-            try
-            {
-                enumFromDescription = EnumExtensions.EnumFromDescription<TRibbonTypes>(ribbonId);
-            }
-            catch (ArgumentException)
-            {
-                //An unknown ribbon type
-                return null;
-            }
-
-            return !vstoContribContext.RibbonXmlFromTypeLookup.ContainsKey(enumFromDescription)
+            return !vstoContribContext.RibbonXmlFromTypeLookup.ContainsKey(ribbonId)
                        ? null
-                       : vstoContribContext.RibbonXmlFromTypeLookup[enumFromDescription];
+                       : vstoContribContext.RibbonXmlFromTypeLookup[ribbonId];
         }
 
-        /// <summary>
-        ///     Invokes the get.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="caller">The caller.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
-            CallbackTarget<TRibbonTypes> callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+            CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
             IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
@@ -147,17 +98,11 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        /// <summary>
-        ///     Invokes the specified control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="caller">The caller.</param>
-        /// <param name="parameters">The parameters.</param>
         public void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             try
             {
-                CallbackTarget<TRibbonTypes> callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
                 IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
@@ -198,23 +143,9 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        /// <summary>
-        ///     Ribbons the loaded.
-        /// </summary>
-        /// <param name="ribbonUi">The ribbon UI.</param>
         public void RibbonLoaded(IRibbonUI ribbonUi)
         {
             ribbonViewModelResolver.RibbonLoaded(ribbonUi);
-        }
-
-        /// <summary>
-        ///     Gets or sets the locate view strategy.
-        /// </summary>
-        /// <value>The locate view strategy.</value>
-        public IViewLocationStrategy LocateViewStrategy
-        {
-            set { ribbonXmlRewriter.LocateViewStrategy = value; }
-            get { return ribbonXmlRewriter.LocateViewStrategy; }
         }
 
         static IEnumerable<Type> GetTRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)
@@ -231,10 +162,6 @@ namespace VSTOContrib.Core.RibbonFactory
                 .Aggregate((t, t1) => t.Concat(t1));
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             ribbonViewModelResolver.Dispose();

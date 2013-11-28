@@ -2,7 +2,6 @@
 using System.Windows;
 using GitHubForOutlook.Core;
 using VSTOContrib.Autofac;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Outlook.RibbonFactory;
 using Office = Microsoft.Office.Core;
 
@@ -12,7 +11,6 @@ namespace GitHubForOutlookAddin
     {
         private void ThisAddInStartup(object sender, EventArgs e)
         {
-            RibbonFactory.Current.SetApplication(Application, this);
         }
 
         void ThisAddInShutdown(object sender, EventArgs e)
@@ -25,10 +23,10 @@ namespace GitHubForOutlookAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            return new OutlookRibbonFactory(
-                new AutofacViewModelFactory(new AddinModule()), 
-                () => CustomTaskPanes, 
-                Globals.Factory, typeof(AddinModule).Assembly);
+            return new OutlookRibbonFactory(this, typeof (AddinModule).Assembly)
+            {
+                ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
+            };
         }
 
         #region VSTO generated code

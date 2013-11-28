@@ -1,12 +1,13 @@
 using System;
 using Microsoft.Office.Interop.Outlook;
+using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Outlook.RibbonFactory
 {
-    internal class OutlookViewProvider : IViewProvider<OutlookRibbonType>
+    internal class OutlookViewProvider : IViewProvider
     {
         Explorers explorers;
         Inspectors inspectors;
@@ -46,7 +47,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(inspector, wrapper.CurrentContext, ribbonType);
+            var newViewEventArgs = new NewViewEventArgs(inspector, wrapper.CurrentContext, ribbonType.GetEnumDescription());
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -61,7 +62,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs<OutlookRibbonType>(explorer, explorer, OutlookRibbonType.OutlookExplorer);
+            var newViewEventArgs = new NewViewEventArgs(explorer, explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
             handler(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -96,9 +97,9 @@ namespace VSTOContrib.Outlook.RibbonFactory
             RegisterInspectors();
         }
 
-        public event EventHandler<NewViewEventArgs<OutlookRibbonType>> NewView;
+        public event EventHandler<NewViewEventArgs> NewView;
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<OutlookRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         public void CleanupReferencesTo(object view, object context)
         {

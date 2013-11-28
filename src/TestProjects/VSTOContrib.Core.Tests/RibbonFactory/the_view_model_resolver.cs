@@ -12,16 +12,17 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_view_model_resolver
     {
-        private readonly Func<IEnumerable<Type>, ViewModelResolver<TestRibbonTypes>> resolverFactory;
+        private readonly Func<IEnumerable<Type>, ViewModelResolver> resolverFactory;
 
         public the_view_model_resolver()
         {
-            resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
+            
+            resolverFactory = vms=>new ViewModelResolver(
                 vms,
-                new CustomTaskPaneRegister(()=>Substitute.For<CustomTaskPaneCollection>()),
+                new CustomTaskPaneRegister(new MyAddin()),
                 new TestContextProvider(),
                 new TestViewModelFactory(), 
-                Substitute.For<Factory>());
+                Substitute.For<Factory>(), "Fallback");
         }
 
         [Fact]
@@ -55,6 +56,14 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             }
 
             public void Cleanup()
+            {
+            }
+        }
+
+        public class MyAddin : AddInBase
+        {
+            public MyAddin()
+                : base(null, null, "AddIn", "ThisAddIn")
             {
             }
         }
