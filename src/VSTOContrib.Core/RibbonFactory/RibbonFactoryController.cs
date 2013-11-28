@@ -21,19 +21,14 @@ namespace VSTOContrib.Core.RibbonFactory
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
 
-        readonly ControlCallbackLookup controlCallbackLookup;
         readonly RibbonViewModelHelper ribbonViewModelHelper;
         readonly ViewModelResolver<TRibbonTypes> ribbonViewModelResolver;
-        readonly Dictionary<TRibbonTypes, string> ribbonXmlFromTypeLookup;
 
-        /// <summary>
-        ///     Lookup from a viewmodel type to it's ribbon XML
-        /// </summary>
-        readonly Dictionary<string, CallbackTarget<TRibbonTypes>> tagToCallbackTargetLookup;
-
+        readonly ControlCallbackLookup controlCallbackLookup;
         IViewLocationStrategy viewLocationStrategy;
 
         IViewProvider<TRibbonTypes> viewProvider;
+        readonly VstoContribContext<TRibbonTypes> vstoContribContext;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RibbonFactoryController{TRibbonTypes}" /> class.
@@ -55,10 +50,9 @@ namespace VSTOContrib.Core.RibbonFactory
             if (assemblies.Count == 0)
                 throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
 
-            controlCallbackLookup = new ControlCallbackLookup(GetRibbonElements());
-            ribbonXmlFromTypeLookup = new Dictionary<TRibbonTypes, string>();
+            controlCallbackLookup = new ControlCallbackLookup();
+            vstoContribContext = new VstoContribContext<TRibbonTypes>();
             ribbonViewModelHelper = new RibbonViewModelHelper();
-            tagToCallbackTargetLookup = new Dictionary<string, CallbackTarget<TRibbonTypes>>();
             this.viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
             List<Type> ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
@@ -107,9 +101,9 @@ namespace VSTOContrib.Core.RibbonFactory
                 return null;
             }
 
-            return !ribbonXmlFromTypeLookup.ContainsKey(enumFromDescription)
+            return !vstoContribContext.RibbonXmlFromTypeLookup.ContainsKey(enumFromDescription)
                        ? null
-                       : ribbonXmlFromTypeLookup[enumFromDescription];
+                       : vstoContribContext.RibbonXmlFromTypeLookup[enumFromDescription];
         }
 
         /// <summary>
@@ -121,8 +115,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
-            CallbackTarget<TRibbonTypes> callbackTarget =
-                tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+            CallbackTarget<TRibbonTypes> callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
             IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
@@ -170,8 +163,7 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             try
             {
-                CallbackTarget<TRibbonTypes> callbackTarget =
-                    tagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                CallbackTarget<TRibbonTypes> callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
                 IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
@@ -263,7 +255,7 @@ namespace VSTOContrib.Core.RibbonFactory
             foreach (TRibbonTypes value in ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
             {
                 WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
-                ribbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
+                vstoContribContext.RibbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
             }
         }
 
@@ -305,7 +297,7 @@ namespace VSTOContrib.Core.RibbonFactory
                         // direct the callback
                         var id = (elementId ?? elementQId).Value;
                         string callbackTag = BuildTag(ribbonTypes, id, factoryMethodName);
-                        tagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
+                        vstoContribContext.TagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget<TRibbonTypes>(ribbonTypes, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + id));
                         ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, id);
                     }
@@ -330,126 +322,6 @@ namespace VSTOContrib.Core.RibbonFactory
                     }
                 )
                 .Aggregate((t, t1) => t.Concat(t1));
-        }
-
-        static Dictionary<string, Dictionary<string, Expression<Action<RibbonFactory>>>> GetRibbonElements()
-        {
-            return new Dictionary<string, Dictionary<string, Expression<Action<RibbonFactory>>>>
-                   {
-                       {
-                           RibbonFactory.CommonCallbacks, new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                                          {
-                                                              {"getVisible", f => f.GetVisible(null)},
-                                                              {"getSupertip", f => f.GetSuperTip(null)},
-                                                              {"getScreentip", f => f.GetScreenTip(null)},
-                                                              {"getSize", f => f.GetSize(null)},
-                                                              {"getKeytip", f => f.GetKeyTip(null)},
-                                                              {"getLabel", f => f.GetLabel(null)},
-                                                              {"getImageMso", f => f.GetImageMso(null)},
-                                                              {"getImage", f => f.GetImage(null)},
-                                                              {"getEnabled", f => f.GetEnabled(null)},
-                                                              {"getDescription", f => f.GetDescription(null)}
-                                                          }
-                       },
-                       {
-                           "group", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                    {
-                                        {"getHelperText", f => f.GetHelperText(null)}
-                                    }
-                       },
-                       {"tab", new Dictionary<string, Expression<Action<RibbonFactory>>>()},
-                       {
-                           "button", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                     {
-                                         {"onAction", f => f.OnAction(null)},
-                                         {"getShowLabel", f => f.GetShowLabel(null)},
-                                         {"getShowImage", f => f.GetShowImage(null)}
-                                     }
-                       },
-                       {
-                           "checkBox", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                       {
-                                           {"onAction", f => f.PressedOnAction(null, true)},
-                                           {"getPressed", f => f.GetPressed(null)}
-                                       }
-                       },
-                       {
-                           "menu", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                   {
-                                       {"onAction", f => f.OnAction(null)},
-                                       {"getShowLabel", f => f.GetShowLabel(null)},
-                                       {"getShowImage", f => f.GetShowImage(null)}
-                                   }
-                       },
-                       {
-                           "dropDown", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                       {
-                                           {"getItemCount", f => f.GetItemCount(null)},
-                                           {"getItemID", f => f.GetItemId(null, 0)},
-                                           {"getItemImage", f => f.GetItemImage(null, 0)},
-                                           {"getItemLabel", f => f.GetItemLabel(null, 0)},
-                                           {"getItemScreenTip", f => f.GetItemScreenTip(null, 0)},
-                                           {"getItemSuperTip", f => f.GetItemSuperTip(null, 0)},
-                                           {"getSelectedItemID", f => f.GetSelectedItemId(null)},
-                                           {"getSelectedItemIndex", f => f.GetSelectedItemIndex(null)},
-                                           {"onAction", f => f.SelectionOnAction(null, null, 0)}
-                                       }
-                       },
-                       {
-                           "dynamicMenu", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                          {
-                                              {"getContent", f => f.GetContent(null)}
-                                          }
-                       },
-                       {
-                           "gallery", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                      {
-                                          {"getItemCount", f => f.GetItemCount(null)},
-                                          {"getItemHeight", f => f.GetItemHeight(null)},
-                                          {"getItemID", f => f.GetItemId(null, 0)},
-                                          {"getItemImage", f => f.GetItemImage(null, 0)},
-                                          {"getItemLabel", f => f.GetItemLabel(null, 0)},
-                                          {"getItemScreenTip", f => f.GetItemScreenTip(null, 0)},
-                                          {"getItemSuperTip", f => f.GetItemSuperTip(null, 0)},
-                                          {"getSelectedItemID", f => f.GetSelectedItemId(null)},
-                                          {"getSelectedItemIndex", f => f.GetSelectedItemIndex(null)},
-                                          {"onAction", f => f.SelectionOnAction(null, null, 0)}
-                                      }
-                       },
-                       {
-                           "menuSeparator", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                            {
-                                                {"getTitle", f => f.GetTitle(null)}
-                                            }
-                       },
-                       {
-                           "toggleButton", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                           {
-                                               {"getPressed", f => f.GetPressed(null)},
-                                               {"onAction", f => f.PressedOnAction(null, true)}
-                                           }
-                       },
-                       {
-                           "comboBox", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                       {
-                                           {"getItemCount", f => f.GetItemCount(null)},
-                                           {"getItemID", f => f.GetItemId(null, 0)},
-                                           {"getItemImage", f => f.GetItemImage(null, 0)},
-                                           {"getItemLabel", f => f.GetItemLabel(null, 0)},
-                                           {"getItemScreenTip", f => f.GetItemScreenTip(null, 0)},
-                                           {"getItemSuperTip", f => f.GetItemSuperTip(null, 0)},
-                                           {"getText", f => f.GetText(null)},
-                                           {"onChange", f => f.OnTextChanged(null, null)}
-                                       }
-                       },
-                       {
-                           "editBox", new Dictionary<string, Expression<Action<RibbonFactory>>>
-                                      {
-                                          {"getText", f => f.GetText(null)},
-                                          {"onChange", f => f.OnTextChanged(null, null)}
-                                      }
-                       }
-                   };
         }
 
         /// <summary>
