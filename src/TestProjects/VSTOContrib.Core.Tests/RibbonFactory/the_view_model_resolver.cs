@@ -18,7 +18,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
                 vms,
-                new RibbonViewModelHelper(),
                 new CustomTaskPaneRegister(()=>Substitute.For<CustomTaskPaneCollection>()),
                 new TestContextProvider(),
                 new TestViewModelFactory(), 

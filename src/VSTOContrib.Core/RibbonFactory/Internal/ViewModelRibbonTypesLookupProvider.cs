@@ -5,11 +5,17 @@ using System.Linq;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
-    internal class RibbonViewModelHelper
+    internal class ViewModelRibbonTypesLookupProvider
     {
         private readonly Dictionary<Type, object> viewModelRibbonTypes = new Dictionary<Type, object>();
+        static ViewModelRibbonTypesLookupProvider instance;
 
-        public IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct 
+        public static ViewModelRibbonTypesLookupProvider Instance
+        {
+            get { return instance ?? (instance = new ViewModelRibbonTypesLookupProvider()); }
+        }
+
+        public IEnumerable<TRibbonTypes> GetRibbonTypesFor<TRibbonTypes>(Type ribbonViewModel) where TRibbonTypes : struct
         {
             var enumType = typeof(TRibbonTypes);
 
@@ -33,16 +39,16 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 viewModelRibbonTypes.Add(ribbonViewModel, ribbonTypesFor);
             }
 
-            return (TRibbonTypes[]) viewModelRibbonTypes[ribbonViewModel];
+            return (TRibbonTypes[])viewModelRibbonTypes[ribbonViewModel];
         }
 
         static int? GetRibbonTypeAttributeValue<TRibbonTypes>(Type enumType, RibbonViewModelAttribute viewModelMetaAttributes) where TRibbonTypes : struct
         {
             var defaultValue = new Lazy<TRibbonTypes?>(() =>
             {
-                var defaultAttribute = (DefaultValueAttribute)enumType.GetCustomAttributes(typeof (DefaultValueAttribute), false).SingleOrDefault();
+                var defaultAttribute = (DefaultValueAttribute)enumType.GetCustomAttributes(typeof(DefaultValueAttribute), false).SingleOrDefault();
                 if (defaultAttribute != null)
-                    return (TRibbonTypes) defaultAttribute.Value;
+                    return (TRibbonTypes)defaultAttribute.Value;
                 return null;
             });
             int? viewModelType;
@@ -52,7 +58,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             else if (viewModelMetaAttributes != null)
                 viewModelType = (int)viewModelMetaAttributes.Type;
             else
-                viewModelType = (int) (object) defaultValue.Value.Value;
+                viewModelType = (int)(object)defaultValue.Value.Value;
 
             return viewModelType;
         }

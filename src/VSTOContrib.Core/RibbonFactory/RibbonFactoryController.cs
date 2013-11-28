@@ -21,7 +21,6 @@ namespace VSTOContrib.Core.RibbonFactory
         const string OfficeCustomui = "http://schemas.microsoft.com/office/2006/01/customui";
         const string OfficeCustomui4 = "http://schemas.microsoft.com/office/2009/07/customui";
 
-        readonly RibbonViewModelHelper ribbonViewModelHelper;
         readonly ViewModelResolver<TRibbonTypes> ribbonViewModelResolver;
 
         readonly ControlCallbackLookup controlCallbackLookup;
@@ -52,12 +51,11 @@ namespace VSTOContrib.Core.RibbonFactory
 
             controlCallbackLookup = new ControlCallbackLookup();
             vstoContribContext = new VstoContribContext<TRibbonTypes>();
-            ribbonViewModelHelper = new RibbonViewModelHelper();
             this.viewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
             List<Type> ribbonTypes = GetTRibbonTypesInAssemblies(assemblies).ToList();
 
             ribbonViewModelResolver = new ViewModelResolver<TRibbonTypes>(
-                ribbonTypes, ribbonViewModelHelper, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, viewModelFactory, vstoFactory);
+                ribbonTypes, new CustomTaskPaneRegister(customTaskPaneCollection), viewContextProvider, viewModelFactory, vstoFactory);
 
             var loadExpression = ((Expression<Action<RibbonFactory>>)(r => r.Ribbon_Load(null)));
             string loadMethodName = loadExpression.GetMethodName();
@@ -252,7 +250,7 @@ namespace VSTOContrib.Core.RibbonFactory
             if (customUi.Attribute("loadImage") == null)
                 customUi.SetAttributeValue("loadImage", "GetPicture");
 
-            foreach (TRibbonTypes value in ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
+            foreach (TRibbonTypes value in ViewModelRibbonTypesLookupProvider.Instance.GetRibbonTypesFor<TRibbonTypes>(viewModelType))
             {
                 WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
                 vstoContribContext.RibbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());

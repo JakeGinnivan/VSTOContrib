@@ -119,7 +119,7 @@
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonFactoryController.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
-    <Compile Include="RibbonFactory\Internal\RibbonViewModelHelper.cs" />
+    <Compile Include="RibbonFactory\Internal\ViewModelRibbonTypesLookupProvider.cs" />
     <Compile Include="RibbonFactory\ViewClosedEventArgs.cs" />
     <Compile Include="RibbonFactory\ViewLocationStrategyBase.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelResolver.cs" />

@@ -25,7 +25,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         /// </summary>
         readonly Dictionary<Type, List<KeyValuePair<string,string>>> notifyChangeTargetLookup;
 
-        readonly RibbonViewModelHelper ribbonViewModelHelper;
         readonly ICustomTaskPaneRegister customTaskPaneRegister;
         readonly IViewContextProvider viewContextProvider;
         readonly IViewModelFactory viewModelFactory;
@@ -33,7 +32,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         IViewProvider<TRibbonTypes> viewProvider;
         TRibbonTypes currentlyLoadingRibbon;
 
-        public ViewModelResolver(IEnumerable<Type> viewModelType, RibbonViewModelHelper ribbonViewModelHelper, 
+        public ViewModelResolver(IEnumerable<Type> viewModelType, 
             ICustomTaskPaneRegister customTaskPaneRegister, IViewContextProvider viewContextProvider,
             IViewModelFactory viewModelFactory, Factory vstoFactory)
         {
@@ -42,7 +41,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             ribbonTypeLookup = new Dictionary<TRibbonTypes, Type>();
             contextToViewModelLookup = new Dictionary<object, IRibbonViewModel>();
             ribbonUiLookup = new Dictionary<TRibbonTypes, IRibbonUI>();
-            this.ribbonViewModelHelper = ribbonViewModelHelper;
             this.customTaskPaneRegister = customTaskPaneRegister;
             this.viewContextProvider = viewContextProvider;
             this.viewModelFactory = viewModelFactory;
@@ -107,7 +105,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private void CreateRibbonTypeToViewModelTypeLookup(Type ribbonViewModel)
         {
-            foreach (var value in ribbonViewModelHelper.GetRibbonTypesFor<TRibbonTypes>(ribbonViewModel))
+            foreach (var value in ViewModelRibbonTypesLookupProvider.Instance.GetRibbonTypesFor<TRibbonTypes>(ribbonViewModel))
             {
                 if (ribbonTypeLookup.ContainsKey(value))
                     throw new InvalidOperationException("You cannot have two view models which are registered for the same ribbon type");

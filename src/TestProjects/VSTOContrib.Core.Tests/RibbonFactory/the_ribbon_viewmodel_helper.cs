@@ -9,11 +9,11 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_ribbon_viewmodel_helper
     {
-        private readonly RibbonViewModelHelper helperUnderTest;
+        private readonly ViewModelRibbonTypesLookupProvider helperUnderTest;
 
         public the_ribbon_viewmodel_helper()
         {
-            helperUnderTest = new RibbonViewModelHelper();
+            helperUnderTest = new ViewModelRibbonTypesLookupProvider();
         }
 
         [Fact]
