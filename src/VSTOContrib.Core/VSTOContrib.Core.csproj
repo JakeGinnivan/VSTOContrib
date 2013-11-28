@@ -114,6 +114,7 @@
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelKey.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
+    <Compile Include="RibbonFactory\RibbonXmlRewriter.cs" />
     <Compile Include="RibbonFactory\VstoContribContext.cs" />
     <Compile Include="Wpf\DelegateCommand.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
