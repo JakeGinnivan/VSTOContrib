@@ -1,5 +1,4 @@
 ﻿using System;
-using VSTOContrib.Core.Annotations;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
@@ -16,6 +15,8 @@ namespace VSTOContrib.Core.RibbonFactory
         public RibbonViewModelAttribute(object type)
         {
             if (type == null) throw new ArgumentNullException("type");
+            if (!type.GetType().IsEnum) throw new ArgumentException(@"Type must be an enum", "type");
+            if (!Enum.IsDefined(type.GetType(), type)) throw new ArgumentException(@"Enum must be defined, if you are using Flags, use multiple RibbonViewModelAttributes instead", "type");
             Type = ((Enum)type).GetEnumDescription();
         }
 

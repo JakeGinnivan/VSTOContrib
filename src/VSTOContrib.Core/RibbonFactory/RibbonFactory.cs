@@ -23,7 +23,8 @@ namespace VSTOContrib.Core.RibbonFactory
         readonly IRibbonFactoryController ribbonFactoryController;
         readonly VstoContribContext context;
 
-        protected RibbonFactory(AddInBase addinBase, Assembly[] assemblies, IViewContextProvider contextProvider,
+        protected RibbonFactory(
+            AddInBase addinBase, Assembly[] assemblies, IViewContextProvider contextProvider,
             [CanBeNull] string fallbackRibbonType)
         {
             if (assemblies.Length == 0)

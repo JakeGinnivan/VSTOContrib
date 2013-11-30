@@ -39,9 +39,14 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             get
             {
-                return application ?? (application = addinType
-                    .GetField("Application", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .GetValue(AddinBase));
+                if (application == null)
+                {
+                    const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+                    var fieldInfo = addinType.GetField("Application", bindingFlags);
+                    application = fieldInfo.GetValue(AddinBase);
+                }
+                
+                return application;
             }
         }
 

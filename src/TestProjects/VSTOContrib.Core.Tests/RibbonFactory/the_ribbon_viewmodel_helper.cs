@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
@@ -29,8 +28,8 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         {
             var results = helperUnderTest.GetRibbonTypesFor(typeof(TestRibbonViewModel2), null).ToList();
 
-            Assert.Equal(TestRibbonTypes.RibbonType2.GetEnumDescription(), results[0]);
-            Assert.Equal(TestRibbonTypes.RibbonType3.GetEnumDescription(), results[1]);
+            Assert.Contains(TestRibbonTypes.RibbonType2.GetEnumDescription(), results);
+            Assert.Contains(TestRibbonTypes.RibbonType3.GetEnumDescription(), results);
         }
 
         [Fact]

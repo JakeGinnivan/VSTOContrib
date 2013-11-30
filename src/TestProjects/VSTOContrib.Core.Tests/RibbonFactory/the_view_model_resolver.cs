@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
-using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Internal;
+using VSTOContrib.Core.Tests.RibbonFactory.TestAddin;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
 using Xunit;
 
@@ -16,13 +17,12 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 
         public the_view_model_resolver()
         {
-            
+            var testAddInBase = AddInBaseFactory.Create();
             resolverFactory = vms=>new ViewModelResolver(
                 vms,
-                new CustomTaskPaneRegister(new MyAddin()),
+                new CustomTaskPaneRegister(testAddInBase),
                 new TestContextProvider(),
-                new TestViewModelFactory(), 
-                Substitute.For<Factory>(), "Fallback");
+                new VstoContribContext(new Assembly[0], testAddInBase, "Foo"));
         }
 
         [Fact]

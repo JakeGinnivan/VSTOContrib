@@ -61,9 +61,12 @@
     <Compile Include="ComCleanupEnumeratorFixture.cs" />
     <Compile Include="Internal\ViewModelRibbonTypesLookupProviderFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RibbonFactory\AddInBaseFactory.cs" />
+    <Compile Include="RibbonFactory\TestAddin\AddInBaseFactory.cs" />
+    <Compile Include="RibbonFactory\TestAddin\Globals.cs" />
+    <Compile Include="RibbonFactory\TestAddin\TestAddin.cs" />
+    <Compile Include="RibbonFactory\TestAddin\TestAddInBase.cs" />
+    <Compile Include="RibbonFactory\TestAddin\TestFactory.cs" />
     <Compile Include="RibbonFactory\TestContextProvider.cs" />
-    <Compile Include="RibbonFactory\TestRibbonFactory.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestRibbonViewModel2.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestStruct.cs" />
