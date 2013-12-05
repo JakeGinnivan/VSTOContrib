@@ -5,8 +5,6 @@
     <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
     <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
-    <Version Condition="$(Version)==''">1.0.0.0</Version>
-    <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2010</TargetOfficeVersion>
   </PropertyGroup>
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
@@ -17,14 +15,12 @@
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
-    <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
 
     <!-- Diagnostics -->
     <Message Text="Diagnostics:"/>
     <Message Text="Build Number:    $(Version)" />
     <Message Text="Project root:    $(Root)" />
     <Message Text="Drop path:       build\Artifacts" />
-    <Message Text="Office Version:  $(TargetOfficeVersion)" />
 
     <RemoveDir Directories="build\Artifacts" ContinueOnError="true" />
   </Target>
@@ -35,7 +31,6 @@
         MSBuildCommunityTasksPath=$(MSBuildCommunityTasksPath);
         Root=$(Root);
         ProgramFiles32=$(ProgramFiles32);
-        Version=$(Version);
         Configuration=$(Configuration)
       </CommonProperties>
     </PropertyGroup>
@@ -62,6 +57,6 @@
     <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\Readme.txt"
           DestinationFiles="$(AutofacNuGetFolder)Readme.txt"/>
     
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(GitHubFlowVersion_SemVer)' />
   </Target>
 </Project>

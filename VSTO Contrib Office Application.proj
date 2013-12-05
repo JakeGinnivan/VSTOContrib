@@ -63,14 +63,14 @@
                 Regex="{{Application}}"
                 ReplacementText="$(OfficeApplication)"/>
 
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(Version)' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(ApplicationNuGetFolderName)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(GitHubFlowVersion_SemVer)' />
 
     <PropertyGroup>
       <QuickStartRoot>$(Root)src\Quickstart\$(OfficeApplication)Quickstart\</QuickStartRoot>
       <QuickStartSpec>$(QuickStartRoot)$(OfficeApplication)QuickStart.nuspec</QuickStartSpec>
     </PropertyGroup>
     
-    <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(Version)'
+    <Exec Command='$(NuGet) pack "$(QuickStartSpec)" -BasePath "$(QuickStartRoot)\" -OutputDirectory "$(Root)build\Artifacts" -version $(GitHubFlowVersion_SemVer)'
           Condition="Exists('$(QuickStartSpec)')"/>
   
   </Target>
@@ -87,6 +87,6 @@
 
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) v$(Version).zip" />
+         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) v$(GitHubFlowVersion_SemVer).zip" />
   </Target>
 </Project>

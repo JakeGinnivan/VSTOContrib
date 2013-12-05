@@ -7,11 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\Build.cmd = ..\Build.cmd
 		..\build\Install.ps1 = ..\build\Install.ps1
+		..\NextVersion.txt = ..\NextVersion.txt
 		..\build\Readme.txt = ..\build\Readme.txt
 		Information\SolutionInfo.cs = Information\SolutionInfo.cs
 		..\VSTO Contrib Office Application.proj = ..\VSTO Contrib Office Application.proj
-		..\VSTO Contrib.proj = ..\VSTO Contrib.proj
 		..\build\VSTOContrib.nuspec = ..\build\VSTOContrib.nuspec
+		..\VSTOContrib.proj = ..\VSTOContrib.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1C9C8D4B-BC16-45E7-8A8D-23B39BEDAC9F}"
