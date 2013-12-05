@@ -20,8 +20,8 @@ namespace VSTOContrib.Core.Tests.Internal
             var types = sut.GetRibbonTypesFor(typeof (MultipleRibbonTypes), null);
 
             Assert.Equal(2, types.Length);
-            Assert.Equal("Test", types[0]);
-            Assert.Equal("Test2", types[1]);
+            Assert.Contains("Test", types);
+            Assert.Contains("Test2", types);
         }
 
         [Fact]
