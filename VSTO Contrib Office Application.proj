@@ -16,7 +16,6 @@
     <Error Condition="$(OfficeApplication) == ''" Text="You must specify a Office Application to build for" />
     <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
     <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
-    <Error Condition="$(TargetOfficeVersion) == ''" Text="TargetOfficeVersion variable must be defined" />
     <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
     
     <!--Compile-->
@@ -88,6 +87,6 @@
 
     <Zip Files="@(ZipFiles)"
          WorkingDirectory="$(Root)src\VSTOContrib.$(OfficeApplication)\bin\Build\"
-         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) for $(TargetOfficeVersion) v$(Version).zip" />
+         ZipFileName="$(Root)build\Artifacts\VSTOContrib.$(OfficeApplication) v$(Version).zip" />
   </Target>
 </Project>
