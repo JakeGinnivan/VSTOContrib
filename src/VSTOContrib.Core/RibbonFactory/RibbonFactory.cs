@@ -432,5 +432,15 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             ribbonFactoryController.Invoke(control, () => OnTextChanged(null, null), text);
         }
+
+        /// <summary>
+        /// GetHelperText callback
+        /// </summary>
+        /// <param name="control">The control</param>
+        /// <returns></returns>
+        public string GetHelperText(IRibbonControl control)
+        {
+            return (string)ribbonFactoryController.InvokeGet(control, () => GetHelperText(null));
+        }
     }
 }
