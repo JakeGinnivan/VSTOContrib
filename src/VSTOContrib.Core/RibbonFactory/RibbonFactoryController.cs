@@ -18,6 +18,7 @@ namespace VSTOContrib.Core.RibbonFactory
         readonly ViewModelResolver ribbonViewModelResolver;
         readonly VstoContribContext vstoContribContext;
         IViewProvider viewProvider;
+        CustomTaskPaneRegister customTaskPaneRegister;
 
         public RibbonFactoryController(
             IViewContextProvider viewContextProvider,
@@ -26,7 +27,7 @@ namespace VSTOContrib.Core.RibbonFactory
             this.vstoContribContext = vstoContribContext;
             var ribbonTypes = GetTRibbonTypesInAssemblies(vstoContribContext.Assemblies).ToList();
 
-            var customTaskPaneRegister = new CustomTaskPaneRegister(vstoContribContext.AddinBase);
+            customTaskPaneRegister = new CustomTaskPaneRegister(vstoContribContext.AddinBase);
             ribbonViewModelResolver = new ViewModelResolver(
                 ribbonTypes, customTaskPaneRegister, viewContextProvider, 
                 vstoContribContext);
@@ -165,6 +166,7 @@ namespace VSTOContrib.Core.RibbonFactory
         public void Dispose()
         {
             ribbonViewModelResolver.Dispose();
+            customTaskPaneRegister.Dispose();
         }
     }
 }

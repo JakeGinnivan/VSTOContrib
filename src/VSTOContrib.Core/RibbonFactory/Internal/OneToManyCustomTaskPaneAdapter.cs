@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using Microsoft.Office.Tools;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
@@ -45,7 +46,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             {
                 customTaskPane.Height = original.Height;
             }
-            
+
             customTaskPanes.Add(customTaskPane);
             customTaskPane.DockPositionChanged += CustomTaskPaneDockPositionChanged;
             customTaskPane.VisibleChanged += CustomTaskPaneVisibleChanged;
@@ -155,10 +156,23 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void Dispose()
         {
+            if (disposed) return;
+            Do(DisposeTaskPane);
             disposed = true;
-            Do(c => c.VisibleChanged -= CustomTaskPaneVisibleChanged);
-            Do(c => c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
-            Do(c => c.Dispose());
+        }
+
+        void DisposeTaskPane(CustomTaskPane c)
+        {
+            c.VisibleChanged -= CustomTaskPaneVisibleChanged;
+            c.DockPositionChanged -= CustomTaskPaneDockPositionChanged;
+            var control = c.Control;
+            foreach (var control1 in control.Controls.OfType<ElementHost>().ToArray())
+            {
+                control1.Child = null;
+                control1.Dispose();
+                control1.Parent = null;
+                control.Controls.Remove(control1);
+            }
         }
 
         public void CleanupView(object view)
@@ -170,7 +184,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 {
                     var taskPaneWindow = customTaskPane.Window;
                     if (taskPaneWindow != view) continue;
-                    customTaskPane.Dispose();
+                    DisposeTaskPane(customTaskPane);
                 }
                 catch (COMException){}
                 customTaskPanes.Remove(customTaskPane);

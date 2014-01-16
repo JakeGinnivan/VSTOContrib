@@ -46,18 +46,26 @@ namespace VSTOContrib.Word.RibbonFactory
 
         void DocumentClosed(object sender, DocumentClosedEventArgs e)
         {
-            var handler = ViewClosed;
-            if (handler == null) return;
+            var document = e.Document;
+            CleanupDocument(document);
+        }
 
-            documentWrappers.Remove(e.Document);
-            var windows = documents[e.Document];
+        void CleanupDocument(Document document)
+        {
+            var handler = ViewClosed;
+            if (handler == null || !documentWrappers.ContainsKey(document)) return;
+
+            var documentWrapper = documentWrappers[document];
+            documentWrapper.Closed -= DocumentClosed;
+            documentWrappers.Remove(document);
+            var windows = documents[document];
 
             foreach (var window in windows)
             {
-                handler(this, new ViewClosedEventArgs(window, e.Document));
+                handler(this, new ViewClosedEventArgs(window, document));
                 window.ReleaseComObject();
             }
-            documents.Remove(e.Document);
+            documents.Remove(document);
         }
 
         /// <summary>
@@ -96,7 +104,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="context"></param>
         public void CleanupReferencesTo(object view, object context)
         {
-            
+            CleanupDocument((Document) context);
         }
 
         /// <summary>
@@ -105,6 +113,7 @@ namespace VSTOContrib.Word.RibbonFactory
         public void Dispose()
         {
             wordApplication.WindowActivate -= WordApplicationWindowActivate;
+            wordApplication.DocumentOpen -= WordApplicationDocumentOpen;
             wordApplication = null;
         }
 
