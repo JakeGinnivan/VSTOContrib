@@ -2,7 +2,6 @@
 using System.Windows;
 using Microsoft.Office.Core;
 using VSTOContrib.Autofac;
-using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Word.RibbonFactory;
 using WikipediaWordAddin.Core;
 
@@ -12,7 +11,6 @@ namespace WikipediaWordAddin
     {
         private void ThisAddInStartup(object sender, EventArgs e)
         {
-            RibbonFactory.Current.SetApplication(Application, this);
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -26,7 +24,10 @@ namespace WikipediaWordAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            return new WordRibbonFactory(new AutofacViewModelFactory(new AddinModule()), () => CustomTaskPanes, Globals.Factory, typeof(AddinModule).Assembly);
+            return new WordRibbonFactory(this, typeof(AddinModule).Assembly)
+            {
+                ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
+            };
         }
 
         /// <summary>

@@ -2,46 +2,29 @@ using System;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
-    /// <summary>
-    /// Arguments for a new View being Opened
-    /// </summary>
-    public class NewViewEventArgs<TRibbonTypes> : EventArgs
+    public class NewViewEventArgs : EventArgs
     {
         readonly object viewInstance;
         readonly object viewContext;
-        readonly TRibbonTypes ribbonType;
+        readonly string ribbonType;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewInstance"></param>
-        /// <param name="viewContext"></param>
-        /// <param name="ribbonType"></param>
-        public NewViewEventArgs(object viewInstance, object viewContext, TRibbonTypes ribbonType)
+        public NewViewEventArgs(object viewInstance, object viewContext, string ribbonType)
         {
             this.viewInstance = viewInstance;
             this.viewContext = viewContext;
             this.ribbonType = ribbonType;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public TRibbonTypes RibbonType
+        public string RibbonType
         {
             get { return ribbonType; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public object ViewInstance
         {
             get { return viewInstance; }
         }
 
-        ///<summary>
-        ///</summary>
         public object ViewContext
         {
             get { return viewContext; }

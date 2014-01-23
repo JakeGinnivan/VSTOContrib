@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Office.Interop.Word;
+using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Word.RibbonFactory
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class WordViewProvider : IViewProvider<WordRibbonType>
+    public class WordViewProvider : IViewProvider
     {
         private readonly Dictionary<Document, List<Window>> documents;
         private readonly Dictionary<Document, DocumentWrapper> documentWrappers;
@@ -43,23 +41,31 @@ namespace VSTOContrib.Word.RibbonFactory
             if (documents[doc].Contains(wn)) return;
 
             documents[doc].Add(wn);
-            handler(this, new NewViewEventArgs<WordRibbonType>(wn, doc, WordRibbonType.WordDocument));
+            handler(this, new NewViewEventArgs(wn, doc, WordRibbonType.WordDocument.GetEnumDescription()));
         }
 
         void DocumentClosed(object sender, DocumentClosedEventArgs e)
         {
-            var handler = ViewClosed;
-            if (handler == null) return;
+            var document = e.Document;
+            CleanupDocument(document);
+        }
 
-            documentWrappers.Remove(e.Document);
-            var windows = documents[e.Document];
+        void CleanupDocument(Document document)
+        {
+            var handler = ViewClosed;
+            if (handler == null || !documentWrappers.ContainsKey(document)) return;
+
+            var documentWrapper = documentWrappers[document];
+            documentWrapper.Closed -= DocumentClosed;
+            documentWrappers.Remove(document);
+            var windows = documents[document];
 
             foreach (var window in windows)
             {
-                handler(this, new ViewClosedEventArgs(window, e.Document));
+                handler(this, new ViewClosedEventArgs(window, document));
                 window.ReleaseComObject();
             }
-            documents.Remove(e.Document);
+            documents.Remove(document);
         }
 
         /// <summary>
@@ -80,7 +86,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <summary>
         /// Occurs when [new view].
         /// </summary>
-        public event EventHandler<NewViewEventArgs<WordRibbonType>> NewView;
+        public event EventHandler<NewViewEventArgs> NewView;
         /// <summary>
         /// Occurs when [view closed].
         /// </summary>
@@ -89,7 +95,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility
         /// </summary>
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<WordRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.
@@ -98,7 +104,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="context"></param>
         public void CleanupReferencesTo(object view, object context)
         {
-            
+            CleanupDocument((Document) context);
         }
 
         /// <summary>
@@ -107,6 +113,7 @@ namespace VSTOContrib.Word.RibbonFactory
         public void Dispose()
         {
             wordApplication.WindowActivate -= WordApplicationWindowActivate;
+            wordApplication.DocumentOpen -= WordApplicationDocumentOpen;
             wordApplication = null;
         }
 

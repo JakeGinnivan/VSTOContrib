@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace VSTOContrib.Outlook.RibbonFactory
 {
     ///<summary>
     /// Enum representing the different Ribbon Types
     ///</summary>
-    [Flags]
     public enum OutlookRibbonType
     {
         ///<summary>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Core;
-using Microsoft.Office.Tools;
 
 namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
@@ -15,8 +14,8 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
         IViewLocationStrategy LocateViewStrategy { get; set; }
 
         /// <summary>
-        /// Sets the application the add-in is hosted in
+        /// Gets or sets the view model factory, default uses Activator.CreateInstance
         /// </summary>
-        void SetApplication(object application, AddInBase addinBase);
+        IViewModelFactory ViewModelFactory { get; set; }
     }
 }

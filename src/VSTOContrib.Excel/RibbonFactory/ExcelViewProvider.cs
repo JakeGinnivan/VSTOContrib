@@ -2,25 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
+using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Excel.RibbonFactory
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ExcelViewProvider : IViewProvider<ExcelRibbonType>
+    public class ExcelViewProvider : IViewProvider
     {
         readonly Dictionary<Workbook, List<Window>> workbooks;
         Application excelApplication;
         Window singleWindow;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExcelViewProvider"/> class.
-        /// </summary>
-        /// <param name="excelApplication">The Excel application.</param>
         public ExcelViewProvider(Application excelApplication)
         {
             workbooks = new Dictionary<Workbook, List<Window>>();
@@ -54,7 +48,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         public void Initialise()
         {
             ((AppEvents_Event)excelApplication).NewWorkbook += OnInitialise;
-            ((AppEvents_Event)excelApplication).WorkbookOpen += OnInitialise;
+            excelApplication.WorkbookOpen += OnInitialise;
         }
 
         void OnInitialise(Workbook wb)
@@ -69,14 +63,14 @@ namespace VSTOContrib.Excel.RibbonFactory
                 if (singleWindow == null)
                     singleWindow = wb.Windows[1];
                 workbooks[wb].Add(singleWindow);
-                handler(this, new NewViewEventArgs<ExcelRibbonType>(singleWindow, wb, ExcelRibbonType.ExcelWorkbook));
+                handler(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
             {
                 foreach (Window window in wb.Windows)
                 {
                     workbooks[wb].Add(window);
-                    handler(this, new NewViewEventArgs<ExcelRibbonType>(window, wb, ExcelRibbonType.ExcelWorkbook));
+                    handler(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
 
@@ -90,18 +84,18 @@ namespace VSTOContrib.Excel.RibbonFactory
                     if (windows.All(w => ((dynamic)w).Hwnd != ((dynamic)wn).Hwnd))
                     {
                         windows.Add(wn);
-                        handler(this, new NewViewEventArgs<ExcelRibbonType>(wn, wb, ExcelRibbonType.ExcelWorkbook));
+                        handler(this, new NewViewEventArgs(wn, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                     }
                 }
 
                 if (IsMdi())
-                    UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, true));
+                    UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs(wb, true));
             };
             wb.WindowDeactivate += wn =>
             {
                 if (IsMdi())
                 {
-                    var args = new HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>(wb, false);
+                    var args = new HideCustomTaskPanesForContextEventArgs(wb, false);
                     UpdateCustomTaskPanesVisibilityForContext(this, args);
                 }
             };
@@ -115,7 +109,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <summary>
         /// Occurs when [new view].
         /// </summary>
-        public event EventHandler<NewViewEventArgs<ExcelRibbonType>> NewView;
+        public event EventHandler<NewViewEventArgs> NewView;
         /// <summary>
         /// Occurs when [view closed].
         /// </summary>
@@ -124,7 +118,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility
         /// </summary>
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<ExcelRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

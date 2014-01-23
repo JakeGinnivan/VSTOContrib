@@ -5,7 +5,7 @@ namespace VSTOContrib.Core.RibbonFactory
     /// <summary>
     /// Arguments for the UpdateCustomTaskPanesVisibilityForContext event
     /// </summary>
-    public class HideCustomTaskPanesForContextEventArgs<TRibbonTypes> : EventArgs
+    public class HideCustomTaskPanesForContextEventArgs : EventArgs
     {
         /// <summary>
         /// Ctor

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
-using NSubstitute;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Internal;
+using VSTOContrib.Core.Tests.RibbonFactory.TestAddin;
 using VSTOContrib.Core.Tests.RibbonFactory.TestStubs;
 using Xunit;
 
@@ -12,17 +13,16 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class the_view_model_resolver
     {
-        private readonly Func<IEnumerable<Type>, ViewModelResolver<TestRibbonTypes>> resolverFactory;
+        private readonly Func<IEnumerable<Type>, ViewModelResolver> resolverFactory;
 
         public the_view_model_resolver()
         {
-            resolverFactory = vms=>new ViewModelResolver<TestRibbonTypes>(
+            var testAddInBase = AddInBaseFactory.Create();
+            resolverFactory = vms=>new ViewModelResolver(
                 vms,
-                new RibbonViewModelHelper(),
-                new CustomTaskPaneRegister(()=>Substitute.For<CustomTaskPaneCollection>()),
+                new CustomTaskPaneRegister(testAddInBase),
                 new TestContextProvider(),
-                new TestViewModelFactory(), 
-                Substitute.For<Factory>());
+                new VstoContribContext(new Assembly[0], testAddInBase, "Foo"));
         }
 
         [Fact]
@@ -56,6 +56,14 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             }
 
             public void Cleanup()
+            {
+            }
+        }
+
+        public class MyAddin : AddInBase
+        {
+            public MyAddin()
+                : base(null, null, "AddIn", "ThisAddIn")
             {
             }
         }

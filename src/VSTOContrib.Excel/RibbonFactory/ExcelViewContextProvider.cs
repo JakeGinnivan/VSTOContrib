@@ -1,4 +1,5 @@
 using Microsoft.Office.Interop.Excel;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Excel.RibbonFactory
@@ -8,11 +9,6 @@ namespace VSTOContrib.Excel.RibbonFactory
     /// </summary>
     public class ExcelViewContextProvider : IViewContextProvider
     {
-        /// <summary>
-        /// Gets the context for view.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <returns></returns>
         public object GetContextForView(object view)
         {
             var window = view as Window;
@@ -26,15 +22,9 @@ namespace VSTOContrib.Excel.RibbonFactory
             return null;
         }
 
-        /// <summary>
-        /// Gets the ribbon type for view.
-        /// </summary>
-        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
-        /// <param name="view">The view.</param>
-        /// <returns></returns>
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public string GetRibbonTypeForView(object view)
         {
-            return (TRibbonType)(object)ExcelRibbonType.ExcelWorkbook;
+            return ExcelRibbonType.ExcelWorkbook.GetEnumDescription();
         }
     }
 }

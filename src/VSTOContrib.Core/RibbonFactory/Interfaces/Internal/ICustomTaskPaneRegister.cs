@@ -1,6 +1,8 @@
-﻿namespace VSTOContrib.Core.RibbonFactory.Interfaces.Internal
+﻿using System;
+
+namespace VSTOContrib.Core.RibbonFactory.Interfaces.Internal
 {
-    internal interface ICustomTaskPaneRegister
+    internal interface ICustomTaskPaneRegister : IDisposable
     {
         void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view, object viewContext);
         void Cleanup(object view);

@@ -10,9 +10,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             return ((TestWindow)view).Context;
         }
 
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public string GetRibbonTypeForView(object view)
         {
-            return (TRibbonType)(object)TestRibbonTypes.RibbonType1;
+            return TestRibbonTypes.RibbonType1.GetEnumDescription();
         }
     }
 }

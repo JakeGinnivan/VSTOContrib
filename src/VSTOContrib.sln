@@ -7,12 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\Build.cmd = ..\Build.cmd
 		..\build\Install.ps1 = ..\build\Install.ps1
+		..\NextVersion.txt = ..\NextVersion.txt
 		..\build\Readme.txt = ..\build\Readme.txt
 		Information\SolutionInfo.cs = Information\SolutionInfo.cs
-		Information\VersionInfo.cs = Information\VersionInfo.cs
 		..\VSTO Contrib Office Application.proj = ..\VSTO Contrib Office Application.proj
-		..\VSTO Contrib.proj = ..\VSTO Contrib.proj
 		..\build\VSTOContrib.nuspec = ..\build\VSTOContrib.nuspec
+		..\VSTOContrib.proj = ..\VSTOContrib.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1C9C8D4B-BC16-45E7-8A8D-23B39BEDAC9F}"
@@ -75,10 +75,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubForOutlook.Core", "GitHubForOutlook.Core\GitHubForOutlook.Core.csproj", "{F713C61F-973E-4BC2-A553-6D9D5E5F6D0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubForOutlook.Tests", "Samples\Outlook\GitHubForOutlook.Tests\GitHubForOutlook.Tests.csproj", "{EE169069-9018-4CFA-9CAB-B4DBC57FA0C3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{1AFA198F-0C16-4074-8047-BDE7F4411D5C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{71221800-7B90-4325-92BA-FD63C97FB03F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,6 +189,5 @@ Global
 		{B7A10C20-82CE-457A-9EE6-C6DAD73D3DC0} = {41A769D0-EAC1-4209-B257-14B7B6C66FF7}
 		{A3C665C9-080E-4EE2-9878-454493BE6FE6} = {6D88B7DC-E7A6-4A48-BBB5-421F9968BFEF}
 		{31E79E92-FA93-4C6C-BCD3-C1871EF1E489} = {6D88B7DC-E7A6-4A48-BBB5-421F9968BFEF}
-		{71221800-7B90-4325-92BA-FD63C97FB03F} = {1AFA198F-0C16-4074-8047-BDE7F4411D5C}
 	EndGlobalSection
 EndGlobal

@@ -3,10 +3,11 @@
   <ribbon>
     <tabs>
       <tab idMso="TabHome">
-        <group id="myAddinGroup" label="Quotes" getVisible="RibbonVisible">
+        <group id="myAddinGroup" label="Quotes"> 
           <toggleButton id="showMyAddinPaneButton" onAction="PanelShown" 
                         getPressed="PanelShown" label="Show Panel" showImage="true"
                         getImage="ShowPanelImage" size="normal" />
+          <button id="errorButton" onAction="ThrowError" label="Throw error" size="normal" showImage="false"/>
         </group>
       </tab>
     </tabs>
