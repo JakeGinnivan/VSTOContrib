@@ -87,7 +87,7 @@ namespace WikipediaWordAddin.Core.OfficeContexts
                     {
                         DataContext = wikipediaResultsViewModel //Viewmodel for the user control
                     }
-                }, "Wikipedia Results", false);
+                }, "Wikipedia Results", initallyVisible: false);
             myAddinTaskPane.VisibleChanged += TaskPaneVisibleChanged;
         }
 
