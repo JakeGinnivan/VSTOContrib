@@ -100,6 +100,7 @@
     <Compile Include="RibbonFactory\DefaultErrorHandler.cs" />
     <Compile Include="RibbonFactory\HideCustomTaskPanesForContextEventArgs.cs" />
     <Compile Include="RibbonFactory\IErrorHandler.cs" />
+    <Compile Include="RibbonFactory\ICustomTaskPaneWrapper.cs" />
     <Compile Include="RibbonFactory\Internal\CallbackTarget.cs" />
     <Compile Include="RibbonFactory\Internal\ControlCallbackLookup.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewContextProvider.cs" />
@@ -113,7 +114,6 @@
     <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
     <Compile Include="RibbonFactory\Interfaces\Internal\ICustomTaskPaneRegister.cs" />
-    <Compile Include="RibbonFactory\Internal\ICustomTaskPaneWrapper.cs" />
     <Compile Include="RibbonFactory\Internal\NullContext.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />

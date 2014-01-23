@@ -6,30 +6,27 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using IronGitHub;
 using VSTOContrib.Core;
-using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 
 namespace GitHubForOutlook.Core.Features.Settings
 {
     public class SettingsViewModel : NotifyPropertyChanged, ISettingsViewModel
     {
-        ICustomTaskPaneWrapper taskPane;
         readonly GitHubApi githubApi;
-        Action loginCallback;
+        readonly IGitHubSettings settings;
 
-        public SettingsViewModel(GitHubApi githubApi)
+        public SettingsViewModel(GitHubApi githubApi, IGitHubSettings settings)
         {
             this.githubApi = githubApi;
-            LoginCommand = new DelegateCommand<PasswordBox>(Login, p=>!LoggingIn);
+            this.settings = settings;
+            LoginCommand = new DelegateCommand<PasswordBox>(Login, p => !LoggingIn);
+            CancelCommand = new DelegateCommand(() => OnClose());
             ClearLoginDetailsCommand = new DelegateCommand(ClearLoginDetails);
         }
 
         void ClearLoginDetails()
         {
-            Properties.Settings.Default.UserName = null;
-            Properties.Settings.Default.AuthorisationId = null;
-            Properties.Settings.Default.Save();
-            HasLoginDetailsAlready = false;
+            settings.ClearAuthInfo();
         }
 
         async void Login(PasswordBox obj)
@@ -41,34 +38,25 @@ namespace GitHubForOutlook.Core.Features.Settings
                 Scopes.Repo
             }, "GitHub for Outlook");
 
-            Properties.Settings.Default.AuthorisationId = result.Id;
-            Properties.Settings.Default.AuthToken = result.Token;
-            Properties.Settings.Default.UserName = Username;
-            Properties.Settings.Default.Save();
-            taskPane.Visible = false;
-            loginCallback();
+            settings.UpdateAuthInfo(result.Id, result.Token, Username);
+            OnClose();
         }
 
         public string Username { get; set; }
         public bool LoggingIn { get; set; }
-        public bool HasLoginDetailsAlready { get; set; }
+
+        public bool HasLoginDetailsAlready
+        {
+            get { return settings.LoginDetailsSet; }
+        }
 
         public ICommand LoginCommand { get; private set; }
         public ICommand ClearLoginDetailsCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
 
         public string CurrentUsername
         {
-            get { return Properties.Settings.Default.UserName; }
-        }
-
-        public void Init(ICustomTaskPaneWrapper settingsTaskPane)
-        {
-            taskPane = settingsTaskPane;
-        }
-
-        public void LoginCallback(Action action)
-        {
-            loginCallback = action;
+            get { return settings.Username; }
         }
 
         public static string ConvertToUnsecureString(SecureString securePassword)
@@ -87,7 +75,7 @@ namespace GitHubForOutlook.Core.Features.Settings
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
         }
+
+        public event Action OnClose = () => { };
     }
-
-
 }

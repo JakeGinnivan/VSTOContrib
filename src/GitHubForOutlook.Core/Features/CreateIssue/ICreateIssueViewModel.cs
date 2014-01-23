@@ -1,11 +1,9 @@
 ﻿using Microsoft.Office.Interop.Outlook;
-using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace GitHubForOutlook.Core.Features.CreateIssue
 {
-    public interface ICreateIssueViewModel
+    public interface ICreateIssueViewModel : ITaskPaneContent
     {
-        void CreateIssueFor(MailItem selectedMailItem);
-        void Init(ICustomTaskPaneWrapper createIssueTaskPane);
+        void Initialise(MailItem selectedMailItem);
     }
 }

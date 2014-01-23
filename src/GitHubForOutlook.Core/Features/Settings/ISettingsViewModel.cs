@@ -1,11 +1,6 @@
-﻿using System;
-using VSTOContrib.Core.RibbonFactory.Internal;
-
-namespace GitHubForOutlook.Core.Features.Settings
+﻿namespace GitHubForOutlook.Core.Features.Settings
 {
-    public interface ISettingsViewModel
+    public interface ISettingsViewModel : ITaskPaneContent
     {
-        void Init(ICustomTaskPaneWrapper settingsTaskPane);
-        void LoginCallback(Action action);
     }
 }

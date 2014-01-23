@@ -1,25 +1,27 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using GitHubForOutlook.Core.Features.Settings;
 using IronGitHub;
 using IronGitHub.Entities;
 using Microsoft.Office.Interop.Outlook;
 using VSTOContrib.Core;
-using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Outlook;
+using Action = System.Action;
 
 namespace GitHubForOutlook.Core.Features.CreateIssue
 {
     public class CreateIssueViewModel : NotifyPropertyChanged, ICreateIssueViewModel
     {
-        ICustomTaskPaneWrapper taskPane;
         readonly GitHubApi githubApi;
+        readonly IGitHubSettings settings;
         MailItem currentMailItem;
 
-        public CreateIssueViewModel(GitHubApi githubApi)
+        public CreateIssueViewModel(GitHubApi githubApi, IGitHubSettings settings)
         {
             this.githubApi = githubApi;
+            this.settings = settings;
             Repositories = new ObservableCollection<RepositoryModel>();
             CreateIssueCommand = new DelegateCommand(CreateIssue);
         }
@@ -36,11 +38,11 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
                     createdIssue.HtmlUrl);
                 reply.Display(Modal: false);
 
-                taskPane.Visible = false;
+                OnClose();
             }
             finally
             {
-                CreatingIssue = false;                
+                CreatingIssue = false;
             }
         }
 
@@ -53,7 +55,7 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
 
         public ICommand CreateIssueCommand { get; private set; }
 
-        public async void CreateIssueFor(MailItem selectedMailItem)
+        public async void Initialise(MailItem selectedMailItem)
         {
             IssueTitle = selectedMailItem.Subject;
             IssueDescription = string.Format("Reported by email from {0} at {1}\r\n\r\n{2}",
@@ -68,8 +70,8 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
             {
                 githubApi.Context.Authorize(new Authorization
                 {
-                    Id = Properties.Settings.Default.AuthorisationId,
-                    Token = Properties.Settings.Default.AuthToken
+                    Id = settings.AuthorisationId,
+                    Token = settings.AuthToken
                 });
             }
             var repos = await new MyReposApi(githubApi.Context).GetMyRepositories();
@@ -82,9 +84,6 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
             });
         }
 
-        public void Init(ICustomTaskPaneWrapper createIssueTaskPane)
-        {
-            taskPane = createIssueTaskPane;
-        }
+        public event Action OnClose = () => { };
     }
 }

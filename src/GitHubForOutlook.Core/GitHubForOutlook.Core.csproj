@@ -86,11 +86,18 @@
     <Compile Include="Features\CreateIssue\MyReposApi.cs" />
     <Compile Include="Features\CreateIssue\NewIssue.cs" />
     <Compile Include="Features\CreateIssue\RepositoryModel.cs" />
+    <Compile Include="Features\ITaskPaneContent.cs" />
+    <Compile Include="Features\ITaskPaneContentHost.cs" />
+    <Compile Include="Features\Settings\GitHubSettings.cs" />
+    <Compile Include="Features\Settings\IGitHubSettings.cs" />
     <Compile Include="Features\Settings\ISettingsViewModel.cs" />
     <Compile Include="Features\Settings\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Settings\SettingsViewModel.cs" />
+    <Compile Include="Features\TaskPaneContentHost.xaml.cs">
+      <DependentUpon>TaskPaneContentHost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -147,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\Settings\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\TaskPaneContentHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

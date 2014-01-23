@@ -7,6 +7,7 @@ using Microsoft.Office.Interop.Excel;
 using QuoteGeneratorAddin.Core.Properties;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
+using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
