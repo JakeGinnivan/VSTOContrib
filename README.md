@@ -36,3 +36,5 @@ VSTO Contrib has full support for IoC containers, there is currently only an Aut
 
 ## Samples
 There are sample applications for Word, Excel, PowerPoint and Outlook available at https://github.com/JakeGinnivan/VSTOContrib/tree/master/src/Samples, check them out and if there are more scenarios which you would like to see covered raise an issue
+
+Each sample is a bit different and VSTO Contrib's model is exactly the same for all Office apps, so the concepts from one sample will apply to other Office Apps!
