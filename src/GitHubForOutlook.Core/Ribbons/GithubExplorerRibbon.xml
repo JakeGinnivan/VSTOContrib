@@ -11,7 +11,7 @@
                   showImage="true"
                   getImage="GetImage"
                   onAction="CreateIssue"
-                  getEnabled="MailItemSelected" />
+                  getEnabled="CanCreateIssue" />
           <button id="settings" label="Settings" onAction="ShowSettings" />
         </group>
       </tab>

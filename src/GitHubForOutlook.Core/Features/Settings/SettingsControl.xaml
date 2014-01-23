@@ -6,31 +6,38 @@
              xmlns:settings="clr-namespace:GitHubForOutlook.Core.Features.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance settings:SettingsViewModel}">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConveter" />
-    </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
-        <StackPanel Visibility="{Binding HasLoginDetailsAlready, Converter={StaticResource BooleanToVisibilityConveter}}">
-            <Label Content="{Binding CurrentUsername, StringFormat='Current login: {0}'}"/>
-            <TextBlock><Hyperlink Command="{Binding ClearLoginDetailsCommand}">Clear Login Details</Hyperlink></TextBlock>
-        </StackPanel>
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConveter" />
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
 
-        <Label Content="Username" Grid.Row="1"/>
-        <TextBox Text="{Binding Username}" Grid.Row="2"/>
-        <Label Content="Password" Grid.Row="3"/>
-        <PasswordBox x:Name="PasswordBox" Grid.Row="4"/>
-        <ProgressBar Height="5" Grid.Row="5" IsIndeterminate="True" Margin="10" Visibility="{Binding LoggingIn, Converter={StaticResource BooleanToVisibilityConveter}}"/>
-        <Button Content="Login" Grid.Row="6" Margin="5" HorizontalAlignment="Center"
+    <StackPanel Visibility="{Binding HasLoginDetailsAlready, Converter={StaticResource BooleanToVisibilityConveter}}">
+      <TextBlock>
+        <Run Text="{Binding CurrentUsername, StringFormat='Current login: {0} - ', Mode=OneWay}"/>
+        <Hyperlink Command="{Binding ClearLoginDetailsCommand}">Clear Login Details</Hyperlink>
+      </TextBlock>
+      <Button Content="Close" Margin="5" Command="{Binding CancelCommand}" />
+    </StackPanel>
+
+    <Label Content="Username" Grid.Row="1"/>
+    <TextBox Text="{Binding Username}" Grid.Row="2"/>
+    <Label Content="Password" Grid.Row="3"/>
+    <PasswordBox x:Name="PasswordBox" Grid.Row="4"/>
+    <ProgressBar Height="5" Grid.Row="5" IsIndeterminate="True" Margin="10" Visibility="{Binding LoggingIn, Converter={StaticResource BooleanToVisibilityConveter}}"/>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="6">
+      <Button Content="Login" Margin="5" 
                 Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordBox}"/>
-    </Grid>
+      <Button Content="Cancel" Margin="5" 
+                Command="{Binding CancelCommand}" />
+    </StackPanel>
+  </Grid>
 </UserControl>

@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using GitHubForOutlook.Core.Features;
 using GitHubForOutlook.Core.Features.CreateIssue;
 using GitHubForOutlook.Core.Features.Settings;
 using Microsoft.Office.Core;
@@ -8,8 +10,6 @@ using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Internal;
-using VSTOContrib.Core.Wpf;
 using VSTOContrib.Outlook.RibbonFactory;
 
 namespace GitHubForOutlook.Core.Ribbons
@@ -17,22 +17,24 @@ namespace GitHubForOutlook.Core.Ribbons
     [RibbonViewModel(OutlookRibbonType.OutlookExplorer)]
     public class GithubExplorerRibbon : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
+        readonly ITaskPaneContentHost contentHost;
         readonly ISettingsViewModel settingsViewModel;
-        readonly ICreateIssueViewModel createIssuesViewModel;
+        readonly Func<ICreateIssueViewModel> createIssuesViewModelFactory;
         MailItem selectedMailItem;
         Explorer explorer;
 
-        ICustomTaskPaneWrapper settingsTaskPane;
-        ICustomTaskPaneWrapper createIssueTaskPane;
-
-        public GithubExplorerRibbon(ISettingsViewModel settingsViewModel, ICreateIssueViewModel createIssuesViewModel)
+        public GithubExplorerRibbon(
+            ITaskPaneContentHost contentHost, 
+            ISettingsViewModel settingsViewModel, 
+            Func<ICreateIssueViewModel> createIssuesViewModelFactory)
         {
+            this.contentHost = contentHost;
             this.settingsViewModel = settingsViewModel;
-            this.createIssuesViewModel = createIssuesViewModel;
+            this.createIssuesViewModelFactory = createIssuesViewModelFactory;
         }
 
         public Factory VstoFactory { get; set; }
-        public bool MailItemSelected { get; set; }
+        public bool CanCreateIssue { get; set; }
         public IRibbonUI RibbonUi { get; set; }
 
         public void Initialised(object context)
@@ -41,30 +43,17 @@ namespace GitHubForOutlook.Core.Ribbons
 
         public void CreateIssue(IRibbonControl ribbonControl)
         {
-            if (selectedMailItem == null) return;
+            if (!CanCreateIssue) return;
 
-            // If we are not authenticated, authenticate before allowing user to create issue
-            if (string.IsNullOrEmpty(Properties.Settings.Default.AuthToken))
-            {
-                settingsViewModel.LoginCallback(() => CreateIssue(ribbonControl));
-                settingsTaskPane.Visible = true;
-                return;
-            }
-
-            if (settingsTaskPane.Visible)
-                settingsTaskPane.Visible = false;
-
-            createIssuesViewModel.CreateIssueFor(selectedMailItem);
-            selectedMailItem = null;
-            MailItemSelected = false;
-            createIssueTaskPane.Visible = true;
+            var issueViewModel = createIssuesViewModelFactory();
+            issueViewModel.Initialise(selectedMailItem);
+            contentHost.AddOrActivate(issueViewModel);
+            CanCreateIssue = false;
         }
 
         public void ShowSettings(IRibbonControl ribbonControl)
         {
-            if (createIssueTaskPane.Visible)
-                createIssueTaskPane.Visible = false;
-            settingsTaskPane.Visible = true;            
+            contentHost.AddOrActivate(settingsViewModel);
         }
 
         public void CurrentViewChanged(object currentView)
@@ -75,6 +64,7 @@ namespace GitHubForOutlook.Core.Ribbons
 
         private void ExplorerOnSelectionChange()
         {
+            // If a single mail item is selected, we can create an issue for that mail item
             using (var selection = explorer.Selection.WithComCleanup())
             {
                 if (selection.Resource.Count == 1)
@@ -90,11 +80,11 @@ namespace GitHubForOutlook.Core.Ribbons
                             if (selectedMailItem != null)
                                 selectedMailItem.ReleaseComObject();
                             selectedMailItem = mailItem;
-                            MailItemSelected = true;
+                            CanCreateIssue = true;
                         }
                         else
                         {
-                            MailItemSelected = false;
+                            CanCreateIssue = false;
                         }
                     }
                     finally
@@ -105,7 +95,7 @@ namespace GitHubForOutlook.Core.Ribbons
                 }
                 else
                 {
-                    MailItemSelected = false;
+                    CanCreateIssue = false;
                 }
             }
         }
@@ -130,23 +120,7 @@ namespace GitHubForOutlook.Core.Ribbons
 
         public void RegisterTaskPanes(Register register)
         {
-            settingsTaskPane = register(() => new WpfPanelHost
-            {
-                Child = new SettingsControl
-                {
-                    DataContext = settingsViewModel
-                }
-            }, "GitHub Settings", initallyVisible:false);
-            settingsViewModel.Init(settingsTaskPane);
-
-            createIssueTaskPane = register(() => new WpfPanelHost
-            {
-                Child = new CreateIssueControl
-                {
-                    DataContext = createIssuesViewModel
-                }
-            }, "Create Issue", initallyVisible: false);
-            createIssuesViewModel.Init(createIssueTaskPane);
+            contentHost.RegisterSelf(register);
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
-    internal interface IViewModelResolver<in TRibbonTypes> where TRibbonTypes : struct
+    internal interface IViewModelResolver
     {
         IRibbonViewModel ResolveInstanceFor(object context);
         void RibbonLoaded(IRibbonUI ribbonUi);
-        void RegisterCallbackControl(TRibbonTypes ribbonType, string controlCallback, string ribbonControl);
+        void RegisterCallbackControl(string ribbonType, string controlCallback, string ribbonControl);
     }
 }

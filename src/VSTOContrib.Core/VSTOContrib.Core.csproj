@@ -13,6 +13,8 @@
     <TargetOfficeVersion Condition="$(TargetOfficeVersion)==''">2013</TargetOfficeVersion>
     <Office2007 Condition="$(TargetOfficeVersion)=='2007'">TRUE</Office2007>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +24,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\VSTOContrib.Core.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -94,7 +97,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RibbonFactory\DefaultErrorHandler.cs" />
     <Compile Include="RibbonFactory\HideCustomTaskPanesForContextEventArgs.cs" />
+    <Compile Include="RibbonFactory\IErrorHandler.cs" />
+    <Compile Include="RibbonFactory\ICustomTaskPaneWrapper.cs" />
     <Compile Include="RibbonFactory\Internal\CallbackTarget.cs" />
     <Compile Include="RibbonFactory\Internal\ControlCallbackLookup.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewContextProvider.cs" />
@@ -108,17 +114,18 @@
     <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
     <Compile Include="RibbonFactory\Interfaces\Internal\ICustomTaskPaneRegister.cs" />
-    <Compile Include="RibbonFactory\Internal\ICustomTaskPaneWrapper.cs" />
     <Compile Include="RibbonFactory\Internal\NullContext.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelKey.cs" />
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
+    <Compile Include="RibbonFactory\RibbonXmlRewriter.cs" />
+    <Compile Include="RibbonFactory\VstoContribContext.cs" />
     <Compile Include="Wpf\DelegateCommand.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonFactoryController.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
-    <Compile Include="RibbonFactory\Internal\RibbonViewModelHelper.cs" />
+    <Compile Include="RibbonFactory\Internal\ViewModelRibbonTypesLookupProvider.cs" />
     <Compile Include="RibbonFactory\ViewClosedEventArgs.cs" />
     <Compile Include="RibbonFactory\ViewLocationStrategyBase.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelResolver.cs" />
@@ -144,8 +151,11 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,11 +1,9 @@
 using Microsoft.Office.Interop.Outlook;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Outlook.RibbonFactory
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class OutlookViewContextProvider : IViewContextProvider
     {
         /// <summary>
@@ -33,19 +31,18 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// <summary>
         /// Gets the ribbon type for view.
         /// </summary>
-        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
         /// <param name="view">The view.</param>
         /// <returns></returns>
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public string GetRibbonTypeForView(object view)
         {
             if (view is Explorer)
-                return (TRibbonType)(object)OutlookRibbonType.OutlookExplorer;
+                return OutlookRibbonType.OutlookExplorer.GetEnumDescription();
 
             var selection = view as Selection;
             if (selection != null)
-                return GetRibbonTypeForView<TRibbonType>(selection.Parent);
+                return GetRibbonTypeForView(selection.Parent);
 
-            return (TRibbonType) (object) InspectorToRibbonTypeConverter.Convert((Inspector) view);
+            return InspectorToRibbonTypeConverter.Convert((Inspector) view).GetEnumDescription();
         }
     }
 }

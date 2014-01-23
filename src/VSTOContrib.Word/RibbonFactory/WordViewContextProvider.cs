@@ -1,4 +1,5 @@
 using Microsoft.Office.Interop.Word;
+using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Word.RibbonFactory
@@ -26,15 +27,9 @@ namespace VSTOContrib.Word.RibbonFactory
             return null;
         }
 
-        /// <summary>
-        /// Gets the ribbon type for view.
-        /// </summary>
-        /// <typeparam name="TRibbonType">The type of the ribbon type.</typeparam>
-        /// <param name="view">The view.</param>
-        /// <returns></returns>
-        public TRibbonType GetRibbonTypeForView<TRibbonType>(object view)
+        public string GetRibbonTypeForView(object view)
         {
-            return (TRibbonType)(object)WordRibbonType.WordDocument;
+            return WordRibbonType.WordDocument.GetEnumDescription();
         }
     }
 }

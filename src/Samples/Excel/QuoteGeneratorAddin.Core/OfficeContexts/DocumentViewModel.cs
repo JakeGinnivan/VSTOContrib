@@ -5,9 +5,9 @@ using System.Windows.Controls;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using QuoteGeneratorAddin.Core.Properties;
-using stdole;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
+using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
@@ -34,6 +34,7 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
         public void Initialised(object context)
         {
             workbook = context as Workbook;
+            RibbonVisible = workbook != null;
         }
 
         public Bitmap ShowPanelImage { get { return Resources.icon; } }
@@ -46,6 +47,11 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
                 ribbonVisible = value;
                 OnPropertyChanged(()=>RibbonVisible);
             }
+        }
+
+        public void ThrowError(IRibbonControl control)
+        {
+            throw null;
         }
 
         public void CurrentViewChanged(object currentView)

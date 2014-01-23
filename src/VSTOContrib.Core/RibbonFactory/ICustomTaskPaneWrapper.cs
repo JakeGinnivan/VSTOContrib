@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace VSTOContrib.Core.RibbonFactory.Internal
+namespace VSTOContrib.Core.RibbonFactory
 {
     /// <summary>
     /// Office 2007 CustomTaskPane is a sealed class, Office2010 is a interface.

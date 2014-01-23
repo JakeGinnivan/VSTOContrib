@@ -3,6 +3,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
+using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
@@ -64,7 +65,6 @@ namespace WikipediaWordAddin.Core.OfficeContexts
         public void CurrentViewChanged(object currentView)
         {
             RibbonVisible = document != null;
-            panelShown = document != null;
         }
         
         public bool PanelShown
@@ -88,15 +88,14 @@ namespace WikipediaWordAddin.Core.OfficeContexts
                     {
                         DataContext = wikipediaResultsViewModel //Viewmodel for the user control
                     }
-                }, "Wikipedia Results");
-            myAddinTaskPane.Visible = true;
+                }, "Wikipedia Results", initallyVisible: false);
             myAddinTaskPane.VisibleChanged += TaskPaneVisibleChanged;
-            TaskPaneVisibleChanged(this, EventArgs.Empty);
         }
 
         public void Cleanup()
         {
             myAddinTaskPane.VisibleChanged -= TaskPaneVisibleChanged;
+            vstoDocument.SelectionChange -= VstoDocumentOnSelectionChange;
         }
 
         private void TaskPaneVisibleChanged(object sender, EventArgs e)
