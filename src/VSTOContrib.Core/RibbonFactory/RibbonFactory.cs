@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -81,6 +82,10 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
+        public List<IErrorHandler> ErrorHandlers
+        {
+            get { return context.ErrorHandlers; }
+        }
         /// <summary>
         /// Called when the add-in is shutting down
         /// </summary>

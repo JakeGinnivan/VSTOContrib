@@ -80,14 +80,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             if (disposed) return;
             var customTaskPane = (CustomTaskPane)sender;
-            Do(c=>c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
+            Do(c => c.DockPositionChanged -= CustomTaskPaneDockPositionChanged);
 
             //Propagate changes, then raise adapter event
             Do(c =>
-                   {
-                       if (c != customTaskPane)
-                           c.DockPosition = customTaskPane.DockPosition;
-                   });
+            {
+                if (c != customTaskPane)
+                    c.DockPosition = customTaskPane.DockPosition;
+            });
             var handler = DockPositionChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
@@ -98,7 +98,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         private void Do(Action<CustomTaskPane> action)
         {
             if (disposed) return;
-            foreach (var customTaskPane in customTaskPanes)
+            foreach (var customTaskPane in customTaskPanes.ToArray())
             {
                 action(customTaskPane);
             }
@@ -124,7 +124,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         public Microsoft.Office.Core.MsoCTPDockPosition DockPosition
         {
             get { return original.DockPosition; }
-            set { Do(c=>c.DockPosition = value); }
+            set { Do(c => c.DockPosition = value); }
         }
 
         public Microsoft.Office.Core.MsoCTPDockPositionRestrict DockPositionRestrict
@@ -136,7 +136,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         public bool Visible
         {
             get { return original.Visible; }
-            set { Do(c=>c.Visible = value); }
+            set { Do(c => c.Visible = value); }
         }
 
         public event EventHandler VisibleChanged;
@@ -145,7 +145,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         public int Height
         {
             get { return original.Height; }
-            set { Do(c=>c.Height = value); }
+            set { Do(c => c.Height = value); }
         }
 
         public int Width
@@ -165,20 +165,28 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             c.VisibleChanged -= CustomTaskPaneVisibleChanged;
             c.DockPositionChanged -= CustomTaskPaneDockPositionChanged;
-            var control = c.Control;
-            foreach (var control1 in control.Controls.OfType<ElementHost>().ToArray())
+            try
             {
-                control1.Child = null;
-                control1.Dispose();
-                control1.Parent = null;
-                control.Controls.Remove(control1);
+                var control = c.Control;
+                foreach (var control1 in control.Controls.OfType<ElementHost>().ToArray())
+                {
+                    control1.Child = null;
+                    control1.Dispose();
+                    control1.Parent = null;
+                    control.Controls.Remove(control1);
+                }
             }
+            catch (ObjectDisposedException)
+            {
+            }
+
+            customTaskPanes.Remove(c);
         }
 
         public void CleanupView(object view)
         {
             if (disposed) return;
-            foreach (var customTaskPane in customTaskPanes)
+            foreach (var customTaskPane in customTaskPanes.ToArray())
             {
                 try
                 {
@@ -186,8 +194,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                     if (taskPaneWindow != view) continue;
                     DisposeTaskPane(customTaskPane);
                 }
-                catch (COMException){}
-                customTaskPanes.Remove(customTaskPane);
+                catch (COMException) { }
                 CleanupView(view);
                 break;
             }

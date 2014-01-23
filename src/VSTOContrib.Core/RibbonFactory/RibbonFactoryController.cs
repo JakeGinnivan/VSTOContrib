@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -17,8 +16,8 @@ namespace VSTOContrib.Core.RibbonFactory
     {
         readonly ViewModelResolver ribbonViewModelResolver;
         readonly VstoContribContext vstoContribContext;
+        readonly CustomTaskPaneRegister customTaskPaneRegister;
         IViewProvider viewProvider;
-        CustomTaskPaneRegister customTaskPaneRegister;
 
         public RibbonFactoryController(
             IViewContextProvider viewContextProvider,
@@ -103,7 +102,8 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             try
             {
-                CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                CallbackTarget callbackTarget =
+                    vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
 
                 IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
 
@@ -113,35 +113,54 @@ namespace VSTOContrib.Core.RibbonFactory
                 if (property != null)
                 {
                     type.InvokeMember(callbackTarget.Method,
-                                      BindingFlags.SetProperty,
-                                      null,
-                                      viewModelInstance,
-                                      new[]
-                                      {
-                                          parameters.Single()
-                                      });
+                        BindingFlags.SetProperty,
+                        null,
+                        viewModelInstance,
+                        new[]
+                        {
+                            parameters.Single()
+                        });
                 }
                 else
                 {
                     type.InvokeMember(callbackTarget.Method,
-                                      BindingFlags.InvokeMethod,
-                                      null,
-                                      viewModelInstance,
-                                      new[]
-                                      {
-                                          control
-                                      }
-                                          .Concat(parameters)
-                                          .ToArray());
+                        BindingFlags.InvokeMethod,
+                        null,
+                        viewModelInstance,
+                        new[]
+                        {
+                            control
+                        }
+                            .Concat(parameters)
+                            .ToArray());
                 }
             }
-            catch (Exception ex)
+            catch (TargetInvocationException e)
             {
-                //TODO Provider better error handling, handle TargetInvocationException,
-                // then surface inner exceptions message
-                Debug.WriteLine(ex);
-                throw;
+                var innerEx = e.InnerException;
+                PreserveStackTrace(innerEx);
+                var handled = false;
+                for (int index = vstoContribContext.ErrorHandlers.Count - 1; index >= 0; index--)
+                {
+                    var handler = vstoContribContext.ErrorHandlers[index];
+                    if (handler.Handle(innerEx))
+                    {
+                        handled = true;
+                        break;
+                    }
+                }
+
+                if (!handled)
+                    throw innerEx;
             }
+        }
+
+        // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx
+        internal static void PreserveStackTrace(Exception exception)
+        {
+            MethodInfo preserveStackTrace = typeof(Exception).GetMethod("InternalPreserveStackTrace",
+              BindingFlags.Instance | BindingFlags.NonPublic);
+            preserveStackTrace.Invoke(exception, null);
         }
 
         public void RibbonLoaded(IRibbonUI ribbonUi)
