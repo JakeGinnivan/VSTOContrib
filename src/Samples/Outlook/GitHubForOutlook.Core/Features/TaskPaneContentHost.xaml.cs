@@ -29,11 +29,6 @@ namespace GitHubForOutlook.Core.Features
             }
         }
 
-        public UIElement AsUIElement()
-        {
-            return this;
-        }
-
         public ObservableCollection<ITaskPaneContent> ContentItems { get; private set; }
 
         public void RegisterSelf(Register register)

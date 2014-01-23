@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.Office.Core;
 using VSTOContrib.Core.Annotations;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {

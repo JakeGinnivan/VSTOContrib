@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VSTOContrib.Core.RibbonFactory.Interfaces.Internal
+namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
     internal interface ICustomTaskPaneRegister : IDisposable
     {
