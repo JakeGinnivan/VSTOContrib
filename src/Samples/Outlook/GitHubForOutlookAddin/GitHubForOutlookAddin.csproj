@@ -146,8 +146,9 @@
       <HintPath>..\..\..\packages\IronGitHub.0.2.0.0\lib\net45\IronGitHub.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\..\packages\ServiceStack.Text.3.9.66\lib\net35\ServiceStack.Text.dll</HintPath>
+    <Reference Include="ServiceStack.Text, Version=4.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.8\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
