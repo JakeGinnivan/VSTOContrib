@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -139,16 +140,12 @@ namespace VSTOContrib.Core.RibbonFactory
             {
                 var innerEx = e.InnerException;
                 PreserveStackTrace(innerEx);
-                var handled = false;
-                for (int index = vstoContribContext.ErrorHandlers.Count - 1; index >= 0; index--)
+                if (vstoContribContext.ErrorHandlers.Count == 0)
                 {
-                    var handler = vstoContribContext.ErrorHandlers[index];
-                    if (handler.Handle(innerEx))
-                    {
-                        handled = true;
-                        break;
-                    }
+                    Trace.TraceError(innerEx.ToString());
                 }
+
+                var handled = vstoContribContext.ErrorHandlers.Any(errorHandler => errorHandler.Handle(innerEx));
 
                 if (!handled)
                     throw innerEx;

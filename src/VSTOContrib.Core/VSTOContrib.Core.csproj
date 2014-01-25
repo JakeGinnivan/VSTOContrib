@@ -97,7 +97,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RibbonFactory\DefaultErrorHandler.cs" />
     <Compile Include="RibbonFactory\HideCustomTaskPanesForContextEventArgs.cs" />
     <Compile Include="RibbonFactory\IErrorHandler.cs" />
     <Compile Include="RibbonFactory\ICustomTaskPaneWrapper.cs" />
