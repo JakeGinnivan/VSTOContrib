@@ -27,10 +27,6 @@ namespace VSTOContrib.Core.RibbonFactory
             ViewModelFactory = new DefaultViewModelFactory();
             RibbonXmlFromTypeLookup = new Dictionary<string, string>();
             TagToCallbackTargetLookup = new Dictionary<string, CallbackTarget>();
-            ErrorHandlers = new List<IErrorHandler>
-            {
-                new DefaultErrorHandler()
-            };
         }
 
         public Assembly[] Assemblies { get; set; }
