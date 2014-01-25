@@ -9,20 +9,19 @@ using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using Factory = Microsoft.Office.Tools.Factory;
 
 namespace QuoteGeneratorAddin.Core.OfficeContexts
 {
-    public class DocumentViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+    public class SpreadSheetViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
         bool panelShown, ribbonVisible;
         ICustomTaskPaneWrapper myAddinTaskPane;
         Workbook workbook;
         readonly IQuotesService quotes;
 
-        public DocumentViewModel(IQuotesService quotes)
+        public SpreadSheetViewModel(IQuotesService quotes)
         {
             this.quotes = quotes;
         }
@@ -30,11 +29,13 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
         public IRibbonUI RibbonUi { get; set; }
 
         public Factory VstoFactory { get; set; }
+        public object CurrentView { get; set; }
 
         public void Initialised(object context)
         {
             workbook = context as Workbook;
             RibbonVisible = workbook != null;
+            panelShown = workbook != null;
         }
 
         public Bitmap ShowPanelImage { get { return Resources.icon; } }
@@ -54,12 +55,6 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
             throw null;
         }
 
-        public void CurrentViewChanged(object currentView)
-        {
-            RibbonVisible = workbook != null;
-            panelShown = workbook != null;
-        }
-        
         public bool PanelShown
         {
             get { return panelShown; }

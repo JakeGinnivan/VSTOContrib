@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddinModule.cs" />
-    <Compile Include="OfficeContexts\DocumentViewModel.cs" />
+    <Compile Include="OfficeContexts\SpreadSheetViewModel.cs" />
     <Compile Include="OfficeContexts\IQuotesService.cs" />
     <Compile Include="OfficeContexts\QuotesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,7 +92,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="OfficeContexts\DocumentView.xml" />
+    <EmbeddedResource Include="OfficeContexts\SpreadSheetView.xml" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
