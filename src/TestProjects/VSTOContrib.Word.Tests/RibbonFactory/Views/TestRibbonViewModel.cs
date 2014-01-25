@@ -11,14 +11,10 @@ namespace VSTOContrib.Word.Tests.RibbonFactory.Views
     {
         public IRibbonUI RibbonUi { get; set; }
         public Factory VstoFactory { get; set; }
+        public object CurrentView { get; set; }
 
         public void Initialised(object context)
         {
-        }
-
-        public void CurrentViewChanged(object currentView)
-        {
-            
         }
 
         public bool PanelShown { get; set; }

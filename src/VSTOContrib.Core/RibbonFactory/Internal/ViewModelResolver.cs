@@ -88,7 +88,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             {
                 //Tell viewmodel there is a new view active
                 var ribbonViewModel = contextToViewModelLookup[e.ViewContext];
-                ribbonViewModel.CurrentViewChanged(e.ViewInstance);
+                ribbonViewModel.CurrentView = e.ViewInstance;
                 return ribbonViewModel;
             }
 
@@ -148,9 +148,9 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             if (ribbonUiLookup.ContainsKey(ribbonType))
                 ribbonViewModel.RibbonUi = ribbonUiLookup[ribbonType];
 
+            ribbonViewModel.CurrentView = viewInstance;
             ListenForINotifyPropertyChanged(ribbonViewModel);
             ribbonViewModel.Initialised(viewContext == NullContext.Instance ? null : viewContext);
-            ribbonViewModel.CurrentViewChanged(viewInstance);
 
             return ribbonViewModel;
         }

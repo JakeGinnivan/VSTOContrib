@@ -1,26 +1,20 @@
 ﻿using System;
-using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
-using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Internal;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Word.RibbonFactory;
 using WikipediaWordAddin.Core.WpfControls;
 using Document = Microsoft.Office.Interop.Word.Document;
-using Factory = Microsoft.Office.Tools.Factory;
 
 namespace WikipediaWordAddin.Core.OfficeContexts
 {
-    [WordRibbonViewModel]
-    public class DocumentViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
+    public class DocumentViewModel : WordRibbonViewModel, IRegisterCustomTaskPane
     {
         readonly WikipediaResultsViewModel wikipediaResultsViewModel;
         bool panelShown, ribbonVisible;
-        Document document;
-        ICustomTaskPaneWrapper myAddinTaskPane;
+        ICustomTaskPaneWrapper wikipediaResultsTaskPane;
         Microsoft.Office.Tools.Word.Document vstoDocument;
 
         public DocumentViewModel(WikipediaResultsViewModel wikipediaResultsViewModel)
@@ -28,24 +22,18 @@ namespace WikipediaWordAddin.Core.OfficeContexts
             this.wikipediaResultsViewModel = wikipediaResultsViewModel;
         }
 
-        public IRibbonUI RibbonUi { get; set; }
-
-        public Factory VstoFactory { get; set; }
-
-        public void Initialised(object context)
+        public override void Initialised(Document document)
         {
-            document = context as Document;
-
             if (document != null)
             {
-                vstoDocument = ((ApplicationFactory)VstoFactory).GetVstoObject(document);
+                vstoDocument= ((ApplicationFactory)VstoFactory).GetVstoObject(document);
                 vstoDocument.SelectionChange += VstoDocumentOnSelectionChange;
+                RibbonVisible = true;
             }
         }
 
         void VstoDocumentOnSelectionChange(object sender, SelectionEventArgs e)
         {
-            using (e.WithComCleanup())
             using (var selection = e.Selection.WithComCleanup())
             {
                 wikipediaResultsViewModel.Search(selection.Resource.Text);
@@ -58,15 +46,10 @@ namespace WikipediaWordAddin.Core.OfficeContexts
             set
             {
                 ribbonVisible = value;
-                OnPropertyChanged(()=>RibbonVisible);
+                OnPropertyChanged(() => RibbonVisible);
             }
         }
 
-        public void CurrentViewChanged(object currentView)
-        {
-            RibbonVisible = document != null;
-        }
-        
         public bool PanelShown
         {
             get { return panelShown; }
@@ -74,33 +57,33 @@ namespace WikipediaWordAddin.Core.OfficeContexts
             {
                 if (panelShown == value) return;
                 panelShown = value;
-                myAddinTaskPane.Visible = value;
+                wikipediaResultsTaskPane.Visible = value;
                 OnPropertyChanged(() => PanelShown);
             }
         }
 
         public void RegisterTaskPanes(Register register)
         {
-            myAddinTaskPane = register(
+            wikipediaResultsTaskPane = register(
                 () => new WpfPanelHost
                 {
                     Child = new WikipediaResultsView //This is a WPF User control
                     {
                         DataContext = wikipediaResultsViewModel //Viewmodel for the user control
                     }
-                }, "Wikipedia Results", initialVisibility: false);
-            myAddinTaskPane.VisibleChanged += TaskPaneVisibleChanged;
+                }, "Wikipedia Results");
+            wikipediaResultsTaskPane.VisibleChanged += TaskPaneVisibleChanged;
         }
 
-        public void Cleanup()
+        public override void Cleanup()
         {
-            myAddinTaskPane.VisibleChanged -= TaskPaneVisibleChanged;
+            wikipediaResultsTaskPane.VisibleChanged -= TaskPaneVisibleChanged;
             vstoDocument.SelectionChange -= VstoDocumentOnSelectionChange;
         }
 
         private void TaskPaneVisibleChanged(object sender, EventArgs e)
         {
-            panelShown = myAddinTaskPane.Visible;
+            panelShown = wikipediaResultsTaskPane.Visible;
             OnPropertyChanged(() => PanelShown);
         }
     }

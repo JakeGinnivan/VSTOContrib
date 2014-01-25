@@ -13,11 +13,11 @@ namespace AddTextAddin.Core
     {
         PowerPoint.Presentation presentation;
         PowerPoint.Application application;
-        PowerPoint.DocumentWindow currentWindow;
 
         public IRibbonUI RibbonUi { get; set; }
 
         public Factory VstoFactory { get; set; }
+        public object CurrentView { get; set; }
 
         public void Initialised(object context)
         {
@@ -25,11 +25,6 @@ namespace AddTextAddin.Core
             if (presentation == null) return;
             application = presentation.Application;
             application.PresentationNewSlide += ApplicationOnPresentationNewSlide;
-        }
-
-        public void CurrentViewChanged(object currentView)
-        {
-            currentWindow = (PowerPoint.DocumentWindow)currentView;
         }
 
         void ApplicationOnPresentationNewSlide(PowerPoint.Slide sld)

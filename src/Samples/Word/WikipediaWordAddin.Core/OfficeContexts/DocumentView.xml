@@ -2,9 +2,9 @@
 <customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
   <ribbon>
     <tabs>
-      <tab idMso="TabHome">
-        <group id="myAddinGroup" label="Sample Addin Group" getVisible="RibbonVisible">
-          <toggleButton id="showMyAddinPaneButton" onAction="PanelShown" getPressed="PanelShown" label="Show Panel" showImage="false" />
+      <tab idMso="TabView">
+        <group id="wikipediaGroup" label="Wikipedia" getVisible="RibbonVisible">
+          <toggleButton id="showWikipediaPaneButton" onAction="PanelShown" getPressed="PanelShown" label="Show" showImage="false" />
         </group>
       </tab>
     </tabs>

@@ -34,11 +34,14 @@ namespace GitHubForOutlook.Core.Ribbons
         }
 
         public Factory VstoFactory { get; set; }
+        public object CurrentView { get; set; }
         public bool CanCreateIssue { get; set; }
         public IRibbonUI RibbonUi { get; set; }
 
         public void Initialised(object context)
         {
+            explorer = (Explorer)CurrentView;
+            explorer.SelectionChange += ExplorerOnSelectionChange;
         }
 
         public void CreateIssue(IRibbonControl ribbonControl)
@@ -54,12 +57,6 @@ namespace GitHubForOutlook.Core.Ribbons
         public void ShowSettings(IRibbonControl ribbonControl)
         {
             contentHost.AddOrActivate(settingsViewModel);
-        }
-
-        public void CurrentViewChanged(object currentView)
-        {
-            explorer = (Explorer)currentView;
-            explorer.SelectionChange += ExplorerOnSelectionChange;
         }
 
         private void ExplorerOnSelectionChange()
