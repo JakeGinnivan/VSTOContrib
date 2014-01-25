@@ -65,7 +65,7 @@
     <Compile Include="RibbonFactory\WordRibbonFactory.cs" />
     <Compile Include="RibbonFactory\WordRibbonType.cs" />
     <Compile Include="RibbonFactory\WordViewContextProvider.cs" />
-    <Compile Include="RibbonFactory\WordViewModel.cs" />
+    <Compile Include="RibbonFactory\WordRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\WordViewProvider.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -67,7 +67,7 @@
     <Compile Include="RibbonFactory\ExcelRibbonFactory.cs" />
     <Compile Include="RibbonFactory\ExcelRibbonType.cs" />
     <Compile Include="RibbonFactory\ExcelViewContextProvider.cs" />
-    <Compile Include="RibbonFactory\ExcelViewModel.cs" />
+    <Compile Include="RibbonFactory\ExcelRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\ExcelViewProvider.cs" />
   </ItemGroup>
   <ItemGroup>
