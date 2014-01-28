@@ -29,6 +29,12 @@ namespace WikipediaWordAddin.Core.OfficeContexts
                 vstoDocument= ((ApplicationFactory)VstoFactory).GetVstoObject(document);
                 vstoDocument.SelectionChange += VstoDocumentOnSelectionChange;
                 RibbonVisible = true;
+                PanelShown = true;
+            }
+            else
+            {
+                RibbonVisible = false;
+                PanelShown = false;
             }
         }
 
@@ -57,7 +63,8 @@ namespace WikipediaWordAddin.Core.OfficeContexts
             {
                 if (panelShown == value) return;
                 panelShown = value;
-                wikipediaResultsTaskPane.Visible = value;
+                if (wikipediaResultsTaskPane != null) 
+                    wikipediaResultsTaskPane.Visible = value;
                 OnPropertyChanged(() => PanelShown);
             }
         }
@@ -71,7 +78,7 @@ namespace WikipediaWordAddin.Core.OfficeContexts
                     {
                         DataContext = wikipediaResultsViewModel //Viewmodel for the user control
                     }
-                }, "Wikipedia Results");
+                }, "Wikipedia Results", PanelShown);
             wikipediaResultsTaskPane.VisibleChanged += TaskPaneVisibleChanged;
         }
 

@@ -7,9 +7,6 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.PowerPoint.RibbonFactory
 {
-    /// <summary>
-    /// PowerPoint View Provider
-    /// </summary>
     public class PowerPointViewProvider : IViewProvider
     {
         private readonly Application powerPointApplication;
@@ -23,44 +20,28 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
 
         void PowerPointApplicationWindowActivate(Presentation pres, DocumentWindow window)
         {
-            var handler = NewView;
-            if (handler == null) return;
-
-            handler(this, new NewViewEventArgs(window, pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
+            NewView(this, new NewViewEventArgs(window, pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
         }
 
         void PowerPointViewProviderNewPresentation(Presentation pres)
         {
-            var handler = NewView;
-            if (handler == null) return;
-
             using(var documentWindows = pres.Windows.WithComCleanup())
             foreach (var documentWindow in documentWindows.Resource)
             {
-                handler(this, new NewViewEventArgs(
+                NewView(this, new NewViewEventArgs(
                     documentWindow, pres,
                     PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
             }
         }
 
-        /// <summary>
-        /// Initialises this instance.
-        /// </summary>
         public void Initialise()
         {
         }
 
-        /// <summary>
-        /// Occurs when [new view].
-        /// </summary>
-        public event EventHandler<NewViewEventArgs> NewView;
-
-        /// <summary>
-        /// Occurs when [view closed].
-        /// </summary>
-        public event EventHandler<ViewClosedEventArgs> ViewClosed;
-
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
+        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext
+            = (sender, args) => { };
 
         /// <summary>
         /// Cleanups the references to a view.

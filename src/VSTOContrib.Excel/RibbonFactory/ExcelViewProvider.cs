@@ -53,8 +53,6 @@ namespace VSTOContrib.Excel.RibbonFactory
 
         void OnInitialise(Workbook wb)
         {
-            var handler = NewView;
-            if (handler == null) return;
             if (!workbooks.ContainsKey(wb))
                 workbooks.Add(wb, new List<Window>());
 
@@ -63,34 +61,19 @@ namespace VSTOContrib.Excel.RibbonFactory
                 if (singleWindow == null)
                     singleWindow = wb.Windows[1];
                 workbooks[wb].Add(singleWindow);
-                handler(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                NewView(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
             {
                 foreach (Window window in wb.Windows)
                 {
                     workbooks[wb].Add(window);
-                    handler(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                    NewView(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
 
-            wb.WindowActivate += wn =>
-            {
-                if (IsMdi() && !workbooks[wb].Contains(singleWindow))
-                    workbooks[wb].Add(singleWindow);
-                if (!IsMdi() && !workbooks[wb].Contains(wn))
-                {
-                    var windows = workbooks[wb];
-                    if (windows.All(w => ((dynamic)w).Hwnd != ((dynamic)wn).Hwnd))
-                    {
-                        windows.Add(wn);
-                        handler(this, new NewViewEventArgs(wn, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
-                    }
-                }
+            wb.WindowActivate += wn => Activate(wb, wn);
 
-                if (IsMdi())
-                    UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs(wb, true));
-            };
             wb.WindowDeactivate += wn =>
             {
                 if (IsMdi())
@@ -101,19 +84,31 @@ namespace VSTOContrib.Excel.RibbonFactory
             };
         }
 
+        void Activate(Workbook wb, Window wn)
+        {
+            if (IsMdi() && !workbooks[wb].Contains(singleWindow))
+                workbooks[wb].Add(singleWindow);
+            if (!IsMdi() && !workbooks[wb].Contains(wn))
+            {
+                var windows = workbooks[wb];
+                if (windows.All(w => ((dynamic) w).Hwnd != ((dynamic) wn).Hwnd))
+                {
+                    windows.Add(wn);
+                    NewView(this, new NewViewEventArgs(wn, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                }
+            }
+
+            if (IsMdi())
+                UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs(wb, true));
+        }
+
         bool IsMdi()
         {
             return new Version(excelApplication.Version).Major <= 14;
         }
 
-        /// <summary>
-        /// Occurs when [new view].
-        /// </summary>
-        public event EventHandler<NewViewEventArgs> NewView;
-        /// <summary>
-        /// Occurs when [view closed].
-        /// </summary>
-        public event EventHandler<ViewClosedEventArgs> ViewClosed;
+        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
+        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
 
         /// <summary>
         /// Raise when the custom task panes for a context need to change their visibility

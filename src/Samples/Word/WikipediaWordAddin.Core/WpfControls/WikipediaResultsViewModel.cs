@@ -10,11 +10,11 @@ namespace WikipediaWordAddin.Core.WpfControls
 {
     public class WikipediaResultsViewModel : NotifyPropertyChanged
     {
+        readonly IWikipediaService wikipediaService;
         readonly Timer searchTimer = new Timer(500);
         SearchResults searchResults;
         string searchText;
         TaskScheduler uiScheduler;
-        IWikipediaService wikipediaService;
 
         public WikipediaResultsViewModel(IWikipediaService wikipediaService)
         {

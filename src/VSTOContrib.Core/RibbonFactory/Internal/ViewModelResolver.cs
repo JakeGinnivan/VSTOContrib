@@ -22,7 +22,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         /// <summary>
         /// Looks up ViewModelType, callback method name, control id, controlId used to invalidate :)
         /// </summary>
-        readonly Dictionary<Type, List<KeyValuePair<string,string>>> notifyChangeTargetLookup;
+        readonly Dictionary<Type, List<KeyValuePair<string, string>>> notifyChangeTargetLookup;
 
         readonly ICustomTaskPaneRegister customTaskPaneRegister;
         readonly IViewContextProvider viewContextProvider;
@@ -53,19 +53,31 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             this.viewProvider.NewView += ViewProviderNewView;
             this.viewProvider.ViewClosed += ViewProviderViewClosed;
-            this.viewProvider.UpdateCustomTaskPanesVisibilityForContext += 
+            this.viewProvider.UpdateCustomTaskPanesVisibilityForContext +=
                 ViewProviderOnUpdateCustomTaskPanesVisibilityForContext;
         }
 
-        void ViewProviderOnUpdateCustomTaskPanesVisibilityForContext(object sender, 
-            HideCustomTaskPanesForContextEventArgs hideCustomTaskPanesForContextEventArgs)
+        void InvalidateRibbonForViewModel(IRibbonViewModel viewModel)
         {
-            customTaskPaneRegister.ChangeVisibilityForContext(hideCustomTaskPanesForContextEventArgs.Context,
-                hideCustomTaskPanesForContextEventArgs.Visible);
+            if (viewModel.RibbonUi == null) return;
+            foreach (var targets in notifyChangeTargetLookup[viewModel.GetType()])
+            {
+                viewModel.RibbonUi.InvalidateControl(targets.Value);
+            }
+        }
+
+        void ViewProviderOnUpdateCustomTaskPanesVisibilityForContext(object sender, HideCustomTaskPanesForContextEventArgs e)
+        {
+            VstoContribLog.Debug(_ => _(
+                "ViewProvider.UpdateCustomTaskPanesVisibilityForContext Raised, Context: {0}, Visible: {1}",
+                e.Context.ToLogFormat(), e.Visible));
+            customTaskPaneRegister.ChangeVisibilityForContext(e.Context, e.Visible);
         }
 
         void ViewProviderViewClosed(object sender, ViewClosedEventArgs e)
         {
+            VstoContribLog.Debug(_ => _("ViewProvider.ViewClosed Raised, View: {0}, Context: {1}",
+                   e.View.ToLogFormat(), e.Context.ToLogFormat()));
             //TODO write test around context/view cleanup
             customTaskPaneRegister.Cleanup(e.View);
 
@@ -75,26 +87,35 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         void ViewProviderNewView(object sender, NewViewEventArgs e)
         {
-            var viewModel = GetOrCreateViewModel(e);
-            if (viewModel == null) return;
+            VstoContribLog.Debug(_ => _("ViewProvider.NewView Raised, Type: {0}, View: {1}, Context: {2}",
+                e.RibbonType, e.ViewInstance.ToLogFormat(), e.ViewContext.ToLogFormat()));
+            if (ribbonUiLookup.ContainsKey("default"))
+            {
+                ribbonUiLookup.Add(e.RibbonType, ribbonUiLookup["default"]);
+                ribbonUiLookup.Remove("default");
+            }
+            var viewModel = GetOrCreateViewModel(e.RibbonType, e.ViewContext ?? NullContext.Instance, e.ViewInstance);
             customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, e.ViewInstance, e.ViewContext);
+            InvalidateRibbonForViewModel(viewModel);
+            if (viewModel == null) return;
             e.Handled = true;
         }
 
-        IRibbonViewModel GetOrCreateViewModel(NewViewEventArgs e)
+        IRibbonViewModel GetOrCreateViewModel(string ribbonType, object viewContext, object viewInstance)
         {
-            if (!ribbonTypeLookup.ContainsKey(e.RibbonType)) return null;
-            if (contextToViewModelLookup.ContainsKey(e.ViewContext))
+            if (!ribbonTypeLookup.ContainsKey(ribbonType)) return null;
+            if (contextToViewModelLookup.ContainsKey(viewContext))
             {
                 //Tell viewmodel there is a new view active
-                var ribbonViewModel = contextToViewModelLookup[e.ViewContext];
-                ribbonViewModel.CurrentView = e.ViewInstance;
+                var ribbonViewModel = contextToViewModelLookup[viewContext];
+                VstoContribLog.Debug(_ => _("ViewModel {0} found for context {1}", ribbonViewModel.ToLogFormat(), viewContext.ToLogFormat()));
+                ribbonViewModel.CurrentView = viewInstance;
                 return ribbonViewModel;
             }
 
-            currentlyLoadingRibbon = e.RibbonType;
-            IRibbonViewModel buildViewModel = BuildViewModel(e.RibbonType, e.ViewInstance, e.ViewContext);
-            contextToViewModelLookup.Add(e.ViewContext, buildViewModel);
+            currentlyLoadingRibbon = ribbonType;
+            IRibbonViewModel buildViewModel = BuildViewModel(ribbonType, viewInstance, viewContext);
+            contextToViewModelLookup.Add(viewContext, buildViewModel);
             return buildViewModel;
         }
 
@@ -119,7 +140,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 var ribbonTypeForView = viewContextProvider.GetRibbonTypeForView(view);
                 var newViewEventArgs = new NewViewEventArgs(view, context, ribbonTypeForView);
 
-                GetOrCreateViewModel(newViewEventArgs);
+                GetOrCreateViewModel(newViewEventArgs.RibbonType, newViewEventArgs.ViewContext, newViewEventArgs.ViewInstance);
             }
 
             return contextToViewModelLookup[context];
@@ -136,11 +157,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 .Where(viewModel => viewModel.GetType() == viewModelType && viewModel.RibbonUi == null))
             {
                 viewModelLookup.RibbonUi = ribbonUi;
+                InvalidateRibbonForViewModel(viewModelLookup);
             }
         }
 
         private IRibbonViewModel BuildViewModel(string ribbonType, object viewInstance, object viewContext)
         {
+            VstoContribLog.Info(_ => _("Building ViewModel for ribbon {0} with context {1}", ribbonType, viewContext.ToLogFormat()));
             var viewModelType = ribbonTypeLookup[ribbonType];
             var ribbonViewModel = vstoContribContext.ViewModelFactory.Resolve(viewModelType);
             ribbonViewModel.VstoFactory = vstoContribContext.VstoFactory;
@@ -160,13 +183,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             var notifiesOfPropertyChanged = ribbonViewModel as INotifyPropertyChanged;
             if (notifiesOfPropertyChanged != null)
             {
-                notifiesOfPropertyChanged.PropertyChanged += NotifiesOfPropertyChangedPropertyChanged;                
+                notifiesOfPropertyChanged.PropertyChanged += NotifiesOfPropertyChangedPropertyChanged;
             }
         }
 
         void NotifiesOfPropertyChangedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var viewModel = (IRibbonViewModel) sender;
+            var viewModel = (IRibbonViewModel)sender;
             var senderType = sender.GetType();
 
             foreach (var invalidatedControl in
@@ -176,16 +199,22 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                     .Distinct()
                     .Where(invalidatedControl => viewModel.RibbonUi != null))
             {
+                VstoContribLog.Debug(_ => _("Invalidating {0} due to property change notification", invalidatedControl));
                 viewModel.RibbonUi.InvalidateControl(invalidatedControl);
             }
         }
 
         private void CleanupViewModel(object context)
         {
+            VstoContribLog.Debug(_ => _("Cleaning up viewmodel for context: {0}", context.ToLogFormat()));
             if (!contextToViewModelLookup.ContainsKey(context))
+            {
+                VstoContribLog.Warn(_ => _("Cannot find ViewModel to cleanup: {0}", context.ToLogFormat()));
                 return;
+            }
 
             var viewModelInstance = contextToViewModelLookup[context];
+            VstoContribLog.Info(_ => _("ViewModel is {0}", viewModelInstance.ToLogFormat()));
 
             var notifyOfPropertyChanged = viewModelInstance as INotifyPropertyChanged;
             if (notifyOfPropertyChanged != null)
@@ -193,7 +222,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             viewModelInstance.Cleanup();
             vstoContribContext.ViewModelFactory.Release(viewModelInstance);
-
+            customTaskPaneRegister.CleanupViewModel(viewModelInstance);
             contextToViewModelLookup.Remove(context);
         }
 

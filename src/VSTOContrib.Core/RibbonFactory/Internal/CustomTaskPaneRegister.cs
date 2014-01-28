@@ -93,6 +93,16 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
+        public void CleanupViewModel(IRibbonViewModel viewModelInstance)
+        {
+            var adaptersForViewModel = ribbonTaskPanes[viewModelInstance];
+            ribbonTaskPanes.Remove(viewModelInstance);
+            foreach (var oneToManyCustomTaskPaneAdapter in adaptersForViewModel)
+            {
+                oneToManyCustomTaskPaneAdapter.Dispose();
+            }
+        }
+
         public void Dispose()
         {
             var taskPanes = ribbonTaskPanes.ToArray();

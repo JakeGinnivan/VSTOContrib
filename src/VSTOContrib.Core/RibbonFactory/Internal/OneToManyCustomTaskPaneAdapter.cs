@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Forms.Integration;
 using Microsoft.Office.Tools;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
@@ -167,14 +166,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             c.DockPositionChanged -= CustomTaskPaneDockPositionChanged;
             try
             {
-                var control = c.Control;
-                foreach (var control1 in control.Controls.OfType<ElementHost>().ToArray())
-                {
-                    control1.Child = null;
-                    control1.Dispose();
-                    control1.Parent = null;
-                    control.Controls.Remove(control1);
-                }
+                c.Dispose();
             }
             catch (ObjectDisposedException)
             {

@@ -7,6 +7,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.Annotations;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
@@ -108,6 +109,7 @@ namespace VSTOContrib.Core.RibbonFactory
         // ReSharper disable InconsistentNaming
         public virtual void Ribbon_Load(IRibbonUI ribbonUi)
         {
+            VstoContribLog.Debug(_ => _("Ribbon_Load event raised: {0}", ribbonUi.ToLogFormat()));
             ribbonFactoryController.RibbonLoaded(ribbonUi);
         }
         // ReSharper restore InconsistentNaming
