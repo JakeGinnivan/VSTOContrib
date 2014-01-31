@@ -6,6 +6,7 @@ using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Word.RibbonFactory
 {
@@ -29,6 +30,8 @@ namespace VSTOContrib.Word.RibbonFactory
 
         void WordApplicationWindowActivate(Document doc, Window wn)
         {
+            VstoContribLog.Info(_ => _("Application.WindowActivate raised, Document: {0}, Window: {1}", 
+                doc.ToLogFormat(), wn.ToLogFormat()));
             if (!documents.ContainsKey(doc))
             {
                 documents.Add(doc, new List<Window>());
@@ -88,6 +91,7 @@ namespace VSTOContrib.Word.RibbonFactory
             var enumDescription = WordRibbonType.WordDocument.GetEnumDescription();
             if (wordApplication.Documents.Count == 0)
             {
+                VstoContribLog.Debug(_ => _("Application.DocumentChange raised, no documents currently open"));
                 foreach (var viewInstance in wordApplication.Windows)
                 {
                     NewView(this, new NewViewEventArgs(viewInstance, null, enumDescription));
@@ -96,13 +100,21 @@ namespace VSTOContrib.Word.RibbonFactory
             else
             {
                 var activeDocument = wordApplication.ActiveDocument;
-                if (closedDocuments.Contains(activeDocument.GetHashCode())) return;
-                NewView(this, new NewViewEventArgs(wordApplication.ActiveWindow, activeDocument, enumDescription));
+                if (closedDocuments.Contains(activeDocument.GetHashCode()))
+                {
+                    VstoContribLog.Debug(_ => _("Application.DocumentChange raised ActiveDocument: {0} is closing, ignoring event", activeDocument.ToLogFormat()));
+                    return;
+                }
+                var activeWindow = wordApplication.ActiveWindow;
+                VstoContribLog.Debug(_ => _("Application.DocumentChange raised, ActiveDocument: {0}, ActiveWindow: {1}",
+                    activeDocument.ToLogFormat(), activeWindow.ToLogFormat()));
+                NewView(this, new NewViewEventArgs(activeWindow, activeDocument, enumDescription));
             }
         }
 
         void WordApplicationDocumentOpen(Document doc)
         {
+            VstoContribLog.Debug(_ => _("Application.DocumentOpen raised, Document: {0}", doc.ToLogFormat()));
             WordApplicationWindowActivate(doc, doc.ActiveWindow);
         }
 
@@ -127,6 +139,7 @@ namespace VSTOContrib.Word.RibbonFactory
         {
             wordApplication.WindowActivate -= WordApplicationWindowActivate;
             wordApplication.DocumentOpen -= WordApplicationDocumentOpen;
+            wordApplication.DocumentChange -= WordApplicationOnDocumentChange;
             wordApplication = null;
         }
 
@@ -135,6 +148,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
+            VstoContribLog.Debug(_ => _("Registering all already open documents"));
             using (var documents = wordApplication.Documents.WithComCleanup())
             {
                 foreach (Document document in documents.Resource)

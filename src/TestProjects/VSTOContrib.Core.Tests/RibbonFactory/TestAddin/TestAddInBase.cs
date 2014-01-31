@@ -1,9 +1,13 @@
+using System;
 using Microsoft.Office.Tools;
+using VSTOContrib.Core.Annotations;
 
 namespace VSTOContrib.Core.Tests.RibbonFactory.TestAddin
 {
     public class TestAddInBase : AddInBase
     {
+        TestFactory factory;
+
         public TestAddInBase()
             : this(new TestFactory())
         {
@@ -11,12 +15,24 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestAddin
         }
 
         public TestAddInBase(Factory factory)
-            : base(new TestFactory(), null, null, null)
+            : base(factory, null, null, null)
         {
+            this.factory = (TestFactory) factory;
             Globals.Factory = factory;
         }
 
-        internal object Application;
+        [UsedImplicitly] internal object Application;
+
         public TestAddin TestAddin { get { return (TestAddin)Base; } }
+
+        public void SetApplication(object application)
+        {
+            Application = application;
+        }
+
+        public void RaiseStartupEvent()
+        {
+            factory.UnderlyingAddIn.OnStartup();
+        }
     }
 }

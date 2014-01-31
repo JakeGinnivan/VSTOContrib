@@ -76,7 +76,7 @@
     <Compile Include="RibbonFactory\TestStubs\TestRibbonFactory.cs" />
     <Compile Include="RibbonFactory\TestStubs\TestRibbonTypes.cs" />
     <Compile Include="RibbonFactory\TestViewModelFactory.cs" />
-    <Compile Include="RibbonFactory\TestWindow.cs" />
+    <Compile Include="RibbonFactory\TestView.cs" />
     <Compile Include="RibbonFactory\TestWindowContext.cs" />
     <Compile Include="RibbonFactory\the_ribbon_factory.cs" />
     <Compile Include="RibbonFactory\the_ribbon_viewmodel_helper.cs" />

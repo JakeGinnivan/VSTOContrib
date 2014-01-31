@@ -10,3 +10,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: AssemblyInformationalVersion("1.0.0.0")]
+
+[assembly: InternalsVisibleTo("VSTOContrib.Word")]
+[assembly: InternalsVisibleTo("VSTOContrib.Excel")]
+[assembly: InternalsVisibleTo("VSTOContrib.Outlook")]
+[assembly: InternalsVisibleTo("VSTOContrib.PowerPoint")]
+[assembly: InternalsVisibleTo("VSTOContrib.Word.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

@@ -1,6 +1,6 @@
 ﻿namespace VSTOContrib.Core.Tests.RibbonFactory
 {
-    public class TestWindow
+    public class TestView
     {
         public TestWindowContext Context { get; set; }
     }

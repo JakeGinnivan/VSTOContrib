@@ -140,7 +140,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 var ribbonTypeForView = viewContextProvider.GetRibbonTypeForView(view);
                 var newViewEventArgs = new NewViewEventArgs(view, context, ribbonTypeForView);
 
-                GetOrCreateViewModel(newViewEventArgs.RibbonType, newViewEventArgs.ViewContext, newViewEventArgs.ViewInstance);
+                var viewModel = GetOrCreateViewModel(newViewEventArgs.RibbonType, newViewEventArgs.ViewContext, newViewEventArgs.ViewInstance);
+                customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, newViewEventArgs.ViewInstance, context);
             }
 
             return contextToViewModelLookup[context];

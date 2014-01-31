@@ -7,7 +7,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
     {
         public object GetContextForView(object view)
         {
-            return ((TestWindow)view).Context;
+            return ((TestView)view).Context;
         }
 
         public string GetRibbonTypeForView(object view)
