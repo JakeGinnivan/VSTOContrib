@@ -2,6 +2,7 @@
 using System.Windows;
 using QuoteGeneratorAddin.Core;
 using VSTOContrib.Autofac;
+using VSTOContrib.Core;
 using VSTOContrib.Excel.RibbonFactory;
 using Office = Microsoft.Office.Core;
 
@@ -23,6 +24,9 @@ namespace QuoteGeneratorAddin
             //Required for WPF support
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+
+            VstoContribLog.ToTrace();
+            VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
 
             return new ExcelRibbonFactory(this , typeof(AddinModule).Assembly)
             {

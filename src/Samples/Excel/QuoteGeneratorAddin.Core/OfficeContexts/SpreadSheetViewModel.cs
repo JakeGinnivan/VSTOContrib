@@ -46,7 +46,7 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
             set
             {
                 ribbonVisible = value;
-                OnPropertyChanged(()=>RibbonVisible);
+                OnPropertyChanged(() => RibbonVisible);
             }
         }
 
@@ -101,7 +101,7 @@ namespace QuoteGeneratorAddin.Core.OfficeContexts
             using (var application = workbook.Application.WithComCleanup())
             using (var selection = ((Range)application.Resource.Selection).WithComCleanup())
             {
-                selection.Resource.Value = new[] {quotes.GetQuote() + GetHashCode()};
+                selection.Resource.Value = new[] { quotes.GetQuote() };
             }
         }
 
