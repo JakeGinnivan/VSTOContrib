@@ -13,7 +13,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         ExcelViewProvider excelViewProvider;
 
         public ExcelRibbonFactory(AddInBase addinBase, params Assembly[] assemblies)
-            : base(addinBase, assemblies, new ExcelViewContextProvider(), ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new ExcelViewContextProvider(), ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
         {
         }
 

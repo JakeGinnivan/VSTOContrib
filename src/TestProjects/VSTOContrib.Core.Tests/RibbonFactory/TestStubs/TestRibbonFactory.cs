@@ -19,11 +19,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestStubs
             this.viewProvider = viewProvider;
         }
 
-        public void ClearCurrent()
-        {
-            Current = null;
-        }
-
         protected override void ShuttingDown()
         {
             

@@ -20,7 +20,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         public OutlookRibbonFactory(
             AddInBase addinBase,
             params Assembly[] assemblies)
-            : base(addinBase, assemblies, new OutlookViewContextProvider(), null)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), null)
         {
         }
 

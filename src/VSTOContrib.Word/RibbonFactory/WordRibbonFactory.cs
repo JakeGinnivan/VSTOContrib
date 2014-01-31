@@ -7,9 +7,6 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Word.RibbonFactory
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [ComVisible(true)]
     public class WordRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
@@ -18,7 +15,7 @@ namespace VSTOContrib.Word.RibbonFactory
         public WordRibbonFactory(
             AddInBase addinBase,
             params Assembly[] assemblies)
-            : base(addinBase, assemblies, new WordViewContextProvider(), WordRibbonType.WordDocument.GetEnumDescription())
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), WordRibbonType.WordDocument.GetEnumDescription())
         {
         }
 
