@@ -13,12 +13,11 @@ namespace VSTOContrib.Word.Tests
         readonly TestAddInBase testAddInBase;
         readonly WordRibbonFactory sut;
         readonly IRibbonUI ribbonUI;
-        readonly ApplicationTestDouble application;
-        readonly DocumentTestDouble document;
+        readonly Word2013Facade wordFacade;
 
         public WordScenarios()
         {
-            application = new ApplicationTestDouble();
+            wordFacade = new Word2013Facade();
             ribbonUI = new RibbonUITestDouble();
             VstoContribLog.ToTrace();
             VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
@@ -31,8 +30,9 @@ namespace VSTOContrib.Word.Tests
         {
             sut.GetCustomUI("Microsoft.Word.Document");
             sut.Ribbon_Load(ribbonUI);
+            var documentAndWindow = wordFacade.NewDocumentInNewWindow();
 
-            testAddInBase.SetApplication(application);
+            testAddInBase.SetApplication(wordFacade.Application);
             testAddInBase.RaiseStartupEvent();
         } 
     }
