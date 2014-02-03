@@ -6,564 +6,587 @@ using Application = Microsoft.Office.Interop.Word.Application;
 using Window = Microsoft.Office.Interop.Word.Window;
 using Windows = Microsoft.Office.Interop.Word.Windows;
 
-namespace VSTOContrib.Word.Tests
+namespace Word.TestDoubles
 {
-    public class TestApplication : Application
+    public class ApplicationTestDouble : Application
     {
-        void _Application.Quit(ref object SaveChanges, ref object originalFormat, ref object RouteDocument)
+        public ApplicationTestDouble()
         {
+            Documents = new DocumentsTestDouble(this);
+            Windows = new WindowsTestDouble(this);
         }
 
-        public void ScreenRefresh()
-        {
-        }
 
-        public void PrintOutOld(ref object Background, ref object Append, ref object Range, ref object OutputFileName,
-            ref object From,
-            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType,
-            ref object PrintToFile,
-            ref object Collate, ref object FileName, ref object ActivePrinterMacGX, ref object ManualDuplexPrint)
-        {
-        }
-
-        public void LookupNameProperties(string Name)
-        {
-        }
-
-        public void SubstituteFont(string UnavailableFont, string SubstituteFont)
-        {
-        }
-
-        public bool Repeat(ref object Times)
-        {
-            return false;
-        }
-
-        public void DDEExecute(int Channel, string Command)
-        {
-        }
-
-        public int DDEInitiate(string App, string Topic)
-        {
-            return 0;
-        }
-
-        public void DDEPoke(int Channel, string Item, string Data)
-        {
-        }
-
-        public string DDERequest(int Channel, string Item)
-        {
-            return null;
-        }
-
-        public void DDETerminate(int Channel)
-        {
-        }
-
-        public void DDETerminateAll()
-        {
-        }
-
-        public int BuildKeyCode(WdKey Arg1, ref object Arg2, ref object Arg3, ref object Arg4)
-        {
-            return 0;
-        }
-
-        public string KeyString(int KeyCode, ref object KeyCode2)
-        {
-            return null;
-        }
-
-        public void OrganizerCopy(string Source, string Destination, string Name, WdOrganizerObject Object)
-        {
-        }
-
-        public void OrganizerDelete(string Source, string Name, WdOrganizerObject Object)
-        {
-        }
-
-        public void OrganizerRename(string Source, string Name, string NewName, WdOrganizerObject Object)
-        {
-        }
-
-        public void AddAddress(ref Array TagID, ref Array Value)
-        {
-        }
-
-        public string GetAddress(ref object Name, ref object AddressProperties, ref object UseAutoText,
-            ref object DisplaySelectDialog,
-            ref object SelectDialog, ref object CheckNamesDialog, ref object RecentAddressesChoice,
-            ref object UpdateRecentAddresses)
-        {
-            return null;
-        }
-
-        public bool CheckGrammar(string String)
-        {
-            return false;
-        }
-
-        public bool CheckSpelling(string Word, ref object CustomDictionary, ref object IgnoreUppercase,
-            ref object MainDictionary,
-            ref object CustomDictionary2, ref object CustomDictionary3, ref object CustomDictionary4,
-            ref object CustomDictionary5, ref object CustomDictionary6, ref object CustomDictionary7,
-            ref object CustomDictionary8, ref object CustomDictionary9, ref object CustomDictionary10)
-        {
-            return false;
-        }
-
-        public void ResetIgnoreAll()
-        {
-        }
-
-        public SpellingSuggestions GetSpellingSuggestions(string Word, ref object CustomDictionary,
-            ref object IgnoreUppercase,
-            ref object MainDictionary, ref object SuggestionMode, ref object CustomDictionary2,
-            ref object CustomDictionary3,
-            ref object CustomDictionary4, ref object CustomDictionary5, ref object CustomDictionary6,
-            ref object CustomDictionary7, ref object CustomDictionary8, ref object CustomDictionary9,
-            ref object CustomDictionary10)
-        {
-            return null;
-        }
-
-        public void GoBack()
-        {
-        }
-
-        public void Help(ref object HelpType)
-        {
-        }
-
-        public void AutomaticChange()
-        {
-        }
-
-        public void ShowMe()
-        {
-        }
-
-        public void HelpTool()
-        {
-        }
-
-        public Window NewWindow()
+        void _Application.Quit(ref object saveChanges, ref object originalFormat, ref object routeDocument)
         {
             throw new NotImplementedException();
         }
 
-        public void ListCommands(bool ListAllCommands)
+        public void ScreenRefresh()
         {
+            throw new NotImplementedException();
+        }
+
+        public void PrintOutOld(ref object Background, ref object Append, ref object Range, ref object OutputFileName, ref object From,
+            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType, ref object PrintToFile,
+            ref object Collate, ref object FileName, ref object ActivePrinterMacGX, ref object ManualDuplexPrint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LookupNameProperties(string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubstituteFont(string UnavailableFont, string SubstituteFont)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Repeat(ref object Times)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DDEExecute(int Channel, string Command)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DDEInitiate(string App, string Topic)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DDEPoke(int Channel, string Item, string Data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DDERequest(int Channel, string Item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DDETerminate(int Channel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DDETerminateAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int BuildKeyCode(WdKey Arg1, ref object Arg2, ref object Arg3, ref object Arg4)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string KeyString(int KeyCode, ref object KeyCode2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OrganizerCopy(string Source, string Destination, string Name, WdOrganizerObject Object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OrganizerDelete(string Source, string Name, WdOrganizerObject Object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OrganizerRename(string Source, string Name, string NewName, WdOrganizerObject Object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddAddress(ref Array TagID, ref Array Value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAddress(ref object Name, ref object AddressProperties, ref object UseAutoText, ref object DisplaySelectDialog,
+            ref object SelectDialog, ref object CheckNamesDialog, ref object RecentAddressesChoice,
+            ref object UpdateRecentAddresses)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckGrammar(string String)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckSpelling(string Word, ref object CustomDictionary, ref object IgnoreUppercase, ref object MainDictionary,
+            ref object CustomDictionary2, ref object CustomDictionary3, ref object CustomDictionary4,
+            ref object CustomDictionary5, ref object CustomDictionary6, ref object CustomDictionary7,
+            ref object CustomDictionary8, ref object CustomDictionary9, ref object CustomDictionary10)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetIgnoreAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SpellingSuggestions GetSpellingSuggestions(string Word, ref object CustomDictionary, ref object IgnoreUppercase,
+            ref object MainDictionary, ref object SuggestionMode, ref object CustomDictionary2, ref object CustomDictionary3,
+            ref object CustomDictionary4, ref object CustomDictionary5, ref object CustomDictionary6,
+            ref object CustomDictionary7, ref object CustomDictionary8, ref object CustomDictionary9,
+            ref object CustomDictionary10)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GoBack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Help(ref object HelpType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AutomaticChange()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowMe()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HelpTool()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Window NewWindow()
+        {
+            var windowTestDouble = new WindowTestDouble();
+            Windows.Add(windowTestDouble);
+            return windowTestDouble;
+        }
+
+        public void ListCommands(bool listAllCommands)
+        {
+            throw new NotImplementedException();
         }
 
         public void ShowClipboard()
         {
+            throw new NotImplementedException();
         }
 
-        public void OnTime(ref object When, string Name, ref object Tolerance)
+        public void OnTime(ref object when, string name, ref object tolerance)
         {
+            throw new NotImplementedException();
         }
 
         public void NextLetter()
         {
+            throw new NotImplementedException();
         }
 
-        public short MountVolume(string Zone, string Server, string Volume, ref object User, ref object UserPassword,
+        public short MountVolume(string zone, string Server, string Volume, ref object User, ref object UserPassword,
             ref object VolumePassword)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public string CleanString(string String)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public void SendFax()
         {
+            throw new NotImplementedException();
         }
 
         public void ChangeFileOpenDirectory(string Path)
         {
+            throw new NotImplementedException();
         }
 
         public void RunOld(string MacroName)
         {
+            throw new NotImplementedException();
         }
 
         public void GoForward()
         {
+            throw new NotImplementedException();
         }
 
         public void Move(int Left, int Top)
         {
+            throw new NotImplementedException();
         }
 
         public void Resize(int Width, int Height)
         {
+            throw new NotImplementedException();
         }
 
         public float InchesToPoints(float Inches)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float CentimetersToPoints(float Centimeters)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float MillimetersToPoints(float Millimeters)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PicasToPoints(float Picas)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float LinesToPoints(float Lines)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PointsToInches(float Points)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PointsToCentimeters(float Points)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PointsToMillimeters(float Points)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PointsToPicas(float Points)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PointsToLines(float Points)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public void Activate()
         {
+            throw new NotImplementedException();
         }
 
         public float PointsToPixels(float Points, ref object fVertical)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public float PixelsToPoints(float Pixels, ref object fVertical)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public void KeyboardLatin()
         {
+            throw new NotImplementedException();
         }
 
         public void KeyboardBidi()
         {
+            throw new NotImplementedException();
         }
 
         public void ToggleKeyboard()
         {
+            throw new NotImplementedException();
         }
 
         public int Keyboard(int LangId = 0)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public string ProductCode()
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public DefaultWebOptions DefaultWebOptions()
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public void DiscussionSupport(ref object Range, ref object cid, ref object piCSE)
         {
+            throw new NotImplementedException();
         }
 
         public void SetDefaultTheme(string Name, WdDocumentMedium DocumentType)
         {
+            throw new NotImplementedException();
         }
 
         public string GetDefaultTheme(WdDocumentMedium DocumentType)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public void PrintOut2000(ref object Background, ref object Append, ref object Range, ref object OutputFileName,
-            ref object From,
-            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType,
-            ref object PrintToFile,
+        public void PrintOut2000(ref object Background, ref object Append, ref object Range, ref object OutputFileName, ref object From,
+            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType, ref object PrintToFile,
             ref object Collate, ref object FileName, ref object ActivePrinterMacGX, ref object ManualDuplexPrint,
-            ref object PrintZoomColumn, ref object PrintZoomRow, ref object PrintZoomPaperWidth,
-            ref object PrintZoomPaperHeight)
+            ref object PrintZoomColumn, ref object PrintZoomRow, ref object PrintZoomPaperWidth, ref object PrintZoomPaperHeight)
         {
+            throw new NotImplementedException();
         }
 
-        public object Run(string MacroName, ref object varg1, ref object varg2, ref object varg3, ref object varg4,
-            ref object varg5,
+        public object Run(string MacroName, ref object varg1, ref object varg2, ref object varg3, ref object varg4, ref object varg5,
             ref object varg6, ref object varg7, ref object varg8, ref object varg9, ref object varg10, ref object varg11,
-            ref object varg12, ref object varg13, ref object varg14, ref object varg15, ref object varg16,
-            ref object varg17,
-            ref object varg18, ref object varg19, ref object varg20, ref object varg21, ref object varg22,
-            ref object varg23,
-            ref object varg24, ref object varg25, ref object varg26, ref object varg27, ref object varg28,
-            ref object varg29,
+            ref object varg12, ref object varg13, ref object varg14, ref object varg15, ref object varg16, ref object varg17,
+            ref object varg18, ref object varg19, ref object varg20, ref object varg21, ref object varg22, ref object varg23,
+            ref object varg24, ref object varg25, ref object varg26, ref object varg27, ref object varg28, ref object varg29,
             ref object varg30)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public void PrintOut(ref object Background, ref object Append, ref object Range, ref object OutputFileName,
-            ref object From,
-            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType,
-            ref object PrintToFile,
+        public void PrintOut(ref object Background, ref object Append, ref object Range, ref object OutputFileName, ref object From,
+            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType, ref object PrintToFile,
             ref object Collate, ref object FileName, ref object ActivePrinterMacGX, ref object ManualDuplexPrint,
-            ref object PrintZoomColumn, ref object PrintZoomRow, ref object PrintZoomPaperWidth,
-            ref object PrintZoomPaperHeight)
+            ref object PrintZoomColumn, ref object PrintZoomRow, ref object PrintZoomPaperWidth, ref object PrintZoomPaperHeight)
         {
+            throw new NotImplementedException();
         }
 
         public bool Dummy2()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public void PutFocusInMailHeader()
         {
+            throw new NotImplementedException();
         }
 
         public void LoadMasterList(string FileName)
         {
+            throw new NotImplementedException();
         }
 
         public Document CompareDocuments(Document OriginalDocument, Document RevisedDocument,
-            WdCompareDestination Destination = WdCompareDestination.wdCompareDestinationNew,
-            WdGranularity Granularity = WdGranularity.wdGranularityWordLevel,
+            WdCompareDestination Destination = WdCompareDestination.wdCompareDestinationNew, WdGranularity Granularity = WdGranularity.wdGranularityWordLevel,
             bool CompareFormatting = true, bool CompareCaseChanges = true, bool CompareWhitespace = true,
-            bool CompareTables = true, bool CompareHeaders = true, bool CompareFootnotes = true,
-            bool CompareTextboxes = true,
+            bool CompareTables = true, bool CompareHeaders = true, bool CompareFootnotes = true, bool CompareTextboxes = true,
             bool CompareFields = true, bool CompareComments = true, bool CompareMoves = true, string RevisedAuthor = "",
             bool IgnoreAllComparisonWarnings = false)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public Document MergeDocuments(Document OriginalDocument, Document RevisedDocument,
-            WdCompareDestination Destination = WdCompareDestination.wdCompareDestinationNew,
-            WdGranularity Granularity = WdGranularity.wdGranularityWordLevel,
+            WdCompareDestination Destination = WdCompareDestination.wdCompareDestinationNew, WdGranularity Granularity = WdGranularity.wdGranularityWordLevel,
             bool CompareFormatting = true, bool CompareCaseChanges = true, bool CompareWhitespace = true,
-            bool CompareTables = true, bool CompareHeaders = true, bool CompareFootnotes = true,
-            bool CompareTextboxes = true,
+            bool CompareTables = true, bool CompareHeaders = true, bool CompareFootnotes = true, bool CompareTextboxes = true,
             bool CompareFields = true, bool CompareComments = true, bool CompareMoves = true, string OriginalAuthor = "",
             string RevisedAuthor = "", WdMergeFormatFrom FormatFrom = WdMergeFormatFrom.wdMergeFormatFromPrompt)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public void ThreeWayMerge(Document LocalDocument, Document ServerDocument, Document BaseDocument,
-            bool FavorSource)
+        public void ThreeWayMerge(Document localDocument, Document serverDocument, Document baseDocument, bool favorSource)
         {
+            throw new NotImplementedException();
         }
 
         public void Dummy4()
         {
+            throw new NotImplementedException();
         }
 
-        public Application Application { get; private set; }
-        public int Creator { get; private set; }
-        public object Parent { get; private set; }
-        public string Name { get; private set; }
-        public Documents Documents { get; set; }
+        public Application Application { get { return this; } }
+        public int Creator { get; set; }
+        public object Parent { get; set; }
+        public string Name { get; set; }
+        public Documents Documents { get; private set; }
         public Windows Windows { get; private set; }
-        public Document ActiveDocument { get; private set; }
-        public Window ActiveWindow { get; private set; }
-        public Selection Selection { get; private set; }
-        public object WordBasic { get; private set; }
-        public RecentFiles RecentFiles { get; private set; }
-        public Template NormalTemplate { get; private set; }
-        public Microsoft.Office.Interop.Word.System System { get; private set; }
-        public AutoCorrect AutoCorrect { get; private set; }
-        public FontNames FontNames { get; private set; }
-        public FontNames LandscapeFontNames { get; private set; }
-        public FontNames PortraitFontNames { get; private set; }
-        public Languages Languages { get; private set; }
-        public Assistant Assistant { get; private set; }
-        public Browser Browser { get; private set; }
-        public FileConverters FileConverters { get; private set; }
-        public MailingLabel MailingLabel { get; private set; }
-        public Dialogs Dialogs { get; private set; }
-        public CaptionLabels CaptionLabels { get; private set; }
-        public AutoCaptions AutoCaptions { get; private set; }
-        public AddIns AddIns { get; private set; }
+        public Document ActiveDocument { get; set; }
+        public Window ActiveWindow { get; set; }
+        public Selection Selection { get; set; }
+        public object WordBasic { get; set; }
+        public RecentFiles RecentFiles { get; set; }
+        public Template NormalTemplate { get; set; }
+        public Microsoft.Office.Interop.Word.System System { get; set; }
+        public AutoCorrect AutoCorrect { get; set; }
+        public FontNames FontNames { get; set; }
+        public FontNames LandscapeFontNames { get; set; }
+        public FontNames PortraitFontNames { get; set; }
+        public Languages Languages { get; set; }
+        public Assistant Assistant { get; set; }
+        public Browser Browser { get; set; }
+        public FileConverters FileConverters { get; set; }
+        public MailingLabel MailingLabel { get; set; }
+        public Dialogs Dialogs { get; set; }
+        public CaptionLabels CaptionLabels { get; set; }
+        public AutoCaptions AutoCaptions { get; set; }
+        public AddIns AddIns { get; set; }
         public bool Visible { get; set; }
-        public string Version { get; private set; }
+        public string Version { get; set; }
         public bool ScreenUpdating { get; set; }
         public bool PrintPreview { get; set; }
-        public Tasks Tasks { get; private set; }
+        public Tasks Tasks { get; set; }
         public bool DisplayStatusBar { get; set; }
-        public bool SpecialMode { get; private set; }
-        public int UsableWidth { get; private set; }
-        public int UsableHeight { get; private set; }
-        public bool MathCoprocessorAvailable { get; private set; }
-        public bool MouseAvailable { get; private set; }
-
+        public bool SpecialMode { get; set; }
+        public int UsableWidth { get; set; }
+        public int UsableHeight { get; set; }
+        public bool MathCoprocessorAvailable { get; set; }
+        public bool MouseAvailable { get; set; }
         public object get_International(WdInternationalIndex Index)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public string Build { get; private set; }
-        public bool CapsLock { get; private set; }
-        public bool NumLock { get; private set; }
+        public string Build { get; set; }
+        public bool CapsLock { get; set; }
+        public bool NumLock { get; set; }
         public string UserName { get; set; }
         public string UserInitials { get; set; }
         public string UserAddress { get; set; }
-        public object MacroContainer { get; private set; }
+        public object MacroContainer { get; set; }
         public bool DisplayRecentFiles { get; set; }
-        public CommandBars CommandBars { get; private set; }
-
+        public CommandBars CommandBars { get; set; }
         public SynonymInfo get_SynonymInfo(string Word, ref object LanguageID)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public VBE VBE { get; private set; }
+        public VBE VBE { get; set; }
         public string DefaultSaveFormat { get; set; }
-        public ListGalleries ListGalleries { get; private set; }
+        public ListGalleries ListGalleries { get; set; }
         public string ActivePrinter { get; set; }
-        public Templates Templates { get; private set; }
+        public Templates Templates { get; set; }
         public object CustomizationContext { get; set; }
-        public KeyBindings KeyBindings { get; private set; }
-
+        public KeyBindings KeyBindings { get; set; }
         public KeysBoundTo get_KeysBoundTo(WdKeyCategory KeyCategory, string Command, ref object CommandParameter)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public KeyBinding get_FindKey(int KeyCode, ref object KeyCode2)
+        public KeyBinding get_FindKey(int keyCode, ref object KeyCode2)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public string Caption { get; set; }
-        public string Path { get; private set; }
+        public string Path { get; set; }
         public bool DisplayScrollBars { get; set; }
         public string StartupPath { get; set; }
-        public int BackgroundSavingStatus { get; private set; }
-        public int BackgroundPrintingStatus { get; private set; }
+        public int BackgroundSavingStatus { get; set; }
+        public int BackgroundPrintingStatus { get; set; }
         public int Left { get; set; }
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public WdWindowState WindowState { get; set; }
         public bool DisplayAutoCompleteTips { get; set; }
-        public Options Options { get; private set; }
+        public Options Options { get; set; }
         public WdAlertLevel DisplayAlerts { get; set; }
-        public Dictionaries CustomDictionaries { get; private set; }
-        public string PathSeparator { get; private set; }
-        public string StatusBar { set; private get; }
-        public bool MAPIAvailable { get; private set; }
+        public Dictionaries CustomDictionaries { get; set; }
+        public string PathSeparator { get; set; }
+        public string StatusBar { set; get; }
+        public bool MAPIAvailable { get; set; }
         public bool DisplayScreenTips { get; set; }
         public WdEnableCancelKey EnableCancelKey { get; set; }
-        public bool UserControl { get; private set; }
-        public FileSearch FileSearch { get; private set; }
-        public WdMailSystem MailSystem { get; private set; }
+        public bool UserControl { get; set; }
+        public FileSearch FileSearch { get; set; }
+        public WdMailSystem MailSystem { get; set; }
         public string DefaultTableSeparator { get; set; }
         public bool ShowVisualBasicEditor { get; set; }
         public string BrowseExtraFileTypes { get; set; }
-
         public bool get_IsObjectValid(object Object)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
-        public HangulHanjaConversionDictionaries HangulHanjaDictionaries { get; private set; }
-        public MailMessage MailMessage { get; private set; }
-        public bool FocusInMailHeader { get; private set; }
-        public EmailOptions EmailOptions { get; private set; }
-        public MsoLanguageID Language { get; private set; }
-        public COMAddIns COMAddIns { get; private set; }
+        public HangulHanjaConversionDictionaries HangulHanjaDictionaries { get; set; }
+        public MailMessage MailMessage { get; set; }
+        public bool FocusInMailHeader { get; set; }
+        public EmailOptions EmailOptions { get; set; }
+        public MsoLanguageID Language { get; set; }
+        public COMAddIns COMAddIns { get; set; }
         public bool CheckLanguage { get; set; }
-        public LanguageSettings LanguageSettings { get; private set; }
-        public bool Dummy1 { get; private set; }
-        public AnswerWizard AnswerWizard { get; private set; }
+        public LanguageSettings LanguageSettings { get; set; }
+        public bool Dummy1 { get; set; }
+        public AnswerWizard AnswerWizard { get; set; }
         public MsoFeatureInstall FeatureInstall { get; set; }
         public MsoAutomationSecurity AutomationSecurity { get; set; }
-
-        public FileDialog get_FileDialog(MsoFileDialogType FileDialogType)
+        public FileDialog get_FileDialog(MsoFileDialogType fileDialogType)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public string EmailTemplate { get; set; }
         public bool ShowWindowsInTaskbar { get; set; }
-
-        NewFile _Application.NewDocument
+        public NewFile NewDocument
         {
-            get { return null; }
+            get { return ((_Application)Application).NewDocument; }
         }
 
         public bool ShowStartupDialog { get; set; }
-        public AutoCorrect AutoCorrectEmail { get; private set; }
-        public TaskPanes TaskPanes { get; private set; }
+        public AutoCorrect AutoCorrectEmail { get; set; }
+        public TaskPanes TaskPanes { get; set; }
         public bool DefaultLegalBlackline { get; set; }
-        public SmartTagRecognizers SmartTagRecognizers { get; private set; }
-        public SmartTagTypes SmartTagTypes { get; private set; }
-        public XMLNamespaces XMLNamespaces { get; private set; }
-        public bool ArbitraryXMLSupportAvailable { get; private set; }
-        public string BuildFull { get; private set; }
-        public string BuildFeatureCrew { get; private set; }
-        public Bibliography Bibliography { get; private set; }
+        public SmartTagRecognizers SmartTagRecognizers { get; set; }
+        public SmartTagTypes SmartTagTypes { get; set; }
+        public XMLNamespaces XMLNamespaces { get; set; }
+        public bool ArbitraryXMLSupportAvailable { get; set; }
+        public string BuildFull { get; set; }
+        public string BuildFeatureCrew { get; set; }
+        public Bibliography Bibliography { get; set; }
         public bool ShowStylePreviews { get; set; }
         public bool RestrictLinkedStyles { get; set; }
-        public OMathAutoCorrect OMathAutoCorrect { get; private set; }
+        public OMathAutoCorrect OMathAutoCorrect { get; set; }
         public bool DisplayDocumentInformationPanel { get; set; }
-        public IAssistance Assistance { get; private set; }
+        public IAssistance Assistance { get; set; }
         public bool OpenAttachmentsInFullScreen { get; set; }
-        public int ActiveEncryptionSession { get; private set; }
+        public int ActiveEncryptionSession { get; set; }
         public bool DontResetInsertionPointProperties { get; set; }
-        public SmartArtLayouts SmartArtLayouts { get; private set; }
-        public SmartArtQuickStyles SmartArtQuickStyles { get; private set; }
-        public SmartArtColors SmartArtColors { get; private set; }
-        public UndoRecord UndoRecord { get; private set; }
-        public PickerDialog PickerDialog { get; private set; }
-        public ProtectedViewWindows ProtectedViewWindows { get; private set; }
-        public ProtectedViewWindow ActiveProtectedViewWindow { get; private set; }
-        public bool IsSandboxed { get; private set; }
+        public SmartArtLayouts SmartArtLayouts { get; set; }
+        public SmartArtQuickStyles SmartArtQuickStyles { get; set; }
+        public SmartArtColors SmartArtColors { get; set; }
+        public UndoRecord UndoRecord { get; set; }
+        public PickerDialog PickerDialog { get; set; }
+        public ProtectedViewWindows ProtectedViewWindows { get; set; }
+        public ProtectedViewWindow ActiveProtectedViewWindow { get; set; }
+        public bool IsSandboxed { get; set; }
         public MsoFileValidationMode FileValidation { get; set; }
         public bool ChartDataPointTrack { get; set; }
         public bool ShowAnimation { get; set; }
         public event ApplicationEvents4_StartupEventHandler Startup;
         public event ApplicationEvents4_QuitEventHandler Quit;
         public event ApplicationEvents4_DocumentChangeEventHandler DocumentChange;
-        public event ApplicationEvents4_DocumentOpenEventHandler DocumentOpen;
+        public event ApplicationEvents4_DocumentOpenEventHandler DocumentOpen = doc => { };
         public event ApplicationEvents4_DocumentBeforeCloseEventHandler DocumentBeforeClose;
         public event ApplicationEvents4_DocumentBeforePrintEventHandler DocumentBeforePrint;
         public event ApplicationEvents4_DocumentBeforeSaveEventHandler DocumentBeforeSave;
-
+        ApplicationEvents4_NewDocumentEventHandler newDocumentHandler = doc => { };
         event ApplicationEvents4_NewDocumentEventHandler ApplicationEvents4_Event.NewDocument
         {
-            add { }
-            remove { }
+            add { newDocumentHandler += value; }
+            remove { newDocumentHandler -= value; }
         }
 
         public event ApplicationEvents4_WindowActivateEventHandler WindowActivate;
@@ -593,5 +616,10 @@ namespace VSTOContrib.Word.Tests
         public event ApplicationEvents4_ProtectedViewWindowSizeEventHandler ProtectedViewWindowSize;
         public event ApplicationEvents4_ProtectedViewWindowActivateEventHandler ProtectedViewWindowActivate;
         public event ApplicationEvents4_ProtectedViewWindowDeactivateEventHandler ProtectedViewWindowDeactivate;
+
+        public void OnDocumentOpen(DocumentTestDouble document)
+        {
+            DocumentOpen(document);
+        }
     }
 }

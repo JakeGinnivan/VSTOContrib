@@ -1,7 +1,9 @@
 ﻿using Microsoft.Office.Core;
+using Office.TestDoubles;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Tests.RibbonFactory.TestAddin;
 using VSTOContrib.Word.RibbonFactory;
+using Word.TestDoubles;
 using Xunit;
 
 namespace VSTOContrib.Word.Tests
@@ -11,19 +13,13 @@ namespace VSTOContrib.Word.Tests
         readonly TestAddInBase testAddInBase;
         readonly WordRibbonFactory sut;
         readonly IRibbonUI ribbonUI;
-        readonly TestApplication application;
-        readonly TestDocumentsCollection documents;
-        readonly TestWindow view;
-        readonly TestDocument testDocument;
+        readonly ApplicationTestDouble application;
+        readonly DocumentTestDouble document;
 
         public WordScenarios()
         {
-            application = new TestApplication();
-            documents = new TestDocumentsCollection();
-            view = new TestWindow();
-            testDocument = new TestDocument();
-            application.Documents = documents;
-            ribbonUI = new TestRibbonUI();
+            application = new ApplicationTestDouble();
+            ribbonUI = new RibbonUITestDouble();
             VstoContribLog.ToTrace();
             VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
             testAddInBase = new TestAddInBase();
@@ -35,8 +31,6 @@ namespace VSTOContrib.Word.Tests
         {
             sut.GetCustomUI("Microsoft.Word.Document");
             sut.Ribbon_Load(ribbonUI);
-            testDocument.Windows.Add(view);
-            documents.Add(testDocument);
 
             testAddInBase.SetApplication(application);
             testAddInBase.RaiseStartupEvent();

@@ -1,8 +1,8 @@
-﻿using Microsoft.Office.Core;
+using Microsoft.Office.Core;
 
-namespace VSTOContrib.Word.Tests
+namespace Office.TestDoubles
 {
-    public class TestRibbonUI : IRibbonUI
+    public class RibbonUITestDouble : IRibbonUI
     {
         public void Invalidate()
         {

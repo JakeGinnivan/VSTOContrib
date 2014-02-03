@@ -7,23 +7,25 @@ using Shapes = Microsoft.Office.Interop.Word.Shapes;
 using Window = Microsoft.Office.Interop.Word.Window;
 using Windows = Microsoft.Office.Interop.Word.Windows;
 
-namespace VSTOContrib.Word.Tests
+namespace Word.TestDoubles
 {
-    public class TestDocument : Document
+    public class DocumentTestDouble : Document
     {
-        public TestDocument()
+        public DocumentTestDouble(ApplicationTestDouble application, WindowTestDouble window)
         {
-            Windows = new TestWindowsCollection();
+            Windows = new WindowsTestDouble(application);
+            Windows.Add(window);
+            Application = application;
         }
 
-        void _Document.Close(ref object SaveChanges, ref object OriginalFormat, ref object RouteDocument)
+        void _Document.Close(ref object saveChanges, ref object originalFormat, ref object routeDocument)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SaveAs2000(ref object FileName, ref object FileFormat, ref object LockComments, ref object Password,
-            ref object AddToRecentFiles, ref object WritePassword, ref object ReadOnlyRecommended, ref object EmbedTrueTypeFonts,
-            ref object SaveNativePictureFormat, ref object SaveFormsData, ref object SaveAsAOCELetter)
+        public void SaveAs2000(ref object fileName, ref object fileFormat, ref object lockComments, ref object password,
+            ref object addToRecentFiles, ref object writePassword, ref object readOnlyRecommended, ref object embedTrueTypeFonts,
+            ref object saveNativePictureFormat, ref object saveFormsData, ref object saveAsAoceLetter)
         {
             throw new System.NotImplementedException();
         }
@@ -63,9 +65,9 @@ namespace VSTOContrib.Word.Tests
             throw new System.NotImplementedException();
         }
 
-        public void PrintOutOld(ref object Background, ref object Append, ref object Range, ref object OutputFileName, ref object From,
-            ref object To, ref object Item, ref object Copies, ref object Pages, ref object PageType, ref object PrintToFile,
-            ref object Collate, ref object ActivePrinterMacGX, ref object ManualDuplexPrint)
+        public void PrintOutOld(ref object background, ref object append, ref object range, ref object outputFileName, ref object @from,
+            ref object to, ref object item, ref object copies, ref object pages, ref object pageType, ref object printToFile,
+            ref object collate, ref object activePrinterMacGx, ref object manualDuplexPrint)
         {
             throw new System.NotImplementedException();
         }
@@ -75,12 +77,12 @@ namespace VSTOContrib.Word.Tests
             throw new System.NotImplementedException();
         }
 
-        public Range Range(ref object Start, ref object End)
+        public Range Range(ref object start, ref object end)
         {
             throw new System.NotImplementedException();
         }
 
-        public void RunAutoMacro(WdAutoMacros Which)
+        public void RunAutoMacro(WdAutoMacros which)
         {
             throw new System.NotImplementedException();
         }
@@ -95,12 +97,12 @@ namespace VSTOContrib.Word.Tests
             throw new System.NotImplementedException();
         }
 
-        public Range GoTo(ref object What, ref object Which, ref object Count, ref object Name)
+        public Range GoTo(ref object what, ref object which, ref object count, ref object name)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Undo(ref object Times)
+        public bool Undo(ref object times)
         {
             throw new System.NotImplementedException();
         }

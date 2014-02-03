@@ -1,8 +1,8 @@
 using Microsoft.Office.Interop.Word;
 
-namespace VSTOContrib.Word.Tests
+namespace Word.TestDoubles
 {
-    public class TestWindow : Window
+    public class WindowTestDouble : Window
     {
         public void Activate()
         {

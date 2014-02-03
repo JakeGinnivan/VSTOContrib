@@ -69,15 +69,17 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonFactory\Views\TestRibbonViewModel.cs" />
-    <Compile Include="TestApplication.cs" />
-    <Compile Include="TestDocument.cs" />
-    <Compile Include="TestDocumentsCollection.cs" />
-    <Compile Include="TestRibbonUI.cs" />
-    <Compile Include="TestWindow.cs" />
-    <Compile Include="TestWindowsCollection.cs" />
     <Compile Include="WordScenarios.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TestDoubles\Office.TestDoubles\Office.TestDoubles.csproj">
+      <Project>{5FE9E609-DE95-4B55-8786-8B2847698D10}</Project>
+      <Name>Office.TestDoubles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestDoubles\Word.TestDoubles\Word.TestDoubles.csproj">
+      <Project>{24A97C3B-7346-4ED6-8293-20AADEB5795A}</Project>
+      <Name>Word.TestDoubles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VSTOContrib.Core\VSTOContrib.Core.csproj">
       <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
       <Name>VSTOContrib.Core</Name>
