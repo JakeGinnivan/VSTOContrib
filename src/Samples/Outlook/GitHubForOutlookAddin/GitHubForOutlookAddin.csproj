@@ -146,8 +146,9 @@
       <HintPath>..\..\..\packages\IronGitHub.0.2.0.0\lib\net45\IronGitHub.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\..\packages\ServiceStack.Text.3.9.66\lib\net35\ServiceStack.Text.dll</HintPath>
+    <Reference Include="ServiceStack.Text, Version=4.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.8\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -242,10 +243,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\GitHubForOutlook.Core\GitHubForOutlook.Core.csproj">
-      <Project>{F713C61F-973E-4BC2-A553-6D9D5E5F6D0E}</Project>
-      <Name>GitHubForOutlook.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj">
       <Project>{CBC234F1-3F4A-4A1A-9A92-6C1A7AD98E77}</Project>
       <Name>VSTOContrib.Autofac</Name>
@@ -257,6 +254,10 @@
     <ProjectReference Include="..\..\..\VSTOContrib.Outlook\VSTOContrib.Outlook.csproj">
       <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
       <Name>VSTOContrib.Outlook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GitHubForOutlook.Core\GitHubForOutlook.Core.csproj">
+      <Project>{F713C61F-973E-4BC2-A553-6D9D5E5F6D0E}</Project>
+      <Name>GitHubForOutlook.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

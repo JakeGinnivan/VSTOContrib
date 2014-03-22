@@ -1,0 +1,62 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="BuildAll" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\build\lib\</MSBuildCommunityTasksPath>
+    <Root>$(MSBuildProjectDirectory)\</Root>
+    <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
+    <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Deployment.Tasks.Targets"/>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Mercurial.tasks"/>
+
+  <Target Name="Cleanup">
+    <Error Condition="$(MSBuildCommunityTasksPath) == ''" Text="MSBuildCommunityTasksPath variable must be defined" />
+    <Error Condition="$(Root) == ''" Text="Root variable must be defined" />
+    <Error Condition="$(ProgramFiles32) == ''" Text="ProgramFiles32 variable must be defined" />
+
+    <!-- Diagnostics -->
+    <Message Text="Diagnostics:"/>
+    <Message Text="Build Number:    $(Version)" />
+    <Message Text="Project root:    $(Root)" />
+    <Message Text="Drop path:       build\Artifacts" />
+
+    <RemoveDir Directories="build\Artifacts" ContinueOnError="true" />
+  </Target>
+  
+  <Target Name="BuildAll" DependsOnTargets="Cleanup">
+    <PropertyGroup>
+      <CommonProperties>
+        MSBuildCommunityTasksPath=$(MSBuildCommunityTasksPath);
+        Root=$(Root);
+        ProgramFiles32=$(ProgramFiles32);
+        Configuration=$(Configuration)
+      </CommonProperties>
+    </PropertyGroup>
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Outlook;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Excel;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=Word;$(CommonProperties)" ToolsVersion="4.0" />
+    <MSBuild Projects="VSTO Contrib Office Application.proj" Properties="OfficeApplication=PowerPoint;$(CommonProperties)" ToolsVersion="4.0" />
+
+    <MSBuild Projects="$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;" ToolsVersion="4.0" />
+
+    <MSBuild Projects="$(Root)src\Samples\Outlook\GitHubForOutlookAddin\GitHubForOutlookAddin.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;"
+             Targets="Publish" ToolsVersion="4.0"/>
+
+    <PropertyGroup>
+      <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
+      <NuGetManifest>$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.nuspec</NuGetManifest>
+      <AutofacNuGetFolder>$(Root)build\Artifacts\NuGet\Autofac\</AutofacNuGetFolder>
+    </PropertyGroup>
+
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\bin\$(Configuration)\VSTOContrib.Autofac.dll"
+          DestinationFiles="$(AutofacNuGetFolder)lib\net40\VSTOContrib.Autofac.dll"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\bin\$(Configuration)\VSTOContrib.Autofac.pdb"
+          DestinationFiles="$(AutofacNuGetFolder)lib\net40\VSTOContrib.Autofac.pdb"/>
+    <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\Readme.txt"
+          DestinationFiles="$(AutofacNuGetFolder)Readme.txt"/>
+    
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(GitHubFlowVersion_SemVer)' />
+  </Target>
+</Project>

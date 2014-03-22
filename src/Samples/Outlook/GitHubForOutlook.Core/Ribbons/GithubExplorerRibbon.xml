@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" loadImage="GetImage" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabMail">
+        <group id="githubGroup" label="GitHub">
+          <button id="createTask"
+                  label="Create Issue"
+                  screentip="Create Issue"
+                  size="large"
+                  showImage="true"
+                  getImage="GetImage"
+                  onAction="CreateIssue"
+                  getEnabled="CanCreateIssue" />
+          <button id="settings" label="Settings" onAction="ShowSettings" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>

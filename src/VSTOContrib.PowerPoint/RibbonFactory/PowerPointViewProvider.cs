@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Office.Interop.PowerPoint;
+using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -9,7 +10,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     /// <summary>
     /// PowerPoint View Provider
     /// </summary>
-    public class PowerPointViewProvider : IViewProvider<PowerPointRibbonType>
+    public class PowerPointViewProvider : IViewProvider
     {
         private readonly Application powerPointApplication;
 
@@ -25,8 +26,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             var handler = NewView;
             if (handler == null) return;
 
-            handler(this, new NewViewEventArgs<PowerPointRibbonType>(
-                              window, pres, PowerPointRibbonType.PowerPointPresentation));
+            handler(this, new NewViewEventArgs(window, pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
         }
 
         void PowerPointViewProviderNewPresentation(Presentation pres)
@@ -37,9 +37,9 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             using(var documentWindows = pres.Windows.WithComCleanup())
             foreach (var documentWindow in documentWindows.Resource)
             {
-                handler(this, new NewViewEventArgs<PowerPointRibbonType>(
+                handler(this, new NewViewEventArgs(
                     documentWindow, pres,
-                    PowerPointRibbonType.PowerPointPresentation));
+                    PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
             }
         }
 
@@ -53,14 +53,14 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         /// <summary>
         /// Occurs when [new view].
         /// </summary>
-        public event EventHandler<NewViewEventArgs<PowerPointRibbonType>> NewView;
+        public event EventHandler<NewViewEventArgs> NewView;
 
         /// <summary>
         /// Occurs when [view closed].
         /// </summary>
         public event EventHandler<ViewClosedEventArgs> ViewClosed;
 
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs<PowerPointRibbonType>> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

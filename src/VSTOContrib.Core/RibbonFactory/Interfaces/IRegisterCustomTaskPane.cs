@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory.Interfaces
 {
@@ -19,5 +18,5 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     /// <summary>
     /// Allows the registration of custom task pane(s)
     /// </summary>
-    public delegate ICustomTaskPaneWrapper Register(Func<UserControl> controlFactory, string title, bool initallyVisible = true);
+    public delegate ICustomTaskPaneWrapper Register(Func<UserControl> controlFactory, string title, bool initialVisibility = true);
 }

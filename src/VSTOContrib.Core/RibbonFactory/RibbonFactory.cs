@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
+using VSTOContrib.Core.Annotations;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Core.RibbonFactory
@@ -17,17 +20,17 @@ namespace VSTOContrib.Core.RibbonFactory
     public abstract class RibbonFactory : IRibbonFactory
     {
         internal const string CommonCallbacks = "CommonCallbacks";
-        readonly IRibbonFactoryController ribbonFactoryController;
         static readonly object InstanceLock = new object();
+        readonly IRibbonFactoryController ribbonFactoryController;
+        readonly VstoContribContext context;
 
-        bool initialsed;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RibbonFactory"/> class.
-        /// </summary>
-        /// <param name="ribbonFactoryController"></param>
-        protected RibbonFactory(IRibbonFactoryController ribbonFactoryController)
+        protected RibbonFactory(
+            AddInBase addinBase, Assembly[] assemblies, IViewContextProvider contextProvider,
+            [CanBeNull] string fallbackRibbonType)
         {
+            if (assemblies.Length == 0)
+                throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
+
             lock (InstanceLock)
             {
                 if (Current != null)
@@ -35,7 +38,25 @@ namespace VSTOContrib.Core.RibbonFactory
                 Current = this;
             }
 
-            this.ribbonFactoryController = ribbonFactoryController;
+            context = new VstoContribContext(assemblies, addinBase, fallbackRibbonType);
+            ribbonFactoryController = new RibbonFactoryController(contextProvider, context);
+
+            addinBase.Startup += AddinBaseOnStartup;
+            addinBase.Shutdown += AddinBaseOnShutdown;
+        }
+
+        void AddinBaseOnStartup(object sender, EventArgs eventArgs)
+        {
+            context.AddinBase.Startup -= AddinBaseOnStartup;
+
+            InitialiseRibbonFactoryController(ribbonFactoryController, context.Application);
+        }
+
+        void AddinBaseOnShutdown(object sender, EventArgs eventArgs)
+        {
+            context.AddinBase.Shutdown -= AddinBaseOnShutdown;
+            ribbonFactoryController.Dispose();
+            ShuttingDown();
         }
 
         ///<summary>
@@ -43,36 +64,28 @@ namespace VSTOContrib.Core.RibbonFactory
         ///</summary>
         public IViewLocationStrategy LocateViewStrategy
         {
-            get { return ribbonFactoryController.LocateViewStrategy; }
+            get { return context.ViewLocationStrategy; }
             set
             {
                 if (value == null) return;
-
-                ribbonFactoryController.LocateViewStrategy = value;
+                context.ViewLocationStrategy = value;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="application">The office application object</param>
-        /// <param name="addinBase">Your add-in instance</param>
-        public void SetApplication(object application, AddInBase addinBase)
+        public IViewModelFactory ViewModelFactory
         {
-            if (initialsed)
-                throw new InvalidOperationException("Ribbon Factory already Initialised");
-
-            initialsed = true;
-
-            addinBase.Shutdown += (sender, args) =>
+            get { return context.ViewModelFactory; }
+            set
             {
-                ribbonFactoryController.Dispose();
-                ShuttingDown();
-            };
-
-            InitialiseRibbonFactoryController(ribbonFactoryController, application);
+                if (value == null) return;
+                context.ViewModelFactory = value;
+            }
         }
 
+        public List<IErrorHandler> ErrorHandlers
+        {
+            get { return context.ErrorHandlers; }
+        }
         /// <summary>
         /// Called when the add-in is shutting down
         /// </summary>

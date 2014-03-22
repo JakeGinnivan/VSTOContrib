@@ -15,13 +15,8 @@ namespace VSTOContrib.Outlook.RibbonFactory
         {
         }
 
-        /// <summary>
-        /// The type of Inspector or Explorer that the ribbon should be displayed for.
-        /// </summary>
-        /// <value>The ribbon type.</value>
-        public new OutlookRibbonType Type
+        public OutlookRibbonViewModelAttribute(string ribbonType) : base(ribbonType)
         {
-            get { return (OutlookRibbonType)base.Type; }
         }
     }
 }

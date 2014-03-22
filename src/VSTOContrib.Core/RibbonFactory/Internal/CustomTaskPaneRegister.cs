@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
-using VSTOContrib.Core.RibbonFactory.Interfaces.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     internal class CustomTaskPaneRegister : ICustomTaskPaneRegister
     {
-        readonly Func<CustomTaskPaneCollection> customTaskPaneCollection;
-        private readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
-        private readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
+        Lazy<CustomTaskPaneCollection> customTaskPaneCollection;
+        readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
+        readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
 
-        public CustomTaskPaneRegister(Func<object> customTaskPaneCollection)
+        public CustomTaskPaneRegister(AddInBase addinBase)
         {
-            this.customTaskPaneCollection = ()=>(CustomTaskPaneCollection)customTaskPaneCollection();
+            customTaskPaneCollection = new Lazy<CustomTaskPaneCollection>(() =>
+            {
+                var field = addinBase.GetType().GetField("CustomTaskPanes", BindingFlags.Instance | BindingFlags.NonPublic);
+                return (CustomTaskPaneCollection)field.GetValue(addinBase);
+            });
             registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
             ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
         }
@@ -27,26 +31,25 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             if (!registrationInfo.ContainsKey(ribbonViewModel))
             {
-                registersCustomTaskPanes.RegisterTaskPanes(
-                    (controlFactory, title, initiallyVisible) =>
-                        {
-                            var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
-                            if (!registrationInfo.ContainsKey(ribbonViewModel))
-                                registrationInfo.Add(ribbonViewModel, new List<TaskPaneRegistrationInfo>());
-                            registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
+                registersCustomTaskPanes.RegisterTaskPanes((controlFactory, title, initiallyVisible) =>
+                {
+                    var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
+                    if (!registrationInfo.ContainsKey(ribbonViewModel))
+                        registrationInfo.Add(ribbonViewModel, new List<TaskPaneRegistrationInfo>());
+                    registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
 
-                            var taskPane = Register(view, taskPaneRegistrationInfo);
-                            var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext)
-                            {
-                                Visible = initiallyVisible
-                            };
+                    var taskPane = Register(view, taskPaneRegistrationInfo);
+                    var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext)
+                    {
+                        Visible = initiallyVisible
+                    };
 
-                            if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
-                                ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
+                    if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
+                        ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
 
-                            ribbonTaskPanes[ribbonViewModel].Add(taskPaneAdapter);
-                            return taskPaneAdapter;
-                        });
+                    ribbonTaskPanes[ribbonViewModel].Add(taskPaneAdapter);
+                    return taskPaneAdapter;
+                });
             }
             else
             {
@@ -68,14 +71,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private CustomTaskPane Register(object view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
         {
-            var taskPane = customTaskPaneCollection().Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
+            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
 
             return taskPane;
         }
 
         public void Cleanup(object view)
         {
-            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v=>v))
+            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v))
             {
                 adapter.CleanupView(view);
             }
@@ -83,11 +86,29 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void ChangeVisibilityForContext(object context, bool visible)
         {
-            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v).Where(v=>v.ViewContext == context))
+            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v).Where(v => v.ViewContext == context))
             {
                 //TODO Remember what it was 
                 adapter.Visible = visible;
             }
+        }
+
+        public void Dispose()
+        {
+            var taskPanes = ribbonTaskPanes.ToArray();
+            ribbonTaskPanes.Clear();
+            foreach (var ribbonTaskPane in taskPanes)
+            {
+                var oneToManyCustomTaskPaneAdapters = ribbonTaskPane.Value.ToArray();
+                ribbonTaskPane.Value.Clear();
+                foreach (var oneToManyCustomTaskPaneAdapter in oneToManyCustomTaskPaneAdapters)
+                {
+                    oneToManyCustomTaskPaneAdapter.Dispose();
+                }
+            }
+
+            customTaskPaneCollection.Value.Dispose();
+            customTaskPaneCollection = null;
         }
     }
 }

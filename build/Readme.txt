@@ -26,6 +26,11 @@ It supports Outlook, Word, Excel and PowerPoint 2013+, and supports .net 4.0.
 ------------------------------------------------------------------------------------------
                                     Breaking Changes
 ------------------------------------------------------------------------------------------
+v1.0.0
+- REMOVED: RibbonFactory.Current.SetApplication(Application, this);
+- CHANGED: The code to bootstrap is much simpler, check out the Getting Started section to see the new syntax
+- CHANGED: CurrentViewChanged is now a property called CurrentView { get; set; }
+
 v0.15
  - Switched to Embedded Interop Assemblies, you will start getting compiler warnings to switch over to Embedded Interop Assemblies
    Simply right click on the assembly in question, properties, then set Embed interop assemblies to True 
@@ -59,23 +64,18 @@ install the QuickStart projects
 2. Override the CreateRibbonExtensibilityObject method to specify the VSTO Contrib Ribbon Factory
    There are a number of arguments required. This is because much of the VSTO addin is code generated, so you have to pass it in
 
-	protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
-	{
-		//Required for WPF support
+    protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
+    {
+        var assemblyContainingViewModels = typeof (ThisAddIn).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
+        return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(this, assemblyContainingViewModels);
+    }
+
+3. If you plan on showing WPF Windows you need to add this to the CreateRibbonExtensibilityObject();
+        //Required for WPF Window support
         if (System.Windows.Application.Current == null)
-            new System.Windows.Application { ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown };
+            new System.Windows.Application();
+        System.Windows.Application.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
 
-		var assemblyContainingViewModels = typeof (ThisAddIn).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
-		return new VSTOContrib.{{Application}}.RibbonFactory.{{Application}}RibbonFactory(new VSTOContrib.Core.DefaultViewModelFactory(), () => CustomTaskPanes, Globals.Factory, assemblyContainingViewModels);
-	}
-
-3. Modify the `ThisAddin_Startup` method and add the following line
-
-	VSTOContrib.Core.RibbonFactory.RibbonFactory.Current.SetApplication(Application, this);
-
-4. Modify the `ThisAddin_Shutdown` method and add the following two lines
-
-	System.Windows.Application.Current.Shutdown();
 
 
 Now VSTO Contrib is ready to go! Next step is to create a ViewModel.

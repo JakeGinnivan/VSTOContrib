@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabHome">
+        <group id="myAddinGroup" label="Quotes"> 
+          <toggleButton id="showMyAddinPaneButton" onAction="PanelShown" 
+                        getPressed="PanelShown" label="Show Panel" showImage="true"
+                        getImage="ShowPanelImage" size="normal" />
+          <button id="errorButton" onAction="ThrowError" label="Throw error" size="normal" showImage="false"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
