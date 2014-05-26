@@ -186,7 +186,11 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                     if (taskPaneWindow != view) continue;
                     DisposeTaskPane(customTaskPane);
                 }
-                catch (COMException) { }
+                catch (COMException)
+                {
+                    customTaskPanes.Remove(customTaskPane);
+                }
+
                 CleanupView(view);
                 break;
             }

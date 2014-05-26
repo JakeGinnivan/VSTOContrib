@@ -157,6 +157,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             foreach (var viewModelLookup in contextToViewModelLookup.Values
                 .Where(viewModel => viewModel.GetType() == viewModelType && viewModel.RibbonUi == null))
             {
+                VstoContribLog.Debug(_ => _("Setting RibbonUi [{0}] for ViewModel", ribbonUi.ToLogFormat()));
                 viewModelLookup.RibbonUi = ribbonUi;
                 InvalidateRibbonForViewModel(viewModelLookup);
             }
@@ -164,13 +165,18 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         private IRibbonViewModel BuildViewModel(string ribbonType, object viewInstance, object viewContext)
         {
-            VstoContribLog.Info(_ => _("Building ViewModel for ribbon {0} with context {1}", ribbonType, viewContext.ToLogFormat()));
             var viewModelType = ribbonTypeLookup[ribbonType];
+            VstoContribLog.Info(_ => _("Building ViewModel of type {1} for ribbon {1} with context {2}", 
+                viewModelType.Name, ribbonType, viewContext.ToLogFormat()));
             var ribbonViewModel = vstoContribContext.ViewModelFactory.Resolve(viewModelType);
             ribbonViewModel.VstoFactory = vstoContribContext.VstoFactory;
 
             if (ribbonUiLookup.ContainsKey(ribbonType))
-                ribbonViewModel.RibbonUi = ribbonUiLookup[ribbonType];
+            {
+                var ribbonUi = ribbonUiLookup[ribbonType];
+                VstoContribLog.Debug(_ => _("Setting RibbonUi [{0}] for ViewModel", ribbonUi.ToLogFormat()));
+                ribbonViewModel.RibbonUi = ribbonUi;
+            }
 
             ribbonViewModel.CurrentView = viewInstance;
             ListenForINotifyPropertyChanged(ribbonViewModel);

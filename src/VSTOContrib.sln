@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office.TestDoubles", "TestD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDoubleTests", "TestDoubles\TestDoubleTests\TestDoubleTests.csproj", "{68177969-CD21-4C5F-8439-C65C3BD648F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel.TestDoubles", "TestDoubles\Excel.TestDoubles\Excel.TestDoubles.csproj", "{4833E119-2793-4EC0-8188-6BBE98A1993F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +193,10 @@ Global
 		{68177969-CD21-4C5F-8439-C65C3BD648F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68177969-CD21-4C5F-8439-C65C3BD648F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68177969-CD21-4C5F-8439-C65C3BD648F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4833E119-2793-4EC0-8188-6BBE98A1993F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4833E119-2793-4EC0-8188-6BBE98A1993F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4833E119-2793-4EC0-8188-6BBE98A1993F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4833E119-2793-4EC0-8188-6BBE98A1993F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +219,6 @@ Global
 		{24A97C3B-7346-4ED6-8293-20AADEB5795A} = {FA253022-A99E-4271-82DC-74A13649391C}
 		{5FE9E609-DE95-4B55-8786-8B2847698D10} = {FA253022-A99E-4271-82DC-74A13649391C}
 		{68177969-CD21-4C5F-8439-C65C3BD648F3} = {FA253022-A99E-4271-82DC-74A13649391C}
+		{4833E119-2793-4EC0-8188-6BBE98A1993F} = {FA253022-A99E-4271-82DC-74A13649391C}
 	EndGlobalSection
 EndGlobal

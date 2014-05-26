@@ -6,6 +6,7 @@ using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Excel.RibbonFactory
 {
@@ -61,6 +62,7 @@ namespace VSTOContrib.Excel.RibbonFactory
                 if (singleWindow == null)
                     singleWindow = wb.Windows[1];
                 workbooks[wb].Add(singleWindow);
+                ViewClosed(this, new ViewClosedEventArgs(singleWindow, NullContext.Instance));
                 NewView(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
@@ -68,9 +70,11 @@ namespace VSTOContrib.Excel.RibbonFactory
                 foreach (Window window in wb.Windows)
                 {
                     workbooks[wb].Add(window);
+                    ViewClosed(this, new ViewClosedEventArgs(window, NullContext.Instance));
                     NewView(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
+
 
             wb.WindowActivate += wn => Activate(wb, wn);
 
@@ -99,7 +103,9 @@ namespace VSTOContrib.Excel.RibbonFactory
             }
 
             if (IsMdi())
+            {
                 UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs(wb, true));
+            }
         }
 
         bool IsMdi()
