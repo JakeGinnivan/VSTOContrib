@@ -4,15 +4,16 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
-using QuoteGeneratorAddin.Core.Properties;
+using Microsoft.Office.Tools;
+using QuoteGeneratorAddin.Core.OfficeContexts;
+using QuoteGeneratorAddin.Properties;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.Wpf;
-using Factory = Microsoft.Office.Tools.Factory;
 
-namespace QuoteGeneratorAddin.Core.OfficeContexts
+namespace QuoteGeneratorAddin.OfficeContexts
 {
     public class SpreadSheetViewModel : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane
     {
