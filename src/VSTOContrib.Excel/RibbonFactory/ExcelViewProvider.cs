@@ -15,6 +15,7 @@ namespace VSTOContrib.Excel.RibbonFactory
         readonly Dictionary<Workbook, List<Window>> workbooks;
         Application excelApplication;
         Window singleWindow;
+        bool nullContextOpen;
 
         public ExcelViewProvider(Application excelApplication)
         {
@@ -26,6 +27,7 @@ namespace VSTOContrib.Excel.RibbonFactory
 
         void MonitorWorkbookClosed(object sender, WorkbookClosedEventArgs e)
         {
+            VstoContribLog.Debug(log => log("Excel raised WorkbookClosed({0}) event", e.Workbook.ToLogFormat()));
             var handler = ViewClosed;
             if (handler == null) return;
 
@@ -41,6 +43,15 @@ namespace VSTOContrib.Excel.RibbonFactory
                 }
                 workbooks.Remove(e.Workbook);
             }
+
+            if (!excelApplication.Workbooks.OfType<Workbook>().Except(new[]{e.Workbook}).Any())
+            {
+                nullContextOpen = true;
+                foreach (Window window in excelApplication.Windows)
+                {
+                    NewView(this, new NewViewEventArgs(window, NullContext.Instance, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                }
+            }
         }
 
         /// <summary>
@@ -48,8 +59,20 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         public void Initialise()
         {
-            ((AppEvents_Event)excelApplication).NewWorkbook += OnInitialise;
-            excelApplication.WorkbookOpen += OnInitialise;
+            ((AppEvents_Event)excelApplication).NewWorkbook += NewWorkbook;
+            excelApplication.WorkbookOpen += WorkbookOpen;
+        }
+
+        void NewWorkbook(Workbook wb)
+        {
+            VstoContribLog.Debug(log => log("Excel raised NewWorkbook({0}) event", wb.ToLogFormat()));
+            OnInitialise(wb);
+        }
+
+        void WorkbookOpen(Workbook wb)
+        {
+            VstoContribLog.Debug(log => log("Excel raised WorkbookOpen({0}) event", wb.ToLogFormat()));
+            OnInitialise(wb);
         }
 
         void OnInitialise(Workbook wb)
@@ -62,7 +85,8 @@ namespace VSTOContrib.Excel.RibbonFactory
                 if (singleWindow == null)
                     singleWindow = wb.Windows[1];
                 workbooks[wb].Add(singleWindow);
-                ViewClosed(this, new ViewClosedEventArgs(singleWindow, NullContext.Instance));
+                if (nullContextOpen)
+                    ViewClosed(this, new ViewClosedEventArgs(singleWindow, NullContext.Instance));
                 NewView(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
@@ -70,26 +94,19 @@ namespace VSTOContrib.Excel.RibbonFactory
                 foreach (Window window in wb.Windows)
                 {
                     workbooks[wb].Add(window);
-                    ViewClosed(this, new ViewClosedEventArgs(window, NullContext.Instance));
+                    if (nullContextOpen)
+                        ViewClosed(this, new ViewClosedEventArgs(window, NullContext.Instance));
                     NewView(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
 
-
+            nullContextOpen = false;
             wb.WindowActivate += wn => Activate(wb, wn);
-
-            wb.WindowDeactivate += wn =>
-            {
-                if (IsMdi())
-                {
-                    var args = new HideCustomTaskPanesForContextEventArgs(wb, false);
-                    UpdateCustomTaskPanesVisibilityForContext(this, args);
-                }
-            };
         }
 
         void Activate(Workbook wb, Window wn)
         {
+            VstoContribLog.Debug(log => log("Excel raised WorkbookOpen(wb: {0}, wn: {1}) event", wb.ToLogFormat(), wn.ToLogFormat()));
             if (IsMdi() && !workbooks[wb].Contains(singleWindow))
                 workbooks[wb].Add(singleWindow);
             if (!IsMdi() && !workbooks[wb].Contains(wn))
@@ -101,11 +118,6 @@ namespace VSTOContrib.Excel.RibbonFactory
                     NewView(this, new NewViewEventArgs(wn, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
-
-            if (IsMdi())
-            {
-                UpdateCustomTaskPanesVisibilityForContext(this, new HideCustomTaskPanesForContextEventArgs(wb, true));
-            }
         }
 
         bool IsMdi()
@@ -115,11 +127,6 @@ namespace VSTOContrib.Excel.RibbonFactory
 
         public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
         public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-
-        /// <summary>
-        /// Raise when the custom task panes for a context need to change their visibility
-        /// </summary>
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
         /// Cleanups the references to a view.

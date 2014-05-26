@@ -53,8 +53,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
             this.viewProvider.NewView += ViewProviderNewView;
             this.viewProvider.ViewClosed += ViewProviderViewClosed;
-            this.viewProvider.UpdateCustomTaskPanesVisibilityForContext +=
-                ViewProviderOnUpdateCustomTaskPanesVisibilityForContext;
         }
 
         void InvalidateRibbonForViewModel(IRibbonViewModel viewModel)
@@ -64,14 +62,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             {
                 viewModel.RibbonUi.InvalidateControl(targets.Value);
             }
-        }
-
-        void ViewProviderOnUpdateCustomTaskPanesVisibilityForContext(object sender, HideCustomTaskPanesForContextEventArgs e)
-        {
-            VstoContribLog.Debug(_ => _(
-                "ViewProvider.UpdateCustomTaskPanesVisibilityForContext Raised, Context: {0}, Visible: {1}",
-                e.Context.ToLogFormat(), e.Visible));
-            customTaskPaneRegister.ChangeVisibilityForContext(e.Context, e.Visible);
         }
 
         void ViewProviderViewClosed(object sender, ViewClosedEventArgs e)
@@ -141,7 +131,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 var newViewEventArgs = new NewViewEventArgs(view, context, ribbonTypeForView);
 
                 var viewModel = GetOrCreateViewModel(newViewEventArgs.RibbonType, newViewEventArgs.ViewContext, newViewEventArgs.ViewInstance);
-                customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, newViewEventArgs.ViewInstance, context);
+                if (newViewEventArgs.ViewInstance != null)
+                    customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, newViewEventArgs.ViewInstance, context);
             }
 
             return contextToViewModelLookup[context];

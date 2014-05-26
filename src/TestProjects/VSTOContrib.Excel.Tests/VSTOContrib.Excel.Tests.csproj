@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="ExcelScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonControlDouble.cs" />
     <Compile Include="RibbonFactory\Views\TestRibbonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

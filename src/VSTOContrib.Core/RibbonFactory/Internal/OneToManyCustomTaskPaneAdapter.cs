@@ -12,6 +12,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         private readonly CustomTaskPane original;
         private readonly List<CustomTaskPane> customTaskPanes;
         private bool disposed;
+        bool hasBeenHidden;
 
         public OneToManyCustomTaskPaneAdapter(CustomTaskPane original, object viewContext)
         {
@@ -33,7 +34,6 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             //Sync new task pane's properties up
             customTaskPane.Visible = original.Visible;
             customTaskPane.DockPosition = original.DockPosition;
-
 
             if (original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop &&
                 original.DockPosition != Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionBottom)
@@ -193,6 +193,24 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
                 CleanupView(view);
                 break;
+            }
+        }
+
+        public void HideIfVisible()
+        {
+            if (Visible)
+            {
+                Visible = false;
+                hasBeenHidden = true;
+            }
+        }
+
+        public void RestoreIfNeeded()
+        {
+            if (hasBeenHidden)
+            {
+                Visible = true;
+                hasBeenHidden = false;
             }
         }
     }
