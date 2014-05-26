@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationTestDouble.cs" />
+    <Compile Include="Excel2013Facade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsTestDouble.cs" />
     <Compile Include="WindowTestDouble.cs" />
