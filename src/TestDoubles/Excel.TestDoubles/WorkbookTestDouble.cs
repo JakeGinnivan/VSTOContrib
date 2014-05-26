@@ -10,9 +10,13 @@ namespace Excel.TestDoubles
 {
     public class WorkbookTestDouble : Workbook
     {
-        public WorkbookTestDouble(Application application)
+        public WorkbookTestDouble(ApplicationTestDouble application, WindowTestDouble window)
         {
             Application = application;
+            Windows = new WindowsTestDouble(application)
+            {
+                window
+            };
         }
 
         void _Workbook.Activate()
@@ -32,7 +36,10 @@ namespace Excel.TestDoubles
 
         public void Close(object saveChanges, object filename, object routeWorkbook)
         {
-            throw new NotImplementedException();
+            var applicationTestDouble = ((ApplicationTestDouble)Application);
+            ((WorkbooksTestDouble)applicationTestDouble.Workbooks).Remove(this);
+            applicationTestDouble.RaiseWorkbookBeforeClose(this);
+            applicationTestDouble.RaiseWorkbookDeactivate(this);
         }
 
         public void DeleteNumberFormat(string numberFormat)

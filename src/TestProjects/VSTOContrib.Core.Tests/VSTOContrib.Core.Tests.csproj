@@ -63,8 +63,9 @@
     <Compile Include="Internal\ViewModelRibbonTypesLookupProviderFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapterTests.cs" />
-    <Compile Include="RibbonFactory\Internal\TestTaskPane.cs" />
+    <Compile Include="RibbonFactory\Internal\CustomTaskPaneDouble.cs" />
     <Compile Include="RibbonFactory\TestAddin\AddInBaseFactory.cs" />
+    <Compile Include="RibbonFactory\TestAddin\CustomTaskPaneCollectionDouble.cs" />
     <Compile Include="RibbonFactory\TestAddin\Globals.cs" />
     <Compile Include="RibbonFactory\TestAddin\TestAddin.cs" />
     <Compile Include="RibbonFactory\TestAddin\TestAddInBase.cs" />

@@ -8,18 +8,22 @@ namespace Excel.TestDoubles
 {
     public class WorkbooksTestDouble : Workbooks
     {
-        readonly List<Workbook> workbooks = new List<Workbook>();
+        readonly List<WorkbookTestDouble> workbooks = new List<WorkbookTestDouble>();
 
         public WorkbooksTestDouble(ApplicationTestDouble applicationTestDouble)
         {
             Application = applicationTestDouble;
         }
 
+        public Workbook Add(WorkbookTestDouble workbook)
+        {
+            workbooks.Add(workbook);
+            return workbook;
+        }
+
         public Workbook Add(object template)
         {
-            var workbookTestDouble = new WorkbookTestDouble(Application);
-            workbooks.Add(workbookTestDouble);
-            return workbookTestDouble;
+            throw new NotImplementedException();
         }
 
         public void Close()
@@ -122,6 +126,11 @@ namespace Excel.TestDoubles
         IEnumerator IEnumerable.GetEnumerator()
         {
             return workbooks.GetEnumerator();
+        }
+
+        public void Remove(WorkbookTestDouble workbookTestDouble)
+        {
+            workbooks.Remove(workbookTestDouble);
         }
     }
 }

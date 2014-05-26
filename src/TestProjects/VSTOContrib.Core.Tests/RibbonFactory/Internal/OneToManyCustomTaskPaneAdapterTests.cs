@@ -8,7 +8,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.Internal
         [Fact]
         public void DisposeShouldDiposeAnyInternalTaskPanes()
         {
-            var original = new TestTaskPane();
+            var original = new CustomTaskPaneDouble(string.Empty);
             var viewContext = new object();
             var sut = new OneToManyCustomTaskPaneAdapter(original, viewContext);
 

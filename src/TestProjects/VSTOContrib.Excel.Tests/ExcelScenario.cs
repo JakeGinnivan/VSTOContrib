@@ -1,5 +1,6 @@
 ﻿using Excel.TestDoubles;
 using Office.TestDoubles;
+using Shouldly;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Tests.RibbonFactory.TestAddin;
 using VSTOContrib.Excel.RibbonFactory;
@@ -37,14 +38,13 @@ namespace VSTOContrib.Excel.Tests
             sut.GetEnabled(ribbonControl);
 
             testAddInBase.RaiseStartupEvent();
+            var worksheetAndWindow = excelFacade.NewWorksheet();
 
-//[Debug] ViewProvider.ViewClosed Raised, View: __ComObject (33639718), Context: NullContext (39530145)
-//[Debug] Cleaning up viewmodel for context: NullContext (39530145)
-//[Info] ViewModel is SpreadSheetViewModel (21522166)
-//[Debug] ViewProvider.NewView Raised, Type: Microsoft.Excel.Workbook, View: __ComObject (33639718), Context: __ComObject (63390070)
-//[Info] Building ViewModel of type Microsoft.Excel.Workbook for ribbon Microsoft.Excel.Workbook with context __ComObject (63390070)
-//[Debug] Setting RibbonUi [__ComObject (22429634)] for ViewModel
-//[Debug] Invalidating showMyAddinPaneButton due to property change notification
+            var customTaskPanes = testAddInBase.GetCustomTaskPaneCollection();
+
+            customTaskPanes.Count.ShouldBe(1);
+            worksheetAndWindow.Item1.Close(false, false, false);
+            customTaskPanes.Count.ShouldBe(1);
         }
     }
 }

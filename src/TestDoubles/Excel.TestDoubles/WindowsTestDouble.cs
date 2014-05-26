@@ -14,6 +14,11 @@ namespace Excel.TestDoubles
             Application = applicationTestDouble;
         }
 
+        public void Add(WindowTestDouble window)
+        {
+            windows.Add(window);
+        }
+
         public object Arrange(XlArrangeStyle arrangeStyle, object activeWorkbook, object syncHorizontal,
             object syncVertical)
         {

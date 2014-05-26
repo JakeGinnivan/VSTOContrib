@@ -5,8 +5,19 @@ using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 
 namespace VSTOContrib.Core.Tests.RibbonFactory.Internal
 {
-    public class TestTaskPane : CustomTaskPane
+    public class CustomTaskPaneDouble : CustomTaskPane
     {
+        public CustomTaskPaneDouble(string title)
+        {
+            Title = title;
+        }
+
+        public CustomTaskPaneDouble(string title, object window)
+        {
+            Title = title;
+            Window = window;
+        }
+
         public void Dispose()
         {
             DisposedCalled++;

@@ -10,10 +10,14 @@ namespace Excel.TestDoubles
 {
     public class ApplicationTestDouble : Application
     {
-        public ApplicationTestDouble()
+        public ApplicationTestDouble(Version version)
         {
             Workbooks = new WorkbooksTestDouble(this);
-            Windows = new WindowsTestDouble(this);
+            Windows = new WindowsTestDouble(this)
+            {
+                new WindowTestDouble()
+            };
+            Version = version.ToString();
         }
 
         public void Calculate()
@@ -21,27 +25,27 @@ namespace Excel.TestDoubles
             throw new NotImplementedException();
         }
 
-        public void DDEExecute(int channel, string String)
+        public void DDEExecute(int channel, string @string)
         {
             throw new NotImplementedException();
         }
 
-        public int DDEInitiate(string App, string Topic)
+        public int DDEInitiate(string app, string topic)
         {
             throw new NotImplementedException();
         }
 
-        public void DDEPoke(int Channel, object Item, object Data)
+        public void DDEPoke(int channel, object item, object data)
         {
             throw new NotImplementedException();
         }
 
-        public object DDERequest(int Channel, string Item)
+        public object DDERequest(int channel, string Item)
         {
             throw new NotImplementedException();
         }
 
-        public void DDETerminate(int Channel)
+        public void DDETerminate(int channel)
         {
             throw new NotImplementedException();
         }
@@ -799,5 +803,26 @@ namespace Excel.TestDoubles
         public event AppEvents_SheetTableUpdateEventHandler SheetTableUpdate;
         public event AppEvents_WorkbookModelChangeEventHandler WorkbookModelChange;
         public event AppEvents_SheetBeforeDeleteEventHandler SheetBeforeDelete;
+
+        public void RaiseNewWorkbook(WorkbookTestDouble workbookTestDouble)
+        {
+            newWorkbookHandler(workbookTestDouble);
+        }
+
+        public void RaiseWorkbookOpen(WorkbookTestDouble workbookTestDouble)
+        {
+            WorkbookOpen(workbookTestDouble);
+        }
+
+        public void RaiseWorkbookBeforeClose(WorkbookTestDouble workbookTestDouble)
+        {
+            var cancel = false;
+            WorkbookBeforeClose(workbookTestDouble, ref cancel);
+        }
+
+        public void RaiseWorkbookDeactivate(WorkbookTestDouble workbookTestDouble)
+        {
+            WorkbookDeactivate(workbookTestDouble);
+        }
     }
 }
