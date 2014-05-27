@@ -7,7 +7,7 @@ using VSTOContrib.Excel.RibbonFactory;
 namespace VSTOContrib.Excel.Tests.RibbonFactory.Views
 {
     [ExcelRibbonViewModel]
-    public class TestRibbonViewModel : IRibbonViewModel, INotifyPropertyChanged
+    public class TestRibbonViewModel : IRibbonViewModel, INotifyPropertyChanged, IRegisterCustomTaskPane
     {
         public IRibbonUI RibbonUi { get; set; }
         public Factory VstoFactory { get; set; }
@@ -34,6 +34,11 @@ namespace VSTOContrib.Excel.Tests.RibbonFactory.Views
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, e);
+        }
+
+        public void RegisterTaskPanes(Register register)
+        {
+            register(() => null, "Title");
         }
     }
 }

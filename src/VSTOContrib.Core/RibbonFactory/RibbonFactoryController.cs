@@ -167,16 +167,20 @@ namespace VSTOContrib.Core.RibbonFactory
 
         static IEnumerable<Type> GetTRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)
         {
+            VstoContribLog.Debug(_ => _("Discovering ViewModels"));
+
             Type ribbonViewModelType = typeof(IRibbonViewModel);
             return assemblies
-                .Select(
-                    assembly =>
+                .Select(assembly =>
                     {
-                        Type[] types = assembly.GetTypes();
-                        return types.Where(ribbonViewModelType.IsAssignableFrom);
+                        VstoContribLog.Debug(_ => _("Discovering ViewModels in {0}", assembly.GetName().Name));
+                        var types = assembly.GetTypes();
+                        var viewModelTypes = types.Where(ribbonViewModelType.IsAssignableFrom).ToArray();
+                        VstoContribLog.Debug(_ => _("Found:{0}", string.Join(string.Empty, viewModelTypes.Select(vm => "\r\n  " + vm.Name))));
+                        return viewModelTypes;
                     }
                 )
-                .Aggregate((t, t1) => t.Concat(t1));
+                .SelectMany(vm => vm);
         }
 
         public void Dispose()

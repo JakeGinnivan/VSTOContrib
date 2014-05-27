@@ -18,7 +18,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         public PowerPointRibbonFactory(
             AddInBase addInBase,
             params Assembly[] assemblies)
-            : base(addInBase, assemblies, new PowerPointViewContextProvider(), PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
+            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
         {
         }
 

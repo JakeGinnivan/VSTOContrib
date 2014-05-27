@@ -88,6 +88,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IViewModelFactory.cs" />
+    <Compile Include="RibbonFactory\Internal\LoggingExtensions.cs" />
+    <Compile Include="VstoContribLogLevel.cs" />
+    <Compile Include="LogWriter.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="OfficeViewModelBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="RibbonFactory\NewViewEventArgs.cs" />
     <Compile Include="RibbonFactory\RibbonXmlRewriter.cs" />
     <Compile Include="RibbonFactory\VstoContribContext.cs" />
+    <Compile Include="VstoContribLog.cs" />
     <Compile Include="Wpf\DelegateCommand.cs" />
     <Compile Include="RibbonFactory\RibbonFactory.cs" />
     <Compile Include="RibbonFactory\RibbonFactoryController.cs" />

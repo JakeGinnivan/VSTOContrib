@@ -40,15 +40,12 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
         void NewInspector(Inspector inspector)
         {
-            var handler = NewView;
-            if (handler == null) return;
-
             var wrapper = new InspectorWrapper(inspector);
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
             var newViewEventArgs = new NewViewEventArgs(inspector, wrapper.CurrentContext, ribbonType.GetEnumDescription());
-            handler(this, newViewEventArgs);
+            NewView(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
                 inspector.ReleaseComObject();
@@ -56,14 +53,11 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
         void NewExplorer(Explorer explorer)
         {
-            var handler = NewView;
-            if (handler == null) return;
-
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
             var newViewEventArgs = new NewViewEventArgs(explorer, explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
-            handler(this, newViewEventArgs);
+            NewView(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
                 explorer.ReleaseComObject();
@@ -74,10 +68,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (ExplorerWrapper)sender;
             wrapper.Closed -= ExplorerClosed;
 
-            var handler = ViewClosed;
-
-            if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Explorer, e.Explorer));
+            ViewClosed(this, new ViewClosedEventArgs(e.Explorer, e.Explorer));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)
@@ -85,10 +76,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (InspectorWrapper) sender;
             wrapper.Closed -= InspectorClosed;
 
-            var handler = ViewClosed;
-
-            if (handler != null)
-                handler(this, new ViewClosedEventArgs(e.Inspector, e.CurrentContext));
+            ViewClosed(this, new ViewClosedEventArgs(e.Inspector, e.CurrentContext));
         }
 
         public void Initialise()
@@ -97,9 +85,10 @@ namespace VSTOContrib.Outlook.RibbonFactory
             RegisterInspectors();
         }
 
-        public event EventHandler<NewViewEventArgs> NewView;
-        public event EventHandler<ViewClosedEventArgs> ViewClosed;
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
+        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
+        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
+        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext
+            = (sender, args) => { };
 
         public void CleanupReferencesTo(object view, object context)
         {

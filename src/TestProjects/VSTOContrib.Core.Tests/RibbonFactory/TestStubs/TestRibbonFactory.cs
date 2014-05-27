@@ -14,14 +14,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestStubs
             IViewContextProvider contextProvider,
             string fallbackRibbonType,
             params Assembly[] assemblies)
-            : base(addInBase, assemblies, contextProvider, fallbackRibbonType)
+            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), contextProvider, fallbackRibbonType)
         {
             this.viewProvider = viewProvider;
-        }
-
-        public void ClearCurrent()
-        {
-            Current = null;
         }
 
         protected override void ShuttingDown()

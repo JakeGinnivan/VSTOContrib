@@ -2,8 +2,8 @@
 using System.Windows;
 using Microsoft.Office.Core;
 using VSTOContrib.Autofac;
+using VSTOContrib.Core;
 using VSTOContrib.Word.RibbonFactory;
-using WikipediaWordAddin.Core;
 
 namespace WikipediaWordAddin
 {
@@ -15,7 +15,6 @@ namespace WikipediaWordAddin
 
         private void ThisAddInShutdown(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
         }
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
@@ -24,7 +23,10 @@ namespace WikipediaWordAddin
             if (System.Windows.Application.Current == null)
                 new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
 
-            return new WordRibbonFactory(this, typeof(AddinModule).Assembly)
+            VstoContribLog.ToTrace();
+            VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
+
+            return new WordRibbonFactory(this)
             {
                 ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
             };

@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Office.Interop.Word;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Extensions;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Word.RibbonFactory
 {
     public class WordViewProvider : IViewProvider
     {
+        private readonly List<int> closedDocuments = new List<int>();
         private readonly Dictionary<Document, List<Window>> documents;
         private readonly Dictionary<Document, DocumentWrapper> documentWrappers;
         private Application wordApplication;
@@ -27,8 +30,8 @@ namespace VSTOContrib.Word.RibbonFactory
 
         void WordApplicationWindowActivate(Document doc, Window wn)
         {
-            var handler = NewView;
-            if (handler == null) return;
+            VstoContribLog.Info(_ => _("Application.WindowActivate raised, Document: {0}, Window: {1}", 
+                doc.ToLogFormat(), wn.ToLogFormat()));
             if (!documents.ContainsKey(doc))
             {
                 documents.Add(doc, new List<Window>());
@@ -38,10 +41,10 @@ namespace VSTOContrib.Word.RibbonFactory
             }
 
             //Check if we have this window registered
-            if (documents[doc].Contains(wn)) return;
+            if (documents[doc].Any(window => window.Hwnd == wn.Hwnd)) return;
 
             documents[doc].Add(wn);
-            handler(this, new NewViewEventArgs(wn, doc, WordRibbonType.WordDocument.GetEnumDescription()));
+            NewView(this, new NewViewEventArgs(wn, doc, WordRibbonType.WordDocument.GetEnumDescription()));
         }
 
         void DocumentClosed(object sender, DocumentClosedEventArgs e)
@@ -52,9 +55,9 @@ namespace VSTOContrib.Word.RibbonFactory
 
         void CleanupDocument(Document document)
         {
-            var handler = ViewClosed;
-            if (handler == null || !documentWrappers.ContainsKey(document)) return;
+            if (!documentWrappers.ContainsKey(document)) return;
 
+            closedDocuments.Add(document.GetHashCode());
             var documentWrapper = documentWrappers[document];
             documentWrapper.Closed -= DocumentClosed;
             documentWrappers.Remove(document);
@@ -62,39 +65,61 @@ namespace VSTOContrib.Word.RibbonFactory
 
             foreach (var window in windows)
             {
-                handler(this, new ViewClosedEventArgs(window, document));
+                ViewClosed(this, new ViewClosedEventArgs(window, document));
                 window.ReleaseComObject();
             }
             documents.Remove(document);
+            if (wordApplication.Documents.Count == 1)
+            {
+                foreach (var viewInstance in wordApplication.Windows)
+                {
+                    NewView(this, new NewViewEventArgs(viewInstance, null, WordRibbonType.WordDocument.GetEnumDescription()));
+                }
+            }
         }
 
-        /// <summary>
-        /// Initialises this instance.
-        /// </summary>
         public void Initialise()
         {
             wordApplication.WindowActivate += WordApplicationWindowActivate;
             wordApplication.DocumentOpen += WordApplicationDocumentOpen;
+            wordApplication.DocumentChange += WordApplicationOnDocumentChange;
             //TODO protected window activate
         }
 
-        static void WordApplicationDocumentOpen(Document doc)
+        void WordApplicationOnDocumentChange()
         {
-
+            var enumDescription = WordRibbonType.WordDocument.GetEnumDescription();
+            if (wordApplication.Documents.Count == 0)
+            {
+                VstoContribLog.Debug(_ => _("Application.DocumentChange raised, no documents currently open"));
+                foreach (var viewInstance in wordApplication.Windows)
+                {
+                    NewView(this, new NewViewEventArgs(viewInstance, null, enumDescription));
+                }
+            }
+            else
+            {
+                var activeDocument = wordApplication.ActiveDocument;
+                if (closedDocuments.Contains(activeDocument.GetHashCode()))
+                {
+                    VstoContribLog.Debug(_ => _("Application.DocumentChange raised ActiveDocument: {0} is closing, ignoring event", activeDocument.ToLogFormat()));
+                    return;
+                }
+                var activeWindow = wordApplication.ActiveWindow;
+                VstoContribLog.Debug(_ => _("Application.DocumentChange raised, ActiveDocument: {0}, ActiveWindow: {1}",
+                    activeDocument.ToLogFormat(), activeWindow.ToLogFormat()));
+                NewView(this, new NewViewEventArgs(activeWindow, activeDocument, enumDescription));
+            }
         }
 
-        /// <summary>
-        /// Occurs when [new view].
-        /// </summary>
-        public event EventHandler<NewViewEventArgs> NewView;
-        /// <summary>
-        /// Occurs when [view closed].
-        /// </summary>
-        public event EventHandler<ViewClosedEventArgs> ViewClosed;
+        void WordApplicationDocumentOpen(Document doc)
+        {
+            VstoContribLog.Debug(_ => _("Application.DocumentOpen raised, Document: {0}", doc.ToLogFormat()));
+            WordApplicationWindowActivate(doc, doc.ActiveWindow);
+        }
 
-        /// <summary>
-        /// Raise when the custom task panes for a context need to change their visibility
-        /// </summary>
+        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
+        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
         public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext;
 
         /// <summary>
@@ -104,7 +129,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// <param name="context"></param>
         public void CleanupReferencesTo(object view, object context)
         {
-            CleanupDocument((Document) context);
+            CleanupDocument((Document)context);
         }
 
         /// <summary>
@@ -114,6 +139,7 @@ namespace VSTOContrib.Word.RibbonFactory
         {
             wordApplication.WindowActivate -= WordApplicationWindowActivate;
             wordApplication.DocumentOpen -= WordApplicationDocumentOpen;
+            wordApplication.DocumentChange -= WordApplicationOnDocumentChange;
             wordApplication = null;
         }
 
@@ -122,6 +148,7 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         public void RegisterOpenDocuments()
         {
+            VstoContribLog.Debug(_ => _("Registering all already open documents"));
             using (var documents = wordApplication.Documents.WithComCleanup())
             {
                 foreach (Document document in documents.Resource)

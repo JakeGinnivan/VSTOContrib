@@ -32,7 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="NSubstitute, Version=1.7.1.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NSubstitute.1.7.1.0\lib\NET40\NSubstitute.dll</HintPath>
@@ -45,16 +49,30 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\packages\Shouldly.2.1.1\lib\net40\Shouldly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExcelScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RibbonControlDouble.cs" />
     <Compile Include="RibbonFactory\Views\TestRibbonViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TestDoubles\Excel.TestDoubles\Excel.TestDoubles.csproj">
+      <Project>{4833E119-2793-4EC0-8188-6BBE98A1993F}</Project>
+      <Name>Excel.TestDoubles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestDoubles\Office.TestDoubles\Office.TestDoubles.csproj">
+      <Project>{5FE9E609-DE95-4B55-8786-8B2847698D10}</Project>
+      <Name>Office.TestDoubles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VSTOContrib.Core\VSTOContrib.Core.csproj">
       <Project>{6B0191EB-56BD-4A66-8ABF-B4B96905AFBF}</Project>
       <Name>VSTOContrib.Core</Name>
@@ -62,6 +80,10 @@
     <ProjectReference Include="..\..\VSTOContrib.Excel\VSTOContrib.Excel.csproj">
       <Project>{37cbbf12-5453-49eb-9251-5cabcca6adcd}</Project>
       <Name>VSTOContrib.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VSTOContrib.Core.Tests\VSTOContrib.Core.Tests.csproj">
+      <Project>{37AB1850-9367-4F91-A4C2-A379FD65B04C}</Project>
+      <Name>VSTOContrib.Core.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

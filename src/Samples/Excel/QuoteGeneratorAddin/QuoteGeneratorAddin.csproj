@@ -168,6 +168,7 @@
     <Reference Include="Office">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -195,6 +196,10 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AddinModule.cs" />
+    <Compile Include="OfficeContexts\IQuotesService.cs" />
+    <Compile Include="OfficeContexts\QuotesService.cs" />
+    <Compile Include="OfficeContexts\SpreadSheetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -243,10 +248,12 @@
       <Project>{37CBBF12-5453-49EB-9251-5CABCCA6ADCD}</Project>
       <Name>VSTOContrib.Excel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\QuoteGeneratorAddin.Core\QuoteGeneratorAddin.Core.csproj">
-      <Project>{31E79E92-FA93-4C6C-BCD3-C1871EF1E489}</Project>
-      <Name>QuoteGeneratorAddin.Core</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="OfficeContexts\SpreadSheetView.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="1359546404296.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

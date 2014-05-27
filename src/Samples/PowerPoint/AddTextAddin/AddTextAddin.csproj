@@ -193,6 +193,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="PresentationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -236,10 +237,9 @@
       <Project>{b2e0ca45-dfa9-447b-b473-9a17756bf79a}</Project>
       <Name>VSTOContrib.PowerPoint</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AddTextAddin.Core\AddTextAddin.Core.csproj">
-      <Project>{B7A10C20-82CE-457A-9EE6-C6DAD73D3DC0}</Project>
-      <Name>AddTextAddin.Core</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PresentationViewModel.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

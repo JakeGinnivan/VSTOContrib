@@ -37,10 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\..\..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="IronGitHub">
-      <HintPath>..\..\packages\IronGitHub.0.2.0.0\lib\net45\IronGitHub.dll</HintPath>
+      <HintPath>..\..\..\packages\IronGitHub.0.2.0.0\lib\net45\IronGitHub.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>

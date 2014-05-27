@@ -2,14 +2,8 @@ using System;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
-    /// <summary>
-    /// Arguments for the UpdateCustomTaskPanesVisibilityForContext event
-    /// </summary>
     public class HideCustomTaskPanesForContextEventArgs : EventArgs
     {
-        /// <summary>
-        /// Ctor
-        /// </summary>
         public HideCustomTaskPanesForContextEventArgs(object context, bool visible)
         {
             Context = context;

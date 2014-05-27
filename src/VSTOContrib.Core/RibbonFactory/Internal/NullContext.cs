@@ -4,7 +4,7 @@
     {
         static NullContext()
         {
-            Instance= new object();
+            Instance = new NullContext();
         }
 
         public static object Instance { get; private set; }

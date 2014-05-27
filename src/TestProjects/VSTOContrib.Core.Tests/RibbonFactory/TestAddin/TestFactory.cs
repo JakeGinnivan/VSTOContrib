@@ -6,6 +6,13 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestAddin
 {
     class TestFactory : Factory
     {
+        public readonly TestAddin UnderlyingAddIn;
+
+        public TestFactory()
+        {
+            UnderlyingAddIn = new TestAddin();
+        }
+
         public Microsoft.Office.Tools.Ribbon.RibbonFactory GetRibbonFactory()
         {
             return Substitute.For<Microsoft.Office.Tools.Ribbon.RibbonFactory>();
@@ -14,7 +21,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.TestAddin
         public AddIn CreateAddIn(IServiceProvider serviceProvider, IHostItemProvider hostItemProvider, string primaryCookie,
             string identifier, object containerComponent, IAddInExtension extension)
         {
-            return new TestAddin();
+            return UnderlyingAddIn;
         }
 
         public CustomTaskPaneCollection CreateCustomTaskPaneCollection(IServiceProvider serviceProvider,

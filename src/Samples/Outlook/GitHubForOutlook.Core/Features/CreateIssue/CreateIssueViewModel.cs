@@ -16,7 +16,7 @@ namespace GitHubForOutlook.Core.Features.CreateIssue
     {
         readonly GitHubApi githubApi;
         readonly IGitHubSettings settings;
-        MailItem currentMailItem;
+        _MailItem currentMailItem;
 
         public CreateIssueViewModel(GitHubApi githubApi, IGitHubSettings settings)
         {

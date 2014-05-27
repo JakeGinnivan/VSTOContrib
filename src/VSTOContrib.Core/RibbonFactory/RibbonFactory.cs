@@ -7,6 +7,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.Annotations;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
+using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
@@ -20,7 +21,6 @@ namespace VSTOContrib.Core.RibbonFactory
     public abstract class RibbonFactory : IRibbonFactory
     {
         internal const string CommonCallbacks = "CommonCallbacks";
-        static readonly object InstanceLock = new object();
         readonly IRibbonFactoryController ribbonFactoryController;
         readonly VstoContribContext context;
 
@@ -31,13 +31,6 @@ namespace VSTOContrib.Core.RibbonFactory
             if (assemblies.Length == 0)
                 throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
 
-            lock (InstanceLock)
-            {
-                if (Current != null)
-                    throw new InvalidOperationException("You can only create a single ribbon factory");
-                Current = this;
-            }
-
             context = new VstoContribContext(assemblies, addinBase, fallbackRibbonType);
             ribbonFactoryController = new RibbonFactoryController(contextProvider, context);
 
@@ -45,8 +38,17 @@ namespace VSTOContrib.Core.RibbonFactory
             addinBase.Shutdown += AddinBaseOnShutdown;
         }
 
+        protected static Assembly[] UseIfEmpty(Assembly[] assemblies, Assembly fallback)
+        {
+            if (assemblies.Length > 0)
+                return assemblies;
+
+            return new[] {fallback};
+        }
+
         void AddinBaseOnStartup(object sender, EventArgs eventArgs)
         {
+            VstoContribLog.Debug(_ => _("AddinBase.Startup raised, initialising ribbon factory controller"));
             context.AddinBase.Startup -= AddinBaseOnStartup;
 
             InitialiseRibbonFactoryController(ribbonFactoryController, context.Application);
@@ -97,17 +99,13 @@ namespace VSTOContrib.Core.RibbonFactory
         protected abstract void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application);
 
         /// <summary>
-        /// Current instance of RibbonFactory
-        /// </summary>
-        public static IRibbonFactory Current { get; protected set; }
-
-        /// <summary>
         /// Ribbon_s the load.
         /// </summary>
         /// <param name="ribbonUi">The ribbon UI.</param>
         // ReSharper disable InconsistentNaming
         public virtual void Ribbon_Load(IRibbonUI ribbonUi)
         {
+            VstoContribLog.Debug(_ => _("Ribbon_Load event raised: {0}", ribbonUi.ToLogFormat()));
             ribbonFactoryController.RibbonLoaded(ribbonUi);
         }
         // ReSharper restore InconsistentNaming
@@ -119,7 +117,10 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetCustomUI(string ribbonId)
         {
-            return ribbonFactoryController.GetCustomUI(ribbonId);
+            VstoContribLog.Info(_ => _("Office called GetCustomUI({0})", ribbonId));
+            var customUI = ribbonFactoryController.GetCustomUI(ribbonId);
+            VstoContribLog.Debug(_ => _("Provided ribbon xml for ribbonId {0}:\r\n\r\n{1}", ribbonId, customUI));
+            return customUI;
         }
 
 
