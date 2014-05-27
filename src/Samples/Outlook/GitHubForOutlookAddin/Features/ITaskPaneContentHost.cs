@@ -1,7 +1,6 @@
-﻿using GitHubForOutlook.Core.Features.CreateIssue;
-using VSTOContrib.Core.RibbonFactory.Interfaces;
+﻿using VSTOContrib.Core.RibbonFactory.Interfaces;
 
-namespace GitHubForOutlook.Core.Features
+namespace GitHubForOutlookAddin.Features
 {
     public interface ITaskPaneContentHost
     {

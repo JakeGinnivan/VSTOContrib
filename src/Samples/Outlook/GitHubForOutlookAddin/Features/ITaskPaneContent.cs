@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GitHubForOutlook.Core.Features
+namespace GitHubForOutlookAddin.Features
 {
     public interface ITaskPaneContent
     {

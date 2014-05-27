@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace GitHubForOutlook.Core.Features.CreateIssue
+namespace GitHubForOutlookAddin.Features.CreateIssue
 {
     [DataContract]
     public class NewIssue

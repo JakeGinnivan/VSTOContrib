@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using IronGitHub;
 using IronGitHub.Entities;
 
-namespace GitHubForOutlook.Core.Features.CreateIssue
+namespace GitHubForOutlookAddin.Features.CreateIssue
 {
     public class MyReposApi : GitHubApiBase
     {

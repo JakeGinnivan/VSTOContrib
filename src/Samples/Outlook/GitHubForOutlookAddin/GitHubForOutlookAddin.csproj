@@ -48,6 +48,7 @@
     <FriendlyName>GitHubForOutlookAddin</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
+    <NuGetPackageImportStamp>e082cf8a</NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -139,20 +140,26 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="IronGitHub">
       <HintPath>..\..\..\packages\IronGitHub.0.2.0.0\lib\net45\IronGitHub.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="ServiceStack.Text, Version=4.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.8\lib\net40\ServiceStack.Text.dll</HintPath>
+    <Reference Include="PropertyChanged">
+      <HintPath>..\..\..\packages\PropertyChanged.Fody.1.48.2.0\Lib\NET35\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.20\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -207,6 +214,28 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AddinModule.cs" />
+    <Compile Include="Features\CreateIssue\CreateIssueControl.xaml.cs">
+      <DependentUpon>CreateIssueControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\CreateIssue\CreateIssuesApi.cs" />
+    <Compile Include="Features\CreateIssue\CreateIssueViewModel.cs" />
+    <Compile Include="Features\CreateIssue\ICreateIssueViewModel.cs" />
+    <Compile Include="Features\CreateIssue\MyReposApi.cs" />
+    <Compile Include="Features\CreateIssue\NewIssue.cs" />
+    <Compile Include="Features\CreateIssue\RepositoryModel.cs" />
+    <Compile Include="Features\ITaskPaneContent.cs" />
+    <Compile Include="Features\ITaskPaneContentHost.cs" />
+    <Compile Include="Features\Settings\GitHubSettings.cs" />
+    <Compile Include="Features\Settings\IGitHubSettings.cs" />
+    <Compile Include="Features\Settings\ISettingsViewModel.cs" />
+    <Compile Include="Features\Settings\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Settings\SettingsViewModel.cs" />
+    <Compile Include="Features\TaskPaneContentHost.xaml.cs">
+      <DependentUpon>TaskPaneContentHost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -220,6 +249,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="GitHubForOutlookAddin_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -231,6 +261,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Ribbons\GithubExplorerRibbon.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -255,10 +286,28 @@
       <Project>{B251F001-1B3F-4CD6-8E4F-D1435A64867B}</Project>
       <Name>VSTOContrib.Outlook</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GitHubForOutlook.Core\GitHubForOutlook.Core.csproj">
-      <Project>{F713C61F-973E-4BC2-A553-6D9D5E5F6D0E}</Project>
-      <Name>GitHubForOutlook.Core</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+    <EmbeddedResource Include="Ribbons\GithubExplorerRibbon.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Resources\gtfo32x32.png" />
+    <None Include="Resources\gtfo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Features\CreateIssue\CreateIssueControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\Settings\SettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\TaskPaneContentHost.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -289,4 +338,11 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\..\packages\Fody.1.24.0\build\Fody.targets" Condition="Exists('..\..\..\packages\Fody.1.24.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Fody.1.24.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Fody.1.24.0\build\Fody.targets'))" />
+  </Target>
 </Project>

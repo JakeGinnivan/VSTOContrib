@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using GitHubForOutlook.Core.Features.Settings;
+using GitHubForOutlookAddin.Features.Settings;
 using IronGitHub;
 using IronGitHub.Entities;
 using Microsoft.Office.Interop.Outlook;
@@ -10,7 +10,7 @@ using VSTOContrib.Core.Wpf;
 using VSTOContrib.Outlook;
 using Action = System.Action;
 
-namespace GitHubForOutlook.Core.Features.CreateIssue
+namespace GitHubForOutlookAddin.Features.CreateIssue
 {
     public class CreateIssueViewModel : NotifyPropertyChanged, ICreateIssueViewModel
     {

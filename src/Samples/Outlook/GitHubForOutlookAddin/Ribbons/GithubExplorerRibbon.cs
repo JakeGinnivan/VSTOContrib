@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using GitHubForOutlook.Core.Features;
-using GitHubForOutlook.Core.Features.CreateIssue;
-using GitHubForOutlook.Core.Features.Settings;
+using GitHubForOutlookAddin.Features;
+using GitHubForOutlookAddin.Features.CreateIssue;
+using GitHubForOutlookAddin.Features.Settings;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
@@ -12,7 +12,7 @@ using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Outlook.RibbonFactory;
 
-namespace GitHubForOutlook.Core.Ribbons
+namespace GitHubForOutlookAddin.Ribbons
 {
     [RibbonViewModel(OutlookRibbonType.OutlookExplorer)]
     public class GithubExplorerRibbon : OfficeViewModelBase, IRibbonViewModel, IRegisterCustomTaskPane

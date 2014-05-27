@@ -8,7 +8,7 @@ using IronGitHub;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Wpf;
 
-namespace GitHubForOutlook.Core.Features.Settings
+namespace GitHubForOutlookAddin.Features.Settings
 {
     public class SettingsViewModel : NotifyPropertyChanged, ISettingsViewModel
     {

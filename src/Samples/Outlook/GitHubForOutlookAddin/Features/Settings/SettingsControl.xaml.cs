@@ -1,4 +1,4 @@
-﻿namespace GitHubForOutlook.Core.Features.Settings
+﻿namespace GitHubForOutlookAddin.Features.Settings
 {
     public partial class SettingsControl
     {

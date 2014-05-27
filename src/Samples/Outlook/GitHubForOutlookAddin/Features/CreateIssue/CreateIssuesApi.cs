@@ -2,7 +2,7 @@
 using IronGitHub;
 using IronGitHub.Entities;
 
-namespace GitHubForOutlook.Core.Features.CreateIssue
+namespace GitHubForOutlookAddin.Features.CreateIssue
 {
     public class CreateIssuesApi : GitHubApiBase
     {

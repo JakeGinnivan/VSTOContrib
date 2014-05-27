@@ -1,6 +1,6 @@
 using System;
 
-namespace GitHubForOutlook.Core.Features.Settings
+namespace GitHubForOutlookAddin.Features.Settings
 {
     class GitHubSettings : IGitHubSettings
     {

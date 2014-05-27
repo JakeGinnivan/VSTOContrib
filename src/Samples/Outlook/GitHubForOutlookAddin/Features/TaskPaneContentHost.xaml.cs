@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
 using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.Wpf;
 
-namespace GitHubForOutlook.Core.Features
+namespace GitHubForOutlookAddin.Features
 {
     public partial class TaskPaneContentHost : ITaskPaneContentHost
     {

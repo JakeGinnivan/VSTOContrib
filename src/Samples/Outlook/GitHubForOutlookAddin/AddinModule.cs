@@ -1,11 +1,11 @@
 ﻿using Autofac;
-using GitHubForOutlook.Core.Features;
-using GitHubForOutlook.Core.Features.CreateIssue;
-using GitHubForOutlook.Core.Features.Settings;
+using GitHubForOutlookAddin.Features;
+using GitHubForOutlookAddin.Features.CreateIssue;
+using GitHubForOutlookAddin.Features.Settings;
 using IronGitHub;
 using VSTOContrib.Autofac;
 
-namespace GitHubForOutlook.Core
+namespace GitHubForOutlookAddin
 {
     public class AddinModule : Module
     {

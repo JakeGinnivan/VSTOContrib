@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using GitHubForOutlook.Core;
 using VSTOContrib.Autofac;
 using VSTOContrib.Outlook.RibbonFactory;
 using Office = Microsoft.Office.Core;

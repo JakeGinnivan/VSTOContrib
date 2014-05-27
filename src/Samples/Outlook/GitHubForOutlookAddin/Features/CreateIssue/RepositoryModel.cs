@@ -1,7 +1,7 @@
 ﻿using IronGitHub.Entities;
 using VSTOContrib.Core;
 
-namespace GitHubForOutlook.Core.Features.CreateIssue
+namespace GitHubForOutlookAddin.Features.CreateIssue
 {
     public class RepositoryModel : NotifyPropertyChanged
     {
