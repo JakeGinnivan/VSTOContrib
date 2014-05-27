@@ -10,6 +10,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 {
     internal class ViewModelResolver : IViewModelResolver
     {
+        private const string DefaultRibbon = "default";
+
         /// <summary>
         /// Used when a new explorer or inspector is created to lookup the appropriate viewmodel type
         /// </summary>
@@ -32,7 +34,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public ViewModelResolver(IEnumerable<Type> viewModelType, ICustomTaskPaneRegister customTaskPaneRegister, IViewContextProvider viewContextProvider, VstoContribContext context)
         {
-            currentlyLoadingRibbon = "default";
+            currentlyLoadingRibbon = DefaultRibbon;
             notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
             ribbonTypeLookup = new Dictionary<string, Type>();
             contextToViewModelLookup = new Dictionary<object, IRibbonViewModel>();
@@ -168,6 +170,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 VstoContribLog.Debug(_ => _("Setting RibbonUi [{0}] for ViewModel", ribbonUi.ToLogFormat()));
                 ribbonViewModel.RibbonUi = ribbonUi;
             }
+            else if (ribbonUiLookup.ContainsKey(DefaultRibbon))
+            {
+                var ribbonUi = ribbonUiLookup[DefaultRibbon];
+                VstoContribLog.Info(_ => _("Ribbon type was not found, but default was. Setting RibbonUi [{0}] for ViewModel", ribbonUi.ToLogFormat()));
+                ribbonViewModel.RibbonUi = ribbonUi;
+            }
+
 
             ribbonViewModel.CurrentView = viewInstance;
             ListenForINotifyPropertyChanged(ribbonViewModel);
