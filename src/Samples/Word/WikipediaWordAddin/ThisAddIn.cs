@@ -26,7 +26,7 @@ namespace WikipediaWordAddin
             VstoContribLog.ToTrace();
             VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
 
-            return new WordRibbonFactory(this, typeof(AddinModule).Assembly)
+            return new WordRibbonFactory(this)
             {
                 ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
             };

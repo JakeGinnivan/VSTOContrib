@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Windows;
-using AddTextAddin.Core;
 using VSTOContrib.PowerPoint.RibbonFactory;
 using Office = Microsoft.Office.Core;
 
@@ -10,10 +8,6 @@ namespace AddTextAddin
     {
         protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            //Required for WPF support
-            if (System.Windows.Application.Current == null)
-                new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-
             var assemblyContainingViewModels = typeof(PresentationViewModel).Assembly; // This should be the assembly containing all your VSTOContrib viewmodels
             return new PowerPointRibbonFactory(this, assemblyContainingViewModels);
         }
@@ -24,7 +18,6 @@ namespace AddTextAddin
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
         }
 
         #region VSTO generated code
