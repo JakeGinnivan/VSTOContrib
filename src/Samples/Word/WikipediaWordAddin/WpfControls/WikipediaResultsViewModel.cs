@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using VSTOContrib.Core;
-using WikipediaWordAddin.Core.Services;
 using WikipediaWordAddin.Services;
 
-namespace WikipediaWordAddin.Core.WpfControls
+namespace WikipediaWordAddin.WpfControls
 {
     public class WikipediaResultsViewModel : NotifyPropertyChanged
     {

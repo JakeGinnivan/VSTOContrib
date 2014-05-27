@@ -1,4 +1,4 @@
-﻿namespace WikipediaWordAddin.Core.WpfControls
+﻿namespace WikipediaWordAddin.WpfControls
 {
     public partial class WikipediaResultsView
     {

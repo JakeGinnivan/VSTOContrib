@@ -5,10 +5,10 @@ using VSTOContrib.Core.RibbonFactory;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.Wpf;
 using VSTOContrib.Word.RibbonFactory;
-using WikipediaWordAddin.Core.WpfControls;
+using WikipediaWordAddin.WpfControls;
 using Document = Microsoft.Office.Interop.Word.Document;
 
-namespace WikipediaWordAddin.Core.OfficeContexts
+namespace WikipediaWordAddin.OfficeContexts
 {
     public class DocumentViewModel : WordRibbonViewModel, IRegisterCustomTaskPane
     {

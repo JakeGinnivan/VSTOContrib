@@ -4,7 +4,6 @@ using Microsoft.Office.Core;
 using VSTOContrib.Autofac;
 using VSTOContrib.Core;
 using VSTOContrib.Word.RibbonFactory;
-using WikipediaWordAddin.Core;
 
 namespace WikipediaWordAddin
 {

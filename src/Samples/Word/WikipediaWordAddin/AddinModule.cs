@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using VSTOContrib.Autofac;
-using WikipediaWordAddin.Core.Services;
-using WikipediaWordAddin.Core.WpfControls;
+using WikipediaWordAddin.Services;
+using WikipediaWordAddin.WpfControls;
 
-namespace WikipediaWordAddin.Core
+namespace WikipediaWordAddin
 {
     public class AddinModule : Module
     {

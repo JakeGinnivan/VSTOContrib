@@ -1,6 +1,4 @@
-﻿using WikipediaWordAddin.Services;
-
-namespace WikipediaWordAddin.Core.Services
+﻿namespace WikipediaWordAddin.Services
 {
     public interface IWikipediaService
     {
