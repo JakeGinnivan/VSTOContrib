@@ -75,6 +75,7 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="OfficeWin32Window.cs" />
     <Compile Include="DefaultViewModelFactory.cs" />
     <Compile Include="Extensions\ComCleanupEnumerator.cs" />
     <Compile Include="Extensions\ComCleanupWrapper.cs" />
