@@ -61,9 +61,13 @@ namespace VSTOContrib.Core.RibbonFactory
 
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
-            CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+            var methodName = caller.GetMethodName();
+            CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + methodName];
 
-            IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+            var view = (object)control.Context;
+            IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(view);
+            VstoContribLog.Debug(l => l("Ribbon callback {0} being invoked on {1} (View: {2}, ViewModel: {3})",
+                methodName, control.Id, view.ToLogFormat(), viewModelInstance.ToLogFormat()));
 
             Type type = viewModelInstance.GetType();
             PropertyInfo property = type.GetProperty(callbackTarget.Method);
