@@ -154,6 +154,11 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 viewModelLookup.RibbonUi = ribbonUi;
                 InvalidateRibbonForViewModel(viewModelLookup);
             }
+
+            if (!ribbonUiLookup.ContainsKey(DefaultRibbon))
+            {
+                ribbonUiLookup[DefaultRibbon] = ribbonUi;
+            }
         }
 
         private IRibbonViewModel BuildViewModel(string ribbonType, object viewInstance, object viewContext)
