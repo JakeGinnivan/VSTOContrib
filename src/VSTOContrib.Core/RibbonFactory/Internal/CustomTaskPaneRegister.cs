@@ -104,6 +104,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
 
         public void CleanupViewModel(IRibbonViewModel viewModelInstance)
         {
+            if (!ribbonTaskPanes.ContainsKey(viewModelInstance)) return;
             var adaptersForViewModel = ribbonTaskPanes[viewModelInstance];
             ribbonTaskPanes.Remove(viewModelInstance);
             foreach (var oneToManyCustomTaskPaneAdapter in adaptersForViewModel)
