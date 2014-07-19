@@ -1,4 +1,5 @@
-﻿using Excel.TestDoubles;
+﻿using System;
+using Excel.TestDoubles;
 using Office.TestDoubles;
 using Shouldly;
 using VSTOContrib.Core;
@@ -14,9 +15,11 @@ namespace VSTOContrib.Excel.Tests
         readonly Excel2013Facade excelFacade;
         readonly RibbonUITestDouble ribbonUI;
         readonly ExcelRibbonFactory sut;
+        static int counter = 1;
 
         public ExcelScenario()
         {
+            OfficeWin32Window.ResolveWindowHandle = o => new IntPtr(counter++);
             excelFacade = new Excel2013Facade();
             ribbonUI = new RibbonUITestDouble();
             VstoContribLog.ToTrace();
@@ -29,7 +32,6 @@ namespace VSTOContrib.Excel.Tests
         public void OpenExcel2013()
         {
             sut.GetCustomUI("Microsoft.Excel.Workbook");
-            sut.Ribbon_Load(ribbonUI);
 
             testAddInBase.SetApplication(excelFacade.Application);
 

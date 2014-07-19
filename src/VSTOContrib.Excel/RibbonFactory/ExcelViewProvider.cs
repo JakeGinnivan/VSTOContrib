@@ -12,17 +12,16 @@ namespace VSTOContrib.Excel.RibbonFactory
 {
     public class ExcelViewProvider : IViewProvider
     {
-        readonly Dictionary<Workbook, List<Window>> workbooks;
+        readonly Dictionary<Workbook, List<OfficeWin32Window>> workbooks;
+        const string CaptionSuffix = " - Excel";
+        const string ExcelLpClassName = "XLMAIN";
         Application excelApplication;
-        Window singleWindow;
+        OfficeWin32Window singleWindow;
         bool nullContextOpen;
 
-        public ExcelViewProvider(Application excelApplication)
+        public ExcelViewProvider()
         {
-            workbooks = new Dictionary<Workbook, List<Window>>();
-            this.excelApplication = excelApplication;
-            var monitor = new WorkbookClosedMonitor(excelApplication);
-            monitor.WorkbookClosed += MonitorWorkbookClosed;
+            workbooks = new Dictionary<Workbook, List<OfficeWin32Window>>();
         }
 
         void MonitorWorkbookClosed(object sender, WorkbookClosedEventArgs e)
@@ -49,7 +48,7 @@ namespace VSTOContrib.Excel.RibbonFactory
                 nullContextOpen = true;
                 foreach (Window window in excelApplication.Windows)
                 {
-                    NewView(this, new NewViewEventArgs(window, NullContext.Instance, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                    NewView(this, new NewViewEventArgs(new OfficeWin32Window(window, ExcelLpClassName, CaptionSuffix), NullContext.Instance, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
         }
@@ -57,10 +56,14 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// <summary>
         /// Initialises this instance.
         /// </summary>
-        public void Initialise()
+        /// <param name="application"></param>
+        public void Initialise(object application)
         {
+            excelApplication = (Application)application;
             ((AppEvents_Event)excelApplication).NewWorkbook += NewWorkbook;
             excelApplication.WorkbookOpen += WorkbookOpen;
+            var monitor = new WorkbookClosedMonitor(excelApplication);
+            monitor.WorkbookClosed += MonitorWorkbookClosed;
         }
 
         void NewWorkbook(Workbook wb)
@@ -78,25 +81,26 @@ namespace VSTOContrib.Excel.RibbonFactory
         void OnInitialise(Workbook wb)
         {
             if (!workbooks.ContainsKey(wb))
-                workbooks.Add(wb, new List<Window>());
+                workbooks.Add(wb, new List<OfficeWin32Window>());
 
             if (IsMdi())
             {
                 if (singleWindow == null)
-                    singleWindow = wb.Windows[1];
+                    singleWindow = new OfficeWin32Window(wb.Windows[1], ExcelLpClassName, CaptionSuffix);
                 workbooks[wb].Add(singleWindow);
                 if (nullContextOpen)
-                    ViewClosed(this, new ViewClosedEventArgs(singleWindow, NullContext.Instance));
-                NewView(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                    ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(singleWindow, ExcelLpClassName, CaptionSuffix), NullContext.Instance));
+                NewView(this, new NewViewEventArgs(new OfficeWin32Window(singleWindow, ExcelLpClassName, CaptionSuffix), wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
             {
                 foreach (Window window in wb.Windows)
                 {
-                    workbooks[wb].Add(window);
+                    var officeWin32Window = new OfficeWin32Window(window, ExcelLpClassName, CaptionSuffix);
+                    workbooks[wb].Add(officeWin32Window);
                     if (nullContextOpen)
-                        ViewClosed(this, new ViewClosedEventArgs(window, NullContext.Instance));
-                    NewView(this, new NewViewEventArgs(window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                        ViewClosed(this, new ViewClosedEventArgs(officeWin32Window, NullContext.Instance));
+                    NewView(this, new NewViewEventArgs(officeWin32Window, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
                 }
             }
 
@@ -106,16 +110,18 @@ namespace VSTOContrib.Excel.RibbonFactory
 
         void Activate(Workbook wb, Window wn)
         {
+            var officeWin32Window = new OfficeWin32Window(wn, ExcelLpClassName, CaptionSuffix);
             VstoContribLog.Debug(log => log("Excel raised WorkbookOpen(wb: {0}, wn: {1}) event", wb.ToLogFormat(), wn.ToLogFormat()));
             if (IsMdi() && !workbooks[wb].Contains(singleWindow))
                 workbooks[wb].Add(singleWindow);
-            if (!IsMdi() && !workbooks[wb].Contains(wn))
+            if (!IsMdi() && !workbooks[wb].Contains(officeWin32Window))
             {
                 var windows = workbooks[wb];
-                if (windows.All(w => ((dynamic) w).Hwnd != ((dynamic) wn).Hwnd))
+                if (windows.All(w => !w.Equals(officeWin32Window)))
                 {
-                    windows.Add(wn);
-                    NewView(this, new NewViewEventArgs(wn, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                    windows.Add(officeWin32Window);
+                    var excelWorkbook = ExcelRibbonType.ExcelWorkbook.GetEnumDescription();
+                    NewView(this, new NewViewEventArgs(officeWin32Window, wb, excelWorkbook));
                 }
             }
         }
@@ -133,9 +139,14 @@ namespace VSTOContrib.Excel.RibbonFactory
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="context"></param>
-        public void CleanupReferencesTo(object view, object context)
+        public void CleanupReferencesTo(OfficeWin32Window view, object context)
         {
 
+        }
+
+        public OfficeWin32Window ToOfficeWindow(object view)
+        {
+            return new OfficeWin32Window(view, ExcelLpClassName, CaptionSuffix);
         }
 
         /// <summary>

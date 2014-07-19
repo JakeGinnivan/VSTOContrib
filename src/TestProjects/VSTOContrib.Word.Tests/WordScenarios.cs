@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using System;
+using Microsoft.Office.Core;
 using Office.TestDoubles;
 using VSTOContrib.Core;
 using VSTOContrib.Core.Tests.RibbonFactory.TestAddin;
@@ -14,9 +15,12 @@ namespace VSTOContrib.Word.Tests
         readonly WordRibbonFactory sut;
         readonly IRibbonUI ribbonUI;
         readonly Word2013Facade wordFacade;
+        static int counter = 1;
 
         public WordScenarios()
         {
+            OfficeWin32Window.ResolveWindowHandle = o => new IntPtr(counter++);
+
             wordFacade = new Word2013Facade();
             ribbonUI = new RibbonUITestDouble();
             VstoContribLog.ToTrace();

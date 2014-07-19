@@ -22,7 +22,8 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                 vms,
                 new CustomTaskPaneRegister(testAddInBase),
                 new TestContextProvider(),
-                new VstoContribContext(new Assembly[0], testAddInBase, "Foo"));
+                new VstoContribContext(new Assembly[0], testAddInBase, "Foo"),
+                new TestViewProvider());
         }
 
         [Fact]

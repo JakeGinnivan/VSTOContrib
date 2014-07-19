@@ -9,9 +9,9 @@ namespace VSTOContrib.Excel.RibbonFactory
     /// </summary>
     public class ExcelViewContextProvider : IViewContextProvider
     {
-        public object GetContextForView(object view)
+        public object GetContextForView(OfficeWin32Window view)
         {
-            var window = view as Window;
+            var window = view.Window as Window;
             if (window != null)
                 return window.Application.ActiveWorkbook;
 
@@ -22,7 +22,7 @@ namespace VSTOContrib.Excel.RibbonFactory
             return null;
         }
 
-        public string GetRibbonTypeForView(object view)
+        public string GetRibbonTypeForView(OfficeWin32Window view)
         {
             return ExcelRibbonType.ExcelWorkbook.GetEnumDescription();
         }

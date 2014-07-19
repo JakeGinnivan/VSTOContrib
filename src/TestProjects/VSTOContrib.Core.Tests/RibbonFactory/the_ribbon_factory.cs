@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -23,6 +22,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public the_ribbon_factory()
         {
             viewProvider = Substitute.For<IViewProvider>();
+            viewProvider
+                .ToOfficeWindow(Arg.Any<object>())
+                .Returns(c => new OfficeWin32Window(c.Arg<object>(), string.Empty, string.Empty));
             viewModelFactory = new TestViewModelFactory();
             testAddInBase = AddInBaseFactory.Create();
 
@@ -86,7 +88,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             //Open new view to create a viewmodel for view
             var viewInstance = new TestView { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                viewInstance.ToOfficeWin32Window(), viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             viewModelFactory.ViewModels.Single().PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
@@ -107,7 +109,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             //Open new view to create a viewmodel for view
             var viewInstance = new TestView { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                viewInstance.ToOfficeWin32Window(), viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             viewModelFactory.ViewModels.Single().PanelShown = true;
             var toggleButtonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
@@ -127,7 +129,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             testAddInBase.TestAddin.OnStartup();
             var viewInstance = new TestView { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                viewInstance.ToOfficeWin32Window(), viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             var ribbon = Substitute.For<IRibbonUI>();
             ribbonFactoryUnderTest.Ribbon_Load(ribbon);
 
@@ -150,7 +152,7 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
                                        Context = new TestWindowContext()
                                    };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                viewInstance.ToOfficeWin32Window(), viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             viewModelFactory.ViewModels.Single().PanelShown = true;
             var buttonTag = GetTag(processedRibbon, "actionButton");
 
@@ -172,9 +174,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var viewInstance = new TestView { Context = new TestWindowContext() };
             var view2Instance = new TestView { Context = new TestWindowContext() };
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                viewInstance, viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                viewInstance.ToOfficeWin32Window(), viewInstance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             viewProvider.NewView += Raise.EventWith(viewProvider, new NewViewEventArgs(
-                view2Instance, view2Instance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
+                view2Instance.ToOfficeWin32Window(), view2Instance.Context, TestRibbonTypes.RibbonType1.GetEnumDescription()));
             var buttonTag = GetTag(processedRibbon, "testTogglePanelButton");
 
             // act
@@ -193,9 +195,6 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
         public void new_window_with_same_context_does_not_create_new_viewmodel()
         {
             // arrange
-            var ribbonFactory = new TestRibbonFactory(
-                testAddInBase,
-                viewProvider, new TestContextProvider(), "Foo", Assembly.GetExecutingAssembly());
             testAddInBase.TestAddin.OnStartup();
             //Open new view to create a viewmodel for view
             var viewInstance = new TestView { Context = new TestWindowContext() };
@@ -203,10 +202,10 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 
             // act
 
-            var viewEventArgs = new NewViewEventArgs(viewInstance, viewInstance.Context,
+            var viewEventArgs = new NewViewEventArgs(viewInstance.ToOfficeWin32Window(), viewInstance.Context,
                 TestRibbonTypes.RibbonType1.GetEnumDescription());
             viewProvider.NewView += Raise.EventWith(viewProvider, viewEventArgs);
-            var newViewEventArgs = new NewViewEventArgs(view2Instance, viewInstance.Context,
+            var newViewEventArgs = new NewViewEventArgs(view2Instance.ToOfficeWin32Window(), viewInstance.Context,
                 TestRibbonTypes.RibbonType1.GetEnumDescription());
             viewProvider.NewView += Raise.EventWith(viewProvider, newViewEventArgs);
 
@@ -224,9 +223,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var view2Instance = new TestView { Context = new TestWindowContext() };
 
             // act
-            var newViewEventArgs = new NewViewEventArgs(viewInstance, viewInstance.Context,
+            var newViewEventArgs = new NewViewEventArgs(viewInstance.ToOfficeWin32Window(), viewInstance.Context,
                 TestRibbonTypes.RibbonType1.GetEnumDescription());
-            var viewEventArgs = new NewViewEventArgs(view2Instance, view2Instance.Context,
+            var viewEventArgs = new NewViewEventArgs(view2Instance.ToOfficeWin32Window(), view2Instance.Context,
                 TestRibbonTypes.RibbonType1.GetEnumDescription());
             viewProvider.NewView += Raise.EventWith(viewProvider, newViewEventArgs);
             viewProvider.NewView += Raise.EventWith(viewProvider, viewEventArgs);

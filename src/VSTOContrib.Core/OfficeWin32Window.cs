@@ -1,54 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
 namespace VSTOContrib.Core
 {
-    ///<summary>
-    /// This class retrieves the IWin32Window from the current active Office window.
-    /// This could be used to set the parent for Windows Forms and MessageBoxes.
-    ///</summary>
-    ///<example>
-    /// OfficeWin32Window parentWindow = new OfficeWin32Window (ThisAddIn.OutlookApplication.ActiveWindow ());   
-    /// MessageBox.Show (parentWindow, "This MessageBox doesn't go behind Outlook !!!", "Attention !", MessageBoxButtons.Ok , MessageBoxIcon.Question );
-    ///</example>
+    /// <summary>
+    ///     This class retrieves the IWin32Window from the current active Office window.
+    ///     This could be used to set the parent for Windows Forms and MessageBoxes.
+    /// </summary>
+    /// <example>
+    ///     OfficeWin32Window parentWindow = new OfficeWin32Window (ThisAddIn.OutlookApplication.ActiveWindow ());
+    ///     MessageBox.Show (parentWindow, "This MessageBox doesn't go behind Outlook !!!", "Attention !", MessageBoxButtons.Ok
+    ///     , MessageBoxIcon.Question );
+    /// </example>
     public class OfficeWin32Window : IWin32Window
     {
-        ///<summary>
-        /// The <b>FindWindow</b> method finds a window by it's classname and caption.
-        ///</summary>
-        ///<param name="lpClassName">The classname of the window (use Spy++)</param>
-        ///<param name="lpWindowName">The Caption of the window.</param>
-        ///<returns>Returns a valid window handle or 0.</returns>
-        [DllImport("user32")]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        readonly IntPtr windowHandle = IntPtr.Zero;
+        readonly object windowObject;
 
-        ///<summary>
-        /// This holds the window handle for the found Window.
-        ///</summary>
-        IntPtr _windowHandle = IntPtr.Zero;
-
-        ///<summary>
-        /// The <b>Handle</b> of the Outlook WindowObject.
-        ///</summary>
-        public IntPtr Handle
+        public OfficeWin32Window(object windowObject, string lpClassName, string captionSuffix)
         {
-            get { return _windowHandle; }
-        }
-
-        ///<summary>
-        /// The <b>OfficeWin32Window</b> class could be used to get the parent IWin32Window for Windows.Forms and MessageBoxes.
-        ///</summary>
-        ///<param name="windowObject">The current WindowObject.</param>
-        public OfficeWin32Window(object windowObject)
-        {
-            string caption = windowObject.GetType().InvokeMember("Caption", System.Reflection.BindingFlags.GetProperty, null, windowObject, null).ToString();
+            this.windowObject = windowObject;
 
             // try to get the HWND ptr from the windowObject / could be an Inspector window or an explorer window
-            _windowHandle = FindWindow("rctrl_renwnd32\0", caption);
+            if (windowObject == null)
+            {
+                windowHandle = IntPtr.Zero;
+            }
+            else if (ResolveWindowHandle != null)
+            {
+                windowHandle = ResolveWindowHandle(windowObject);
+            }
+            //else
+            //{
+            //    int? handle = null;
+            //    try
+            //    {
+            //        handle = ((dynamic) windowObject).Hwnd;
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+            //    if (handle != null)
+            //    {
+            //        windowHandle = new IntPtr(handle.Value);
+            //    }
+                else
+                {
+                    var caption = windowObject
+                        .GetType()
+                        .InvokeMember("Caption", BindingFlags.GetProperty, null, windowObject, null)
+                        .ToString();
+                    windowHandle = FindWindow(lpClassName, caption + captionSuffix);
+                }
+            //}
+        }
+
+        internal static Func<object, IntPtr> ResolveWindowHandle { get; set; }
+
+        public object Window
+        {
+            get { return windowObject; }
+        }
+
+        public IntPtr Handle
+        {
+            get { return windowHandle; }
+        }
+
+        [DllImport("user32")]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((OfficeWin32Window) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return windowHandle.GetHashCode();
+        }
+
+        bool Equals(OfficeWin32Window other)
+        {
+            return windowHandle.Equals(other.windowHandle);
         }
     }
 }

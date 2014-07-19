@@ -14,9 +14,9 @@ namespace VSTOContrib.Word.RibbonFactory
         /// </summary>
         /// <param name="view">The view.</param>
         /// <returns></returns>
-        public object GetContextForView(object view)
+        public object GetContextForView(OfficeWin32Window view)
         {
-            var window = view as Window;
+            var window = view.Window as Window;
             if (window != null)
                 return window.Document;
 
@@ -27,7 +27,7 @@ namespace VSTOContrib.Word.RibbonFactory
             return null;
         }
 
-        public string GetRibbonTypeForView(object view)
+        public string GetRibbonTypeForView(OfficeWin32Window view)
         {
             return WordRibbonType.WordDocument.GetEnumDescription();
         }

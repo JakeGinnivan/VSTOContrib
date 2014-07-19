@@ -15,8 +15,8 @@ namespace Add_inUninstaller
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private Addin _selectedAddin;
-        private readonly ObservableCollection<Addin> _addins = new ObservableCollection<Addin>();
+        private Addin selectedAddin;
+        private readonly ObservableCollection<Addin> addins = new ObservableCollection<Addin>();
 
         public MainWindowViewModel()
         {
@@ -75,16 +75,16 @@ namespace Add_inUninstaller
                     ManifestExists = File.Exists(manifestFile)
                 };
 
-                _addins.Add(addin);
+                addins.Add(addin);
             }
         }
 
         public Addin SelectedAddin
         {
-            get { return _selectedAddin; }
+            get { return selectedAddin; }
             set 
             {
-                _selectedAddin = value;
+                selectedAddin = value;
                 OnPropertyChanged("SelectedAddin");
                 ((DelegateCommand) UninstallCommand).RaiseCanExecuteChanged();
             }
@@ -92,7 +92,7 @@ namespace Add_inUninstaller
 
         public ObservableCollection<Addin> Addins
         {
-            get { return _addins; }
+            get { return addins; }
         }
 
         private bool CanUninstall()
@@ -146,7 +146,7 @@ namespace Add_inUninstaller
                 return;
             }
 
-            _addins.Remove(SelectedAddin);
+            addins.Remove(SelectedAddin);
             SelectedAddin = null;
         }
 

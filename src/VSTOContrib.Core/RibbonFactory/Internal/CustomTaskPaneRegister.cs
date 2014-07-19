@@ -12,7 +12,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         Lazy<CustomTaskPaneCollection> customTaskPaneCollection;
         readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
         readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
-        readonly Dictionary<object, List<IRibbonViewModel>> windowToTaskPaneLookup;
+        readonly Dictionary<OfficeWin32Window, List<IRibbonViewModel>> windowToTaskPaneLookup;
 
         public CustomTaskPaneRegister(AddInBase addinBase)
         {
@@ -23,11 +23,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             });
             registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
             ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
-            windowToTaskPaneLookup = new Dictionary<object, List<IRibbonViewModel>>();
+            windowToTaskPaneLookup = new Dictionary<OfficeWin32Window, List<IRibbonViewModel>>();
         }
 
-        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, object view, object viewContext)
+        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, OfficeWin32Window view, object viewContext)
         {
+            if (view.Handle == IntPtr.Zero)
+                return;
+
             var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
             if (registersCustomTaskPanes == null) return;
 
@@ -68,6 +71,9 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                         {
                             taskPaneAdapter.Add(Register(view, taskPaneRegistrationInfo));
                         }
+                        if (!windowToTaskPaneLookup.ContainsKey(view))
+                            windowToTaskPaneLookup.Add(view, new List<IRibbonViewModel>());
+                        windowToTaskPaneLookup[view].Add(ribbonViewModel);
                     }
                     else
                         taskPaneAdapter.Refresh(view);
@@ -87,18 +93,18 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
-        private CustomTaskPane Register(object view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
+        private CustomTaskPane Register(OfficeWin32Window view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
         {
-            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view);
+            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view.Window);
 
             return taskPane;
         }
 
-        public void Cleanup(object view)
+        public void Cleanup(OfficeWin32Window view)
         {
             foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v))
             {
-                adapter.CleanupView(view);
+                adapter.CleanupView(view.Window);
             }
         }
 

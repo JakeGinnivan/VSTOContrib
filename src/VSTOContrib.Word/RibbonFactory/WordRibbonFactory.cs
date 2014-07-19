@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -10,21 +9,18 @@ namespace VSTOContrib.Word.RibbonFactory
     [ComVisible(true)]
     public class WordRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        WordViewProvider wordViewProvider;
+        readonly WordViewProvider wordViewProvider;
 
-        public WordRibbonFactory(
-            AddInBase addinBase,
-            params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), null, WordRibbonType.WordDocument.GetEnumDescription())
+        public WordRibbonFactory(AddInBase addinBase, params Assembly[] assemblies)
+            :this(new WordViewProvider(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        public WordRibbonFactory(
-            AddInBase addinBase,
-            IViewLocationStrategy viewLocationStrategy,
-            params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), viewLocationStrategy, WordRibbonType.WordDocument.GetEnumDescription())
+        private WordRibbonFactory(WordViewProvider viewProvider, AddInBase addinBase, Assembly[] assemblies)
+            : base(addinBase, assemblies, new WordViewContextProvider(),
+                 viewProvider, WordRibbonType.WordDocument.GetEnumDescription())
         {
+            wordViewProvider = viewProvider;
         }
 
         protected override void ShuttingDown()
@@ -34,8 +30,7 @@ namespace VSTOContrib.Word.RibbonFactory
 
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            wordViewProvider = new WordViewProvider((Application)application);
-            controller.Initialise(wordViewProvider);
+            wordViewProvider.Initialise(application);
             wordViewProvider.RegisterOpenDocuments();
         }
 

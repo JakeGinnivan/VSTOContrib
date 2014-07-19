@@ -4,11 +4,11 @@ namespace VSTOContrib.Core.RibbonFactory
 {
     public class NewViewEventArgs : EventArgs
     {
-        readonly object viewInstance;
+        readonly OfficeWin32Window viewInstance;
         readonly object viewContext;
         readonly string ribbonType;
 
-        public NewViewEventArgs(object viewInstance, object viewContext, string ribbonType)
+        public NewViewEventArgs(OfficeWin32Window viewInstance, object viewContext, string ribbonType)
         {
             this.viewInstance = viewInstance;
             this.viewContext = viewContext;
@@ -20,7 +20,7 @@ namespace VSTOContrib.Core.RibbonFactory
             get { return ribbonType; }
         }
 
-        public object ViewInstance
+        public OfficeWin32Window ViewInstance
         {
             get { return viewInstance; }
         }

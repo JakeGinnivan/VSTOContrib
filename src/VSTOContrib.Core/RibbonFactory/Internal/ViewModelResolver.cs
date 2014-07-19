@@ -29,10 +29,15 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         readonly ICustomTaskPaneRegister customTaskPaneRegister;
         readonly IViewContextProvider viewContextProvider;
         readonly VstoContribContext vstoContribContext;
-        IViewProvider viewProvider;
+        readonly IViewProvider viewProvider;
         string currentlyLoadingRibbon;
 
-        public ViewModelResolver(IEnumerable<Type> viewModelType, ICustomTaskPaneRegister customTaskPaneRegister, IViewContextProvider viewContextProvider, VstoContribContext context)
+        public ViewModelResolver(
+            IEnumerable<Type> viewModelType, 
+            ICustomTaskPaneRegister customTaskPaneRegister,
+            IViewContextProvider viewContextProvider, 
+            VstoContribContext context,
+            IViewProvider viewProvider)
         {
             currentlyLoadingRibbon = DefaultRibbon;
             notifyChangeTargetLookup = new Dictionary<Type, List<KeyValuePair<string, string>>>();
@@ -43,18 +48,14 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             this.viewContextProvider = viewContextProvider;
             vstoContribContext = context;
 
+            this.viewProvider = viewProvider;
+            viewProvider.NewView += ViewProviderNewView;
+            viewProvider.ViewClosed += ViewProviderViewClosed;
+
             foreach (var ribbonType in viewModelType)
             {
                 CreateRibbonTypeToViewModelTypeLookup(ribbonType, context.FallbackRibbonType);
             }
-        }
-
-        public void Initialise(IViewProvider viewProvider)
-        {
-            this.viewProvider = viewProvider;
-
-            this.viewProvider.NewView += ViewProviderNewView;
-            this.viewProvider.ViewClosed += ViewProviderViewClosed;
         }
 
         void InvalidateRibbonForViewModel(IRibbonViewModel viewModel)
@@ -93,7 +94,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             e.Handled = true;
         }
 
-        IRibbonViewModel GetOrCreateViewModel(string ribbonType, object viewContext, object viewInstance)
+        IRibbonViewModel GetOrCreateViewModel(string ribbonType, object viewContext, OfficeWin32Window viewInstance)
         {
             if (!ribbonTypeLookup.ContainsKey(ribbonType)) return null;
             if (contextToViewModelLookup.ContainsKey(viewContext))
@@ -101,7 +102,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 //Tell viewmodel there is a new view active
                 var ribbonViewModel = contextToViewModelLookup[viewContext];
                 VstoContribLog.Debug(_ => _("ViewModel {0} found for context {1}", ribbonViewModel.ToLogFormat(), viewContext.ToLogFormat()));
-                ribbonViewModel.CurrentView = viewInstance;
+                ribbonViewModel.CurrentView = viewInstance.Window;
                 return ribbonViewModel;
             }
 
@@ -121,7 +122,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
-        public IRibbonViewModel ResolveInstanceFor(object view)
+        public IRibbonViewModel ResolveInstanceFor(OfficeWin32Window view)
         {
             var context = viewContextProvider.GetContextForView(view) ?? NullContext.Instance;
 
@@ -161,7 +162,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
         }
 
-        private IRibbonViewModel BuildViewModel(string ribbonType, object viewInstance, object viewContext)
+        private IRibbonViewModel BuildViewModel(string ribbonType, OfficeWin32Window viewInstance, object viewContext)
         {
             var viewModelType = ribbonTypeLookup[ribbonType];
             VstoContribLog.Info(_ => _("Building ViewModel of type {1} for ribbon {1} with context {2}", 
@@ -183,7 +184,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             }
 
 
-            ribbonViewModel.CurrentView = viewInstance;
+            ribbonViewModel.CurrentView = viewInstance.Window;
             ListenForINotifyPropertyChanged(ribbonViewModel);
             ribbonViewModel.Initialised(viewContext == NullContext.Instance ? null : viewContext);
 

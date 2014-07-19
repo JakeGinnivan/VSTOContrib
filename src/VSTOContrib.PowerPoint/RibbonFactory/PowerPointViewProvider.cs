@@ -9,18 +9,13 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
 {
     public class PowerPointViewProvider : IViewProvider
     {
-        private readonly Application powerPointApplication;
-
-        public PowerPointViewProvider(Application powerPointApplication)
-        {
-            this.powerPointApplication = powerPointApplication;
-            ((EApplication_Event)this.powerPointApplication).NewPresentation += PowerPointViewProviderNewPresentation;
-            this.powerPointApplication.WindowActivate += PowerPointApplicationWindowActivate;
-        }
+        private Application powerPointApplication;
+        const string CaptionSuffix = " - PowerPoint";
+        const string PowerpointLpClassName = "PPTFrameClass";
 
         void PowerPointApplicationWindowActivate(Presentation pres, DocumentWindow window)
         {
-            NewView(this, new NewViewEventArgs(window, pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
+            NewView(this, new NewViewEventArgs(new OfficeWin32Window(window, PowerpointLpClassName, CaptionSuffix), pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
         }
 
         void PowerPointViewProviderNewPresentation(Presentation pres)
@@ -28,29 +23,34 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             using(var documentWindows = pres.Windows.WithComCleanup())
             foreach (var documentWindow in documentWindows.Resource)
             {
-                NewView(this, new NewViewEventArgs(
-                    documentWindow, pres,
-                    PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
+                var powerPointPresentation = PowerPointRibbonType.PowerPointPresentation.GetEnumDescription();
+                NewView(this, new NewViewEventArgs(new OfficeWin32Window(documentWindow, PowerpointLpClassName, CaptionSuffix), pres, powerPointPresentation));
             }
         }
 
-        public void Initialise()
+        public void Initialise(object application)
         {
+            powerPointApplication = (Application) application;
+            ((EApplication_Event)powerPointApplication).NewPresentation += PowerPointViewProviderNewPresentation;
+            powerPointApplication.WindowActivate += PowerPointApplicationWindowActivate;
         }
 
         public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
         public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext
-            = (sender, args) => { };
 
         /// <summary>
         /// Cleanups the references to a view.
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="context"></param>
-        public void CleanupReferencesTo(object view, object context)
+        public void CleanupReferencesTo(OfficeWin32Window view, object context)
         {
             
+        }
+
+        public OfficeWin32Window ToOfficeWindow(object view)
+        {
+            return new OfficeWin32Window(view, PowerpointLpClassName, CaptionSuffix);
         }
 
         /// <summary>

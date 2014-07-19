@@ -15,5 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("VSTOContrib.Excel")]
 [assembly: InternalsVisibleTo("VSTOContrib.Outlook")]
 [assembly: InternalsVisibleTo("VSTOContrib.PowerPoint")]
+[assembly: InternalsVisibleTo("VSTOContrib.Core.Tests")]
 [assembly: InternalsVisibleTo("VSTOContrib.Word.Tests")]
+[assembly: InternalsVisibleTo("VSTOContrib.Excel.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

@@ -11,7 +11,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// Gets the view that was closed.
         /// </summary>
         /// <value>The view.</value>
-        public object View { get; private set; }
+        public OfficeWin32Window View { get; private set; }
 
         /// <summary>
         /// Gets or sets the context.
@@ -24,7 +24,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="context">The context.</param>
-        public ViewClosedEventArgs(object view, object context)
+        public ViewClosedEventArgs(OfficeWin32Window view, object context)
         {
             View = view;
             Context = context;

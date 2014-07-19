@@ -5,12 +5,12 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
 {
     public class TestContextProvider : IViewContextProvider
     {
-        public object GetContextForView(object view)
+        public object GetContextForView(OfficeWin32Window view)
         {
-            return ((TestView)view).Context;
+            return ((TestView)view.Window).Context;
         }
 
-        public string GetRibbonTypeForView(object view)
+        public string GetRibbonTypeForView(OfficeWin32Window view)
         {
             return TestRibbonTypes.RibbonType1.GetEnumDescription();
         }

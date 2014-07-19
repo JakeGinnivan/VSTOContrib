@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -13,32 +12,28 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     [ComVisible(true)]
     public class PowerPointRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        private PowerPointViewProvider powerPointViewProvider;
+        private readonly PowerPointViewProvider powerPointViewProvider;
 
-        public PowerPointRibbonFactory(
-            AddInBase addInBase,
-            params Assembly[] assemblies)
-            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), null, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
+        public PowerPointRibbonFactory(AddInBase addInBase, params Assembly[] assemblies)
+            :this(new PowerPointViewProvider(), addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        public PowerPointRibbonFactory(
-            AddInBase addInBase,
-            IViewLocationStrategy viewLocationStrategy,
-            params Assembly[] assemblies)
-            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), viewLocationStrategy, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
+        private PowerPointRibbonFactory(PowerPointViewProvider viewProvider, AddInBase addInBase, Assembly[] assemblies)
+            : base(addInBase, assemblies, new PowerPointViewContextProvider(),
+            viewProvider, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
         {
+            powerPointViewProvider = viewProvider;
         }
 
         protected override void ShuttingDown()
         {
-            powerPointViewProvider.Initialise();
+            powerPointViewProvider.Dispose();
         }
 
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            powerPointViewProvider = new PowerPointViewProvider((Application)application);
-            controller.Initialise(powerPointViewProvider);
+            powerPointViewProvider.Initialise(application);
         }
 
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)

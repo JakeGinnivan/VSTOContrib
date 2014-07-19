@@ -9,9 +9,9 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
     /// </summary>
     public class PowerPointViewContextProvider : IViewContextProvider
     {
-        public object GetContextForView(object view)
+        public object GetContextForView(OfficeWin32Window view)
         {
-            var window = view as DocumentWindow;
+            var window = view.Window as DocumentWindow;
             if (window != null)
                 return window.Presentation;
 
@@ -30,7 +30,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             return null;
         }
 
-        public string GetRibbonTypeForView(object view)
+        public string GetRibbonTypeForView(OfficeWin32Window view)
         {
             return PowerPointRibbonType.PowerPointPresentation.GetEnumDescription();
         }

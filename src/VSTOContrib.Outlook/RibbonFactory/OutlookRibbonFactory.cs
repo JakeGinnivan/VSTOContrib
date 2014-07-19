@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Outlook;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
@@ -15,21 +14,18 @@ namespace VSTOContrib.Outlook.RibbonFactory
     [ComVisible(true)]
     public class OutlookRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        OutlookViewProvider viewProvider;
+        readonly OutlookViewProvider viewProvider;
 
-        public OutlookRibbonFactory(
-            AddInBase addinBase,
-            params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), null, null)
+        public OutlookRibbonFactory(AddInBase addinBase, params Assembly[] assemblies):
+            this(new OutlookViewProvider(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        public OutlookRibbonFactory(
-            AddInBase addinBase,
-            IViewLocationStrategy viewLocationStrategy,
-            params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), viewLocationStrategy, null)
+        private OutlookRibbonFactory(OutlookViewProvider viewProvider, AddInBase addinBase, Assembly[] assemblies)
+            : base(addinBase, assemblies,
+            new OutlookViewContextProvider(viewProvider), viewProvider, null)
         {
+            this.viewProvider = viewProvider;
         }
 
         /// <summary>
@@ -37,9 +33,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            viewProvider = new OutlookViewProvider((_Application)application);
-
-            controller.Initialise(viewProvider);
+            viewProvider.Initialise(application);
         }
 
         /// <summary>

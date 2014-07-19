@@ -28,7 +28,7 @@ namespace QuoteGeneratorAddin
             VstoContribLog.ToTrace();
             VstoContribLog.SetLevel(VstoContribLogLevel.Debug);
 
-            return new ExcelRibbonFactory(this , typeof(AddinModule).Assembly)
+            return new ExcelRibbonFactory(this, typeof(AddinModule).Assembly)
             {
                 ViewModelFactory = new AutofacViewModelFactory(new AddinModule())
             };

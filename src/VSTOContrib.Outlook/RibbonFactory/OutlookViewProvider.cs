@@ -9,18 +9,10 @@ namespace VSTOContrib.Outlook.RibbonFactory
 {
     internal class OutlookViewProvider : IViewProvider
     {
+        readonly string captionSuffix = string.Empty;
+        const string OutlookLpClassName = "rctrl_renwnd32\0";
         Explorers explorers;
         Inspectors inspectors;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="outlookApplication"></param>
-        public OutlookViewProvider(_Application outlookApplication) 
-        {
-            explorers = outlookApplication.Explorers;
-            inspectors = outlookApplication.Inspectors;
-        }
 
         private void RegisterExplorers()
         {
@@ -44,7 +36,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
-            var newViewEventArgs = new NewViewEventArgs(inspector, wrapper.CurrentContext, ribbonType.GetEnumDescription());
+            var newViewEventArgs = new NewViewEventArgs(new OfficeWin32Window(inspector, OutlookLpClassName, captionSuffix), wrapper.CurrentContext, ribbonType.GetEnumDescription());
             NewView(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -56,7 +48,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs(explorer, explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
+            var newViewEventArgs = new NewViewEventArgs(new OfficeWin32Window(explorer, OutlookLpClassName, captionSuffix), explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
             NewView(this, newViewEventArgs);
 
             if (!newViewEventArgs.Handled)
@@ -68,7 +60,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (ExplorerWrapper)sender;
             wrapper.Closed -= ExplorerClosed;
 
-            ViewClosed(this, new ViewClosedEventArgs(e.Explorer, e.Explorer));
+            ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(e.Explorer, OutlookLpClassName, captionSuffix), e.Explorer));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)
@@ -76,22 +68,28 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (InspectorWrapper) sender;
             wrapper.Closed -= InspectorClosed;
 
-            ViewClosed(this, new ViewClosedEventArgs(e.Inspector, e.CurrentContext));
+            ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(e.Inspector, OutlookLpClassName, captionSuffix), e.CurrentContext));
         }
 
-        public void Initialise()
+        public void Initialise(object application)
         {
+            var outlookApplication = (_Application) application;
+            explorers = outlookApplication.Explorers;
+            inspectors = outlookApplication.Inspectors;
             RegisterExplorers();
             RegisterInspectors();
         }
 
         public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
         public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-        public event EventHandler<HideCustomTaskPanesForContextEventArgs> UpdateCustomTaskPanesVisibilityForContext
-            = (sender, args) => { };
 
-        public void CleanupReferencesTo(object view, object context)
+        public void CleanupReferencesTo(OfficeWin32Window view, object context)
         {
+        }
+
+        public OfficeWin32Window ToOfficeWindow(object view)
+        {
+            return new OfficeWin32Window(view, OutlookLpClassName, captionSuffix);
         }
 
         public void Dispose()

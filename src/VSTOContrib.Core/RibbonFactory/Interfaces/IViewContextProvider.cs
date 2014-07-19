@@ -2,7 +2,7 @@
 {
     public interface IViewContextProvider
     {
-        object GetContextForView(object view);
-        string GetRibbonTypeForView(object view);
+        object GetContextForView(OfficeWin32Window view);
+        string GetRibbonTypeForView(OfficeWin32Window view);
     }
 }
