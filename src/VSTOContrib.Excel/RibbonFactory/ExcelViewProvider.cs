@@ -89,8 +89,8 @@ namespace VSTOContrib.Excel.RibbonFactory
                     singleWindow = new OfficeWin32Window(wb.Windows[1], ExcelLpClassName, CaptionSuffix);
                 workbooks[wb].Add(singleWindow);
                 if (nullContextOpen)
-                    ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(singleWindow, ExcelLpClassName, CaptionSuffix), NullContext.Instance));
-                NewView(this, new NewViewEventArgs(new OfficeWin32Window(singleWindow, ExcelLpClassName, CaptionSuffix), wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
+                    ViewClosed(this, new ViewClosedEventArgs(singleWindow, NullContext.Instance));
+                NewView(this, new NewViewEventArgs(singleWindow, wb, ExcelRibbonType.ExcelWorkbook.GetEnumDescription()));
             }
             else
             {

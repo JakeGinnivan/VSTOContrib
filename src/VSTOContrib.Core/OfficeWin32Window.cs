@@ -21,6 +21,10 @@ namespace VSTOContrib.Core
 
         public OfficeWin32Window(object windowObject, string lpClassName, string captionSuffix)
         {
+            if (windowObject is OfficeWin32Window)
+                throw new ArgumentException(
+                    "OfficeWin32Window is being wrapped in another instance, this should not happen",
+                    "windowObject");
             this.windowObject = windowObject;
 
             // try to get the HWND ptr from the windowObject / could be an Inspector window or an explorer window
@@ -32,29 +36,14 @@ namespace VSTOContrib.Core
             {
                 windowHandle = ResolveWindowHandle(windowObject);
             }
-            //else
-            //{
-            //    int? handle = null;
-            //    try
-            //    {
-            //        handle = ((dynamic) windowObject).Hwnd;
-            //    }
-            //    catch (Exception)
-            //    {
-            //    }
-            //    if (handle != null)
-            //    {
-            //        windowHandle = new IntPtr(handle.Value);
-            //    }
-                else
-                {
-                    var caption = windowObject
-                        .GetType()
-                        .InvokeMember("Caption", BindingFlags.GetProperty, null, windowObject, null)
-                        .ToString();
-                    windowHandle = FindWindow(lpClassName, caption + captionSuffix);
-                }
-            //}
+            else
+            {
+                var caption = windowObject
+                    .GetType()
+                    .InvokeMember("Caption", BindingFlags.GetProperty, null, windowObject, null)
+                    .ToString();
+                windowHandle = FindWindow(lpClassName, caption + captionSuffix);
+            }
         }
 
         internal static Func<object, IntPtr> ResolveWindowHandle { get; set; }

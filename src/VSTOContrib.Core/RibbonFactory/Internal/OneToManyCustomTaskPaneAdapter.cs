@@ -22,10 +22,10 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             Add(original);
         }
 
-        public bool ViewRegistered(object view)
+        public bool ViewRegistered(OfficeWin32Window view)
         {
             if (disposed) return false;
-            return customTaskPanes.Any(c => c.Window == view);
+            return customTaskPanes.Any(c => c.Window == view.Window);
         }
 
         public void Add(CustomTaskPane customTaskPane)
@@ -51,7 +51,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             customTaskPane.VisibleChanged += CustomTaskPaneVisibleChanged;
         }
 
-        public void Refresh(object view)
+        public void Refresh(OfficeWin32Window view)
         {
 
         }
@@ -175,7 +175,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
             customTaskPanes.Remove(c);
         }
 
-        public void CleanupView(object view)
+        public void CleanupView(OfficeWin32Window view)
         {
             if (disposed) return;
             foreach (var customTaskPane in customTaskPanes.ToArray())
@@ -183,7 +183,8 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 try
                 {
                     var taskPaneWindow = customTaskPane.Window;
-                    if (taskPaneWindow != view) continue;
+                    //TODO This sometimes wont work, need to use OfficeWin32Window
+                    if (taskPaneWindow != view.Window) continue;
                     DisposeTaskPane(customTaskPane);
                 }
                 catch (COMException)

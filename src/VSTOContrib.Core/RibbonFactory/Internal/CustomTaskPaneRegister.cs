@@ -104,7 +104,7 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v))
             {
-                adapter.CleanupView(view.Window);
+                adapter.CleanupView(view);
             }
         }
 
