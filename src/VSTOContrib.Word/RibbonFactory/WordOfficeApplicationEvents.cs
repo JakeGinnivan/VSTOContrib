@@ -10,7 +10,7 @@ using VSTOContrib.Core.RibbonFactory.Internal;
 
 namespace VSTOContrib.Word.RibbonFactory
 {
-    public class WordViewProvider : IViewProvider
+    public class WordOfficeApplicationEvents : IOfficeApplicationEvents
     {
         const string CaptionSuffix = " - Word";
         const string WordLpClassName = "OpusApp";
@@ -20,9 +20,9 @@ namespace VSTOContrib.Word.RibbonFactory
         private Application wordApplication;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WordViewProvider"/> class.
+        /// Initializes a new instance of the <see cref="WordOfficeApplicationEvents"/> class.
         /// </summary>
-        public WordViewProvider()
+        public WordOfficeApplicationEvents()
         {
             documentWrappers = new Dictionary<Document, DocumentWrapper>();
             documents = new Dictionary<Document, List<OfficeWin32Window>>();
@@ -45,7 +45,7 @@ namespace VSTOContrib.Word.RibbonFactory
             if (documents[doc].Any(window => window.Equals(officeWin32Window))) return;
 
             documents[doc].Add(officeWin32Window);
-            NewView(this, new NewViewEventArgs(officeWin32Window, doc, WordRibbonType.WordDocument.GetEnumDescription()));
+            NewView(new NewViewEventArgs(officeWin32Window, doc, WordRibbonType.WordDocument.GetEnumDescription()));
         }
 
         void DocumentClosed(object sender, DocumentClosedEventArgs e)
@@ -66,7 +66,7 @@ namespace VSTOContrib.Word.RibbonFactory
 
             foreach (var window in windows)
             {
-                ViewClosed(this, new ViewClosedEventArgs(window, document));
+                ViewClosed(window);
                 window.ReleaseComObject();
             }
             documents.Remove(document);
@@ -76,7 +76,7 @@ namespace VSTOContrib.Word.RibbonFactory
                 {
                     var officeWin32Window = new OfficeWin32Window(viewInstance, WordLpClassName, CaptionSuffix);
                     var enumDescription = WordRibbonType.WordDocument.GetEnumDescription();
-                    NewView(this, new NewViewEventArgs(officeWin32Window, null, enumDescription));
+                    NewView(new NewViewEventArgs(officeWin32Window, null, enumDescription));
                 }
             }
         }
@@ -90,6 +90,10 @@ namespace VSTOContrib.Word.RibbonFactory
             //TODO protected window activate
         }
 
+        public event Action<NewViewEventArgs> NewView;
+        public event Action<OfficeWin32Window> ViewClosed;
+        public event Action<object> ContextClosed;
+
         void WordApplicationOnDocumentChange()
         {
             var enumDescription = WordRibbonType.WordDocument.GetEnumDescription();
@@ -98,7 +102,7 @@ namespace VSTOContrib.Word.RibbonFactory
                 VstoContribLog.Debug(_ => _("Application.DocumentChange raised, no documents currently open"));
                 foreach (var viewInstance in wordApplication.Windows)
                 {
-                    NewView(this, new NewViewEventArgs(new OfficeWin32Window(viewInstance, WordLpClassName, CaptionSuffix), null, enumDescription));
+                    NewView(new NewViewEventArgs(new OfficeWin32Window(viewInstance, WordLpClassName, CaptionSuffix), null, enumDescription));
                 }
             }
             else
@@ -112,7 +116,7 @@ namespace VSTOContrib.Word.RibbonFactory
                 var activeWindow = wordApplication.ActiveWindow;
                 VstoContribLog.Debug(_ => _("Application.DocumentChange raised, ActiveDocument: {0}, ActiveWindow: {1}",
                     activeDocument.ToLogFormat(), activeWindow.ToLogFormat()));
-                NewView(this, new NewViewEventArgs(new OfficeWin32Window(activeWindow, WordLpClassName, CaptionSuffix), activeDocument, enumDescription));
+                NewView(new NewViewEventArgs(new OfficeWin32Window(activeWindow, WordLpClassName, CaptionSuffix), activeDocument, enumDescription));
             }
         }
 
@@ -122,27 +126,11 @@ namespace VSTOContrib.Word.RibbonFactory
             WordApplicationWindowActivate(doc, doc.ActiveWindow);
         }
 
-        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
-        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-
-        /// <summary>
-        /// Cleanups the references to a view.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <param name="context"></param>
-        public void CleanupReferencesTo(OfficeWin32Window view, object context)
-        {
-            CleanupDocument((Document)context);
-        }
-
         public OfficeWin32Window ToOfficeWindow(object view)
         {
             return new OfficeWin32Window(view, WordLpClassName, CaptionSuffix);
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             wordApplication.WindowActivate -= WordApplicationWindowActivate;
@@ -151,9 +139,6 @@ namespace VSTOContrib.Word.RibbonFactory
             wordApplication = null;
         }
 
-        /// <summary>
-        /// Registers the open word documents.
-        /// </summary>
         public void RegisterOpenDocuments()
         {
             VstoContribLog.Debug(_ => _("Registering all already open documents"));

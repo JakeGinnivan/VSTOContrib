@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Office.Core;
+using VSTOContrib.Core.Domain;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 using VSTOContrib.Core.RibbonFactory.Internal;
 
@@ -18,21 +19,21 @@ namespace VSTOContrib.Core.RibbonFactory
         readonly ViewModelResolver ribbonViewModelResolver;
         readonly VstoContribContext vstoContribContext;
         readonly CustomTaskPaneRegister customTaskPaneRegister;
-        readonly IViewProvider viewProvider;
+        readonly OfficeApplicationDomain domain;
 
         public RibbonFactoryController(
             IViewContextProvider viewContextProvider,
             VstoContribContext vstoContribContext,
-            IViewProvider viewProvider)
+            IOfficeApplicationEvents officeApplicationEvents)
         {
             this.vstoContribContext = vstoContribContext;
-            this.viewProvider = viewProvider;
             var ribbonTypes = GetTRibbonTypesInAssemblies(vstoContribContext.Assemblies).ToList();
+            domain = new OfficeApplicationDomain(officeApplicationEvents);
 
-            customTaskPaneRegister = new CustomTaskPaneRegister(vstoContribContext.AddinBase);
+            customTaskPaneRegister = new CustomTaskPaneRegister(vstoContribContext.AddinBase, domain);
             ribbonViewModelResolver = new ViewModelResolver(
-                ribbonTypes, customTaskPaneRegister, viewContextProvider, 
-                vstoContribContext, viewProvider);
+                ribbonTypes, viewContextProvider, 
+                vstoContribContext, officeApplicationEvents);
 
             var ribbonXmlRewriter = new RibbonXmlRewriter(vstoContribContext, ribbonViewModelResolver);
 
@@ -73,20 +74,21 @@ namespace VSTOContrib.Core.RibbonFactory
             var methodName = caller.GetMethodName();
             CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + methodName];
 
-            var view = GetView(control);
-            var viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(GetView(control));
+            var officeContext = (object)control.Context;
+            var context = domain.GetContext(officeContext);
             VstoContribLog.Debug(l => l("Ribbon get value callback {0} being invoked on {1} (View: {2}, ViewModel: {3})",
-                methodName, control.Id, view.ToLogFormat(), viewModelInstance.ToLogFormat()));
+                methodName, control.Id, context.ActiveView.Window.Window.ToLogFormat(), context.ViewModel.ToLogFormat()));
 
-            Type type = viewModelInstance.GetType();
+            Type type = context.ViewModel.GetType();
             PropertyInfo property = type.GetProperty(callbackTarget.Method);
 
             if (property != null)
             {
+                //TODO Catch/wrap exception properly
                 return type.InvokeMember(callbackTarget.Method,
                                          BindingFlags.GetProperty,
                                          null,
-                                         viewModelInstance,
+                                         context.ViewModel,
                                          null);
             }
 
@@ -95,7 +97,7 @@ namespace VSTOContrib.Core.RibbonFactory
                 return type.InvokeMember(callbackTarget.Method,
                                          BindingFlags.InvokeMethod,
                                          null,
-                                         viewModelInstance,
+                                         context.ViewModel,
                                          new[]
                                          {
                                              control
@@ -120,12 +122,12 @@ namespace VSTOContrib.Core.RibbonFactory
                 CallbackTarget callbackTarget =
                     vstoContribContext.TagToCallbackTargetLookup[control.Tag + methodName];
 
-                var view = GetView(control);
-                var viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(view);
+                var officeContext = (object)control.Context;
+                var context = domain.GetContext(officeContext);
                 VstoContribLog.Debug(l => l("Ribbon get value callback {0} being invoked on {1} (View: {2}, ViewModel: {3})",
-                    methodName, control.Id, view.ToLogFormat(), viewModelInstance.ToLogFormat()));
+                    methodName, control.Id, context.ActiveView.Window.Window.ToLogFormat(), context.ViewModel.ToLogFormat()));
 
-                Type type = viewModelInstance.GetType();
+                Type type = context.ViewModel.GetType();
                 PropertyInfo property = type.GetProperty(callbackTarget.Method);
 
                 if (property != null)
@@ -133,7 +135,7 @@ namespace VSTOContrib.Core.RibbonFactory
                     type.InvokeMember(callbackTarget.Method,
                         BindingFlags.SetProperty,
                         null,
-                        viewModelInstance,
+                        context.ViewModel,
                         new[]
                         {
                             parameters.Single()
@@ -144,7 +146,7 @@ namespace VSTOContrib.Core.RibbonFactory
                     type.InvokeMember(callbackTarget.Method,
                         BindingFlags.InvokeMethod,
                         null,
-                        viewModelInstance,
+                        context.ViewModel,
                         new[]
                         {
                             control
@@ -169,13 +171,6 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        OfficeWin32Window GetView(IRibbonControl control)
-        {
-            var context = (object) control.Context;
-            var view = viewProvider.ToOfficeWindow(context);
-            return view;
-        }
-
         // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx
         internal static void PreserveStackTrace(Exception exception)
         {
@@ -186,7 +181,7 @@ namespace VSTOContrib.Core.RibbonFactory
 
         public void RibbonLoaded(IRibbonUI ribbonUi)
         {
-            ribbonViewModelResolver.RibbonLoaded(ribbonUi);
+            domain.RibbonLoaded(ribbonUi);
         }
 
         static IEnumerable<Type> GetTRibbonTypesInAssemblies(IEnumerable<Assembly> assemblies)

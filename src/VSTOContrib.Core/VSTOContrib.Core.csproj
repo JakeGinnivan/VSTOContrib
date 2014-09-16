@@ -75,6 +75,11 @@
     <Compile Include="..\Information\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Domain\IOfficeContextDomainWriter.cs" />
+    <Compile Include="Domain\IOfficeViewDomainWriter.cs" />
+    <Compile Include="Domain\Map.cs" />
+    <Compile Include="Domain\OfficeContextDomain.cs" />
+    <Compile Include="Domain\OfficeViewDomain.cs" />
     <Compile Include="OfficeWin32Window.cs" />
     <Compile Include="DefaultViewModelFactory.cs" />
     <Compile Include="Extensions\ComCleanupEnumerator.cs" />
@@ -89,7 +94,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IViewModelFactory.cs" />
+    <Compile Include="RibbonFactory\Internal\ICheckWritable.cs" />
     <Compile Include="RibbonFactory\Internal\LoggingExtensions.cs" />
+    <Compile Include="Domain\OfficeApplicationDomain.cs" />
+    <Compile Include="RibbonFactory\Internal\TaskPaneRegistration.cs" />
     <Compile Include="VstoContribLogLevel.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
@@ -114,10 +122,8 @@
     <Compile Include="RibbonFactory\Interfaces\IRibbonFactoryController.cs" />
     <Compile Include="RibbonFactory\Interfaces\IRibbonViewModel.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewLocationStrategy.cs" />
-    <Compile Include="RibbonFactory\Interfaces\IViewProvider.cs" />
+    <Compile Include="RibbonFactory\Interfaces\IOfficeApplicationEvents.cs" />
     <Compile Include="RibbonFactory\Interfaces\IViewModelResolver.cs" />
-    <Compile Include="RibbonFactory\Interfaces\ICustomTaskPaneRegister.cs" />
-    <Compile Include="RibbonFactory\Internal\NullContext.cs" />
     <Compile Include="RibbonFactory\Internal\OneToManyCustomTaskPaneAdapter.cs" />
     <Compile Include="RibbonFactory\Internal\TaskPaneRegistrationInfo.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelKey.cs" />
@@ -130,7 +136,6 @@
     <Compile Include="RibbonFactory\RibbonFactoryController.cs" />
     <Compile Include="RibbonFactory\RibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelRibbonTypesLookupProvider.cs" />
-    <Compile Include="RibbonFactory\ViewClosedEventArgs.cs" />
     <Compile Include="RibbonFactory\ViewLocationStrategyBase.cs" />
     <Compile Include="RibbonFactory\Internal\ViewModelResolver.cs" />
     <Compile Include="RibbonFactory\ViewNotFoundException.cs" />

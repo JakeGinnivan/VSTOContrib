@@ -3,136 +3,89 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Office.Tools;
+using VSTOContrib.Core.Domain;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Core.RibbonFactory.Internal
 {
-    internal class CustomTaskPaneRegister : ICustomTaskPaneRegister
+    class CustomTaskPaneRegister
     {
+        readonly Dictionary<OfficeContextDomain, List<TaskPaneRegistration>> registrations;
         Lazy<CustomTaskPaneCollection> customTaskPaneCollection;
-        readonly Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>> registrationInfo;
-        readonly Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>> ribbonTaskPanes;
-        readonly Dictionary<OfficeWin32Window, List<IRibbonViewModel>> windowToTaskPaneLookup;
 
-        public CustomTaskPaneRegister(AddInBase addinBase)
+        public CustomTaskPaneRegister(AddInBase addinBase, OfficeApplicationDomain domain)
         {
             customTaskPaneCollection = new Lazy<CustomTaskPaneCollection>(() =>
             {
                 var field = addinBase.GetType().GetField("CustomTaskPanes", BindingFlags.Instance | BindingFlags.NonPublic);
                 return (CustomTaskPaneCollection)field.GetValue(addinBase);
             });
-            registrationInfo = new Dictionary<IRibbonViewModel, List<TaskPaneRegistrationInfo>>();
-            ribbonTaskPanes = new Dictionary<IRibbonViewModel, List<OneToManyCustomTaskPaneAdapter>>();
-            windowToTaskPaneLookup = new Dictionary<OfficeWin32Window, List<IRibbonViewModel>>();
+
+            domain.NewContext += DomainOnNewContext;
+            domain.ContextClosed += DomainOnContextClosed;
+            registrations = new Dictionary<OfficeContextDomain, List<TaskPaneRegistration>>();
         }
 
-        public void RegisterCustomTaskPanes(IRibbonViewModel ribbonViewModel, OfficeWin32Window view, object viewContext)
+        void DomainOnNewContext(OfficeContextDomain officeContextDomain)
         {
-            if (view.Handle == IntPtr.Zero)
-                return;
-
-            var registersCustomTaskPanes = ribbonViewModel as IRegisterCustomTaskPane;
-            if (registersCustomTaskPanes == null) return;
-
-            if (!registrationInfo.ContainsKey(ribbonViewModel))
+            var registerCustomTaskPane = officeContextDomain.ViewModel as IRegisterCustomTaskPane;
+            if (registerCustomTaskPane == null) return;
+            officeContextDomain.NewView += OfficeContextDomainOnNewView;
+            officeContextDomain.ViewClosed += OfficeContextDomainOnViewClosed;
+            var contextRegistrations = new List<TaskPaneRegistration>();
+            registrations.Add(officeContextDomain, contextRegistrations);
+            registerCustomTaskPane.RegisterTaskPanes((controlFactory, title, initiallyVisible) =>
             {
-                registersCustomTaskPanes.RegisterTaskPanes((controlFactory, title, initiallyVisible) =>
-                {
-                    var taskPaneRegistrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
-                    if (!registrationInfo.ContainsKey(ribbonViewModel))
-                        registrationInfo.Add(ribbonViewModel, new List<TaskPaneRegistrationInfo>());
-                    registrationInfo[ribbonViewModel].Add(taskPaneRegistrationInfo);
+                var registrationInfo = new TaskPaneRegistrationInfo(controlFactory, title);
+                var registration = new TaskPaneRegistration(registrationInfo, new OneToManyCustomTaskPaneAdapter(title));
+                contextRegistrations.Add(registration);
+                return registration.Adapter;
+            });
 
-                    var taskPane = Register(view, taskPaneRegistrationInfo);
-                    var taskPaneAdapter = new OneToManyCustomTaskPaneAdapter(taskPane, viewContext)
-                    {
-                        Visible = initiallyVisible
-                    };
-
-                    if (!ribbonTaskPanes.ContainsKey(ribbonViewModel))
-                        ribbonTaskPanes.Add(ribbonViewModel, new List<OneToManyCustomTaskPaneAdapter>());
-
-                    if (!windowToTaskPaneLookup.ContainsKey(view))
-                        windowToTaskPaneLookup.Add(view, new List<IRibbonViewModel>());
-
-                    ribbonTaskPanes[ribbonViewModel].Add(taskPaneAdapter);
-                    windowToTaskPaneLookup[view].Add(ribbonViewModel);
-                    return taskPaneAdapter;
-                });
-            }
-            else
+            foreach (var view in officeContextDomain.Views)
             {
-                var adapters = ribbonTaskPanes[ribbonViewModel];
-                foreach (var taskPaneAdapter in adapters)
-                {
-                    if (!taskPaneAdapter.ViewRegistered(view))
-                    {
-                        foreach (var taskPaneRegistrationInfo in registrationInfo[ribbonViewModel])
-                        {
-                            taskPaneAdapter.Add(Register(view, taskPaneRegistrationInfo));
-                        }
-                        if (!windowToTaskPaneLookup.ContainsKey(view))
-                            windowToTaskPaneLookup.Add(view, new List<IRibbonViewModel>());
-                        windowToTaskPaneLookup[view].Add(ribbonViewModel);
-                    }
-                    else
-                        taskPaneAdapter.Refresh(view);
-                }
-            }
-
-            foreach (var oneToManyCustomTaskPaneAdapter in windowToTaskPaneLookup[view]
-                .Except(new[] { ribbonViewModel })
-                .SelectMany(viewModelToHide => ribbonTaskPanes[viewModelToHide]))
-            {
-                oneToManyCustomTaskPaneAdapter.HideIfVisible();
-            }
-
-            foreach (var toRestore in ribbonTaskPanes[ribbonViewModel])
-            {
-                toRestore.RestoreIfNeeded();
+                OfficeContextDomainOnNewView(view);
             }
         }
 
-        private CustomTaskPane Register(OfficeWin32Window view, TaskPaneRegistrationInfo taskPaneRegistrationInfo)
+        void DomainOnContextClosed(OfficeContextDomain officeContextDomain)
         {
-            var taskPane = customTaskPaneCollection.Value.Add(taskPaneRegistrationInfo.ControlFactory(), taskPaneRegistrationInfo.Title, view.Window);
-
-            return taskPane;
+            officeContextDomain.NewView -= OfficeContextDomainOnNewView;
+            officeContextDomain.ViewClosed -= OfficeContextDomainOnViewClosed;
         }
 
-        public void Cleanup(OfficeWin32Window view)
+        void OfficeContextDomainOnNewView(OfficeViewDomain officeViewDomain)
         {
-            foreach (var adapter in ribbonTaskPanes.Values.SelectMany(v => v))
+            foreach (var taskPaneRegistration in TaskPaneRegistrationsForView(officeViewDomain))
             {
-                adapter.CleanupView(view);
+                var control = taskPaneRegistration.RegistrationInfo.ControlFactory();
+                var customTaskPane = customTaskPaneCollection.Value.Add(control, taskPaneRegistration.RegistrationInfo.Title);
+                taskPaneRegistration.Adapter.Add(officeViewDomain.Window, customTaskPane);
             }
         }
 
-        public void CleanupViewModel(IRibbonViewModel viewModelInstance)
+        void OfficeContextDomainOnViewClosed(OfficeViewDomain officeViewDomain)
         {
-            if (!ribbonTaskPanes.ContainsKey(viewModelInstance)) return;
-            var adaptersForViewModel = ribbonTaskPanes[viewModelInstance];
-            ribbonTaskPanes.Remove(viewModelInstance);
-            foreach (var oneToManyCustomTaskPaneAdapter in adaptersForViewModel)
+            foreach (var taskPaneRegistration in TaskPaneRegistrationsForView(officeViewDomain))
             {
-                oneToManyCustomTaskPaneAdapter.Dispose();
+                taskPaneRegistration.Adapter.CleanupView(officeViewDomain.Window);
             }
+        }
+
+        IEnumerable<TaskPaneRegistration> TaskPaneRegistrationsForView(OfficeViewDomain officeViewDomain)
+        {
+            return officeViewDomain.Contexts
+                .Select(context => registrations[context])
+                .SelectMany(registration => registration);
         }
 
         public void Dispose()
         {
-            var taskPanes = ribbonTaskPanes.ToArray();
-            ribbonTaskPanes.Clear();
-            foreach (var ribbonTaskPane in taskPanes)
+            foreach (var registration in registrations.Values.SelectMany(_ => _))
             {
-                var oneToManyCustomTaskPaneAdapters = ribbonTaskPane.Value.ToArray();
-                ribbonTaskPane.Value.Clear();
-                foreach (var oneToManyCustomTaskPaneAdapter in oneToManyCustomTaskPaneAdapters)
-                {
-                    oneToManyCustomTaskPaneAdapter.Dispose();
-                }
+                registration.Adapter.Dispose();
             }
-
+            registrations.Clear();
             customTaskPaneCollection.Value.Dispose();
             customTaskPaneCollection = null;
         }

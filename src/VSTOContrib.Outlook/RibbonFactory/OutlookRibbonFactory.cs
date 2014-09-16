@@ -14,18 +14,18 @@ namespace VSTOContrib.Outlook.RibbonFactory
     [ComVisible(true)]
     public class OutlookRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        readonly OutlookViewProvider viewProvider;
+        readonly OutlookOfficeApplicationEvents officeApplicationEvents;
 
         public OutlookRibbonFactory(AddInBase addinBase, params Assembly[] assemblies):
-            this(new OutlookViewProvider(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
+            this(new OutlookOfficeApplicationEvents(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        private OutlookRibbonFactory(OutlookViewProvider viewProvider, AddInBase addinBase, Assembly[] assemblies)
+        private OutlookRibbonFactory(OutlookOfficeApplicationEvents officeApplicationEvents, AddInBase addinBase, Assembly[] assemblies)
             : base(addinBase, assemblies,
-            new OutlookViewContextProvider(viewProvider), viewProvider, null)
+            new OutlookViewContextProvider(officeApplicationEvents), officeApplicationEvents, null)
         {
-            this.viewProvider = viewProvider;
+            this.officeApplicationEvents = officeApplicationEvents;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            viewProvider.Initialise(application);
+            officeApplicationEvents.Initialise(application);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         protected override void ShuttingDown()
         {
-            viewProvider.Dispose();
+            officeApplicationEvents.Dispose();
         }
     }
 }

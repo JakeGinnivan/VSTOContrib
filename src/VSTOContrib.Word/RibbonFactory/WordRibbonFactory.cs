@@ -9,36 +9,36 @@ namespace VSTOContrib.Word.RibbonFactory
     [ComVisible(true)]
     public class WordRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        readonly WordViewProvider wordViewProvider;
+        readonly WordOfficeApplicationEvents wordOfficeApplicationEvents;
 
         public WordRibbonFactory(AddInBase addinBase, params Assembly[] assemblies)
-            :this(new WordViewProvider(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
+            :this(new WordOfficeApplicationEvents(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        private WordRibbonFactory(WordViewProvider viewProvider, AddInBase addinBase, Assembly[] assemblies)
+        private WordRibbonFactory(WordOfficeApplicationEvents officeApplicationEvents, AddInBase addinBase, Assembly[] assemblies)
             : base(addinBase, assemblies, new WordViewContextProvider(),
-                 viewProvider, WordRibbonType.WordDocument.GetEnumDescription())
+                 officeApplicationEvents, WordRibbonType.WordDocument.GetEnumDescription())
         {
-            wordViewProvider = viewProvider;
+            wordOfficeApplicationEvents = officeApplicationEvents;
         }
 
         protected override void ShuttingDown()
         {
-            wordViewProvider.Dispose();
+            wordOfficeApplicationEvents.Dispose();
         }
 
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            wordViewProvider.Initialise(application);
-            wordViewProvider.RegisterOpenDocuments();
+            wordOfficeApplicationEvents.Initialise(application);
+            wordOfficeApplicationEvents.RegisterOpenDocuments();
         }
 
         public override void Ribbon_Load(Microsoft.Office.Core.IRibbonUI ribbonUi)
         {
             //Word does not raise a new document event when we are starting up, and initialise is too soon
-            if (wordViewProvider != null)
-                wordViewProvider.RegisterOpenDocuments();
+            if (wordOfficeApplicationEvents != null)
+                wordOfficeApplicationEvents.RegisterOpenDocuments();
             base.Ribbon_Load(ribbonUi);
         }
     }

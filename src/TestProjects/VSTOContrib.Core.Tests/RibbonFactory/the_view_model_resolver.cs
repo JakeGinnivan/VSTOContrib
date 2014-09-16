@@ -20,10 +20,9 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             var testAddInBase = AddInBaseFactory.Create();
             resolverFactory = vms=>new ViewModelResolver(
                 vms,
-                new CustomTaskPaneRegister(testAddInBase),
                 new TestContextProvider(),
                 new VstoContribContext(new Assembly[0], testAddInBase, "Foo"),
-                new TestViewProvider());
+                new TestOfficeApplicationEvents());
         }
 
         [Fact]

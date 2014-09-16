@@ -7,7 +7,7 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.PowerPoint.RibbonFactory
 {
-    public class PowerPointViewProvider : IViewProvider
+    public class PowerPointOfficeApplicationEvents : IOfficeApplicationEvents
     {
         private Application powerPointApplication;
         const string CaptionSuffix = " - PowerPoint";
@@ -15,7 +15,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
 
         void PowerPointApplicationWindowActivate(Presentation pres, DocumentWindow window)
         {
-            NewView(this, new NewViewEventArgs(new OfficeWin32Window(window, PowerpointLpClassName, CaptionSuffix), pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
+            NewView(new NewViewEventArgs(ToOfficeWindow(window), pres, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription()));
         }
 
         void PowerPointViewProviderNewPresentation(Presentation pres)
@@ -24,7 +24,7 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             foreach (var documentWindow in documentWindows.Resource)
             {
                 var powerPointPresentation = PowerPointRibbonType.PowerPointPresentation.GetEnumDescription();
-                NewView(this, new NewViewEventArgs(new OfficeWin32Window(documentWindow, PowerpointLpClassName, CaptionSuffix), pres, powerPointPresentation));
+                NewView(new NewViewEventArgs(ToOfficeWindow(documentWindow), pres, powerPointPresentation));
             }
         }
 
@@ -35,18 +35,9 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
             powerPointApplication.WindowActivate += PowerPointApplicationWindowActivate;
         }
 
-        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
-        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-
-        /// <summary>
-        /// Cleanups the references to a view.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <param name="context"></param>
-        public void CleanupReferencesTo(OfficeWin32Window view, object context)
-        {
-            
-        }
+        public event Action<NewViewEventArgs> NewView = _ => { };
+        public event Action<OfficeWin32Window> ViewClosed = _ => { };
+        public event Action<object> ContextClosed = _ => { };
 
         public OfficeWin32Window ToOfficeWindow(object view)
         {

@@ -8,13 +8,13 @@ namespace VSTOContrib.Core.Tests.RibbonFactory.Internal
         [Fact]
         public void DisposeShouldDiposeAnyInternalTaskPanes()
         {
-            var original = new CustomTaskPaneDouble(string.Empty);
-            var viewContext = new object();
-            var sut = new OneToManyCustomTaskPaneAdapter(original, viewContext);
+            var customTaskPane = new CustomTaskPaneDouble(string.Empty);
+            var sut = new OneToManyCustomTaskPaneAdapter("Title");
+            sut.Add(new OfficeWin32Window(null, null, null), customTaskPane);
 
             sut.Dispose();
 
-            Assert.Equal(1, original.DisposedCalled);
+            Assert.Equal(1, customTaskPane.DisposedCalled);
         }
     }
 }

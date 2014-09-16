@@ -58,6 +58,15 @@ namespace VSTOContrib.Core
             get { return windowHandle; }
         }
 
+        public bool IsClosed
+        {
+            get { return IsWindow(Handle); }
+        }
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsWindow(IntPtr hWnd);
+
         [DllImport("user32")]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 

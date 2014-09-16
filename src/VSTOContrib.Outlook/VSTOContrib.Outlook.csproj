@@ -82,7 +82,7 @@
     <Compile Include="RibbonFactory\OutlookRibbonType.cs" />
     <Compile Include="RibbonFactory\OutlookRibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\OutlookViewContextProvider.cs" />
-    <Compile Include="RibbonFactory\OutlookViewProvider.cs" />
+    <Compile Include="RibbonFactory\OutlookOfficeApplicationEvents.cs" />
     <Compile Include="Services\Conficts\ConflictResolution.cs" />
     <Compile Include="Services\Conficts\IConflictResolver.cs" />
     <Compile Include="Services\Conficts\LocalWinsResolver.cs" />

@@ -6,11 +6,11 @@ namespace VSTOContrib.Outlook.RibbonFactory
 {
     public class OutlookViewContextProvider : IViewContextProvider
     {
-        readonly IViewProvider viewProvider;
+        readonly IOfficeApplicationEvents officeApplicationEvents;
 
-        public OutlookViewContextProvider(IViewProvider viewProvider)
+        public OutlookViewContextProvider(IOfficeApplicationEvents officeApplicationEvents)
         {
-            this.viewProvider = viewProvider;
+            this.officeApplicationEvents = officeApplicationEvents;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
 
             var selection = view.Window as Selection;
             if (selection != null)
-                return GetContextForView(viewProvider.ToOfficeWindow(selection.Parent));
+                return GetContextForView(officeApplicationEvents.ToOfficeWindow(selection.Parent));
 
             return null;
         }

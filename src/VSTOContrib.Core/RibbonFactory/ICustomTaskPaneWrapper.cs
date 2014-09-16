@@ -1,5 +1,4 @@
 using System;
-using System.Windows.Forms;
 
 namespace VSTOContrib.Core.RibbonFactory
 {
@@ -10,21 +9,10 @@ namespace VSTOContrib.Core.RibbonFactory
     public interface ICustomTaskPaneWrapper : IDisposable
     {
         /// <summary>
-        /// Gets the control.
-        /// </summary>
-        /// <value>The control.</value>
-        UserControl Control { get; }
-
-        /// <summary>
         /// Gets the title.
         /// </summary>
         /// <value>The title.</value>
         string Title { get; }
-        /// <summary>
-        /// Gets the window.
-        /// </summary>
-        /// <value>The window.</value>
-        object Window { get; }
 
         /// <summary>
         /// Gets or sets the dock position.

@@ -24,13 +24,13 @@ namespace VSTOContrib.Core.RibbonFactory
         readonly IRibbonFactoryController ribbonFactoryController;
         readonly VstoContribContext context;
 
-        protected RibbonFactory(AddInBase addinBase, Assembly[] assemblies, IViewContextProvider contextProvider, IViewProvider viewProvider, [CanBeNull] string fallbackRibbonType)
+        protected RibbonFactory(AddInBase addinBase, Assembly[] assemblies, IViewContextProvider contextProvider, IOfficeApplicationEvents officeApplicationEvents, [CanBeNull] string fallbackRibbonType)
         {
             if (assemblies.Length == 0)
                 throw new InvalidOperationException("You must specify at least one assembly to scan for viewmodels");
 
             context = new VstoContribContext(assemblies, addinBase, fallbackRibbonType);
-            ribbonFactoryController = new RibbonFactoryController(contextProvider, context, viewProvider);
+            ribbonFactoryController = new RibbonFactoryController(contextProvider, context, officeApplicationEvents);
 
             addinBase.Startup += AddinBaseOnStartup;
             addinBase.Shutdown += AddinBaseOnShutdown;

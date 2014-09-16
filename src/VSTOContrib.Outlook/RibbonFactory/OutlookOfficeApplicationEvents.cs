@@ -7,7 +7,7 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Outlook.RibbonFactory
 {
-    internal class OutlookViewProvider : IViewProvider
+    internal class OutlookOfficeApplicationEvents : IOfficeApplicationEvents
     {
         readonly string captionSuffix = string.Empty;
         const string OutlookLpClassName = "rctrl_renwnd32\0";
@@ -36,11 +36,8 @@ namespace VSTOContrib.Outlook.RibbonFactory
             wrapper.Closed += InspectorClosed;
 
             var ribbonType = InspectorToRibbonTypeConverter.Convert(inspector);
-            var newViewEventArgs = new NewViewEventArgs(new OfficeWin32Window(inspector, OutlookLpClassName, captionSuffix), wrapper.CurrentContext, ribbonType.GetEnumDescription());
-            NewView(this, newViewEventArgs);
-
-            if (!newViewEventArgs.Handled)
-                inspector.ReleaseComObject();
+            var newViewEventArgs = new NewViewEventArgs(ToOfficeWindow(inspector), wrapper.CurrentContext, ribbonType.GetEnumDescription());
+            NewView(newViewEventArgs);
         }
 
         void NewExplorer(Explorer explorer)
@@ -48,11 +45,8 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = new ExplorerWrapper(explorer);
             wrapper.Closed += ExplorerClosed;
 
-            var newViewEventArgs = new NewViewEventArgs(new OfficeWin32Window(explorer, OutlookLpClassName, captionSuffix), explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
-            NewView(this, newViewEventArgs);
-
-            if (!newViewEventArgs.Handled)
-                explorer.ReleaseComObject();
+            var newViewEventArgs = new NewViewEventArgs(ToOfficeWindow(explorer), explorer, OutlookRibbonType.OutlookExplorer.GetEnumDescription());
+            NewView(newViewEventArgs);
         }
 
         private void ExplorerClosed(object sender, ExplorerEventArgs e)
@@ -60,7 +54,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (ExplorerWrapper)sender;
             wrapper.Closed -= ExplorerClosed;
 
-            ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(e.Explorer, OutlookLpClassName, captionSuffix), e.Explorer));
+            ViewClosed(ToOfficeWindow(e.Explorer));
         }
 
         void InspectorClosed(object sender, InspectorClosedEventArgs e)
@@ -68,7 +62,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
             var wrapper = (InspectorWrapper) sender;
             wrapper.Closed -= InspectorClosed;
 
-            ViewClosed(this, new ViewClosedEventArgs(new OfficeWin32Window(e.Inspector, OutlookLpClassName, captionSuffix), e.CurrentContext));
+            ViewClosed(ToOfficeWindow(e.Inspector));
         }
 
         public void Initialise(object application)
@@ -80,12 +74,9 @@ namespace VSTOContrib.Outlook.RibbonFactory
             RegisterInspectors();
         }
 
-        public event EventHandler<NewViewEventArgs> NewView = (sender, args) => { };
-        public event EventHandler<ViewClosedEventArgs> ViewClosed = (sender, args) => { };
-
-        public void CleanupReferencesTo(OfficeWin32Window view, object context)
-        {
-        }
+        public event Action<NewViewEventArgs> NewView;
+        public event Action<OfficeWin32Window> ViewClosed;
+        public event Action<object> ContextClosed;
 
         public OfficeWin32Window ToOfficeWindow(object view)
         {

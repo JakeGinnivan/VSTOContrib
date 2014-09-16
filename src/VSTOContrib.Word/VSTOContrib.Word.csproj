@@ -67,7 +67,7 @@
     <Compile Include="RibbonFactory\WordRibbonType.cs" />
     <Compile Include="RibbonFactory\WordViewContextProvider.cs" />
     <Compile Include="RibbonFactory\WordRibbonViewModel.cs" />
-    <Compile Include="RibbonFactory\WordViewProvider.cs" />
+    <Compile Include="RibbonFactory\WordOfficeApplicationEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VSTOContrib.Core\VSTOContrib.Core.csproj">

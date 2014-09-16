@@ -4,7 +4,7 @@ using VSTOContrib.Core.RibbonFactory.Interfaces;
 
 namespace VSTOContrib.Core.Tests.RibbonFactory
 {
-    public class TestViewProvider : IViewProvider
+    public class TestOfficeApplicationEvents : IOfficeApplicationEvents
     {
         public void Dispose()
         {
@@ -16,8 +16,10 @@ namespace VSTOContrib.Core.Tests.RibbonFactory
             throw new NotImplementedException();
         }
 
-        public event EventHandler<NewViewEventArgs> NewView;
-        public event EventHandler<ViewClosedEventArgs> ViewClosed;
+        public event Action<NewViewEventArgs> NewView;
+        public event Action<OfficeWin32Window> ViewClosed;
+        public event Action<object> ContextClosed;
+
         public void CleanupReferencesTo(OfficeWin32Window view, object context)
         {
             throw new NotImplementedException();

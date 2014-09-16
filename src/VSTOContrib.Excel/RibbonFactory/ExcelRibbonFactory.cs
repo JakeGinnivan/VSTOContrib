@@ -9,29 +9,29 @@ namespace VSTOContrib.Excel.RibbonFactory
     [ComVisible(true)]
     public class ExcelRibbonFactory : Core.RibbonFactory.RibbonFactory
     {
-        readonly ExcelViewProvider excelViewProvider;
+        readonly ExcelOfficeApplicationEvents excelOfficeApplicationEvents;
 
         public ExcelRibbonFactory(AddInBase addinBase, params Assembly[] assemblies)
-            :this(new ExcelViewProvider(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
+            :this(new ExcelOfficeApplicationEvents(), addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()))
         {
         }
 
-        private ExcelRibbonFactory(ExcelViewProvider viewProvider, AddInBase addinBase, Assembly[] assemblies)
+        private ExcelRibbonFactory(ExcelOfficeApplicationEvents officeApplicationEvents, AddInBase addinBase, Assembly[] assemblies)
             : base(addinBase, assemblies, new ExcelViewContextProvider(),
-                viewProvider, ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
+                officeApplicationEvents, ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
         {
-            excelViewProvider = viewProvider;
+            excelOfficeApplicationEvents = officeApplicationEvents;
         }
 
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            excelViewProvider.Initialise(application);
-            excelViewProvider.RegisterOpenDocuments();
+            excelOfficeApplicationEvents.Initialise(application);
+            excelOfficeApplicationEvents.RegisterOpenDocuments();
         }
 
         protected override void ShuttingDown()
         {
-            excelViewProvider.Dispose();
+            excelOfficeApplicationEvents.Dispose();
         }
     }
 }

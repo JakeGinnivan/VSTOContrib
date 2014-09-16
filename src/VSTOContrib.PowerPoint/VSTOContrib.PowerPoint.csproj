@@ -62,7 +62,7 @@
     <Compile Include="RibbonFactory\PowerPointRibbonType.cs" />
     <Compile Include="RibbonFactory\PowerPointRibbonViewModelAttribute.cs" />
     <Compile Include="RibbonFactory\PowerPointViewContextProvider.cs" />
-    <Compile Include="RibbonFactory\PowerPointViewProvider.cs" />
+    <Compile Include="RibbonFactory\PowerPointOfficeApplicationEvents.cs" />
     <Compile Include="PresentationWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

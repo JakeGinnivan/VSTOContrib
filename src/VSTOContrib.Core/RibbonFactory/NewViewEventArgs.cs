@@ -1,8 +1,6 @@
-using System;
-
 namespace VSTOContrib.Core.RibbonFactory
 {
-    public class NewViewEventArgs : EventArgs
+    public class NewViewEventArgs
     {
         readonly OfficeWin32Window viewInstance;
         readonly object viewContext;
@@ -29,11 +27,5 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             get { return viewContext; }
         }
-
-        /// <summary>
-        /// True if a viewmodel was wired up to the view. If false call Marshal.ReleaseComObject on view. 
-        /// DO NOT release com object if this property is true
-        /// </summary>
-        public bool Handled { get; set; }
     }
 }

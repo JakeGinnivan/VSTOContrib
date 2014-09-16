@@ -69,7 +69,7 @@
     <Compile Include="RibbonFactory\ExcelRibbonType.cs" />
     <Compile Include="RibbonFactory\ExcelViewContextProvider.cs" />
     <Compile Include="RibbonFactory\ExcelRibbonViewModel.cs" />
-    <Compile Include="RibbonFactory\ExcelViewProvider.cs" />
+    <Compile Include="RibbonFactory\ExcelOfficeApplicationEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VSTOContrib.Core\VSTOContrib.Core.csproj">
