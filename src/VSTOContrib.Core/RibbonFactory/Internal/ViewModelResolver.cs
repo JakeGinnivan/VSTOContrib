@@ -87,9 +87,9 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
                 ribbonUiLookup.Remove("default");
             }
             var viewModel = GetOrCreateViewModel(e.RibbonType, e.ViewContext ?? NullContext.Instance, e.ViewInstance);
+            if (viewModel == null) return;
             customTaskPaneRegister.RegisterCustomTaskPanes(viewModel, e.ViewInstance, e.ViewContext);
             InvalidateRibbonForViewModel(viewModel);
-            if (viewModel == null) return;
             e.Handled = true;
         }
 
