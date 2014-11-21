@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Office.Tools;
 using VSTOContrib.Core.RibbonFactory.Interfaces;
@@ -54,5 +55,17 @@ namespace VSTOContrib.Core.RibbonFactory
         public string FallbackRibbonType { get; private set; }
         public List<IErrorHandler> ErrorHandlers { get; private set; }
         public IViewModelFactory ViewModelFactory { get; set; }
+
+        public void RemoveCallbacksForDynamicContext(string dynamicContext)
+        {
+            var removeKeys = (from kvp in TagToCallbackTargetLookup
+                where kvp.Value.DynamicContext == dynamicContext
+                select kvp.Key).ToList();
+
+            foreach (var key in removeKeys)
+            {
+                TagToCallbackTargetLookup.Remove(key);
+            }
+        }
     }
 }

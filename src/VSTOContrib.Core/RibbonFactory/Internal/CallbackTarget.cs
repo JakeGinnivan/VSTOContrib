@@ -6,11 +6,13 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
     {
         private readonly string ribbonType;
         private readonly string method;
+        private readonly string dynamicContext;
 
-        public CallbackTarget(string ribbonType, string method)
+        public CallbackTarget(string ribbonType, string dynamicContext, string method)
         {
 
             this.ribbonType = ribbonType;
+            this.dynamicContext = dynamicContext;
             this.method = method;
         }
 
@@ -22,6 +24,11 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         public string RibbonType
         {
             get { return ribbonType; }
+        }
+
+        public string DynamicContext
+        {
+            get { return dynamicContext; }
         }
     }
 }

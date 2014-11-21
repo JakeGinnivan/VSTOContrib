@@ -59,6 +59,22 @@ namespace VSTOContrib.Core.RibbonFactory
                        : vstoContribContext.RibbonXmlFromTypeLookup[ribbonId];
         }
 
+        public string InvokeGetContent(IRibbonControl control, Expression<Action> caller, params object[] parameters)
+        {
+            // Remove any previous registered callbacks for this dynamic context
+            vstoContribContext.RemoveCallbacksForDynamicContext(control.Tag);
+            
+            // Delegate to the view model to get the raw xml
+            var xmlString = InvokeGet(control, caller, parameters);
+
+            if (xmlString == null) return null;
+
+            // Rewrite the XML with our callbacks, registering new callback targets
+            var ribbonXmlRewriter = new RibbonXmlRewriter(vstoContribContext, ribbonViewModelResolver);
+            var ribbonType = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()].RibbonType;
+            return ribbonXmlRewriter.RewriteDynamicXml(ribbonType, control.Tag, xmlString.ToString());
+        }
+
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             var methodName = caller.GetMethodName();
