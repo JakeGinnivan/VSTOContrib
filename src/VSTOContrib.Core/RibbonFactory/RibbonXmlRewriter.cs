@@ -47,12 +47,21 @@ namespace VSTOContrib.Core.RibbonFactory
 
             foreach (var value in ViewModelRibbonTypesLookupProvider.Instance.GetRibbonTypesFor(viewModelType, fallbackRibbonType))
             {
-                WireUpEvents(value, ribbonDoc, customUi.GetDefaultNamespace());
+                WireUpEvents(value, null, ribbonDoc, customUi.GetDefaultNamespace());
                 vstoContribContext.RibbonXmlFromTypeLookup.Add(value, ribbonDoc.ToString());
             }
         }
 
-        void WireUpEvents(string ribbonTypes, XContainer ribbonDoc, XNamespace xNamespace)
+        public string RewriteDynamicXml(string ribbonTypes, string dynamicContext, string dynamicXml)
+        {
+            var dynamicXmlDoc = XDocument.Parse(dynamicXml);
+            
+            WireUpEvents(ribbonTypes, dynamicContext, dynamicXmlDoc, dynamicXmlDoc.Root.GetDefaultNamespace());
+
+            return dynamicXmlDoc.ToString();
+        }
+
+        void WireUpEvents(string ribbonTypes, string dynamicContext, XContainer ribbonDoc, XNamespace xNamespace)
         {
             //Go through each type of Ribbon 
             foreach (string ribbonControl in controlCallbackLookup.RibbonControls)
@@ -90,7 +99,7 @@ namespace VSTOContrib.Core.RibbonFactory
                         // direct the callback
                         var id = (elementId ?? elementQId).Value;
                         string callbackTag = BuildTag(ribbonTypes, id, factoryMethodName);
-                        vstoContribContext.TagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget(ribbonTypes, currentCallback));
+                        vstoContribContext.TagToCallbackTargetLookup.Add(callbackTag, new CallbackTarget(ribbonTypes, dynamicContext, currentCallback));
                         xElement.SetAttributeValue(XName.Get("tag"), (ribbonTypes + id));
                         ribbonViewModelResolver.RegisterCallbackControl(ribbonTypes, currentCallback, id);
                     }

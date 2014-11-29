@@ -345,7 +345,7 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public string GetContent(IRibbonControl control)
         {
-            return (string)ribbonFactoryController.InvokeGet(control, () => GetContent(null));
+            return (string)ribbonFactoryController.InvokeGetContent(control, () => GetContent(null));
         }
 
         /// <summary>

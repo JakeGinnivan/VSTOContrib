@@ -8,6 +8,7 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     {
         void Initialise(IViewProvider viewProvider);
         string GetCustomUI(string ribbonId);
+        string InvokeGetContent(IRibbonControl control, Expression<Action> caller, params object[] parameters);
         object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters);
         void Invoke(IRibbonControl control, Expression<Action> caller, params object[] parameters);
         void RibbonLoaded(IRibbonUI ribbonUi);

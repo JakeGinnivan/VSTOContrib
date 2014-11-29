@@ -59,6 +59,22 @@ namespace VSTOContrib.Core.RibbonFactory
                        : vstoContribContext.RibbonXmlFromTypeLookup[ribbonId];
         }
 
+        public string InvokeGetContent(IRibbonControl control, Expression<Action> caller, params object[] parameters)
+        {
+            // Remove any previous registered callbacks for this dynamic context
+            vstoContribContext.RemoveCallbacksForDynamicContext(control.Tag);
+            
+            // Delegate to the view model to get the raw xml
+            var xmlString = InvokeGet(control, caller, parameters);
+
+            if (xmlString == null) return null;
+
+            // Rewrite the XML with our callbacks, registering new callback targets
+            var ribbonXmlRewriter = new RibbonXmlRewriter(vstoContribContext, ribbonViewModelResolver);
+            var ribbonType = vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()].RibbonType;
+            return ribbonXmlRewriter.RewriteDynamicXml(ribbonType, control.Tag, xmlString.ToString());
+        }
+
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
             if (control.Context == null) return null;
@@ -109,10 +125,14 @@ namespace VSTOContrib.Core.RibbonFactory
         {
             try
             {
+                var methodName = caller.GetMethodName();
                 CallbackTarget callbackTarget =
-                    vstoContribContext.TagToCallbackTargetLookup[control.Tag + caller.GetMethodName()];
+                    vstoContribContext.TagToCallbackTargetLookup[control.Tag + methodName];
 
-                IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(control.Context);
+                var view = (object)control.Context;
+                IRibbonViewModel viewModelInstance = ribbonViewModelResolver.ResolveInstanceFor(view);
+                VstoContribLog.Debug(l => l("Ribbon callback {0} being invoked on {1} (View: {2}, ViewModel: {3})",
+                    methodName, control.Id, view.ToLogFormat(), viewModelInstance.ToLogFormat()));
 
                 Type type = viewModelInstance.GetType();
                 PropertyInfo property = type.GetProperty(callbackTarget.Method);
