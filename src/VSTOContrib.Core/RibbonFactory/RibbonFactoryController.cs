@@ -61,6 +61,8 @@ namespace VSTOContrib.Core.RibbonFactory
 
         public object InvokeGet(IRibbonControl control, Expression<Action> caller, params object[] parameters)
         {
+            if (control.Context == null) return null;
+
             var methodName = caller.GetMethodName();
             CallbackTarget callbackTarget = vstoContribContext.TagToCallbackTargetLookup[control.Tag + methodName];
 
