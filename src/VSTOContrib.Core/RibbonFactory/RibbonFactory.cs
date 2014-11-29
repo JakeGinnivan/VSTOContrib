@@ -84,10 +84,14 @@ namespace VSTOContrib.Core.RibbonFactory
             }
         }
 
-        public List<IErrorHandler> ErrorHandlers
+        /// <summary>
+        /// Gets collection of registered global error handlers. New custom IErrorHandler implementation can be added in collection.
+        /// </summary>
+        public ICollection<IErrorHandler> ErrorHandlers
         {
             get { return context.ErrorHandlers; }
         }
+
         /// <summary>
         /// Called when the add-in is shutting down
         /// </summary>
