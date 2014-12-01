@@ -12,7 +12,7 @@ namespace VSTOContrib.Core.RibbonFactory
         readonly Type addinType;
         object application;
 
-        public VstoContribContext(Assembly[] assemblies, AddInBase addinBase, string fallbackRibbonType)
+        public VstoContribContext(Assembly[] assemblies, AddInBase addinBase, string fallbackRibbonType, IViewLocationStrategy viewLocationStrategy = null)
         {
             FallbackRibbonType = fallbackRibbonType;
             Assemblies = assemblies;
@@ -23,7 +23,7 @@ namespace VSTOContrib.Core.RibbonFactory
             var factory = globalsType.GetProperty("Factory", BindingFlags.Static | BindingFlags.NonPublic)
                 .GetValue(null, null);
             VstoFactory = (Factory)factory;
-            ViewLocationStrategy = new DefaultViewLocationStrategy();
+            ViewLocationStrategy = viewLocationStrategy ?? new DefaultViewLocationStrategy();
             ViewModelFactory = new DefaultViewModelFactory();
             RibbonXmlFromTypeLookup = new Dictionary<string, string>();
             TagToCallbackTargetLookup = new Dictionary<string, CallbackTarget>();
