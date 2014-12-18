@@ -8,10 +8,10 @@ namespace VSTOContrib.Core.RibbonFactory.Interfaces
     public interface IRibbonFactory : IRibbonExtensibility
     {
         /// <summary>
-        /// Gets or sets the locate view strategy.
+        /// Gets the locate view strategy.
         /// </summary>
         /// <value>The locate view strategy.</value>
-        IViewLocationStrategy LocateViewStrategy { get; set; }
+        IViewLocationStrategy LocateViewStrategy { get; }
 
         /// <summary>
         /// Gets or sets the view model factory, default uses Activator.CreateInstance

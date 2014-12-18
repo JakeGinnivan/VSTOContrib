@@ -18,7 +18,15 @@ namespace VSTOContrib.PowerPoint.RibbonFactory
         public PowerPointRibbonFactory(
             AddInBase addInBase,
             params Assembly[] assemblies)
-            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
+            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), null, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
+        {
+        }
+
+        public PowerPointRibbonFactory(
+            AddInBase addInBase,
+            IViewLocationStrategy viewLocationStrategy,
+            params Assembly[] assemblies)
+            : base(addInBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new PowerPointViewContextProvider(), viewLocationStrategy, PowerPointRibbonType.PowerPointPresentation.GetEnumDescription())
         {
         }
 
