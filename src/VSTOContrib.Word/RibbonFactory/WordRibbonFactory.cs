@@ -15,7 +15,15 @@ namespace VSTOContrib.Word.RibbonFactory
         public WordRibbonFactory(
             AddInBase addinBase,
             params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), WordRibbonType.WordDocument.GetEnumDescription())
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), null, WordRibbonType.WordDocument.GetEnumDescription())
+        {
+        }
+
+        public WordRibbonFactory(
+            AddInBase addinBase,
+            IViewLocationStrategy viewLocationStrategy,
+            params Assembly[] assemblies)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new WordViewContextProvider(), viewLocationStrategy, WordRibbonType.WordDocument.GetEnumDescription())
         {
         }
 

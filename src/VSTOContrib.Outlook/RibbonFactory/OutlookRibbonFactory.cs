@@ -20,7 +20,15 @@ namespace VSTOContrib.Outlook.RibbonFactory
         public OutlookRibbonFactory(
             AddInBase addinBase,
             params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), null)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), null, null)
+        {
+        }
+
+        public OutlookRibbonFactory(
+            AddInBase addinBase,
+            IViewLocationStrategy viewLocationStrategy,
+            params Assembly[] assemblies)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new OutlookViewContextProvider(), viewLocationStrategy, null)
         {
         }
 
@@ -29,7 +37,7 @@ namespace VSTOContrib.Outlook.RibbonFactory
         /// </summary>
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            viewProvider = new OutlookViewProvider((_Application) application);
+            viewProvider = new OutlookViewProvider((_Application)application);
 
             controller.Initialise(viewProvider);
         }

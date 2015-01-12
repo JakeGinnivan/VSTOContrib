@@ -12,14 +12,22 @@ namespace VSTOContrib.Excel.RibbonFactory
     {
         ExcelViewProvider excelViewProvider;
 
-        public ExcelRibbonFactory(AddInBase addinBase, params Assembly[] assemblies)
-            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new ExcelViewContextProvider(), ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
+        public ExcelRibbonFactory(AddInBase addinBase,
+            params Assembly[] assemblies)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new ExcelViewContextProvider(), null, ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
+        {
+        }
+
+        public ExcelRibbonFactory(AddInBase addinBase,
+            IViewLocationStrategy viewLocationStrategy,
+            params Assembly[] assemblies)
+            : base(addinBase, UseIfEmpty(assemblies, Assembly.GetCallingAssembly()), new ExcelViewContextProvider(), viewLocationStrategy, ExcelRibbonType.ExcelWorkbook.GetEnumDescription())
         {
         }
 
         protected override void InitialiseRibbonFactoryController(IRibbonFactoryController controller, object application)
         {
-            var app = (Application) application;
+            var app = (Application)application;
             excelViewProvider = new ExcelViewProvider(app);
             controller.Initialise(excelViewProvider);
             excelViewProvider.RegisterOpenDocuments();
