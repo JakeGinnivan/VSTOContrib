@@ -9,6 +9,7 @@ using Windows = Microsoft.Office.Interop.Word.Windows;
 
 namespace Word.TestDoubles
 {
+#pragma warning disable 0067
     public class DocumentTestDouble : Document
     {
         public DocumentTestDouble(ApplicationTestDouble application, WindowTestDouble window)

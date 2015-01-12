@@ -5,9 +5,9 @@ using Microsoft.Vbe.Interop;
 using Application = Microsoft.Office.Interop.Word.Application;
 using Window = Microsoft.Office.Interop.Word.Window;
 using Windows = Microsoft.Office.Interop.Word.Windows;
-
 namespace Word.TestDoubles
 {
+#pragma warning disable 0067
     public class ApplicationTestDouble : Application
     {
         public ApplicationTestDouble()

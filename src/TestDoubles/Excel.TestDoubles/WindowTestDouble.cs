@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Excel.TestDoubles
 {
+#pragma warning disable 0067
     public class WindowTestDouble : Window
     {
         public object Activate()

@@ -41,9 +41,6 @@
 
     <MSBuild Projects="$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;" ToolsVersion="4.0" />
 
-    <MSBuild Projects="$(Root)src\Samples\Outlook\GitHubForOutlookAddin\GitHubForOutlookAddin.csproj" Properties="Configuration=$(Configuration);Platform=AnyCPU;"
-             Targets="Publish" ToolsVersion="4.0"/>
-
     <PropertyGroup>
       <NuGet>$(Root)src\.nuget\NuGet.exe</NuGet>
       <NuGetManifest>$(Root)src\VSTOContrib.Autofac\VSTOContrib.Autofac.nuspec</NuGetManifest>
@@ -57,6 +54,6 @@
     <Copy SourceFiles="$(Root)src\VSTOContrib.Autofac\Readme.txt"
           DestinationFiles="$(AutofacNuGetFolder)Readme.txt"/>
     
-    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(GitHubFlowVersion_SemVer)' />
+    <Exec Command='$(NuGet) pack "$(NuGetManifest)" -BasePath "$(AutofacNuGetFolder)\" -OutputDirectory "$(Root)build\Artifacts" -Version $(GitVersion_NugetVersion)' />
   </Target>
 </Project>

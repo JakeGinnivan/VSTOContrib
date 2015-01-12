@@ -2,6 +2,7 @@ using Microsoft.Office.Interop.Word;
 
 namespace Word.TestDoubles
 {
+#pragma warning disable 0067
     public class WindowTestDouble : Window
     {
         public void Activate()

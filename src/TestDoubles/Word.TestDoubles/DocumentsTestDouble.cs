@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.Word;
 
 namespace Word.TestDoubles
 {
+#pragma warning disable 0067
     public class DocumentsTestDouble : Documents
     {
         readonly List<DocumentTestDouble> documents = new List<DocumentTestDouble>();

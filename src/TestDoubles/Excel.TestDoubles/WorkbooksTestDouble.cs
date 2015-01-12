@@ -6,6 +6,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace Excel.TestDoubles
 {
+#pragma warning disable 0067
     public class WorkbooksTestDouble : Workbooks
     {
         readonly List<WorkbookTestDouble> workbooks = new List<WorkbookTestDouble>();

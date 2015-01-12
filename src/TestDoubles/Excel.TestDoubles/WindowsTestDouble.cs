@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Excel.TestDoubles
 {
+#pragma warning disable 0067
     public class WindowsTestDouble : Windows
     {
         readonly List<WindowTestDouble> windows = new List<WindowTestDouble>();

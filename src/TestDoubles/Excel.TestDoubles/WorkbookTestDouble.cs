@@ -8,6 +8,7 @@ using Windows = Microsoft.Office.Interop.Excel.Windows;
 
 namespace Excel.TestDoubles
 {
+#pragma warning disable 0067
     public class WorkbookTestDouble : Workbook
     {
         public WorkbookTestDouble(ApplicationTestDouble application, WindowTestDouble window)
