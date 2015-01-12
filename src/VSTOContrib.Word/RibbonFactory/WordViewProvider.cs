@@ -41,7 +41,7 @@ namespace VSTOContrib.Word.RibbonFactory
             }
 
             //Check if we have this window registered
-            if (documents[doc].Any(window => window.Hwnd == wn.Hwnd)) return;
+            if (documents[doc].Any(window => window == wn)) return;
 
             documents[doc].Add(wn);
             NewView(this, new NewViewEventArgs(wn, doc, WordRibbonType.WordDocument.GetEnumDescription()));
