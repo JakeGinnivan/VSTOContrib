@@ -236,7 +236,10 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetVisible(IRibbonControl control)
         {
-            return (bool)ribbonFactoryController.InvokeGet(control, () => GetVisible(null));
+            if (control == null || control.Context == null) return false;
+
+            object result = ribbonFactoryController.InvokeGet(control, () => GetVisible(null));
+            return (bool) result;
         }
 
         /// <summary>
@@ -370,7 +373,10 @@ namespace VSTOContrib.Core.RibbonFactory
         /// <returns></returns>
         public bool GetPressed(IRibbonControl control)
         {
-            return (bool)ribbonFactoryController.InvokeGet(control, () => GetPressed(null));
+            if (control == null || control.Context == null) return false;
+
+            object result = ribbonFactoryController.InvokeGet(control, () => GetPressed(null));
+            return (bool) result;
         }
 
         /// <summary>
