@@ -81,10 +81,9 @@ namespace VSTOContrib.Core.RibbonFactory.Internal
         {
             VstoContribLog.Debug(_ => _("ViewProvider.NewView Raised, Type: {0}, View: {1}, Context: {2}",
                 e.RibbonType, e.ViewInstance.ToLogFormat(), e.ViewContext.ToLogFormat()));
-            if (ribbonUiLookup.ContainsKey("default"))
+            if (!ribbonUiLookup.ContainsKey(e.RibbonType) && ribbonUiLookup.ContainsKey(DefaultRibbon))
             {
-                ribbonUiLookup.Add(e.RibbonType, ribbonUiLookup["default"]);
-                ribbonUiLookup.Remove("default");
+                ribbonUiLookup.Add(e.RibbonType, ribbonUiLookup[DefaultRibbon]);
             }
             var viewModel = GetOrCreateViewModel(e.RibbonType, e.ViewContext ?? NullContext.Instance, e.ViewInstance);
             if (viewModel == null) return;
