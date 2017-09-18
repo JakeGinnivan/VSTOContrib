@@ -164,12 +164,12 @@ namespace VSTOContrib.Core.RibbonFactory
             {
                 var innerEx = e.InnerException;
                 PreserveStackTrace(innerEx);
-                if (vstoContribContext.ErrorHandlers.Count == 0)
+                if (vstoContribContext.ErrorHandlers != null && vstoContribContext.ErrorHandlers.Count == 0)
                 {
                     Trace.TraceError(innerEx.ToString());
                 }
 
-                var handled = vstoContribContext.ErrorHandlers.Any(errorHandler => errorHandler.Handle(innerEx));
+                var handled = vstoContribContext.ErrorHandlers != null && vstoContribContext.ErrorHandlers.Any(errorHandler => errorHandler.Handle(innerEx));
 
                 if (!handled)
                     throw innerEx;
