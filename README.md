@@ -6,14 +6,14 @@ VSTO Contrib is all about making VSTO development better for developers. It allo
 ## Getting Started
 A getting started video is available at http://youtu.be/TxRjNsaVX6U, it goes through quite a few of the concepts in VSTO Contrib to help you get started
 
-If you just want to dive in, install `VSTO.<OfficeProduct>` from nuget, for example `VSTO.Outlook` for an outlook package.
+If you just want to dive in, install `VSTOContrib.<OfficeProduct>` from nuget, for example `VSTOContrib.Outlook` for an outlook package.
 
 Included in the package is a readme with some code snippets to help you get started. Also check out the sample projects in this repo, there is a simple one for each of the Office applications and will help you get started
 
 ## Features
 ### Simplified Model
 VSTO Contrib makes it easier to deal with things like:
- - Automativally Registering your custom task panes for new windows
+ - Automatically registering your custom task panes for new windows
  - Keeping ribbon controls in sync across windows
  - Keeping custom task pane state in sync across windows (size, visibility etc)
  - Allow your code to be contextually aware, for example in work, you know the current window and the document when the user clicks on a ribbon button
